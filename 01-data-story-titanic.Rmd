@@ -3,6 +3,7 @@
 
 This introductory chapter illustrates some of the tools and concepts you'll learn in this class, such as visualization, data restructuring, and model building.  By the end of this course, you should be able to carry out similar analyses and make well reasoned interpreation of those analyses for a variety of complex biological data.
 
+
 ## Background
 
 On April 10, 1912 the RMS Titanic left Southhampton, England headed for New York. Aboard were 2,435 passengers and 892 crew members.  Five days later, about 20 minutes before midnight, the Titanic hit an iceberg in the frigid waters about 375 miles south of New Foundland.  Within approximately two and a half hours the ship had split apart and sunk, leaving just over 700 survivors.

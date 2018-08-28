@@ -202,52 +202,52 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.4</span> Read data</h2>
 <p>We start by reading in the data from the CSV file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">titanic &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/Downloads/titanic_data.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">Parsed with column specification<span class="op">:</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">cols</span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">pclass =</span> <span class="kw">col_integer</span>(),</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">survived =</span> <span class="kw">col_integer</span>(),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">name =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">sex =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">age =</span> <span class="kw">col_double</span>(),</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="dt">sibsp =</span> <span class="kw">col_integer</span>(),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  <span class="dt">parch =</span> <span class="kw">col_integer</span>(),</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  <span class="dt">ticket =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  <span class="dt">fare =</span> <span class="kw">col_double</span>(),</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">  <span class="dt">cabin =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="dt">embarked =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="dt">boat =</span> <span class="kw">col_character</span>(),</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">  <span class="dt">body =</span> <span class="kw">col_integer</span>(),</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">  <span class="dt">home.dest =</span> <span class="kw">col_character</span>()</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   pclass = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;   survived = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   name = col_character(),</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   sex = col_character(),</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   age = col_double(),</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   sibsp = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   parch = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   ticket = col_character(),</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   fare = col_double(),</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;   cabin = col_character(),</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;   embarked = col_character(),</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;   boat = col_character(),</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;   body = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;   home.dest = col_character()</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; )</span></a></code></pre></div>
 <p>The function <code>read_csv</code> does exactly what it advertises – reads a data set from a CSV file and returns it as an object we can compute on. In this case we assigned the variable name <code>titanic</code> to our data set. Simple enough!</p>
 </div>
 <div id="whats-in-the-data" class="section level2">
 <h2><span class="header-section-number">2.5</span> What’s in the data?</h2>
 <p>The function <code>read_csv</code> returns a table, where the columns represent the variables of interest (e.g. sex, age, etc) and the rows represent individuals or observations. Let’s take a look:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">titanic</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># A tibble: 1,309 x 14</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">   pclass survived name  sex       age sibsp parch ticket   fare cabin</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="op">&lt;</span>int<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st"> </span><span class="dv">1</span>      <span class="dv">1</span>        <span class="dv">1</span> Alle… fema… <span class="dv">29</span>          <span class="dv">0</span>     <span class="dv">0</span> <span class="dv">24160</span>  <span class="fl">211.3</span>  B5   </a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"> <span class="dv">2</span>      <span class="dv">1</span>        <span class="dv">1</span> Alli… male   <span class="fl">0.9167</span>     <span class="dv">1</span>     <span class="dv">2</span> <span class="dv">113781</span> <span class="fl">151.6</span>  C22 …</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"> <span class="dv">3</span>      <span class="dv">1</span>        <span class="dv">0</span> Alli… fema…  <span class="dv">2</span>          <span class="dv">1</span>     <span class="dv">2</span> <span class="dv">113781</span> <span class="fl">151.6</span>  C22 …</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"> <span class="dv">4</span>      <span class="dv">1</span>        <span class="dv">0</span> Alli… male  <span class="dv">30</span>          <span class="dv">1</span>     <span class="dv">2</span> <span class="dv">113781</span> <span class="fl">151.6</span>  C22 …</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"> <span class="dv">5</span>      <span class="dv">1</span>        <span class="dv">0</span> Alli… fema… <span class="dv">25</span>          <span class="dv">1</span>     <span class="dv">2</span> <span class="dv">113781</span> <span class="fl">151.6</span>  C22 …</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"> <span class="dv">6</span>      <span class="dv">1</span>        <span class="dv">1</span> Ande… male  <span class="dv">48</span>          <span class="dv">0</span>     <span class="dv">0</span> <span class="dv">19952</span>   <span class="fl">26.55</span> E12  </a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"> <span class="dv">7</span>      <span class="dv">1</span>        <span class="dv">1</span> Andr… fema… <span class="dv">63</span>          <span class="dv">1</span>     <span class="dv">0</span> <span class="dv">13502</span>   <span class="fl">77.96</span> D7   </a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"> <span class="dv">8</span>      <span class="dv">1</span>        <span class="dv">0</span> Andr… male  <span class="dv">39</span>          <span class="dv">0</span>     <span class="dv">0</span> <span class="dv">112050</span>   <span class="dv">0</span>    A36  </a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"> <span class="dv">9</span>      <span class="dv">1</span>        <span class="dv">1</span> Appl… fema… <span class="dv">53</span>          <span class="dv">2</span>     <span class="dv">0</span> <span class="dv">11769</span>   <span class="fl">51.48</span> C101 </a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="dv">10</span>      <span class="dv">1</span>        <span class="dv">0</span> Arta… male  <span class="dv">71</span>          <span class="dv">0</span>     <span class="dv">0</span> PC 17…  <span class="fl">49.50</span> <span class="op">&lt;</span><span class="ot">NA</span><span class="op">&gt;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># ... with 1,299 more rows, and 4 more variables: embarked &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#   boat &lt;chr&gt;, body &lt;int&gt;, home.dest &lt;chr&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1,309 x 14</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;    pclass survived name  sex       age sibsp parch ticket   fare cabin</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;  1      1        1 Alle… fema… 29          0     0 24160  211.3  B5   </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  2      1        1 Alli… male   0.9167     1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  3      1        0 Alli… fema…  2          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  4      1        0 Alli… male  30          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  5      1        0 Alli… fema… 25          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  6      1        1 Ande… male  48          0     0 19952   26.55 E12  </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  7      1        1 Andr… fema… 63          1     0 13502   77.96 D7   </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  8      1        0 Andr… male  39          0     0 112050   0    A36  </span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  9      1        1 Appl… fema… 53          2     0 11769   51.48 C101 </span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 10      1        0 Arta… male  71          0     0 PC 17…  49.50 &lt;NA&gt; </span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; # ... with 1,299 more rows, and 4 more variables: embarked &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; #   boat &lt;chr&gt;, body &lt;int&gt;, home.dest &lt;chr&gt;</span></a></code></pre></div>
 <p>If we simply wanted the dimensions of the data we could do:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">dim</span>(titanic)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">[<span class="dv">1</span>] <span class="dv">1309</span>   <span class="dv">14</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 1309   14</span></a></code></pre></div>
 <p>whereas, if we wanted to get a list of the column names in the data we could do:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">names</span>(titanic)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"> [<span class="dv">1</span>] <span class="st">&quot;pclass&quot;</span>    <span class="st">&quot;survived&quot;</span>  <span class="st">&quot;name&quot;</span>      <span class="st">&quot;sex&quot;</span>       <span class="st">&quot;age&quot;</span>      </a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"> [<span class="dv">6</span>] <span class="st">&quot;sibsp&quot;</span>     <span class="st">&quot;parch&quot;</span>     <span class="st">&quot;ticket&quot;</span>    <span class="st">&quot;fare&quot;</span>      <span class="st">&quot;cabin&quot;</span>    </a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">[<span class="dv">11</span>] <span class="st">&quot;embarked&quot;</span>  <span class="st">&quot;boat&quot;</span>      <span class="st">&quot;body&quot;</span>      <span class="st">&quot;home.dest&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;pclass&quot;    &quot;survived&quot;  &quot;name&quot;      &quot;sex&quot;       &quot;age&quot;      </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;  [6] &quot;sibsp&quot;     &quot;parch&quot;     &quot;ticket&quot;    &quot;fare&quot;      &quot;cabin&quot;    </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [11] &quot;embarked&quot;  &quot;boat&quot;      &quot;body&quot;      &quot;home.dest&quot;</span></a></code></pre></div>
 <div id="simple-data-wrangling" class="section level3">
 <h3><span class="header-section-number">2.5.1</span> Simple data wrangling</h3>
 <p>Two variables of interest to us are <code>pclass</code> (“passenger class”) and <code>survived</code>. These are categorical variables encoded as numbers. Before exploring the data we’re going to create derived “factor” variables from these, which will make our analyses more convenient. I’m also going to recode the “survived” information as the classes “died” and “lived”.</p>
@@ -258,15 +258,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb6-5" data-line-number="5">                                        <span class="st">&quot;died&quot;</span> =<span class="st"> &quot;0&quot;</span>, <span class="st">&quot;lived&quot;</span> =<span class="st"> &quot;1&quot;</span>))</a></code></pre></div>
 <p>Having added to new variables to our data set, the dimensions and column names have changed:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">dim</span>(titanic)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">[<span class="dv">1</span>] <span class="dv">1309</span>   <span class="dv">16</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 1309   16</span></a></code></pre></div>
 <p>and</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">names</span>(titanic)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"> [<span class="dv">1</span>] <span class="st">&quot;pclass&quot;</span>          <span class="st">&quot;survived&quot;</span>        <span class="st">&quot;name&quot;</span>           </a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"> [<span class="dv">4</span>] <span class="st">&quot;sex&quot;</span>             <span class="st">&quot;age&quot;</span>             <span class="st">&quot;sibsp&quot;</span>          </a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"> [<span class="dv">7</span>] <span class="st">&quot;parch&quot;</span>           <span class="st">&quot;ticket&quot;</span>          <span class="st">&quot;fare&quot;</span>           </a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">[<span class="dv">10</span>] <span class="st">&quot;cabin&quot;</span>           <span class="st">&quot;embarked&quot;</span>        <span class="st">&quot;boat&quot;</span>           </a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">[<span class="dv">13</span>] <span class="st">&quot;body&quot;</span>            <span class="st">&quot;home.dest&quot;</span>       <span class="st">&quot;passenger.class&quot;</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">[<span class="dv">16</span>] <span class="st">&quot;survival&quot;</span>       </a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;pclass&quot;          &quot;survived&quot;        &quot;name&quot;           </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  [4] &quot;sex&quot;             &quot;age&quot;             &quot;sibsp&quot;          </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;  [7] &quot;parch&quot;           &quot;ticket&quot;          &quot;fare&quot;           </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [10] &quot;cabin&quot;           &quot;embarked&quot;        &quot;boat&quot;           </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; [13] &quot;body&quot;            &quot;home.dest&quot;       &quot;passenger.class&quot;</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; [16] &quot;survival&quot;</span></a></code></pre></div>
 <p>Note that there are now 16 columns in our data, the original 14 plus our two new derived variables <code>passenger.class</code> and <code>survival</code>.</p>
 </div>
 </div>
@@ -275,11 +275,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>Let’s start by exploring various aspects of the 1309 passengers in our data set.</p>
 <p>First, let’s look at the gender breakdown:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">count</span>(titanic, sex)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  sex        n</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>int<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="dv">1</span> female   <span class="dv">466</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="dv">2</span> male     <span class="dv">843</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   sex        n</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 1 female   466</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 2 male     843</span></a></code></pre></div>
 <p>We could also represent this data as a bar graph (though a simple table is more efficient in this case):</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sex, <span class="dt">fill =</span> sex))</a></code></pre></div>
@@ -289,11 +289,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">2.6.1</span> How many people survived?</h3>
 <p>Now let’s look at survival information:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">count</span>(titanic, survival)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  survival     n</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="op">&lt;</span>fct<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="dv">1</span> died       <span class="dv">809</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="dv">2</span> lived      <span class="dv">500</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;   survival     n</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; 1 died       809</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; 2 lived      500</span></a></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> survival))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-13-1.png" width="576" /></p>
@@ -303,23 +303,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">2.6.2</span> Women first?</h3>
 <p>We can take our simple explorations a step further, by considering the counts of passengers with respect to multiple variables. Let’s look at the relationship between gender and survival:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">count</span>(titanic, sex, survival) </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">  sex    survival     n</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="dv">1</span> female died       <span class="dv">127</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="dv">2</span> female lived      <span class="dv">339</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="dv">3</span> male   died       <span class="dv">682</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="dv">4</span> male   lived      <span class="dv">161</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;   sex    survival     n</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 1 female died       127</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2 female lived      339</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 3 male   died       682</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 4 male   lived      161</span></a></code></pre></div>
 <div id="contingency-tables" class="section level4">
 <h4><span class="header-section-number">2.6.2.1</span> Contingency tables</h4>
 <p>When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a “contingency table”. The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc). Here’s the same data on sex and survival represented as a contingency table:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">count</span>(titanic, sex, survival) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">spread</span>(survival, n)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co"># A tibble: 2 x 3</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">  sex     died lived</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>int<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="dv">1</span> female   <span class="dv">127</span>   <span class="dv">339</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="dv">2</span> male     <span class="dv">682</span>   <span class="dv">161</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 3</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   sex     died lived</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 1 female   127   339</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 2 male     682   161</span></a></code></pre></div>
 <p>In the code above the symbol <code>%&gt;%</code> can be read as “pipe” or “send”. The pipe operator inserts the object before the pipe as the first argument to the function after the pipe. Here we’re piping the output of the <code>count</code> function as the input into the <code>spread</code> function. We’ll see in later lectures that piping objects makes for very powerful workflows when we do more sophisticated analyses.</p>
 <p>We can also create a bar plot to represent the contingency table:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
@@ -355,17 +355,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-19-1.png" width="576" /></p>
 <p>The histogram provides a quick visual representation of the frequency of different age groups. It appears that the the most common (modal) value of age is a little over 20 years old. We can explicitly calculate the mean and median age as follows:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">mean</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">[<span class="dv">1</span>] <span class="fl">29.88113</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">#&gt; [1] 29.88113</span></a>
 <a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">median</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">[<span class="dv">1</span>] <span class="dv">28</span></a></code></pre></div>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; [1] 28</span></a></code></pre></div>
 <p>Note that we have to explicitly tell the mean and median functions to drop any missing (NA) values. Alternately, we could have use pipes to calculate the mean and median as so:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="kw">mean</span>(age), <span class="kw">median</span>(age))</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5">  <span class="st">`</span><span class="dt">mean(age)</span><span class="st">`</span> <span class="st">`</span><span class="dt">median(age)</span><span class="st">`</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6">        <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="dv">1</span>       <span class="fl">29.88</span>            <span class="dv">28</span></a></code></pre></div>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt;   `mean(age)` `median(age)`</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt; 1       29.88            28</span></a></code></pre></div>
 </div>
 <div id="how-does-age-relate-to-survival" class="section level2">
 <h2><span class="header-section-number">2.8</span> How does age relate to survival?</h2>
@@ -423,12 +423,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>A passenger’s ticket class (a proxy for socioeconomic status) is another interesting variable to consider in conjunction with sex and survival.</p>
 <p>First, let’s consider class on its own.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">count</span>(titanic, passenger.class)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co"># A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">  passenger.class     n</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">  <span class="op">&lt;</span>fct<span class="op">&gt;</span><span class="st">           </span><span class="er">&lt;</span>int<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="dv">1</span> 1st               <span class="dv">323</span></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="dv">2</span> 2nd               <span class="dv">277</span></a>
-<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="dv">3</span> 3rd               <span class="dv">709</span></a></code></pre></div>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co">#&gt;   passenger.class     n</span></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;           &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#&gt; 1 1st               323</span></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co">#&gt; 2 2nd               277</span></a>
+<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="co">#&gt; 3 3rd               709</span></a></code></pre></div>
 <p>And as a bar graph:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> passenger.class))</a></code></pre></div>
