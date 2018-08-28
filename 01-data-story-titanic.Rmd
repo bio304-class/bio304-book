@@ -93,37 +93,20 @@ Note that there are now 16 columns in our data, the original 14 plus  our two ne
 
 Let's start by exploring various aspects of the 1309 passengers in our data set.
 
-First, let's break them down by class:
-
-```{r}
-count(titanic, passenger.class)
-```
-
-
-We could also represent this data as a bar graph (though a simple table is more efficient in this case):
-
-```{r}
-ggplot(titanic) + 
-  geom_bar(aes(x = passenger.class))
-```
-
-Both our table and bar graph tell us that the largest number of passengers (in the available data) were travelling on third-class tickets.  The numbers of first- and second-class ticketed passengers are fairly similar.
-
-
-### How many male and female passengers?
-
-Let's look at the gender breakdown:
+First, let's look at the gender breakdown:
 
 ```{r}
 count(titanic, sex)
 ```
+
+We could also represent this data as a bar graph (though a simple table is more efficient in this case):
 
 ```{r}
 ggplot(titanic) + 
   geom_bar(aes(x = sex, fill = sex))
 ```
 
-There are almost twice as many men in our data set as women.
+Both our table and bar graph tell us that there are almost twice as many men in our data set as women.
 
 ### How many people survived?
 
@@ -138,11 +121,12 @@ ggplot(titanic) +
   geom_bar(aes(x = survival))
 ```
 
+We see that more that in the data we have at hand, roughly 60% (809 of 1309) of the passengers died.
 
 
 ### Women first?
 
-We can take our simple explorations a step further, by considering the joint counts of passengers with respect to multiple variables.  For example, let's look at the relationship between gender and survival:
+We can take our simple explorations a step further, by considering the counts of passengers with respect to multiple variables.  Let's look at the relationship between gender and survival:
 
 ```{r}
 count(titanic, sex, survival) 
@@ -150,7 +134,7 @@ count(titanic, sex, survival)
 
 #### Contingency tables
 
-When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a "contingency table".  The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc).  Here's the same data on sex and survival reprsented as a contingency table:
+When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a "contingency table".  The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc).  Here's the same data on sex and survival represented as a contingency table:
 
 ```{r}
 count(titanic, sex, survival) %>%
@@ -165,6 +149,9 @@ We can also create a bar plot to represent the contingency table:
 ggplot(titanic) +
   geom_bar(aes(sex, fill = survival))
 ```
+
+Here we're already starting to see an interesting pattern -- there were nearly twice as many men on the Titanic as women, but proportionally and in absolute numbers more women survived.
+
 
 ### A bar plot using proportions rather than counts
 
@@ -190,22 +177,10 @@ ggplot(titanic) +
 As you can see, the mosaic plot emphasizes both that there were more men than women on the Titanic, as well as the fact that a greater fraction of women survived. This seems like strong evidence for the first part of the phrase "Women and children first".
 
 
-## How does class affect survival?
-
-A passenger's ticket class (a proxy for socioeconomic status) is another interesting variable to consider in conjunction with sex and survival.  Here is a bar plot that takes into account all three of these variables, by representing passenger class as a "facet" variable -- we create different subplots for each class grouping.
-
-```{r}
-ggplot(titanic) +
-  geom_bar(aes(sex, fill = survival), position = "fill") + 
-  facet_wrap(~ passenger.class) + 
-  labs(y = "Portion Died/Lived", title = "Titanic Survival by Sex and Class")
-```
-
-
 
 ## Passenger ages
 
-Let's create a plot to better understand the distribution of ages of passengers on the Titanic. A histogram is a common way to visualize the distribution of a continuous variable. Creating a histogram is a simple modification of our earlier examples where we created bar plots.
+Now let's create a visualiztion to get a handle on the ages of passengers on the Titanic. A histogram is a common way to visualize the distribution of a continuous variable. Creating a histogram is a simple modification of our earlier examples where we created bar plots.
 
 ```{r}
 ggplot(titanic) +
@@ -282,7 +257,7 @@ Here we start to see a more interesting pattern.  When comparing male passengers
 We can get more sophisticated by fitting a formal model to our data. Here we use a technique called logistic regression to model the probability of survival as a function of age, broken down for female and male passengers separately.
 
 
-```{r}
+```{r, fig.width=7, fig.height = 4}
 titanic %>%
   filter(!is.na(age)) %>%
   ggplot(aes(x = age, y = survived, color = sex)) + 
@@ -295,12 +270,44 @@ titanic %>%
 The logistic regression model fit here, seems to support the trend we saw in the box plots.  When breaking the data down by sex we find that there is a decreasing probability of survival as age increases for male passengers, but the opposite trend for female passengers.  This is pretty interesting -- "children first" seemed to hold for men but not for women.  
 
 
-### Extending the logistic regression model to consider class, age, and sex
+## How does class affect survival?
 
-Now let's add ticketing class into the mix again.  Here we treat both sex and passenger class as faceting variables, fitting six different logistic regression models (all combinations of the three classes and two sexes). 
+A passenger's ticket class (a proxy for socioeconomic status) is another interesting variable to consider in conjunction with sex and survival.  
 
+First, let's consider class on its own.
 
 ```{r}
+count(titanic, passenger.class)
+```
+
+And as a bar graph:
+
+```{r}
+ggplot(titanic) + 
+  geom_bar(aes(x = passenger.class))
+```
+
+Both our table and bar graph tell us that the largest number of passengers (in the available data) were travelling on third-class tickets.  The numbers of first- and second-class ticketed passengers are fairly similar.
+
+### Combining Sex and Class
+
+Here is a bar plot that takes into account sex, class, and survival by representing passenger class as a "facet" variable -- we create different subplots for each class grouping.
+
+```{r}
+ggplot(titanic) +
+  geom_bar(aes(sex, fill = survival), position = "fill") + 
+  facet_wrap(~ passenger.class) + 
+  labs(y = "Portion Died/Lived", title = "Titanic Survival by Sex and Class")
+```
+
+
+
+### Extending the logistic regression model to consider class, age, sex, and survival
+
+As a final example, let generate a visualization and model to jointly consider how sex, age, and class affected survival on the Titanic.  Here we treat both sex and passenger class as faceting variables, fitting six different logistic regression models (all combinations of the three classes and two sexes). 
+
+
+```{r, fig.width=9, fig.height = 6}
 titanic %>%
   filter(!is.na(age)) %>%
   ggplot(aes(x = age, y = survived, color = sex)) + 
