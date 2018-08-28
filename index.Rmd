@@ -1,0 +1,39 @@
+--- 
+title: "Biology 304: Biological Data Analysis"
+author: "Paul M. Magwene"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    highlight: tango
+documentclass: book
+bibliography: [bio304-refs.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Hands-on materials for Bio 304 course at Duke University."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, prompt = FALSE, eval = TRUE, 
+                      warning = FALSE, comment=NA, cache = FALSE,
+                      fig.width = 6, fig.height = 4, #results = "hide",
+                      collapse=TRUE, results='markup')
+
+options(pillar.sigfig = 4)
+```
+
+# Introduction 
+
+```{r fig.align='center', echo=FALSE, include=identical(knitr:::pandoc_to(), 'html'), results="markup"}
+knitr::include_graphics('./figures/fig-title-page.png', dpi = NA)
+```
+
+
+
+## How to use these lecture notes
+
+In this and future materials to be posted on the course website you'll encounter blocks of R code.  *Your natural intuition will be to cut and paste commands or code blocks into the R interpretter to save yourself the typing.*  **DO NOT DO THIS!!** 
+
+In each of the examples below, I provide example input, but I don't show you the output. It's your job to type in these examples at the R console, evaluate what you typed, and to look at and think critically about the output. **You will make mistakes and generate errors!** Part of learning any new skill is making mistakes, figuring out where you went wrong, and correcting those mistakes.  In the process of fixing those errors, you'll learn more about how R works, and how to avoid such errors, or correct bugs in your own code in the future. If you cut and paste the examples into the R interpretter the code will run, but you will learn less than if you input the code yourself and you'll be less capable of apply the concepts in new situations.   
+
+The R interpretter, like all programming languages, is very exacting.  A mispelled variable or function name, a stray period, or an unbalanced parenthesis will raise an error and finding the sources of such errors can sometimes be tedious and frustrating.  Persist!  If you read your code critically, think about what your doing, and seek help when needed (teaching team, R help, Google, etc) you'll eventually get better at debugging your code.  But keep in mind that like most new skills, learning to write and debug your code efficiently takes time and experience.
