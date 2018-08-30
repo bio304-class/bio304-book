@@ -3,13 +3,13 @@
 
 ## What is R?
 
-R is a statistical computing environment and programming language.  It is free, open source, and has a large and active community of developers and users.  There are many different R packages (libraries) available for conducting out a wide variety of different analyses, for everything from genome sequence data to geospatial information.
+R is a statistical computing environment and programming language.  It is free, open source, and has a large and active community of developers and users.  There are many different R packages (libraries) available for conducting a wide variety of different analyses, for everything from genome sequence data to geospatial information.
 
 ## What is RStudio?
 
 RStudio (http://www.rstudio.com/) is an open source integrated development environment (IDE) that provides a nicer graphical interface to R than does the default R GUI.
 
-The figure below illustrates the RStudio interface, in it's default configuration.  For the exercises below you'll be primarily entering commands in the "console" window. We'll review key parts of the RStudio interface in greater detail in class.
+The figure below illustrates the RStudio interface, in its default configuration.  For the exercises in this chapter you'll be primarily entering commands in the "console" window. We'll review key parts of the RStudio interface in greater detail in class.
 
 ```{r, echo = FALSE, out.width = "600px", fig.align = "center", fig.cap = "RStudio window with the panes labeled", results="markup"}
 knitr::include_graphics("./figures/fig-rstudio-panes-labeled.png")
@@ -47,7 +47,7 @@ When working in the R console, or writing R code, the pound symbol (`#`) indicat
 2 # * 3  + 4 * 5
 ```
 
-Throughout this course I will often include short explanatory comments in my code examples.
+Throughout this course I will often include short explanatory comments in the code examples.
 
 ## Using R as a Calculator
 
@@ -116,9 +116,9 @@ typeof(4 * 5)
 
 ## Variable assignment in R
 
-An important programming concept in all programming languages is that of "variable assignment".  Variable assignment is the act of creating labels that point to particular data values in a computers memory, which allows us to apply operations to the labels rather than directly to specific values.  Variable assignment is an important mechanism of abstracting and generalizing computational operations.
+An important concept in all programming languages is that of "variable assignment".  Variable assignment is the act of creating labels that point to particular data values in a computers memory, which allows us to apply operations to the labels rather than directly to specific values.  Variable assignment is an important mechanism of abstracting and generalizing computational operations.
 
-Variable assignment in R is accomplished with the assignment operator, which is designated as `<-` (left arrow, constructed from a left angular brack and the minus sign). This is illustrated below:
+Variable assignment in R is accomplished with the assignment operator, which is designated as `<-` (left arrow, constructed from a left angular bracket and the minus sign). This is illustrated below:
 
 ```{r, echo=TRUE, eval=FALSE}
 x <- 10  # assign the variable name 'x' the value 10
@@ -148,7 +148,7 @@ _x <- 10
 
 ## Logical values
 
-When we compare values our calculations no longer return "doubles" but rather `TRUE` and `FALSE` values. This is illustrated below:
+When we compare values to teach other, our calculations no longer return "doubles" but rather `TRUE` and `FALSE` values. This is illustrated below:
 
 ```{r, echo=TRUE, eval=FALSE}
 10 < 9  # is 10 less than 9?
@@ -174,9 +174,9 @@ When working with numerical data, tests of equality can be tricky.  For example,
 ```
 
 Mathematically we know that both $(\sqrt{10})^2 = 10$ and $(\sqrt{4})^2 = 4$ are true statements. Why does R tell us the first statement is false? What we're running into here are the limits of computer precision. A computer can't represent $\sqrt 10$ exactly, whereas $\sqrt 4$ can be exactly represented.
-Precision in numerical computing is a complex subject and a detailed discussion is beyond the scope of this course.  However, it's important to be aware of this limitation (this is true of any programming language, not just R).  
+Precision in numerical computing is a complex subject and a detailed discussion is beyond the scope of this course.  However, it's important to be aware of this limitation (this limitation is true of any programming language, not just R).  
 
-To test "near equality" R provides a function called `all.equal()`.  This function takes two arguments -- the numerical values to be compared -- and asks if their values are euqal up to a certain level of tolerance (defined by the built-in numerical precision of your computer).
+To test "near equality" R provides a function called `all.equal()`.  This function takes two inputs -- the numerical values to be compared -- and returns True if their values are equal up to a certain level of tolerance (defined by the built-in numerical precision of your computer).
 
 ```{r, echo=TRUE, eval=FALSE}
 all.equal(10, sqrt(10)^2)
