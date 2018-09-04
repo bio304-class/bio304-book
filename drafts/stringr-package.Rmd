@@ -1,0 +1,27 @@
+### The `stringr` package
+
+The [`stringr`](http://stringr.tidyverse.org) package provides a variety of useful functions for working with character strings. Install the `stringr` package using one of the package installation mechanisms we discussed in the previous chapter. Once `stringr` is installed you can load it as follows:
+
+```{r}
+library(stringr) 
+```
+
+ All of the functions in the `stringr` package are prefixed with `str_`.  Here are some examples:
+
+```{r}
+darwin.quote <- "There is grandeur in this view of life, with its several powers, having been originally breathed into a few forms or into one..."
+
+str_length(darwin.quote)  # equivalent to nchar
+
+# how many times does the character "s" appear in the string?
+str_count(darwin.quote, "s")
+
+# duplicate a string
+str_dup("hello", 3)
+
+# other interesting functions
+str_to_title("on the origin of species")
+str_to_upper("loud and bombastic")
+```
+
+

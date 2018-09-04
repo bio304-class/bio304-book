@@ -102,107 +102,7 @@ sqrt(10)  # square root
 10 ^ 0.5  # same as square root
 ```
 
-## Data types
 
-All of our arithmetic examples above produced numerical values. The default numerical data type in R is called a "double".  "double" is short for "double precision floating point value" which refers to the numerical precision that R uses when carrying out calculations.
-
-R has a function called  `typeof()` that we can use to get information about an object's type.  Let's illustrate the use of `typeof()` and confirm that our numerical calculations return objects of the "double" type:
-
-```{r, echo=TRUE, eval=FALSE}
-typeof(10)
-typeof(10.5)
-typeof(4 * 5)
-```
-
-## Variable assignment in R
-
-An important concept in all programming languages is that of "variable assignment".  Variable assignment is the act of creating labels that point to particular data values in a computers memory, which allows us to apply operations to the labels rather than directly to specific values.  Variable assignment is an important mechanism of abstracting and generalizing computational operations.
-
-Variable assignment in R is accomplished with the assignment operator, which is designated as `<-` (left arrow, constructed from a left angular bracket and the minus sign). This is illustrated below:
-
-```{r, echo=TRUE, eval=FALSE}
-x <- 10  # assign the variable name 'x' the value 10
-sin(x)   # apply the sin function to the value x points to
-x <- pi  # x now points to a different value
-sin(x)   # the same function call now produces a different result 
-```
-
-### Valid variable names
-
-As described in the [R documentation](https://stat.ethz.ch/R-manual/R-devel/library/base/html/make.names.html), "A syntactically valid name consists of letters, numbers and the dot or underline characters and starts with a letter or the dot not followed by a number. Names such as '.2way' are not valid, and neither are the [reserved words](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)." 
-
-Here are some examples of valid and invalid variable names. Mentally evaluate these based on the definition above, and then evaluate these in the R interpetter to confirm your understanding :
-
-```
-x <- 10
-x.prime <- 10
-x_prime <- 10
-my.long.variable.name <- 10
-another_long_variable_name <- 10
-_x <- 10
-.x <- 10
-2.x <- 2 * x
-```
-
-
-
-## Logical values
-
-When we compare values to teach other, our calculations no longer return "doubles" but rather `TRUE` and `FALSE` values. This is illustrated below:
-
-```{r, echo=TRUE, eval=FALSE}
-10 < 9  # is 10 less than 9?
-10 > 9  # is 10 greater than 9?
-10 <= (5 * 2) # less than or equal to?
-10 >= pi # greater than or equal to?
-10 == 10 # equals?
-10 != 10 # does not equal?
-```
-
-`TRUE` and `FALSE` objects are of "logical" data type (known as "Booleans" in many other languages, after the mathematician George Boole).   
-
-```{r, echo=TRUE, eval=FALSE}
-typeof(TRUE)
-typeof(FALSE)
-```
-
-When working with numerical data, tests of equality can be tricky.  For example, consider the following two comparisons:
-
-```{r, echo=TRUE, eval=FALSE}
-10 == (sqrt(10)^2) # Surprised by the result? See below.
-4 == (sqrt(4)^2) # Even more confused?
-```
-
-Mathematically we know that both $(\sqrt{10})^2 = 10$ and $(\sqrt{4})^2 = 4$ are true statements. Why does R tell us the first statement is false? What we're running into here are the limits of computer precision. A computer can't represent $\sqrt 10$ exactly, whereas $\sqrt 4$ can be exactly represented.
-Precision in numerical computing is a complex subject and a detailed discussion is beyond the scope of this course.  However, it's important to be aware of this limitation (this limitation is true of any programming language, not just R).  
-
-To test "near equality" R provides a function called `all.equal()`.  This function takes two inputs -- the numerical values to be compared -- and returns True if their values are equal up to a certain level of tolerance (defined by the built-in numerical precision of your computer).
-
-```{r, echo=TRUE, eval=FALSE}
-all.equal(10, sqrt(10)^2)
-```
-
-### Logical operators
-
-Logical values support Boolean operations, like logical negation ("not"), "and", "or", "xor", etc. This is illustrated below:
-
-```{r, echo=TRUE, eval=FALSE}
-x <- TRUE
-y <- FALSE
-!x  # logical negation -- reads as "not x"
-x & y # AND: are x and y both TRUE?
-x | y # OR: are either x or y TRUE?
-xor(x,y)  # XOR: is either x or y TRUE, but not both?
-```
-
-The function `isTRUE` is sometimes useful:
-
-```{r, echo=TRUE, eval=FALSE}
-x <- 5
-y <- 10
-z <- x > y
-isTRUE(z)
-```
 
 
 
@@ -249,6 +149,169 @@ apropos("log")
 example(log)
 ```
 
+
+
+
+## Variable assignment in R
+
+An important concept in all programming languages is that of "variable assignment".  Variable assignment is the act of creating labels that point to particular data values in a computers memory, which allows us to apply operations to the labels rather than directly to specific values.  Variable assignment is an important mechanism of abstracting and generalizing computational operations.
+
+Variable assignment in R is accomplished with the assignment operator, which is designated as `<-` (left arrow, constructed from a left angular bracket and the minus sign). This is illustrated below:
+
+```{r, echo=TRUE, eval=FALSE}
+x <- 10  # assign the variable name 'x' the value 10
+sin(x)   # apply the sin function to the value x points to
+x <- pi  # x now points to a different value
+sin(x)   # the same function call now produces a different result 
+```
+
+### Valid variable names
+
+As described in the [R documentation](https://stat.ethz.ch/R-manual/R-devel/library/base/html/make.names.html), "A syntactically valid name consists of letters, numbers and the dot or underline characters and starts with a letter or the dot not followed by a number. Names such as '.2way' are not valid, and neither are the [reserved words](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html)." 
+
+Here are some examples of valid and invalid variable names. Mentally evaluate these based on the definition above, and then evaluate these in the R interpetter to confirm your understanding :
+
+```
+x <- 10
+x.prime <- 10
+x_prime <- 10
+my.long.variable.name <- 10
+another_long_variable_name <- 10
+_x <- 10
+.x <- 10
+2.x <- 2 * x
+```
+
+
+## Data types
+
+All of our arithmetic examples above produced numerical values. The default numerical data type in R is called a "double".  "double" is short for "double precision floating point value" which refers to the numerical precision that R uses when carrying out calculations.
+
+R has a function called  `typeof()` that we can use to get information about an object's type.  Let's illustrate the use of `typeof()` and confirm that our numerical calculations return objects of the "double" type:
+
+```{r, echo=TRUE, eval=FALSE}
+typeof(10)
+x <- 10.5
+typeof(x)
+```
+
+## Logical values
+
+When we compare values to each other, our calculations no longer return "doubles" but rather `TRUE` and `FALSE` values. This is illustrated below:
+
+```{r, echo=TRUE, eval=FALSE}
+10 < 9  # is 10 less than 9?
+10 > 9  # is 10 greater than 9?
+10 <= (5 * 2) # less than or equal to?
+10 >= pi # greater than or equal to?
+10 == 10 # equals?
+10 != 10 # does not equal?
+```
+
+`TRUE` and `FALSE` objects are of "logical" data type (known as "Booleans" in many other languages, after the mathematician George Boole).   
+
+```{r, echo=TRUE, eval=FALSE}
+typeof(TRUE)
+typeof(FALSE)
+x <- FALSE
+typeof(x)
+```
+
+When working with numerical data, tests of equality can be tricky.  For example, consider the following two comparisons:
+
+```{r, echo=TRUE, eval=FALSE}
+10 == (sqrt(10)^2) # Surprised by the result? See below.
+4 == (sqrt(4)^2) # Even more confused?
+```
+
+Mathematically we know that both $(\sqrt{10})^2 = 10$ and $(\sqrt{4})^2 = 4$ are true statements. Why does R tell us the first statement is false? What we're running into here are the limits of computer precision. A computer can't represent $\sqrt 10$ exactly, whereas $\sqrt 4$ can be exactly represented.
+Precision in numerical computing is a complex subject and a detailed discussion is beyond the scope of this course.  However, it's important to be aware of this limitation (this limitation is true of any programming language, not just R).  
+
+To test "near equality" R provides a function called `all.equal()`.  This function takes two inputs -- the numerical values to be compared -- and returns True if their values are equal up to a certain level of tolerance (defined by the built-in numerical precision of your computer).
+
+```{r, echo=TRUE, eval=FALSE}
+all.equal(10, sqrt(10)^2)
+```
+
+### Logical operators
+
+Logical values support Boolean operations, like logical negation ("not"), "and", "or", "xor", etc. This is illustrated below:
+
+```{r, echo=TRUE, eval=FALSE}
+x <- TRUE
+y <- FALSE
+!x  # logical negation -- reads as "not x"
+x & y # AND: are x and y both TRUE?
+x | y # OR: are either x or y TRUE?
+xor(x,y)  # XOR: is either x or y TRUE, but not both?
+```
+
+The function `isTRUE` is sometimes useful:
+
+```{r, echo=TRUE, eval=FALSE}
+x <- 5
+y <- 10
+z <- x > y
+isTRUE(z)
+```
+
+
+## Character strings
+
+Character strings ("character") represent single textual characters or a longer sequence of characters.  They are created by enclosing the characters in text either single our double quotes.
+
+```{r}
+typeof("abc")  # double quotes 
+typeof('abc')  # single quotes
+```
+
+Character strings have a length, which can be found using the `nchar` function:
+
+```{r}
+first.name <- "jasmine"
+nchar(first.name)
+
+last.name <- 'smith'
+nchar(last.name)
+```
+
+There are a number of built-in functions for manipulating character strings. Here are some of the most common ones.
+
+### Joining strings
+
+The `paste()` function joins two characters strings together:
+```{r}
+paste(first.name, last.name)  # join two strings
+paste("abc", "def")
+```
+
+Notice that `paste()` adds a space between the strings?  If we didn't want the space we can call the `paste()` function with an optional argument called `sep` (short for separator) which specifies the character(s) that are inserted between the joined strings.
+
+```{r}
+paste("abc", "def", sep = "")  # join with no space; "" is an empty string
+paste("abc", "def", sep = "|") # join with a vertical bar
+```
+
+### Splitting strings
+
+The `strsplit()` function allows us to split a character string into substrains according to matches to a substring.  For example, we could break a sentence into it's constituent words as follows:
+
+```{r}
+sentence <- "Call me Ishmael."
+words <- strsplit(sentence, " ")  # split on space
+words
+```
+
+Notice that `strsplit()` is the reverse of `paste()`.
+
+### Substrings
+
+The `substr()` function allows us to extract a substring from a character object by specifying the first and last positions (indices) to use in the extraction:
+
+```{r}
+substr("abcdef", 2, 5)  # get substring from characters 2 to 5
+substr(first.name, 1, 3) # get substring from characters 1 to       
+```
 
 ## Packages {#packages}
   
