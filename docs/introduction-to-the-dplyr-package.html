@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-09-10">
+<meta name="date" content="2018-09-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -339,10 +339,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">7.2.1</span> Example data: NC Births</h3>
 <p>For today’s hands on session we’ll use a data set that contains information on 150 cases of mothers and their newborns in North Carolina in 2004. This data set is available at the following URL:</p>
 <ul>
-<li><a href="https://github.com/Bio723-class/example-datasets/raw/master/nc-births.txt" class="uri">https://github.com/Bio723-class/example-datasets/raw/master/nc-births.txt</a></li>
+<li><a href="https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nc-births.txt" class="uri">https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nc-births.txt</a></li>
 </ul>
 <p>The births data is a TSV file, so we’ll use the <code>read_tsv()</code> function to read it:</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1">births &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;https://github.com/Bio723-class/example-datasets/raw/master/nc-births.txt&quot;</span>)</a>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1">births &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nc-births.txt&quot;</span>)</a>
 <a class="sourceLine" id="cb199-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
 <a class="sourceLine" id="cb199-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
 <a class="sourceLine" id="cb199-4" data-line-number="4"><span class="co">#&gt;   fAge = col_integer(),</span></a>
@@ -844,7 +844,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cakes&quot;</span>, <span class="st">&quot;sauce&quot;</span>, <span class="st">&quot;house&quot;</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># create a vector</span></a>
 <a class="sourceLine" id="cb244-2" data-line-number="2"><span class="st">  </span><span class="kw">sample</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># pick a random single element of that vector</span></a>
 <a class="sourceLine" id="cb244-3" data-line-number="3"><span class="st">  </span><span class="kw">str_c</span>(<span class="st">&quot;hot&quot;</span>, .)  <span class="co"># string concatenate the pick with the word &quot;hot&quot;</span></a>
-<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotdog&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotsauce&quot;</span></a></code></pre></div>
 </div>
 <div id="the-exposition-pipe-operator" class="section level3">
 <h3><span class="header-section-number">7.6.8</span> The exposition pipe operator</h3>

@@ -25,12 +25,12 @@ The two most frequently used `readr` functions we'll use in this class are `read
 
 For today's hands on session we'll use a  data set that contains information on 150 cases of mothers and their newborns in North Carolina in 2004. This data set is available at the following URL:
 
- * https://github.com/Bio723-class/example-datasets/raw/master/nc-births.txt
+ * https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nc-births.txt
 
 The births data is a TSV file, so we'll use the `read_tsv()` function to read it:
 
 ```{r}
-births <- read_tsv("https://github.com/Bio723-class/example-datasets/raw/master/nc-births.txt")
+births <- read_tsv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nc-births.txt")
 ```
 
 Notice that when you used `read_tsv()` the function printed information about how it "parsed" the data (i.e. the types it assigned to each of the columns).
