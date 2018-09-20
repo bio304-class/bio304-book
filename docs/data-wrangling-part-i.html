@@ -469,7 +469,17 @@ spellman.clean <span class="op">%&lt;&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(gene.info)
 <span class="co">#&gt; [1] &quot;ftr.name&quot;    &quot;std.name&quot;    &quot;description&quot;</span>
 <span class="kw">dim</span>(gene.info)
-<span class="co">#&gt; [1] 6610    3</span></code></pre></div>
+<span class="co">#&gt; [1] 6610    3</span>
+<span class="kw">head</span>(gene.info)
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;   ftr.name  std.name description                                          </span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;                                                </span>
+<span class="co">#&gt; 1 YAL069W   &lt;NA&gt;     Dubious open reading frame; unlikely to encode a fun…</span>
+<span class="co">#&gt; 2 YAL068W-A &lt;NA&gt;     Dubious open reading frame; unlikely to encode a fun…</span>
+<span class="co">#&gt; 3 YAL068C   PAU8     Protein of unknown function; member of the seripaupe…</span>
+<span class="co">#&gt; 4 YAL067W-A &lt;NA&gt;     Putative protein of unknown function; identified by …</span>
+<span class="co">#&gt; 5 YAL067C   SEO1     Putative permease; member of the allantoate transpor…</span>
+<span class="co">#&gt; 6 YAL066W   &lt;NA&gt;     Dubious open reading frame; unlikely to encode a fun…</span></code></pre></div>
 <p>In <code>gene.info</code>, the <code>ftr.name</code> column corresponds to the <code>gene</code> column in our Spellman data set. The <code>std.name</code> column gives the “common” gene name (not every gene has a common name so there are lots of NAs). The <code>description</code> column gives a brief textual description of what the gene product does.</p>
 <p>To combine <code>spellmean.clean</code> with <code>gene.info</code> we use the <code>left_join</code> function defined in dplyr. As noted in the description of the function, <code>left_join(x, y)</code> returns “all rows from x, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns.” In addition, we have to specify the column to join by using the <code>by</code> argument to <code>left_join</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spellman.merged &lt;-
