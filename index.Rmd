@@ -24,9 +24,6 @@ options(pillar.sigfig = 4)
 
 # Introduction 
 
-```{r fig.align='center', echo=FALSE, include=identical(knitr:::pandoc_to(), 'html'), results="markup"}
-knitr::include_graphics('./figures/fig-title-page.png', dpi = NA)
-```
 
 
 
