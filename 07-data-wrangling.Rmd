@@ -1,5 +1,5 @@
 
-# Data wrangling
+# Data wrangling, Part I
 
 In the real world you'll often create a data set (or be given one) in a format that is less than ideal for analysis.  This can happen for a number of reasons. For example, the data may have been recorded in a manner convenient for collection and visual inspection, but which does not work well for analysis and plotting.  Or the data may be an amalgamation of multiple experiments, in which each of the experimenters used slightly different naming conventions. Or the data may have been produced by an instrument that produces output with a fixed format.  Sometimes important experimental information is included in the column headers of a spreadsheet.
 
@@ -24,13 +24,13 @@ library(cowplot)
 
 ## Data
 
-To illustrate a standard data wrangling pipeline, we're going to use a gene expression microarray data set, based on the following paper:
+To illustrate a data wrangling pipeline, we're going to use a gene expression microarray data set, based on the following paper:
 
 * Spellman PT, et al. 1998. Comprehensive identification of cell cycle-regulated genes of the yeast Saccharomyces cerevisiae by microarray hybridization. Mol Biol Cell 9(12): 3273-97.
 
 In this paper, Spellman and colleagues tried to identify all the genes in the yeast genome (>6000 genes) that exhibited oscillatory behaviors suggestive of cell cycle regulation.  To do so, they combined gene expression measurements from six different types of cell cycle synchronization experiments.
 
-*Download the Spellman data to your filesystem* from [this link](https://github.com/Bio723-class/example-datasets/blob/master/spellman-combined.txt) (right-click the "Download" button and save to your Downloads folder or similar).  
+*Download the Spellman data to your filesystem* from [this link](https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/spellman-combined.txt) (right-click the "Download" button and save to your Downloads folder or similar).  
 
 I suggest that once you download the data, you open it in a spreadsheet program (e.g. Excel) or use the RStudio Data Viewer to get a sense of what the data looks like.
 
@@ -48,7 +48,7 @@ dim(spellman)
 ```
 
 
-The six types of cell cycle synchronization experiments are:
+The six types of cell cycle synchronization experiments included in this data set are:
 
 1. synchronization by alpha-factor = "alpha"
 2. synchronization by cdc15 temperature sensitive mutants = "cdc15"
@@ -62,7 +62,7 @@ The six types of cell cycle synchronization experiments are:
 
 Notice that when we imported the data we got a warning message: `Missing column names filled in: 'X1' [1]`.  In a data frame, every column must have a name. The first column of our data set did not have a name in the header, so `read_tsv` automatically gave it the name `X1`.  
 
-Our first task is to give the first column a more meaningful name.  This column gives "systematic gene names" -- a standardized naming scheme for genes in the yeast genome.  We'll use `dplyr::rename` to do rename `X1` to `gene`.  Note that `rename` can take multiple arguments if you need to rename multiple columns simultaneously.
+Our first task is to give the first column a more meaningful name.  This column gives "systematic gene names" -- a standardized naming scheme for genes in the yeast genome.  We'll use `dplyr::rename` to rename `X1` to `gene`.  Note that `rename` can take multiple arguments if you need to rename multiple columns simultaneously.
 
 ```{r}
 spellman.clean <- 
@@ -70,12 +70,14 @@ spellman.clean <-
   rename(gene = X1)
 ```
 
+Note the use of the compound assingment operator -- `%<>%` -- from the `magrittr` package, which we introduced in our last class session.
+
 
 ## Dropping unneeded columns
 
-Take a look at the Spellman data again in your spreadsheet program (or the R Studio data viewer).  You'll notice there are some blank columns.  For example there is a column with the header "alpha" that has no entries.  These are simply visual organizing elements that the creator of the spreadsheet added to separate the different experiments that are included in the data set. 
+Take a look at the Spellman data again in your spreadsheet program (or the RStudio data viewer).  You'll notice there are some blank columns.  For example there is a column with the header "alpha" that has no entries.  These are simply visual organizing elements that the creator of the spreadsheet added to separate the different experiments that are included in the data set. 
 
-We can use `dplyr::select` to drop columns by prepending column names with the negative sign:
+We can use `dplyr::select()` to drop columns by prepending column names with the negative sign:
 
 ```{r}
 # drop the alpha column keeping all others
@@ -156,6 +158,41 @@ spellman.clean %<>%
 In this second example, the character "|" is specifing an OR match within the regular expression, so this regular expression matches column names that contain "cln3" OR "clb2".
 
 
+## Merging data frames
+
+Often you'll find yourself in the situation where you want to combine information from multiple data sources.  The usual requirement is that the data sources have one or more shared columns, that allow you to relate the entities or observations (rows) between the data sets. `dplyr` provides a variety of `join` functions to handle different data merging operators.
+
+To illustrating merging or joining data sources, we'll add information about each genes "common name" and a description of the gene functions to our Spellman data set.  I've prepared a file with this info based on info I downloaded from the [Saccharomyces Genome Database](https://www.yeastgenome.org).
+
+
+```{r}
+gene.info <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/yeast-ORF-info.csv")
+```
+
+Having loaded the data, let's get a quick overview of it's structure:
+
+```{r}
+names(gene.info)
+dim(gene.info)
+```
+
+In `gene.info`, the `ftr.name` column corresponds to the `gene` column in our Spellman data set.  The `std.name` column gives the "common" gene name (not every gene has a common name so there are lots of NAs).  The `description` column gives a brief textual description of what the gene product does.
+
+To combine `spellmean.clean` with `gene.info` we use the `left_join` function defined in dplyr.  As noted in the description of the function, `left_join(x, y)` returns "all rows from x, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns." In addition, we have to specify the column to join by using the `by` argument to `left_join`.  
+
+```{r}
+spellman.merged <-
+  left_join(spellman.clean, gene.info, by = c("gene" = "ftr.name"))
+```
+
+By default, the joined columns are merged at the end of the data frame, so we'll reorder variables to bring the `std.name` and `description` to the second and thirds columns, preserving the order of all the other colums.
+
+```{r}
+spellman.merged %<>%
+  select(gene, std.name, description, everything())
+
+spellman.merged
+```
 
 
 ## Reshaping data with tidyr
@@ -172,13 +209,13 @@ In every column (except "gene"), the cells represents the same abstract property
 
 `tidyr::gather()` takes multiple columns, and collapses them together into a smaller number of new columns.  When using `gather()` you give the names of the *new* columns to create, as well as the names of any existing columns `gather()` should *not* collect together.
 
-Here we want to collapse all 73 or the expression columns -- "alpha0" to "elu390" -- into two columns: 1) a column to represent the expt/time point of the measurement, and 2) a column to represent the corresponding expression value.  The only column we don't want to touch is the `gene` column with our gene names.
+Here we want to collapse all 73 or the expression columns -- "alpha0" to "elu390" -- into two columns: 1) a column to represent the expt/time point of the measurement, and 2) a column to represent the corresponding expression value.  The column we don't want to touch are the `gene`, `std.name`, and `description`.
 
 ```{r}
 # convert "wide" data to "long"
 spellman.long <-
-  spellman.clean %>%
-  gather(expt.and.time, expression, -gene)
+  spellman.merged %>%
+  gather(expt.and.time, expression, -gene, -std.name, -description)
 ```
 
 Take a moment to look at the data in the "long format":
@@ -190,11 +227,11 @@ head(spellman.long)
 And compare the dimensions of the wide data to the new data:
 
 ```{r}
-dim(spellman.clean)  # for comparison
+dim(spellman.merged)  # for comparison
 dim(spellman.long)
 ```
 
-As you see, we've gone from a data frame with `r nrow(spellman.clean)` rows and `r ncol(spellman.clean)` columns (wide format), to a new data frame with `r nrow(spellman.long)` rows and `r ncol(spellman.long)` columns (long format). 
+As you see, we've gone from a data frame with `r nrow(spellman.merged)` rows and `r ncol(spellman.merged)` columns (wide format), to a new data frame with `r nrow(spellman.long)` rows and `r ncol(spellman.long)` columns (long format). 
 
 ### Extracting information from combined variables using `tidyr::extract`
 
@@ -403,66 +440,4 @@ head(top.genes.1k)
 ```
 
 
-
-
-### Collapsing columns using `tidyr::unite` 
-
-`unite` combines the data from multiple columns into one, separating the column data with a consistent separator character (the underscore character "_" by default).  For example, if we wanted to combined the experiment and time columns again (recall that we previously separated with with `extract`) we could do:
-
-```{r}
-spellman.recombined <-
-  spellman.final %>%
-  unite(expt.and.time, expt, time)  # give new column name first
-                                    # then give columns to combine
-
-dim(spellman.recombined)
-head(spellman.recombined, n = 10)
-```
-
-### Splitting columns using `tidyr::separate`
-
-`separate` splits a column into multiple columns.  It's very much like `extract` except that it only takes a single regex for the separator, which by default is any non-alphabetic or non-numeric character. For example, to re-split `expt.and.time` in `spellman.recombined` we could do:
-
-```{r}
-spellman.respread <- 
-  spellman.recombined %>%
-  separate(expt.and.time, c("expt", "time"), convert = TRUE)
-
-dim(spellman.respread)
-head(spellman.respread,n= 10)
-```
-
-Faced with the task of splitting columns, try `tidyr::separate` first and only consider `tidyr::extract` if you need to defines more sophisticated rules for splitting.
-
-### Long-to-wide conversion using `tidyr::spread`
-
-`tidyr::spread` is the inverse of `tidyr::gather`.  `gather()` took multiple columns and collapsed them together into a smaller number of new columns.  The `tidyr` documentation calls this "collapsing into key-value pairs".  By contrast, `spread()` creates new columns by spreading "key-value pairs" (a column representing the "keys" and a column reprsenting the "values") into multiple columns.  
-
-Here let's use spread to use the gene names (the "key") and expression measures (the "values") to create a new data frame where the genes are the primary variables (columns) of the data. 
-
-```{r}
-spellman.gene.focused <-
-  spellman.final %>%
-  spread(gene, expression)
-
-dim(spellman.gene.focused)
-```
-
-
-Both "long" and "wide" tidy versions of the same data are useful, depending on the specific analyses and/or visualiztions you want to accomplish. We'll look at applications of both in the sections that follow.
-
-
-
-### Exploring bivariate relationships using "wide" data
-
-The "long" version of our data frame proved useful for exploring how gene expression changed over time.  By contrast, our "wide" data frame is more convient for exploring how  pairs of genes covary or change in tandem.  For example, we can generate bivariate scatter plots depicting the relationship between two genes in the four different experimental conditions:
-
-```{r}
-spellman.gene.focused %>%
-  filter(!is.na(YAL022C) & !is.na(YAR018C)) %>%  # filter any missing values
-  ggplot(aes(x = YAL022C, y = YAR018C)) + 
-    geom_point() + 
-    theme(aspect.ratio = 1) + 
-    facet_wrap(~expt, nrow = 2, ncol = 2) 
-```
 
