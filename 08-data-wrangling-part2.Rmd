@@ -1,13 +1,9 @@
 
 # Data wrangling, Part II
 
-In our last class session we walked through a fairly complex data wrangling task involving a large, gene expression data set.
+In our last class session we walked through a complex, data wrangling pipeline involving a genome-wide gene expression data set. Starting with the raw data, we demonstrated several cleaning, transformation, and reshaping steps that resulted in a data set that allowed us to examine how gene expression changed over time across multiple experimental conditions. The final form of our data was what we referred to as a "long" format.  The key variables of the final data frame were `gene`, `expt`, `time`, and `expression`.  The structure of this long data frame facilitated the creation of time series plots, filtering by gene and/or condition, grouping operations by gene, etc.
 
-Starting with the raw data, we went through several cleaning, transformation, and reshaping to arrive at a data set that allowed us to examine how gene expression changed over time across multiple experimental conditions.
-
-The final form of our data was what we referred to as a "long" format.  The key variables of the final data frame were `gene`, `expt`, `time`, and `expression`.  The structure of this long data frame facilitated the creation of time series plots, filtering by gene and/or condition, grouping operations by gene, etc.
-
-In today's session we're going to demonstrate a new type of visualization called a "heat map" that is useful for high dimensional data.  Then we'll show how to go from our "long" data frame, to a  "wide" data frame, and show how this wide data frame facilitates analyses focused on how gene expression changes in concert (covary).  We'll also show how we can combine our long and wide views of the data to create new insights into interesting patterns in the data.
+In today's session we're going to demonstrate a new type of visualization called a "heat map" that is useful for high dimensional data.  Then we'll show how to go convert our "long" data frame to a  "wide" data frame, and show how this wide data frame facilitates analyses focused on how gene expression changes in concert (covary).  We'll also show how we can combine our long and wide views of the data to create new insights into interesting patterns in the data.
 
 ## Libraries
 
@@ -18,29 +14,35 @@ library(tidyverse)
 
 ## Data
 
-So we don't have to re-create our previous analysis, I've posted a CSV file with the "long" version of the cleaned Spellman data set:
+So we don't have to re-create our previous analysis, I've posted a CSV file with the "long" version of the cleaned Spellman data set at the link given below:
 
 ```{r, message=FALSE, warning=FALSE}
 spellman.long <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/spellman-long.csv")
 ```
 
-Let's remind ourselves of the basic structure of this long data frame:
+Let's remind ourselves of the basic structure of this  data frame:
 
 ```{r}
 head(spellman.long)
 dim(spellman.long)
 ```
 
+There are just four columns (variables) in this data set, but more than 450,000 rows, representing all the various combinations of genes (>6000), experimental conditions (4), and time points (variable across experiments).
 
 ## Heat maps
 
-So far we've been using line plots to depict how gene expression changes over time.  For example here are line plots for 10 genes in the data set, in the cdc28 experiment:
+In our prior visualizations we've used line plots to depict how gene expression changes over time.  For example here are line plots for 10 genes in the data set, in the cdc28 experiment:
 
 ```{r, warning=FALSE, message=FALSE}
-ten.genes <- unique(spellman.long$gene)[1:10]
+genes.of.interest <- unique(spellman.long$gene)[1:10]
+
+genes.of.interest <- c("YHR084W", "YBR083W", "YPL049C", "YDR480W",
+                       "YGR040W", "YLR229C", "YDL159W", "YBL016W",
+                       "YDR103W", "YJL157C", "YNL271C", "YDR461W",
+                       "YHL007C", "YHR005C")
 
 spellman.long %>%
-  filter(expt == "cdc28", gene %in% ten.genes) %>%
+  filter(expt == "cdc28", gene %in% genes.of.interest) %>%
   ggplot(aes(x = time, y = expression, color=gene)) + 
     geom_line() +
     labs(x = "Time (min)", y = "Expression")
@@ -48,28 +50,27 @@ spellman.long %>%
 
 Even with just 10 overlapping line plots, this figure is quite busy and it's hard to make out the individual behavior of each gene.
 
-An alternative approach is a "heat map" which depicts the same information in a grid like form, with the expression values indicated by color.  Heat maps are good for depicting large amounts of data and providing a coarse "10,000 foot view".  We can create a heat map using `geom_tile` as follows:
+An alternative approach to depicting such data is a "heat map" which depicts the same information in a grid like form, with the expression values indicated by color.  Heat maps are good for depicting large amounts of data and providing a coarse "10,000 foot view".  We can create a heat map using `geom_tile` as follows:
 
 ```{r}
 spellman.long %>%
-  filter(expt == "cdc28", gene %in% ten.genes) %>%
+  filter(expt == "cdc28", gene %in% genes.of.interest) %>%
   ggplot(aes(x = time, y = gene)) + 
     geom_tile(aes(fill = expression)) +
     xlab("Time (mins)")
 ```
 
-This figure represents the same information as our line plot, but now there is row for each gene, and the expression of that gene at a given time point is represented by  color (scale given on the right). Missing data is shown as gray boxes.
+This figure represents the same information as our line plot, but now there is row for each gene, and the expression of that gene at a given time point is represented by  color (scale given on the right). Missing data is shown as gray boxes.  Unfortunately, the default color scale used by ggplot is a very subtle gradient from light to dark blue.  This make it hard to distinguish patterns of change. Let's now see how we can improve that.
 
 ### Better color schemes with RColorBrewer
 
-The default color scale used by ggplot is a very subtle gradient from light to dark blue.  This make it hard to distinguish patterns of change.
-
-The `RColorBrewer` packages provides nicer color schemes that are useful for creating heat maps. RColorBrewer defines a set of color palettes that have been optimized for color discrimination, to be color blind friendly, etc.  Install the RColorBrewer package using the command line or the RStudio GUI.
+The `RColorBrewer` packages provides nice color schemes that are useful for creating heat maps. RColorBrewer defines a set of color palettes that have been optimized for color discrimination, many of which are color blind friendly, etc.  Install the RColorBrewer package using the command line or the RStudio GUI.
 
 Once you've installed the RColorBrewer package you can see the available color palettes as so:
 
 ```{r}
 library(RColorBrewer)
+
 # show representations of the palettes
 par(cex = 0.5) # reduce size of text in the following plot
 display.brewer.all()  
@@ -89,7 +90,7 @@ Now let's regenerate the heat map we created previously with this new color sche
 
 ```{r}
 spellman.long %>%
-  filter(expt == "cdc28", gene %in% ten.genes) %>%
+  filter(expt == "cdc28", gene %in% genes.of.interest) %>%
   ggplot(aes(x = time, y = gene)) + 
     geom_tile(aes(fill = expression)) +
     scale_fill_gradientn(colors=color.scheme,
@@ -103,7 +104,7 @@ The real power of heat maps becomes apparent when you you rearrange the rows of 
 
 For example, let's create a heat map in which we sort genes by the time of their maximal expression.  This is one way to identify genes that reach their peak expression at similar times, which is one criteria one might use to identify genes acting in concert. 
 
-For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes in this experimental condition with no more than 1 missing observation.
+For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes with no more than one missing observation in this experimental condition.
 
 ```{r}
 cdc28 <- spellman.long %>% filter(expt == "cdc28")
