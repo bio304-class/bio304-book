@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Biology 304: Biological Data Analysis</title>
+  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Biology 304: Biological Data Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Hands-on materials for Bio 304 course at Duke University." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Biology 304: Biological Data Analysis" />
+  
+  <meta name="twitter:description" content="Hands-on materials for Bio 304 course at Duke University." />
+  
+
+<meta name="author" content="Paul M. Magwene">
+
+
+<meta name="date" content="2018-09-24">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="data-wrangling-part-i.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#how-to-use-these-lecture-notes"><i class="fa fa-check"></i><b>1.1</b> How to use these lecture notes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#background"><i class="fa fa-check"></i><b>2.1</b> Background</a></li>
+<li class="chapter" data-level="2.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#dataset"><i class="fa fa-check"></i><b>2.2</b> Dataset</a></li>
+<li class="chapter" data-level="2.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#libraries"><i class="fa fa-check"></i><b>2.3</b> Libraries</a></li>
+<li class="chapter" data-level="2.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#read-data"><i class="fa fa-check"></i><b>2.4</b> Read data</a></li>
+<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#simple-data-wrangling"><i class="fa fa-check"></i><b>2.5.1</b> Simple data wrangling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-many-people-survived"><i class="fa fa-check"></i><b>2.6.1</b> How many people survived?</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#women-first"><i class="fa fa-check"></i><b>2.6.2</b> Women first?</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#a-bar-plot-using-proportions-rather-than-counts"><i class="fa fa-check"></i><b>2.6.3</b> A bar plot using proportions rather than counts</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#mosaic-plots"><i class="fa fa-check"></i><b>2.6.4</b> Mosaic plots</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#passenger-ages"><i class="fa fa-check"></i><b>2.7</b> Passenger ages</a></li>
+<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#strip-charts"><i class="fa fa-check"></i><b>2.8.1</b> Strip charts</a></li>
+<li class="chapter" data-level="2.8.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#box-plots"><i class="fa fa-check"></i><b>2.8.2</b> Box plots</a></li>
+<li class="chapter" data-level="2.8.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#fitting-a-model-relating-survival-to-age-and-sex"><i class="fa fa-check"></i><b>2.8.3</b> Fitting a model relating survival to age and sex</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#combining-sex-and-class"><i class="fa fa-check"></i><b>2.9.1</b> Combining Sex and Class</a></li>
+<li class="chapter" data-level="2.9.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#extending-the-logistic-regression-model-to-consider-class-age-sex-and-survival"><i class="fa fa-check"></i><b>2.9.2</b> Extending the logistic regression model to consider class, age, sex, and survival</a></li>
+</ul></li>
+<li class="chapter" data-level="2.10" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#conclusion"><i class="fa fa-check"></i><b>2.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a><ul>
+<li class="chapter" data-level="3.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-r"><i class="fa fa-check"></i><b>3.1</b> What is R?</a></li>
+<li class="chapter" data-level="3.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-rstudio"><i class="fa fa-check"></i><b>3.2</b> What is RStudio?</a></li>
+<li class="chapter" data-level="3.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#entering-commands-in-the-console"><i class="fa fa-check"></i><b>3.3</b> Entering commands in the console</a></li>
+<li class="chapter" data-level="3.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#comments"><i class="fa fa-check"></i><b>3.4</b> Comments</a></li>
+<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#common-mathematical-functions"><i class="fa fa-check"></i><b>3.5.1</b> Common mathematical functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-help-from-the-console"><i class="fa fa-check"></i><b>3.6.1</b> Getting help from the console</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#valid-variable-names"><i class="fa fa-check"></i><b>3.7.1</b> Valid variable names</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#data-types"><i class="fa fa-check"></i><b>3.8</b> Data types</a></li>
+<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-operators"><i class="fa fa-check"></i><b>3.9.1</b> Logical operators</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a><ul>
+<li class="chapter" data-level="3.10.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#joining-strings"><i class="fa fa-check"></i><b>3.10.1</b> Joining strings</a></li>
+<li class="chapter" data-level="3.10.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#splitting-strings"><i class="fa fa-check"></i><b>3.10.2</b> Splitting strings</a></li>
+<li class="chapter" data-level="3.10.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#substrings"><i class="fa fa-check"></i><b>3.10.3</b> Substrings</a></li>
+</ul></li>
+<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a><ul>
+<li class="chapter" data-level="3.11.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-console"><i class="fa fa-check"></i><b>3.11.1</b> Installing packages from the console</a></li>
+<li class="chapter" data-level="3.11.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#install-the-tidyverse-package"><i class="fa fa-check"></i><b>3.11.2</b> Install the tidyverse package</a></li>
+<li class="chapter" data-level="3.11.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-rstudio-dialog"><i class="fa fa-check"></i><b>3.11.3</b> Installing packages from the RStudio dialog</a></li>
+<li class="chapter" data-level="3.11.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#loading-packages-with-the-library-function"><i class="fa fa-check"></i><b>3.11.4</b> Loading packages with the <code>library()</code> function</a></li>
+</ul></li>
+<li class="chapter" data-level="3.12" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#reading-data-from-a-file"><i class="fa fa-check"></i><b>3.12</b> Reading data from a file</a></li>
+<li class="chapter" data-level="3.13" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#exploring-the-possums-data-set"><i class="fa fa-check"></i><b>3.13</b> Exploring the “possums” data set</a></li>
+<li class="chapter" data-level="3.14" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#simple-tables"><i class="fa fa-check"></i><b>3.14</b> Simple tables</a></li>
+<li class="chapter" data-level="3.15" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#simple-figures"><i class="fa fa-check"></i><b>3.15</b> Simple figures</a></li>
+<li class="chapter" data-level="3.16" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#bar-plots"><i class="fa fa-check"></i><b>3.16</b> Bar plots</a></li>
+<li class="chapter" data-level="3.17" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#histograms"><i class="fa fa-check"></i><b>3.17</b> Histograms</a></li>
+<li class="chapter" data-level="3.18" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#scatter-plots"><i class="fa fa-check"></i><b>3.18</b> Scatter plots</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a><ul>
+<li class="chapter" data-level="4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#r-notebooks"><i class="fa fa-check"></i><b>4.1</b> R Notebooks</a></li>
+<li class="chapter" data-level="4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#creating-an-r-notebook"><i class="fa fa-check"></i><b>4.2</b> Creating an R Notebook</a></li>
+<li class="chapter" data-level="4.3" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#the-default-r-notebook-template"><i class="fa fa-check"></i><b>4.3</b> The default R Notebook template</a></li>
+<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#non-code-blocks"><i class="fa fa-check"></i><b>4.4.1</b> Non-code blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#bullet-points-lists"><i class="fa fa-check"></i><b>4.5</b> Bullet points lists</a></li>
+<li class="chapter" data-level="4.6" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#numbered-lists"><i class="fa fa-check"></i><b>4.6</b> Numbered lists</a></li>
+<li class="chapter" data-level="4.7" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#mathematics"><i class="fa fa-check"></i><b>4.7</b> Mathematics</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-blocks"><i class="fa fa-check"></i><b>4.7.1</b> Code blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#running-a-code-chunk"><i class="fa fa-check"></i><b>4.8</b> Running a code chunk</a></li>
+<li class="chapter" data-level="4.9" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#running-all-code-chunks-above"><i class="fa fa-check"></i><b>4.9</b> Running all code chunks above</a></li>
+<li class="chapter" data-level="4.10" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#knitting-an-r-markdown-to-html"><i class="fa fa-check"></i><b>4.10</b> “Knitting an” R Markdown to HTML</a></li>
+<li class="chapter" data-level="4.11" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#sharing-your-reproducible-r-notebook"><i class="fa fa-check"></i><b>4.11</b> Sharing your reproducible R Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a><ul>
+<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-arithmetic"><i class="fa fa-check"></i><b>5.1.1</b> Vector Arithmetic</a></li>
+<li class="chapter" data-level="5.1.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-recycling"><i class="fa fa-check"></i><b>5.1.2</b> Vector recycling</a></li>
+<li class="chapter" data-level="5.1.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#simple-statistical-functions-for-numeric-vectors"><i class="fa fa-check"></i><b>5.1.3</b> Simple statistical functions for numeric vectors</a></li>
+<li class="chapter" data-level="5.1.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-vectors"><i class="fa fa-check"></i><b>5.1.4</b> Indexing Vectors</a></li>
+<li class="chapter" data-level="5.1.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#comparison-operators-applied-to-vectors"><i class="fa fa-check"></i><b>5.1.5</b> Comparison operators applied to vectors</a></li>
+<li class="chapter" data-level="5.1.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-indexing-and-comparison-of-vectors"><i class="fa fa-check"></i><b>5.1.6</b> Combining Indexing and Comparison of Vectors</a></li>
+<li class="chapter" data-level="5.1.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-manipulation"><i class="fa fa-check"></i><b>5.1.7</b> Vector manipulation</a></li>
+<li class="chapter" data-level="5.1.8" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors-from-regular-sequences"><i class="fa fa-check"></i><b>5.1.8</b> Vectors from regular sequences</a></li>
+<li class="chapter" data-level="5.1.9" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#additional-functions-for-working-with-vectors"><i class="fa fa-check"></i><b>5.1.9</b> Additional functions for working with vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-type-of-lists"><i class="fa fa-check"></i><b>5.2.1</b> Length and type of lists</a></li>
+<li class="chapter" data-level="5.2.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-lists"><i class="fa fa-check"></i><b>5.2.2</b> Indexing lists</a></li>
+<li class="chapter" data-level="5.2.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#naming-list-elements"><i class="fa fa-check"></i><b>5.2.3</b> Naming list elements</a></li>
+<li class="chapter" data-level="5.2.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#the-operator"><i class="fa fa-check"></i><b>5.2.4</b> The <code>$</code> operator</a></li>
+<li class="chapter" data-level="5.2.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#changing-and-adding-lists-items"><i class="fa fa-check"></i><b>5.2.5</b> Changing and adding lists items</a></li>
+<li class="chapter" data-level="5.2.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-lists"><i class="fa fa-check"></i><b>5.2.6</b> Combining lists</a></li>
+<li class="chapter" data-level="5.2.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#converting-lists-to-vectors"><i class="fa fa-check"></i><b>5.2.7</b> Converting lists to vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#creating-a-data-frame"><i class="fa fa-check"></i><b>5.3.1</b> Creating a data frame</a></li>
+<li class="chapter" data-level="5.3.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#type-and-class-for-data-frames"><i class="fa fa-check"></i><b>5.3.2</b> Type and class for data frames</a></li>
+<li class="chapter" data-level="5.3.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-dimension-for-data-frames"><i class="fa fa-check"></i><b>5.3.3</b> Length and dimension for data frames</a></li>
+<li class="chapter" data-level="5.3.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-and-accessing-data-frames"><i class="fa fa-check"></i><b>5.3.4</b> Indexing and accessing data frames</a></li>
+<li class="chapter" data-level="5.3.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#logical-indexing-of-data-frames"><i class="fa fa-check"></i><b>5.3.5</b> Logical indexing of data frames</a></li>
+<li class="chapter" data-level="5.3.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#adding-columns-to-a-data-frame"><i class="fa fa-check"></i><b>5.3.6</b> Adding columns to a data frame</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a><ul>
+<li class="chapter" data-level="6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#loading-ggplot2"><i class="fa fa-check"></i><b>6.1</b> Loading ggplot2</a></li>
+<li class="chapter" data-level="6.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#example-data-set-andersons-iris-data"><i class="fa fa-check"></i><b>6.2</b> Example data set: Anderson’s Iris Data</a></li>
+<li class="chapter" data-level="6.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#template-for-single-layer-plots-in-ggplot2"><i class="fa fa-check"></i><b>6.3</b> Template for single layer plots in ggplot2</a></li>
+<li class="chapter" data-level="6.4" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#an-aside-about-function-arguments"><i class="fa fa-check"></i><b>6.4</b> An aside about function arguments</a></li>
+<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#jittering-data"><i class="fa fa-check"></i><b>6.5.1</b> Jittering data</a></li>
+<li class="chapter" data-level="6.5.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-categorical-information"><i class="fa fa-check"></i><b>6.5.2</b> Adding categorical information</a></li>
+<li class="chapter" data-level="6.5.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#rotating-plot-coordinates"><i class="fa fa-check"></i><b>6.5.3</b> Rotating plot coordinates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#variations-on-histograms-when-considering-categorical-data"><i class="fa fa-check"></i><b>6.6.1</b> Variations on histograms when considering categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#faceting-to-depict-categorical-information"><i class="fa fa-check"></i><b>6.7</b> Faceting to depict categorical information</a></li>
+<li class="chapter" data-level="6.8" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#density-plots"><i class="fa fa-check"></i><b>6.8</b> Density plots</a></li>
+<li class="chapter" data-level="6.9" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-or-beanplot"><i class="fa fa-check"></i><b>6.9</b> Violin or Beanplot</a></li>
+<li class="chapter" data-level="6.10" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplots"><i class="fa fa-check"></i><b>6.10</b> Boxplots</a></li>
+<li class="chapter" data-level="6.11" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#building-complex-visualizations-with-layers"><i class="fa fa-check"></i><b>6.11</b> Building complex visualizations with layers</a></li>
+<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a><ul>
+<li class="chapter" data-level="6.12.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplot-plus-strip-plot"><i class="fa fa-check"></i><b>6.12.1</b> Boxplot plus strip plot</a></li>
+<li class="chapter" data-level="6.12.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#setting-shared-aesthetics"><i class="fa fa-check"></i><b>6.12.2</b> Setting shared aesthetics</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a><ul>
+<li class="chapter" data-level="6.13.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-plot-plus-strip-plot"><i class="fa fa-check"></i><b>6.13.1</b> Violin plot plus strip plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.14" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-titles-and-tweaking-axis-labels"><i class="fa fa-check"></i><b>6.14</b> Adding titles and tweaking axis labels</a></li>
+<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a><ul>
+<li class="chapter" data-level="6.15.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#further-customization-with-ggplot2theme"><i class="fa fa-check"></i><b>6.15.1</b> Further customization with <code>ggplot2::theme</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.16" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#other-aspects-of-ggplots-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.16</b> Other aspects of ggplots can be assigned to variables</a></li>
+<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a><ul>
+<li class="chapter" data-level="6.17.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#scatter-plots-1"><i class="fa fa-check"></i><b>6.17.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="6.17.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-a-trend-line-to-a-scatter-plot"><i class="fa fa-check"></i><b>6.17.2</b> Adding a trend line to a scatter plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.18" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-density-plots"><i class="fa fa-check"></i><b>6.18</b> Bivariate density plots</a></li>
+<li class="chapter" data-level="6.19" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#combining-scatter-plots-and-density-plots-with-categorical-information"><i class="fa fa-check"></i><b>6.19</b> Combining Scatter Plots and Density Plots with Categorical Information</a></li>
+<li class="chapter" data-level="6.20" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#density-plots-with-fill"><i class="fa fa-check"></i><b>6.20</b> Density plots with fill</a></li>
+<li class="chapter" data-level="6.21" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#d-bin-and-hex-plots"><i class="fa fa-check"></i><b>6.21</b> 2D bin and hex plots</a></li>
+<li class="chapter" data-level="6.22" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#the-cowplot-package"><i class="fa fa-check"></i><b>6.22</b> The <code>cowplot</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#libraries-1"><i class="fa fa-check"></i><b>7.1</b> Libraries</a></li>
+<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#example-data-nc-births"><i class="fa fa-check"></i><b>7.2.1</b> Example data: NC Births</a></li>
+<li class="chapter" data-level="7.2.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-excel-files"><i class="fa fa-check"></i><b>7.2.2</b> Reading Excel files</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#a-note-on-tibbles"><i class="fa fa-check"></i><b>7.3</b> A note on “tibbles”</a></li>
+<li class="chapter" data-level="7.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#data-filtering-and-transformation-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Data filtering and transformation with <code>dplyr</code></a></li>
+<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>7.5.1</b> <code>select</code></a></li>
+<li class="chapter" data-level="7.5.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>7.5.2</b> <code>filter</code></a></li>
+<li class="chapter" data-level="7.5.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>7.5.3</b> <code>mutate</code></a></li>
+<li class="chapter" data-level="7.5.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>7.5.4</b> <code>arrange</code></a></li>
+<li class="chapter" data-level="7.5.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#summarize"><i class="fa fa-check"></i><b>7.5.5</b> <code>summarize</code></a></li>
+<li class="chapter" data-level="7.5.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>7.5.6</b> <code>group_by</code></a></li>
+<li class="chapter" data-level="7.5.7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-grouping-and-summarizing"><i class="fa fa-check"></i><b>7.5.7</b> Combining grouping and summarizing</a></li>
+<li class="chapter" data-level="7.5.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#scoped-variants-of-mutate-and-summarize"><i class="fa fa-check"></i><b>7.5.8</b> Scoped variants of <code>mutate</code> and <code>summarize</code></a></li>
+<li class="chapter" data-level="7.5.9" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-summarize-with-grouping-aesthetics-in-ggplot2"><i class="fa fa-check"></i><b>7.5.9</b> Combining summarize with grouping aesthetics in <code>ggplot2</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#install-and-load-magrittr"><i class="fa fa-check"></i><b>7.6.1</b> Install and load <code>magrittr</code></a></li>
+<li class="chapter" data-level="7.6.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-basic-pipe-operator"><i class="fa fa-check"></i><b>7.6.2</b> The basic pipe operator</a></li>
+<li class="chapter" data-level="7.6.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#an-example-without-pipes"><i class="fa fa-check"></i><b>7.6.3</b> An example without pipes</a></li>
+<li class="chapter" data-level="7.6.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-same-example-using-pipes"><i class="fa fa-check"></i><b>7.6.4</b> The same example using pipes</a></li>
+<li class="chapter" data-level="7.6.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#assigning-the-output-of-a-statement-involving-pipes-to-a-variable"><i class="fa fa-check"></i><b>7.6.5</b> Assigning the output of a statement involving pipes to a variable</a></li>
+<li class="chapter" data-level="7.6.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#compound-assignment-pipe-operator"><i class="fa fa-check"></i><b>7.6.6</b> Compound assignment pipe operator</a></li>
+<li class="chapter" data-level="7.6.7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-dot-operator-with-pipes"><i class="fa fa-check"></i><b>7.6.7</b> The dot operator with pipes</a></li>
+<li class="chapter" data-level="7.6.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-exposition-pipe-operator"><i class="fa fa-check"></i><b>7.6.8</b> The exposition pipe operator</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#libraries-2"><i class="fa fa-check"></i><b>8.1</b> Libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#data"><i class="fa fa-check"></i><b>8.2</b> Data</a></li>
+<li class="chapter" data-level="8.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#renaming-data-frame-columms"><i class="fa fa-check"></i><b>8.3</b> Renaming data frame columms</a></li>
+<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-all-empty-columns"><i class="fa fa-check"></i><b>8.4.1</b> Finding all empty columns</a></li>
+<li class="chapter" data-level="8.4.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-columns-by-matching-names"><i class="fa fa-check"></i><b>8.4.2</b> Dropping columns by matching names</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#merging-data-frames"><i class="fa fa-check"></i><b>8.5</b> Merging data frames</a></li>
+<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#wide-to-long-conversions-using-tidyrgather"><i class="fa fa-check"></i><b>8.6.1</b> Wide to long conversions using <code>tidyr::gather</code></a></li>
+<li class="chapter" data-level="8.6.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#extracting-information-from-combined-variables-using-tidyrextract"><i class="fa fa-check"></i><b>8.6.2</b> Extracting information from combined variables using <code>tidyr::extract</code></a></li>
+<li class="chapter" data-level="8.6.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#subsetting-rows"><i class="fa fa-check"></i><b>8.6.3</b> Subsetting rows</a></li>
+<li class="chapter" data-level="8.6.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#splitting-columns"><i class="fa fa-check"></i><b>8.6.4</b> Splitting columns</a></li>
+<li class="chapter" data-level="8.6.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#combining-data-frames"><i class="fa fa-check"></i><b>8.6.5</b> Combining data frames</a></li>
+<li class="chapter" data-level="8.6.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#sorting-data-frame-rows"><i class="fa fa-check"></i><b>8.6.6</b> Sorting data frame rows</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#visualizing-gene-expression-time-series"><i class="fa fa-check"></i><b>8.7.1</b> Visualizing gene expression time series</a></li>
+<li class="chapter" data-level="8.7.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-the-most-variable-genes"><i class="fa fa-check"></i><b>8.7.2</b> Finding the most variable genes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#libraries-3"><i class="fa fa-check"></i><b>9.1</b> Libraries</a></li>
+<li class="chapter" data-level="9.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#data-1"><i class="fa fa-check"></i><b>9.2</b> Data</a></li>
+<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#better-color-schemes-with-rcolorbrewer"><i class="fa fa-check"></i><b>9.3.1</b> Better color schemes with RColorBrewer</a></li>
+<li class="chapter" data-level="9.3.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#looking-for-patterns-using-sorted-data-and-heat-maps"><i class="fa fa-check"></i><b>9.3.2</b> Looking for patterns using sorted data and heat maps</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#long-to-wide-conversion-using-tidyrspread"><i class="fa fa-check"></i><b>9.4</b> Long-to-wide conversion using <code>tidyr::spread</code></a></li>
+<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#large-scale-patterns-of-correlations"><i class="fa fa-check"></i><b>9.5.1</b> Large scale patterns of correlations</a></li>
+<li class="chapter" data-level="9.5.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#adding-new-columns-and-combining-filtered-data-frames"><i class="fa fa-check"></i><b>9.5.2</b> Adding new columns and combining filtered data frames</a></li>
+<li class="chapter" data-level="9.5.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-heat-mapped-sorted-by-correlations"><i class="fa fa-check"></i><b>9.5.3</b> A heat mapped sorted by correlations</a></li>
+<li class="chapter" data-level="9.5.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-fancy-figure"><i class="fa fa-check"></i><b>9.5.4</b> A “fancy” figure</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Biology 304: Biological Data Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-wrangling-part-ii" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> Data wrangling, Part II</h1>
+<p>In our last class session we walked through a fairly complex data wrangling task involving a large, gene expression data set.</p>
+<p>Starting with the raw data, we went through several cleaning, transformation, and reshaping to arrive at a data set that allowed us to examine how gene expression changed over time across multiple experimental conditions.</p>
+<p>The final form of our data was what we referred to as a “long” format. The key variables of the final data frame were <code>gene</code>, <code>expt</code>, <code>time</code>, and <code>expression</code>. The structure of this long data frame facilitated the creation of time series plots, filtering by gene and/or condition, grouping operations by gene, etc.</p>
+<p>In today’s session we’re going to demonstrate a new type of visualization called a “heat map” that is useful for high dimensional data. Then we’ll show how to go from our “long” data frame, to a “wide” data frame, and show how this wide data frame facilitates analyses focused on how gene expression changes in concert (covary). We’ll also show how we can combine our long and wide views of the data to create new insights into interesting patterns in the data.</p>
+<div id="libraries-3" class="section level2">
+<h2><span class="header-section-number">9.1</span> Libraries</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
+## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
+## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ tidyr::extract()   masks magrittr::extract()
+## ✖ dplyr::filter()    masks stats::filter()
+## ✖ dplyr::lag()       masks stats::lag()
+## ✖ purrr::set_names() masks magrittr::set_names()</code></pre>
+</div>
+<div id="data-1" class="section level2">
+<h2><span class="header-section-number">9.2</span> Data</h2>
+<p>So we don’t have to re-create our previous analysis, I’ve posted a CSV file with the “long” version of the cleaned Spellman data set:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">spellman.long &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/spellman-long.csv&quot;</span>)</a></code></pre></div>
+<p>Let’s remind ourselves of the basic structure of this long data frame:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">head</span>(spellman.long)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 4
+##   gene    expt   time expression
+##   &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;      &lt;dbl&gt;
+## 1 YAL001C alpha     0      -0.15
+## 2 YAL002W alpha     0      -0.11
+## 3 YAL003W alpha     0      -0.14
+## 4 YAL004W alpha     0      -0.02
+## 5 YAL005C alpha     0      -0.05
+## 6 YAL007C alpha     0      -0.6</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">dim</span>(spellman.long)</a></code></pre></div>
+<pre><code>## [1] 450994      4</code></pre>
+</div>
+<div id="heat-maps" class="section level2">
+<h2><span class="header-section-number">9.3</span> Heat maps</h2>
+<p>So far we’ve been using line plots to depict how gene expression changes over time. For example here are line plots for 10 genes in the data set, in the cdc28 experiment:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">ten.genes &lt;-<span class="st"> </span><span class="kw">unique</span>(spellman.long<span class="op">$</span>gene)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">color=</span>gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (min)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Even with just 10 overlapping line plots, this figure is quite busy and it’s hard to make out the individual behavior of each gene.</p>
+<p>An alternative approach is a “heat map” which depicts the same information in a grid like form, with the expression values indicated by color. Heat maps are good for depicting large amounts of data and providing a coarse “10,000 foot view”. We can create a heat map using <code>geom_tile</code> as follows:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Time (mins)&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This figure represents the same information as our line plot, but now there is row for each gene, and the expression of that gene at a given time point is represented by color (scale given on the right). Missing data is shown as gray boxes.</p>
+<div id="better-color-schemes-with-rcolorbrewer" class="section level3">
+<h3><span class="header-section-number">9.3.1</span> Better color schemes with RColorBrewer</h3>
+<p>The default color scale used by ggplot is a very subtle gradient from light to dark blue. This make it hard to distinguish patterns of change.</p>
+<p>The <code>RColorBrewer</code> packages provides nicer color schemes that are useful for creating heat maps. RColorBrewer defines a set of color palettes that have been optimized for color discrimination, to be color blind friendly, etc. Install the RColorBrewer package using the command line or the RStudio GUI.</p>
+<p>Once you’ve installed the RColorBrewer package you can see the available color palettes as so:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(RColorBrewer)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># show representations of the palettes</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.5</span>) <span class="co"># reduce size of text in the following plot</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">display.brewer.all</span>()  </a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We’ll use the Red-to-Blue (“RdBu”) color scheme defined in RColorBrewer, however we’ll reverse the scheme so blues represent low expression and reds represent high expression. We’ll divide the range of color values into 9 discrete bins.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># displays the RdBu color scheme divided into a paletee of 9 colors</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">display.brewer.pal</span>(<span class="dv">9</span>, <span class="st">&quot;RdBu&quot;</span>)  </a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># assign the reversed (blue to red) RdBu palette</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">color.scheme &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;RdBu&quot;</span>))</a></code></pre></div>
+<p>Now let’s regenerate the heat map we created previously with this new color scheme. To do this we specify a gradient color scale using the <code>scale_fill_gradientn()</code> function from ggplot. In addition to specifying the color scale, we also constrain the limits of the scale to insure it’s symmetric about zero.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">    </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colors=</span>color.scheme,</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">                         <span class="dt">limits =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Time (mins)&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="looking-for-patterns-using-sorted-data-and-heat-maps" class="section level3">
+<h3><span class="header-section-number">9.3.2</span> Looking for patterns using sorted data and heat maps</h3>
+<p>The real power of heat maps becomes apparent when you you rearrange the rows of the heat map to emphasize patterns of interest.</p>
+<p>For example, let’s create a heat map in which we sort genes by the time of their maximal expression. This is one way to identify genes that reach their peak expression at similar times, which is one criteria one might use to identify genes acting in concert.</p>
+<p>For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes in this experimental condition with no more than 1 missing observation.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">cdc28 &lt;-<span class="st"> </span>spellman.long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">by.variance.in.cdc28 &lt;-</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">expression.var =</span> <span class="kw">var</span>(expression, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">            <span class="dt">num.missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(expression))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(num.missing <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(expression.var))</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">    </a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">top1k.genes.by.variance.in.cdc28 &lt;-<span class="st"> </span>by.variance.in.cdc28<span class="op">$</span>gene[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>]</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">top1k.cdc28 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>top1k.genes.by.variance.in.cdc28)</a></code></pre></div>
+<p>To find the time of maximum expression we’ll employ the function <code>which.max</code> (<code>which.min</code>), which finds the index of the maximum (minimum) element of a vector. For example to find the index of the maximum expression measurement for YAR018C we could do:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">==</span><span class="st"> &quot;YAR018C&quot;</span>) <span class="op">%$%</span><span class="st">  </span><span class="co"># note the exposition pipe operator!</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span><span class="kw">which.max</span>(expression)</a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<p>From the code above we find that the index of the observation at which YAR018C is maximal at 8. To get the corresponding time point we can do something like this:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">==</span><span class="st"> &quot;YAR018C&quot;</span>) <span class="op">%$%</span><span class="st">  </span><span class="co"># again note the exposition pipe operator!</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span>time[<span class="kw">which.max</span>(expression)]</a></code></pre></div>
+<pre><code>## [1] 70</code></pre>
+<p>Thus YAR018C expression peaks at 70 minutes in the cdc28 experiment.</p>
+<p>To find the index of maximal expression of all genes we can apply the <code>dplyr::group_by()</code> and <code>dplyr::summarize()</code> functions</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">peak.expression.cdc28 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span>top1k.cdc28 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(gene) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">peak =</span> <span class="kw">which.max</span>(expression))</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="kw">head</span>(peak.expression.cdc28)</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 2
+##   gene       peak
+##   &lt;chr&gt;     &lt;int&gt;
+## 1 YAL003W      10
+## 2 YAL005C       2
+## 3 YAL022C      17
+## 4 YAL028W       5
+## 5 YAL035C-A    12
+## 6 YAL038W      15</code></pre>
+<p>Let’s sort the order of genes by their peak expression:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">peak.expression.cdc28 <span class="op">%&lt;&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(peak)</a></code></pre></div>
+<p>We can then generate a heatmap where we sort the rows (genes) of the heatmap by their time of peak expression. We introduce a new geom – <code>geom_raster</code> – which is like <code>geom_tile</code> but better suited for large data (hundreds to thousands of rows)</p>
+<p>The explicit sorting of the data by peak expression is carried out in the call to <code>scale_y_discrete()</code> where the limits (and order) of this axis are set with the <code>limits</code> argument (see <code>scale_y_discrete</code> and <code>discrete_scale</code> in the ggplot2 docs).</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># we reverse the ordering because geom_raster (and geom_tile)</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="co"># draw from the bottom row up, whereas we want to depict the</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co"># earliest peaking genes at the top of the figure</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">gene.ordering &lt;-<span class="st"> </span><span class="kw">rev</span>(peak.expression.cdc28<span class="op">$</span>gene)</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6">top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span><span class="st">  </span><span class="co"># </span></a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>),</a>
+<a class="sourceLine" id="cb24-10" data-line-number="10">                       <span class="dt">colors=</span>color.scheme) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_y_discrete</span>(<span class="dt">limits=</span>gene.ordering) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (mins)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Genes&quot;</span>, </a>
+<a class="sourceLine" id="cb24-13" data-line-number="13">       <span class="dt">title =</span> <span class="st">&quot;1000 most variable genes&quot;</span>,</a>
+<a class="sourceLine" id="cb24-14" data-line-number="14">       <span class="dt">subtitle =</span> <span class="st">&quot;Sorted by time of peak expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="st">  </span><span class="co"># the following line suppresses tick and labels on y-axis</span></a>
+<a class="sourceLine" id="cb24-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.y =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-14"></span>
+<img src="bio304-book_files/figure-html/unnamed-chunk-14-1.png" alt="A Heatmap showing genes in the cdc28 experiment, sorted by peak expression" width="576" />
+<p class="caption">
+Figure 9.1: A Heatmap showing genes in the cdc28 experiment, sorted by peak expression
+</p>
+</div>
+<p>The brightest red regions in each row of the heat map correspond to the times of peak expression, and the sorting of the rows helps to highlight those gene whose peak expression times are similar.</p>
+</div>
+</div>
+<div id="long-to-wide-conversion-using-tidyrspread" class="section level2">
+<h2><span class="header-section-number">9.4</span> Long-to-wide conversion using <code>tidyr::spread</code></h2>
+<p>Our long data frame consists of four variables – <code>gene</code>, <code>expt</code>, <code>time</code>, and <code>expression</code>. This made it easy to create visualizations and summaries where time and expression were the primaries variables of interest, and gene and experiment type were categories we could condition on.</p>
+<p>To facilitate analyses that emphasize comparison between genes, we want to create a new data frame in which each gene is itself treated as a variable of interest along with time, and experiment type remains a categorical variable. In this new data frame rather than just four columns in our data frame, we’ll have several thousand columns – one for each gene.</p>
+<p>To accomplish this reshaping of data, we’ll use the function <code>tidyr::spread()</code>. <code>tidyr::spread()</code> is the inverse of <code>tidyr::gather()</code>. <code>gather()</code> took multiple columns and collapsed them together into a smaller number of new columns. The <code>tidyr</code> documentation calls this “collapsing into key-value pairs”. By contrast, <code>spread()</code> creates new columns by spreading “key-value pairs” (a column representing the “keys” and a column reprsenting the “values”) into multiple columns.</p>
+<p>Here let’s use <code>spread()</code> to use the gene names (the “key”) and expression measures (the “values”) to create a new data frame where the genes are the primary variables (columns) of the data.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">spellman.wide &lt;-</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span>spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">spread</span>(gene, expression)</a></code></pre></div>
+<p>Now let’s examine the dimensions of this wide version of the data:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">dim</span>(spellman.wide)</a></code></pre></div>
+<pre><code>## [1]   73 6180</code></pre>
+<p>And here’s a visual view of the first few rows and columns of the wide data:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">spellman.wide[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a></code></pre></div>
+<pre><code>## # A tibble: 5 x 8
+##   expt   time YAL001C YAL002W YAL003W YAL004W YAL005C YAL007C
+##   &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 alpha     0   -0.15   -0.11   -0.14   -0.02   -0.05   -0.6 
+## 2 alpha     7   -0.15    0.1    -0.71   -0.48   -0.53   -0.45
+## 3 alpha    14   -0.21    0.01    0.1    -0.11   -0.47   -0.13
+## 4 alpha    21    0.17    0.06   -0.32    0.12   -0.06    0.35
+## 5 alpha    28   -0.42    0.04   -0.4    -0.03    0.11   -0.01</code></pre>
+<p>From this view we infer that the rows of the data set represent the various combination of experimental condition and time points, and the columns represents the 6178 genes in the data set plus the two columns for <code>expt</code> and <code>time</code>.</p>
+</div>
+<div id="exploring-bivariate-relationships-using-wide-data" class="section level2">
+<h2><span class="header-section-number">9.5</span> Exploring bivariate relationships using “wide” data</h2>
+<p>The “long” version of our data frame proved useful for exploring how gene expression changed over time. By contrast, our “wide” data frame is more convient for exploring how pairs of genes covary together. For example, we can generate bivariate scatter plots depicting the relationship between two genes of interest:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">two.gene.plot &lt;-</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span>spellman.wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(YAR018C) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(YAL022C)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># remove NAs</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> YAR018C, <span class="dt">y =</span> YAL022C)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">aspect.ratio =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb30-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb30-8" data-line-number="8">two.gene.plot</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>From the scatter plot we infer that the two genes are “positively correlated” with each other, meaning that high values of one tend to be associated with high values of the other (and the same for low values).</p>
+<p>We can easily extend this visualization to facet the plot based on the experimental conditions:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">two.gene.plot <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>expt, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>) </a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>A statistic we use to measure the degree of association between pairs of continuous variables is called the “correlation coefficient”. Briefly, correlation is a measure of linear association between a pair of variables, and ranges from -1 to 1. A value near zero indicates the variables are uncorrelated (no linear association), while values approaching +1 indicate a strong positive association (the variables tend to get bigger or smaller together) while values near -1 indicate strong negative association (when one variable is larger, the other tends to be small).</p>
+<p>Let’s calculate the correlation between YAR018C and YAL022C:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">spellman.wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(YAR018C) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(YAL022C)) <span class="op">%&gt;%</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">cor =</span> <span class="kw">cor</span>(YAR018C, YAL022C))</a></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##     cor
+##   &lt;dbl&gt;
+## 1 0.692</code></pre>
+<p>The value of the correlation coefficient for YAR018C and YAL022C, ~0.69, indicates a fairly strong association between the two genes.</p>
+<p>As we did for our visualization, we can also calculate the correlation coefficients for the two genes under each experimental condition:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">spellman.wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(YAR018C) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(YAL022C)) <span class="op">%&gt;%</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(expt) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">cor =</span> <span class="kw">cor</span>(YAR018C, YAL022C))</a></code></pre></div>
+<pre><code>## # A tibble: 4 x 2
+##   expt    cor
+##   &lt;chr&gt; &lt;dbl&gt;
+## 1 alpha 0.634
+## 2 cdc15 0.575
+## 3 cdc28 0.847
+## 4 elu   0.787</code></pre>
+<p>This table suggests that the the strength of correlation between YAR018C and YAL022C may depend on the experimental conditions, with the highest correlations evident in the cdc28 and elu experiments.</p>
+<div id="large-scale-patterns-of-correlations" class="section level3">
+<h3><span class="header-section-number">9.5.1</span> Large scale patterns of correlations</h3>
+<p>Now we’ll move from considering the correlation between two specific genes to looking at the correlation between many pairs of genes. As we did in the previous section, we’ll focus specifically onthe 1000 most variable genes in the cdc28 experiment.</p>
+<p>First we filter our wide data set to only consider the cdc28 experiment and those genes in the top 1000 most variable genes in cdc28:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">top1k.cdc28.wide &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span>spellman.wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">  </span><span class="kw">select</span>(expt, time, top1k.genes.by.variance.in.cdc28) </a></code></pre></div>
+<p>With this restricted data set, we can then calculate the correlations between every pairof genes as follows:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">cdc28.correlations &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="st">  </span>top1k.cdc28.wide <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>expt, <span class="op">-</span>time)  <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># drop expt and time</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="st">  </span><span class="kw">cor</span>(<span class="dt">use =</span> <span class="st">&quot;pairwise.complete.obs&quot;</span>)</a></code></pre></div>
+<p>The argument <code>use = &quot;pairwise.complete.obs&quot;</code> tells the correlation function that for each pair of genes to use only the pariwse where there is a value for both genes (i.e. neither one can be NA).</p>
+<p>Given <span class="math inline">\(n\)</span> genes, there are <span class="math inline">\(n \times n\)</span> pairs of correlations, as seen by the dimensions of the correlation matrix.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">dim</span>(cdc28.correlations)</a></code></pre></div>
+<pre><code>## [1] 1000 1000</code></pre>
+<p>To get the correlations with a gene of interest, we can index with the gene name on the rows of the correlation matrix. For example, to get the correlations between the gene YAR018C and the first 10 genes in the top 1000 set:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">cdc28.correlations[<span class="st">&quot;YAR018C&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]  </a></code></pre></div>
+<pre><code>##     YHL028W     YOL101C     YDL227C     YPL021W     YMR317W     YER124C 
+##  0.69980131 -0.64497286 -0.29271252 -0.57191241 -0.08063730  0.06458544 
+##     YMR244W     YBR054W     YDR535C     YKR039W 
+## -0.69685710  0.46172051  0.38647931  0.68782036</code></pre>
+<p>In the next statement we extract the names of the genes that have correlations with YAR018C greater than 0.6. First we test genes to see if they have a correlation with YAR018C greater than 0.6, which returns a vector of TRUE or FALSE values. This vector of Boolean values is than used to index into the rownames of the correlation matrix, pulling out the gene names where the statement was true.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">pos.corr.YAR018C &lt;-<span class="st"> </span><span class="kw">rownames</span>(cdc28.correlations)[cdc28.correlations[<span class="st">&quot;YAR018C&quot;</span>,] <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.6</span>]</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">length</span>(pos.corr.YAR018C)</a></code></pre></div>
+<pre><code>## [1] 65</code></pre>
+<p>We then return to our long data to show this set of genes that are strongly positively correlated with YAR018C.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>pos.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">color =</span> expt, <span class="dt">group =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="fl">0.33</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-5" data-line-number="5"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>As is expected, genes with strong positive correlations with YAR018C. show similar temporal patterns with YAR018C.</p>
+<p>We can similarly filter for genes that have negative correlations with YAR018C.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">neg.corr.YAR018C &lt;-<span class="st"> </span><span class="kw">colnames</span>(cdc28.correlations)[cdc28.correlations[<span class="st">&quot;YAR018C&quot;</span>,] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">-0.6</span>]</a></code></pre></div>
+<p>As before we generate a line plot showing these genes:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>neg.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">color =</span> expt, <span class="dt">group =</span> gene)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="fl">0.33</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)  </a></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_path).</code></pre>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="adding-new-columns-and-combining-filtered-data-frames" class="section level3">
+<h3><span class="header-section-number">9.5.2</span> Adding new columns and combining filtered data frames</h3>
+<p>Now let’s create a new data frame by: 1) filtering on our list of genes that have strong positive and negative correlations with YAR018C; and 2) creating a new variable, “corr.with.YAR018C”, which indicates the sign of the correlation. We’ll use this new variable to group genes when we create the plot.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">pos.corr.df &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">  </span>top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>pos.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">corr.with.YAR018C =</span> <span class="st">&quot;positive&quot;</span>)</a>
+<a class="sourceLine" id="cb48-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb48-6" data-line-number="6">neg.corr.df &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb48-7" data-line-number="7"><span class="st">  </span>top1k.cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>neg.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">corr.with.YAR018C =</span> <span class="st">&quot;negative&quot;</span>)</a>
+<a class="sourceLine" id="cb48-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb48-11" data-line-number="11">combined.pos.neg &lt;-<span class="st"> </span><span class="kw">rbind</span>(pos.corr.df, neg.corr.df)</a></code></pre></div>
+<p>Finally, we plot the data, colored according to the correlation with YAR018C:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">ggplot</span>(combined.pos.neg, </a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">       <span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression,  <span class="dt">group =</span> gene,</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">           <span class="dt">color =</span> corr.with.YAR018C)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">alpha=</span><span class="fl">0.25</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression),</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">            <span class="dt">data =</span> <span class="kw">filter</span>(top1k.cdc28, gene <span class="op">==</span><span class="st"> &quot;YAR018C&quot;</span>),</a>
+<a class="sourceLine" id="cb49-7" data-line-number="7">            <span class="dt">color =</span> <span class="st">&quot;DarkRed&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">  </span><span class="co"># changes legend title and values for color sclae</span></a>
+<a class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">name =</span> <span class="st">&quot;Correlation with YAR018C&quot;</span>,</a>
+<a class="sourceLine" id="cb49-10" data-line-number="10">                       <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Genes strongly positively and negatively correlated with YAR018C&quot;</span>,</a>
+<a class="sourceLine" id="cb49-12" data-line-number="12">       <span class="dt">subtitle =</span> <span class="st">&quot;YAR018C shown in dark red&quot;</span>,</a>
+<a class="sourceLine" id="cb49-13" data-line-number="13">       <span class="dt">x =</span> <span class="st">&quot;Time (mins)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-31-1.png" width="768" /></p>
+</div>
+<div id="a-heat-mapped-sorted-by-correlations" class="section level3">
+<h3><span class="header-section-number">9.5.3</span> A heat mapped sorted by correlations</h3>
+<p>In our previous heat map example figure, we sorted genes according to peak expression. Now let’s generate a heat map for the genes that are strongly correlated (both positive and negative) with YAR018C. We will sort the genes according to the sign of their correlation.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># re-factor gene names so positive and negative genes are spatially distinct in plot</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">combined.pos.neg<span class="op">$</span>gene &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="st">  </span><span class="kw">factor</span>(combined.pos.neg<span class="op">$</span>gene, </a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">         <span class="dt">levels =</span> <span class="kw">c</span>(pos.corr.YAR018C, neg.corr.YAR018C))</a>
+<a class="sourceLine" id="cb50-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb50-6" data-line-number="6">combined.pos.neg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb50-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb50-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb50-9" data-line-number="9"><span class="st">    </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colors=</span>color.scheme) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb50-10" data-line-number="10"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Time (mins)&quot;</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-32-1.png" width="1152" /></p>
+<p>The breakpoint between the positively and negatively correlated sets of genes is quite obvious in this figure.</p>
+</div>
+<div id="a-fancy-figure" class="section level3">
+<h3><span class="header-section-number">9.5.4</span> A “fancy” figure</h3>
+<p>Recall that we introduced the <code>cowplot</code> library in Chapter 6, as a way to combine different ggplot outputs into subfigures such as you might find in a published paper. Here we’ll make further use cowplot to combine our heat map and line plot visualizations of genes that covary with YAR018C.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">library</span>(cowplot)</a></code></pre></div>
+<p>cowplot’s <code>draw_plot()</code> function allows us to place plots at arbitrary locations and with arbitrary sizes onto the canvas. The coordinates of the canvas run from 0 to 1, and the point (0, 0) is in the lower left corner of the canvas. We’ll use <code>draw_plot</code> to draw a complex figure with a heatmap on the left, and two smaller line plots on the right.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">pos.corr.lineplot &lt;-<span class="st">  </span></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">  </span>combined.pos.neg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>pos.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb52-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">group =</span> gene)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="fl">0.33</span>, <span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (mins)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>, </a>
+<a class="sourceLine" id="cb52-7" data-line-number="7">      <span class="dt">title =</span> <span class="st">&quot;Genes Positively correlated</span><span class="ch">\n</span><span class="st">with YAR018C&quot;</span>)</a>
+<a class="sourceLine" id="cb52-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb52-9" data-line-number="9">neg.corr.lineplot &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb52-10" data-line-number="10"><span class="st">  </span>combined.pos.neg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb52-11" data-line-number="11"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>neg.corr.YAR018C) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb52-12" data-line-number="12"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">group =</span> gene)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="fl">0.33</span>, <span class="dt">color =</span> <span class="st">&#39;blue&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-14" data-line-number="14"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (mins)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>, </a>
+<a class="sourceLine" id="cb52-15" data-line-number="15">      <span class="dt">title =</span> <span class="st">&quot;Genes negatively correlated</span><span class="ch">\n</span><span class="st">with YAR018C&quot;</span>)</a>
+<a class="sourceLine" id="cb52-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb52-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb52-18" data-line-number="18">heat.map &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb52-19" data-line-number="19"><span class="st">  </span><span class="kw">ggplot</span>(combined.pos.neg, <span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb52-20" data-line-number="20"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-21" data-line-number="21"><span class="st">    </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colors=</span>color.scheme) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb52-22" data-line-number="22"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (mins)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Gene&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb52-23" data-line-number="23"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</a></code></pre></div>
+<p>The coordinates of the canvas run from 0 to 1, and the point (0, 0) is in the lower left corner of the canvas. We’ll use <code>draw_plot</code> to draw a complex figure with a heatmap on the left, and two smaller line plots on the right.</p>
+<p>I determined the coordinates below by experimentation to create a visually pleasing layout.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">fancy.plot &lt;-<span class="st"> </span><span class="kw">ggdraw</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span><span class="kw">draw_plot</span>(heat.map, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">width =</span> <span class="fl">0.6</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="st">  </span><span class="kw">draw_plot</span>(neg.corr.lineplot, <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="dt">width =</span> <span class="fl">0.4</span>, <span class="dt">height =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="st">  </span><span class="kw">draw_plot</span>(pos.corr.lineplot, <span class="fl">0.6</span>, <span class="dv">0</span>,   <span class="dt">width =</span> <span class="fl">0.4</span>, <span class="dt">height =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5"><span class="st">  </span><span class="kw">draw_plot_label</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.6</span>, <span class="fl">0.6</span>), <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.5</span>), <span class="dt">size =</span> <span class="dv">15</span>)</a></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_path).</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">fancy.plot</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-35-1.png" width="1536" /></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-wrangling-part-i.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
