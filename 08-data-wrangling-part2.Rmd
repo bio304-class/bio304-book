@@ -31,15 +31,13 @@ There are just four columns (variables) in this data set, but more than 450,000 
 
 ## Heat maps
 
-In our prior visualizations we've used line plots to depict how gene expression changes over time.  For example here are line plots for 10 genes in the data set, in the cdc28 experiment:
+In our prior visualizations we've used line plots to depict how gene expression changes over time.  For example here are line plots for 15 genes in the data set, in the cdc28 experimental conditions:
 
 ```{r, warning=FALSE, message=FALSE}
-genes.of.interest <- unique(spellman.long$gene)[1:10]
-
 genes.of.interest <- c("YHR084W", "YBR083W", "YPL049C", "YDR480W",
                        "YGR040W", "YLR229C", "YDL159W", "YBL016W",
                        "YDR103W", "YJL157C", "YNL271C", "YDR461W",
-                       "YHL007C", "YHR005C")
+                       "YHL007C", "YHR005C", "YJR086W")
 
 spellman.long %>%
   filter(expt == "cdc28", gene %in% genes.of.interest) %>%
@@ -107,21 +105,23 @@ For example, let's create a heat map in which we sort genes by the time of their
 For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes with no more than one missing observation in this experimental condition.
 
 ```{r}
-cdc28 <- spellman.long %>% filter(expt == "cdc28")
+cdc28 <-
+  spellman.long %>%
+  filter(expt == "cdc28") %>%
+  group_by(gene) %>%
+  filter(sum(is.na(expression)) <= 1) %>%
+  ungroup   # removes grouping information from data frame
 
-by.variance.in.cdc28 <-
+top1k.genes <-
   cdc28 %>%
   group_by(gene) %>%
-  summarize(expression.var = var(expression, na.rm = TRUE),
-            num.missing = sum(is.na(expression))) %>%
-  filter(num.missing <= 1) %>%
-  arrange(desc(expression.var))
+  summarize(expression.var = var(expression, na.rm = TRUE)) %>%
+  arrange(desc(expression.var)) %$%
+  gene[1:1000]
     
-top1k.genes.by.variance.in.cdc28 <- by.variance.in.cdc28$gene[1:1000]
-
 top1k.cdc28 <- 
   cdc28 %>%
-  filter(gene %in% top1k.genes.by.variance.in.cdc28)
+  filter(gene %in% top1k.genes)
 ```
 
 

@@ -362,10 +362,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-wrangling-part-ii" class="section level1">
 <h1><span class="header-section-number">Chapter 9</span> Data wrangling, Part II</h1>
-<p>In our last class session we walked through a fairly complex data wrangling task involving a large, gene expression data set.</p>
-<p>Starting with the raw data, we went through several cleaning, transformation, and reshaping to arrive at a data set that allowed us to examine how gene expression changed over time across multiple experimental conditions.</p>
-<p>The final form of our data was what we referred to as a “long” format. The key variables of the final data frame were <code>gene</code>, <code>expt</code>, <code>time</code>, and <code>expression</code>. The structure of this long data frame facilitated the creation of time series plots, filtering by gene and/or condition, grouping operations by gene, etc.</p>
-<p>In today’s session we’re going to demonstrate a new type of visualization called a “heat map” that is useful for high dimensional data. Then we’ll show how to go from our “long” data frame, to a “wide” data frame, and show how this wide data frame facilitates analyses focused on how gene expression changes in concert (covary). We’ll also show how we can combine our long and wide views of the data to create new insights into interesting patterns in the data.</p>
+<p>In our last class session we walked through a complex, data wrangling pipeline involving a genome-wide gene expression data set. Starting with the raw data, we demonstrated several cleaning, transformation, and reshaping steps that resulted in a data set that allowed us to examine how gene expression changed over time across multiple experimental conditions. The final form of our data was what we referred to as a “long” format. The key variables of the final data frame were <code>gene</code>, <code>expt</code>, <code>time</code>, and <code>expression</code>. The structure of this long data frame facilitated the creation of time series plots, filtering by gene and/or condition, grouping operations by gene, etc.</p>
+<p>In today’s session we’re going to demonstrate a new type of visualization called a “heat map” that is useful for high dimensional data. Then we’ll show how to go convert our “long” data frame to a “wide” data frame, and show how this wide data frame facilitates analyses focused on how gene expression changes in concert (covary). We’ll also show how we can combine our long and wide views of the data to create new insights into interesting patterns in the data.</p>
 <div id="libraries-3" class="section level2">
 <h2><span class="header-section-number">9.1</span> Libraries</h2>
 <div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
@@ -373,9 +371,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="data-1" class="section level2">
 <h2><span class="header-section-number">9.2</span> Data</h2>
-<p>So we don’t have to re-create our previous analysis, I’ve posted a CSV file with the “long” version of the cleaned Spellman data set:</p>
+<p>So we don’t have to re-create our previous analysis, I’ve posted a CSV file with the “long” version of the cleaned Spellman data set at the link given below:</p>
 <div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb282-1" data-line-number="1">spellman.long &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/spellman-long.csv&quot;</span>)</a></code></pre></div>
-<p>Let’s remind ourselves of the basic structure of this long data frame:</p>
+<p>Let’s remind ourselves of the basic structure of this data frame:</p>
 <div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb283-1" data-line-number="1"><span class="kw">head</span>(spellman.long)</a>
 <a class="sourceLine" id="cb283-2" data-line-number="2"><span class="co">#&gt; # A tibble: 6 x 4</span></a>
 <a class="sourceLine" id="cb283-3" data-line-number="3"><span class="co">#&gt;   gene    expt   time expression</span></a>
@@ -388,36 +386,40 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb283-10" data-line-number="10"><span class="co">#&gt; 6 YAL007C alpha     0      -0.6</span></a>
 <a class="sourceLine" id="cb283-11" data-line-number="11"><span class="kw">dim</span>(spellman.long)</a>
 <a class="sourceLine" id="cb283-12" data-line-number="12"><span class="co">#&gt; [1] 450994      4</span></a></code></pre></div>
+<p>There are just four columns (variables) in this data set, but more than 450,000 rows, representing all the various combinations of genes (&gt;6000), experimental conditions (4), and time points (variable across experiments).</p>
 </div>
 <div id="heat-maps" class="section level2">
 <h2><span class="header-section-number">9.3</span> Heat maps</h2>
-<p>So far we’ve been using line plots to depict how gene expression changes over time. For example here are line plots for 10 genes in the data set, in the cdc28 experiment:</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1">ten.genes &lt;-<span class="st"> </span><span class="kw">unique</span>(spellman.long<span class="op">$</span>gene)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a>
-<a class="sourceLine" id="cb284-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb284-3" data-line-number="3">spellman.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb284-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb284-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">color=</span>gene)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb284-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb284-7" data-line-number="7"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (min)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>)</a></code></pre></div>
+<p>In our prior visualizations we’ve used line plots to depict how gene expression changes over time. For example here are line plots for 15 genes in the data set, in the cdc28 experimental conditions:</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1">genes.of.interest &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;YHR084W&quot;</span>, <span class="st">&quot;YBR083W&quot;</span>, <span class="st">&quot;YPL049C&quot;</span>, <span class="st">&quot;YDR480W&quot;</span>,</a>
+<a class="sourceLine" id="cb284-2" data-line-number="2">                       <span class="st">&quot;YGR040W&quot;</span>, <span class="st">&quot;YLR229C&quot;</span>, <span class="st">&quot;YDL159W&quot;</span>, <span class="st">&quot;YBL016W&quot;</span>,</a>
+<a class="sourceLine" id="cb284-3" data-line-number="3">                       <span class="st">&quot;YDR103W&quot;</span>, <span class="st">&quot;YJL157C&quot;</span>, <span class="st">&quot;YNL271C&quot;</span>, <span class="st">&quot;YDR461W&quot;</span>,</a>
+<a class="sourceLine" id="cb284-4" data-line-number="4">                       <span class="st">&quot;YHL007C&quot;</span>, <span class="st">&quot;YHR005C&quot;</span>, <span class="st">&quot;YJR086W&quot;</span>)</a>
+<a class="sourceLine" id="cb284-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb284-6" data-line-number="6">spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb284-7" data-line-number="7"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>genes.of.interest) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb284-8" data-line-number="8"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> expression, <span class="dt">color=</span>gene)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb284-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb284-10" data-line-number="10"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time (min)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-282-1.png" width="576" /></p>
 <p>Even with just 10 overlapping line plots, this figure is quite busy and it’s hard to make out the individual behavior of each gene.</p>
-<p>An alternative approach is a “heat map” which depicts the same information in a grid like form, with the expression values indicated by color. Heat maps are good for depicting large amounts of data and providing a coarse “10,000 foot view”. We can create a heat map using <code>geom_tile</code> as follows:</p>
+<p>An alternative approach to depicting such data is a “heat map” which depicts the same information in a grid like form, with the expression values indicated by color. Heat maps are good for depicting large amounts of data and providing a coarse “10,000 foot view”. We can create a heat map using <code>geom_tile</code> as follows:</p>
 <div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb285-1" data-line-number="1">spellman.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb285-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb285-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>genes.of.interest) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb285-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb285-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb285-5" data-line-number="5"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Time (mins)&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-283-1.png" width="576" /></p>
-<p>This figure represents the same information as our line plot, but now there is row for each gene, and the expression of that gene at a given time point is represented by color (scale given on the right). Missing data is shown as gray boxes.</p>
+<p>This figure represents the same information as our line plot, but now there is row for each gene, and the expression of that gene at a given time point is represented by color (scale given on the right). Missing data is shown as gray boxes. Unfortunately, the default color scale used by ggplot is a very subtle gradient from light to dark blue. This make it hard to distinguish patterns of change. Let’s now see how we can improve that.</p>
 <div id="better-color-schemes-with-rcolorbrewer" class="section level3">
 <h3><span class="header-section-number">9.3.1</span> Better color schemes with RColorBrewer</h3>
-<p>The default color scale used by ggplot is a very subtle gradient from light to dark blue. This make it hard to distinguish patterns of change.</p>
-<p>The <code>RColorBrewer</code> packages provides nicer color schemes that are useful for creating heat maps. RColorBrewer defines a set of color palettes that have been optimized for color discrimination, to be color blind friendly, etc. Install the RColorBrewer package using the command line or the RStudio GUI.</p>
+<p>The <code>RColorBrewer</code> packages provides nice color schemes that are useful for creating heat maps. RColorBrewer defines a set of color palettes that have been optimized for color discrimination, many of which are color blind friendly, etc. Install the RColorBrewer package using the command line or the RStudio GUI.</p>
 <p>Once you’ve installed the RColorBrewer package you can see the available color palettes as so:</p>
 <div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1"><span class="kw">library</span>(RColorBrewer)</a>
-<a class="sourceLine" id="cb286-2" data-line-number="2"><span class="co"># show representations of the palettes</span></a>
-<a class="sourceLine" id="cb286-3" data-line-number="3"><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.5</span>) <span class="co"># reduce size of text in the following plot</span></a>
-<a class="sourceLine" id="cb286-4" data-line-number="4"><span class="kw">display.brewer.all</span>()  </a></code></pre></div>
+<a class="sourceLine" id="cb286-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb286-3" data-line-number="3"><span class="co"># show representations of the palettes</span></a>
+<a class="sourceLine" id="cb286-4" data-line-number="4"><span class="kw">par</span>(<span class="dt">cex =</span> <span class="fl">0.5</span>) <span class="co"># reduce size of text in the following plot</span></a>
+<a class="sourceLine" id="cb286-5" data-line-number="5"><span class="kw">display.brewer.all</span>()  </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-284-1.png" width="576" /></p>
 <p>We’ll use the Red-to-Blue (“RdBu”) color scheme defined in RColorBrewer, however we’ll reverse the scheme so blues represent low expression and reds represent high expression. We’ll divide the range of color values into 9 discrete bins.</p>
 <div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb287-1" data-line-number="1"><span class="co"># displays the RdBu color scheme divided into a paletee of 9 colors</span></a>
@@ -428,7 +430,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb288-3" data-line-number="3">color.scheme &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">brewer.pal</span>(<span class="dv">9</span>,<span class="st">&quot;RdBu&quot;</span>))</a></code></pre></div>
 <p>Now let’s regenerate the heat map we created previously with this new color scheme. To do this we specify a gradient color scale using the <code>scale_fill_gradientn()</code> function from ggplot. In addition to specifying the color scale, we also constrain the limits of the scale to insure it’s symmetric about zero.</p>
 <div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1">spellman.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb289-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>ten.genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb289-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>, gene <span class="op">%in%</span><span class="st"> </span>genes.of.interest) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb289-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> time, <span class="dt">y =</span> gene)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb289-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> expression)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb289-5" data-line-number="5"><span class="st">    </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colors=</span>color.scheme,</a>
@@ -440,22 +442,24 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">9.3.2</span> Looking for patterns using sorted data and heat maps</h3>
 <p>The real power of heat maps becomes apparent when you you rearrange the rows of the heat map to emphasize patterns of interest.</p>
 <p>For example, let’s create a heat map in which we sort genes by the time of their maximal expression. This is one way to identify genes that reach their peak expression at similar times, which is one criteria one might use to identify genes acting in concert.</p>
-<p>For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes in this experimental condition with no more than 1 missing observation.</p>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1">cdc28 &lt;-<span class="st"> </span>spellman.long <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>)</a>
-<a class="sourceLine" id="cb290-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb290-3" data-line-number="3">by.variance.in.cdc28 &lt;-</a>
-<a class="sourceLine" id="cb290-4" data-line-number="4"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb290-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(gene) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb290-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">expression.var =</span> <span class="kw">var</span>(expression, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb290-7" data-line-number="7">            <span class="dt">num.missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(expression))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb290-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(num.missing <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb290-9" data-line-number="9"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(expression.var))</a>
-<a class="sourceLine" id="cb290-10" data-line-number="10">    </a>
-<a class="sourceLine" id="cb290-11" data-line-number="11">top1k.genes.by.variance.in.cdc28 &lt;-<span class="st"> </span>by.variance.in.cdc28<span class="op">$</span>gene[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>]</a>
-<a class="sourceLine" id="cb290-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb290-13" data-line-number="13">top1k.cdc28 &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb290-14" data-line-number="14"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb290-15" data-line-number="15"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>top1k.genes.by.variance.in.cdc28)</a></code></pre></div>
+<p>For simplicities sake we will restrict our attention to the cdc28 experiment, and only consider the 1000 most variables genes with no more than one missing observation in this experimental condition.</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1">cdc28 &lt;-</a>
+<a class="sourceLine" id="cb290-2" data-line-number="2"><span class="st">  </span>spellman.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(expt <span class="op">==</span><span class="st"> &quot;cdc28&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-5" data-line-number="5"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">sum</span>(<span class="kw">is.na</span>(expression)) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-6" data-line-number="6"><span class="st">  </span>ungroup   <span class="co"># removes grouping information from data frame</span></a>
+<a class="sourceLine" id="cb290-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb290-8" data-line-number="8">top1k.genes &lt;-</a>
+<a class="sourceLine" id="cb290-9" data-line-number="9"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-10" data-line-number="10"><span class="st">  </span><span class="kw">group_by</span>(gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-11" data-line-number="11"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">expression.var =</span> <span class="kw">var</span>(expression, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-12" data-line-number="12"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(expression.var)) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb290-13" data-line-number="13"><span class="st">  </span>gene[<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>]</a>
+<a class="sourceLine" id="cb290-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb290-15" data-line-number="15">top1k.cdc28 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb290-16" data-line-number="16"><span class="st">  </span>cdc28 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb290-17" data-line-number="17"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">%in%</span><span class="st"> </span>top1k.genes)</a></code></pre></div>
 <p>To find the time of maximum expression we’ll employ the function <code>which.max</code> (<code>which.min</code>), which finds the index of the maximum (minimum) element of a vector. For example to find the index of the maximum expression measurement for YAR018C we could do:</p>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb291-1" data-line-number="1">top1k.cdc28 <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb291-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(gene <span class="op">==</span><span class="st"> &quot;YAR018C&quot;</span>) <span class="op">%$%</span><span class="st">  </span><span class="co"># note the exposition pipe operator!</span></a>
