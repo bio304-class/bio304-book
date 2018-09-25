@@ -1,0 +1,124 @@
+
+
+## Reading data from a file
+
+We'll use the `read_csv` function defined in the `readr` package (loaded via `tidyverse`) to read a CSV formatted data file.  We'll load a data file called `possums.csv`.
+
+```{r, message=FALSE}
+possums <- read_csv("https://tinyurl.com/bio304-possums-csv")
+```
+
+The possums data set includes information from a study of mountain brushtail possums (*Trichosurus caninus*; Lindenmayer DB et al. 1995, Australian Journal of Zoology 43, 449-458.)  The investigators recorded variables about individual possum's sex, age, where they were collected, and a range of morphological measurements. For example the variable `skullw` is the width of the skull, `taill` is tail length, etc.  
+
+Notice that we read the CSV file directly from a remote file via a URL.  If instead, you wanted to load a local file on your computer you would specify the "path" -- i.e. the location on your hard drive where you stored the file.  For example, here is how I would load the same file if it was stored in the standard downloads directory on my Mac laptop:
+
+```{r, eval = FALSE}
+# this assumes you're running a local version of R (i.e. on your laptop)
+possums <- read_csv("/Users/pmagwene/Downloads/possums.csv")
+```
+
+
+## Exploring the "possums" data set
+
+Let's take a moment to explore the possums data set.  First, how big is it? The `dim` function will tell us the dimensions (# of rows and columns) of the data table we loaded:
+
+```{r, echo=TRUE, eval=FALSE}
+dim(possums)
+```
+
+What are the names of the columns of the table?
+
+```{r, echo=TRUE, eval=FALSE}
+names(possums)
+```
+
+## Simple tables
+
+Let's use the `count` function to count the number of male and female possums and the number collected from each of the populations of interest in this study (Victoria and "other"):
+
+```{r, echo=TRUE, eval=FALSE}
+count(possums, sex)
+count(possums, Pop)
+```
+
+We can break down the counts by population and sex combinined by specifying both variables:
+
+```{r, echo=TRUE, eval=FALSE}
+count(possums, Pop, sex)
+```
+How do the results differ if  instead you write `count(possums, sex, Pop)`?
+
+Finally, let's get counts for the different age groups in the study:
+
+```{r, echo=TRUE, eval=FALSE}
+count(possums, age)
+```
+
+Notice that besides the nine age groups, there is a grouping for "NA". "NA" means "not available" and is the standard designation for missing values.  This table tells us there are two possums for which age estimates were not available.
+
+
+## Simple figures
+
+Throughout this course we'll use a package called "ggplot2" to generate figures.  The ggplot2 package is part of the tidyverse and is automatically loaded when we load the tidyverse library.  In the code below, we'll demonstrate how to use ggplot by example.  In a later lecture we'll go into greater detail about how ggplot is structured and the broader conceptual framework that underpins its design.
+
+## Bar plots
+
+First let's create some simple bar plots as alternate representations of the counts:
+
+```{r}
+ggplot(possums) + geom_bar(aes(x = sex))
+```
+
+```{r}
+ggplot(possums) + geom_bar(aes(x = Pop))
+```
+
+```{r}
+ggplot(possums) + geom_bar(aes(x = Pop, fill = sex))
+```
+
+
+## Histograms
+
+A histogram is a special type of bar plot, typically used with continuous data.  In a histogram, we divide the range of the data into bins of a given size, and use vertical bars to depict the frequency (count) of observations that fall into each bin.  This gives a good sense of the intervals in which most of the observations are found.
+
+Here is a histogram for the skull width data:
+
+```{r}
+ggplot(possums) + geom_histogram(aes(x = skullw))
+```
+
+Notice the warning message that was generated, about the default number of bins that were used.  ggplot is alerting us that that we may want to consider regenerating the plot with a different number of bins.  Let's try a smaller number of bins:
+
+```{r}
+ggplot(possums) + geom_histogram(aes(x = skullw), bins = 20)
+```
+
+Try creating histograms for `taill` and `totlngth`.
+
+## Scatter plots
+
+A scatter plot is typically used to represent two numerical variables simultaneously. Each point in a scatter plot is an individual in the data set, and the location of the points represent the measured values of the variables of interest on that individual.
+
+```{r}
+ggplot(possums) + geom_point(aes(x = totlngth, y = taill))
+```
+
+We can add information about categorical variables to our scatter plot by using color or shape to depict different classes
+
+
+```{r}
+ggplot(possums) + 
+  geom_point(aes(x = totlngth, y = taill, color = Pop))
+```
+
+
+We can represent more than two categorical variables in our scatter plot by using both shape and color.  We'll also change the size and transparency of the plotted points (via the `alpha` argument).
+
+```{r}
+ggplot(possums) + 
+  geom_point(aes(x = totlngth, y = taill, color = Pop, shape = sex),
+             size = 2, alpha = 0.75)
+```
+
+Explore some of the other bivariate relationships in the possums data by creating additional scatter plots.  Given 9 numerical variables, how many distinct pairwise scatter plots could you create?

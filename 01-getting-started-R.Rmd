@@ -103,9 +103,6 @@ sqrt(10)  # square root
 ```
 
 
-
-
-
 ## The R Help System
 
 R comes with fairly extensive documentation and a simple help system. You can access HTML versions of the R documentation under the Help tab in Rstudio.  The HTML documentation also includes information on any packages you've installed. Take a few minutes to browse through the R HTML documentation. In addition to the HTML documentation there is also a search box where you can enter a term to search on (see red arrow in figure below).
@@ -313,171 +310,264 @@ substr("abcdef", 2, 5)  # get substring from characters 2 to 5
 substr(first.name, 1, 3) # get substring from characters 1 to       
 ```
 
-## Packages {#packages}
-  
-Packages are libraries of R functions and data that provide additional capabilities and tools beyond the standard library of functions included with R.  Hundreds of people around the world have developed packages for R that provide functions and related data structures  for conducting many different types of analyses.
 
-Throughout this course you'll need to install a variety of packages. Here I show the basic procedure for installing new packages from the console as well as from the R Studio interface.
+## Vectors are the simplest data structure in R
 
-### Installing packages from the console
+In computer science, the term "data structure" refers to the ways that data are stored, retrieved, and organized in a computer's memory.  Common examples include lists, hash tables (also called dictionaries), sets, queues, and trees. Different types of data structures are used to support different types of operations on data.
 
-The built-in function `install.packages` provides a quick and conveniet way to install packages from the R console.  
+Vectors are the core data structure in R. Vectors store an ordered lists of items, *all of the same type* (i.e. the data in a vector are "homogenous" with respect to their type).
 
-### Install the tidyverse package
+### Creating vectors
 
-To illustrate the use of `install.package`, we'll install a collection of packages (a "meta-package") called the [tidyverse](http://www.tidyverse.org).  Here's how to install the tidyverse meta-package from the R console:
-
-```{r, eval = FALSE}
-install.packages("tidyverse", dependencies = TRUE)
-```
-
-The first argument to `install.packages` gives the names of the package we want to install. The second argument, `dependencies = TRUE`, tells R to install any additional packages that tidyverse depends on.
-
-
-### Installing packages from the RStudio dialog
-
-You can also install packages using a graphical dialog provided by RStudio. To do so pick the `Packages` tab in RStudio, and then click the `Install` button.  
-
-```{r, echo = FALSE, out.width = "600px", fig.align = "center", fig.cap = "The Packages tab in RStudio", results="markup"}
-knitr::include_graphics("./figures/fig-rstudio-packages-tab.png")
-```
-
-In the packages entry box you can type the name of the package you wish to install. 
-
-
-
-### Loading packages with the `library()` function
-
-Once a package is installed on your computer, the package can be loaded into your R session using the `library` function.  To insure our previous install commands worked correctly, let's load the packages we just installed.
-
-```{r, eval=FALSE}
-library(tidyverse)
-```
-
-Since the tidyverse pacakge is a "meta-package" it provides some additional info about the sub-packages that got loaded.  
-
-When you load tidyverse, you will also see a message about "Conflicts" as several of the functions provided in the dplyr package (a sub-package in tidyverse) conflict with names of functions provided by the "stats" package which usually gets automically loaded when you start R.  The conflicting funcdtions are `filter` and `lag`. The conflicting functions in the stats package are `lag` and `filter` which are used in time series analysis.  The `dplyr` functions are  more generally useful. Furthermore, if you need these masked functions you can still access them by prefacing the function name with the name of the package (e.g. `stats::filter`).
-
-
-## Reading data from a file
-
-We'll use the `read_csv` function defined in the `readr` package (loaded via `tidyverse`) to read a CSV formatted data file.  We'll load a data file called `possums.csv`.
-
-```{r, message=FALSE}
-possums <- read_csv("https://tinyurl.com/bio304-possums-csv")
-```
-
-The possums data set includes information from a study of mountain brushtail possums (*Trichosurus caninus*; Lindenmayer DB et al. 1995, Australian Journal of Zoology 43, 449-458.)  The investigators recorded variables about individual possum's sex, age, where they were collected, and a range of morphological measurements. For example the variable `skullw` is the width of the skull, `taill` is tail length, etc.  
-
-Notice that we read the CSV file directly from a remote file via a URL.  If instead, you wanted to load a local file on your computer you would specify the "path" -- i.e. the location on your hard drive where you stored the file.  For example, here is how I would load the same file if it was stored in the standard downloads directory on my Mac laptop:
-
-```{r, eval = FALSE}
-# this assumes you're running a local version of R (i.e. on your laptop)
-possums <- read_csv("/Users/pmagwene/Downloads/possums.csv")
-```
-
-
-## Exploring the "possums" data set
-
-Let's take a moment to explore the possums data set.  First, how big is it? The `dim` function will tell us the dimensions (# of rows and columns) of the data table we loaded:
-
-```{r, echo=TRUE, eval=FALSE}
-dim(possums)
-```
-
-What are the names of the columns of the table?
-
-```{r, echo=TRUE, eval=FALSE}
-names(possums)
-```
-
-## Simple tables
-
-Let's use the `count` function to count the number of male and female possums and the number collected from each of the populations of interest in this study (Victoria and "other"):
-
-```{r, echo=TRUE, eval=FALSE}
-count(possums, sex)
-count(possums, Pop)
-```
-
-We can break down the counts by population and sex combinined by specifying both variables:
-
-```{r, echo=TRUE, eval=FALSE}
-count(possums, Pop, sex)
-```
-How do the results differ if  instead you write `count(possums, sex, Pop)`?
-
-Finally, let's get counts for the different age groups in the study:
-
-```{r, echo=TRUE, eval=FALSE}
-count(possums, age)
-```
-
-Notice that besides the nine age groups, there is a grouping for "NA". "NA" means "not available" and is the standard designation for missing values.  This table tells us there are two possums for which age estimates were not available.
-
-
-## Simple figures
-
-Throughout this course we'll use a package called "ggplot2" to generate figures.  The ggplot2 package is part of the tidyverse and is automatically loaded when we load the tidyverse library.  In the code below, we'll demonstrate how to use ggplot by example.  In a later lecture we'll go into greater detail about how ggplot is structured and the broader conceptual framework that underpins its design.
-
-## Bar plots
-
-First let's create some simple bar plots as alternate representations of the counts:
+The simplest way to create a vector at the interactive prompt is to use the `c()` function, which is short hand for "combine" or "concatenate".
 
 ```{r}
-ggplot(possums) + geom_bar(aes(x = sex))
+x <- c(2,4,6,8)  # create a vector, assign it the variable name `x`
+x
 ```
+
+Vectors in R always have a type (accessed with the `typeof()` function) and a length (accessed with the `length()` function).
 
 ```{r}
-ggplot(possums) + geom_bar(aes(x = Pop))
+length(x)
+typeof(x)
 ```
+
+
+Vectors don't have to be numerical; logical and character vectors work just as well.
 
 ```{r}
-ggplot(possums) + geom_bar(aes(x = Pop, fill = sex))
+y <- c(TRUE, TRUE, FALSE, TRUE, FALSE, FALSE)
+y
+typeof(y)
+length(y)
+
+z <- c("How", "now", "brown", "cow")
+z
+typeof(z)
+length(z)
 ```
 
-
-## Histograms
-
-A histogram is a special type of bar plot, typically used with continuous data.  In a histogram, we divide the range of the data into bins of a given size, and use vertical bars to depict the frequency (count) of observations that fall into each bin.  This gives a good sense of the intervals in which most of the observations are found.
-
-Here is a histogram for the skull width data:
+You can also use `c()` to concatenate two or more vectors together.
 
 ```{r}
-ggplot(possums) + geom_histogram(aes(x = skullw))
+x <- c(2, 4, 6, 8)
+y <- c(1, 3, 5, 7, 9)  # create another vector, labeled y
+xy <- c(x,y)  # combine two vectors
+xy
+
+z <- c(pi/4, pi/2, pi, 2*pi)
+xyz <- c(x, y, z)  # combine three vectors
+xyz
 ```
 
-Notice the warning message that was generated, about the default number of bins that were used.  ggplot is alerting us that that we may want to consider regenerating the plot with a different number of bins.  Let's try a smaller number of bins:
+### Vectors from regular sequences
+
+There are a variety of functions for creating regular sequences in the form of vectors.
 
 ```{r}
-ggplot(possums) + geom_histogram(aes(x = skullw), bins = 20)
+1:10  # create a vector with the integer values from 1 to 10
+20:11  # a vector with the integer values from 20 to 11
+
+seq(1, 10)  # like 1:10
+seq(1, 10, by = 2) # 1:10, in steps of 2
+seq(2, 4, by = 0.25) # 2 to 4, in steps of 0.25
+
+# create a vector of length 25 with values between 1 and 10
+seq(1, 10, length.out = 25) 
 ```
 
-Try creating histograms for `taill` and `totlngth`.
 
-## Scatter plots
+### Vector arithmetic
 
-A scatter plot is typically used to represent two numerical variables simultaneously. Each point in a scatter plot is an individual in the data set, and the location of the points represent the measured values of the variables of interest on that individual.
+The basic R arithmetic operations work on numeric vectors as well as on single numbers (in fact, behind the scenes in R single numbers *are* vectors!).
 
 ```{r}
-ggplot(possums) + geom_point(aes(x = totlngth, y = taill))
+x <- c(2, 4, 6, 8, 10)
+x * 2  # multiply each element of x by 2
+x - pi # subtract pi from each element of x
+
+y <- c(0, 1, 3, 5, 9)
+x + y  # add together each matching element of x and y
+x * y # multiply each matching element of x and y
+x/y # divide each matching element of x and y
 ```
 
-We can add information about categorical variables to our scatter plot by using color or shape to depict different classes
 
+### Vector recycling
+
+In operations that involve pairs of vectors, when vectors are not of the same length R `recycles' the elements of the shorter vector to make the lengths conform. 
 
 ```{r}
-ggplot(possums) + 
-  geom_point(aes(x = totlngth, y = taill, color = Pop))
+x <- c(2, 4, 6, 8, 10)
+length(x)
+z <- c(1, 4, 7, 11)
+length(z)
+x + z
 ```
 
+In the example above `z` was treated as if it was the vector `(1, 4, 7, 11, 1)`.
 
-We can represent more than two categorical variables in our scatter plot by using both shape and color.  We'll also change the size and transparency of the plotted points (via the `alpha` argument).
+### Numerical functions for numerical vectors
+
+Basic numerical functions operate element-wise on numerical vectors. Here are a few examples.
 
 ```{r}
-ggplot(possums) + 
-  geom_point(aes(x = totlngth, y = taill, color = Pop, shape = sex),
-             size = 2, alpha = 0.75)
+sin(x)
+cos(x * pi)
+log(x)
+sum(x)
+min(x)
+max(x)
 ```
 
-Explore some of the other bivariate relationships in the possums data by creating additional scatter plots.  Given 9 numerical variables, how many distinct pairwise scatter plots could you create?
+
+### Indexing Vectors
+
+Accessing the element of a vector is called "indexing".  Indexing is the process of specifying the numerical positions (indices) that you want to take access from the vector.
+
+For a vector of length $n$, we can access the elements by the indices $1 \ldots n$. We say that R vectors (and other data structures like lists) are `one-indexed'. Many other programming languages, such as Python, C, and Java, use zero-indexing where the elements of a data structure are accessed by the indices $0 \ldots n-1$. Indexing errors are a common source of bugs. 
+
+Indexing a vector is done by specifying the index in square brackets as shown below:
+
+```{r}
+x <- c(2, 4, 6, 8, 10)
+length(x)
+
+x[1]  # return the 1st element of x
+
+x[4]  # return the 4th element of x
+```
+
+Negative indices are used to exclude particular elements. `x[-1]` returns all elements of `x` except the first. 
+
+```{r}
+x[-1]
+```
+
+You can get multiple elements of a vector by indexing by another vector. In the example below, `x[c(3,5)]` returns the third and fifth element of x`.
+
+```{r}
+x[c(3,5)]
+```
+
+### Comparison operators applied to vectors
+
+When the comparison operators, such as"greater than" (`>`), "less than or equal to" (`<=`), equality (`==`), etc. are applied to  numeric vectors, they return logical vectors:
+
+```{r}
+x <- c(2, 4, 6, 8, 10, 12)
+x < 8  # returns TRUE for all elements lass than 8
+```
+
+Here's a fancier example:
+
+```{r}
+x > 4 & x < 10  # greater than 4 AND less than 10
+```
+
+
+
+### Combining Indexing and Comparison of Vectors
+
+A very powerful feature of R is the ability to combine the comparison operators (which return TRUE or FALSE values) with indexing. This facilitates data filtering and subsetting. 
+
+Here's an example:
+```{r}
+x <- c(2, 4, 6, 8, 10) 
+x[x > 5]
+```
+
+In the first example we retrieved all the elements of `x` that are larger than 5 (read as "x where x is greater than 5"). Notice how we got back all the elements where the statement in the brackets was `TRUE`.
+
+You can string together comparisons for more complex filtering.
+
+```{r}
+x[x < 4 | x > 8]  # less than four OR greater than 8
+```
+
+In the second example we retrieved those elements of `x` that were smaller than four  *or* greater than six. Combining indexing and comparison is a powerful concept which we'll use repeatedly in this course.
+
+
+### Vector manipulation
+
+You can combine indexing with assignment to change the elements of a vectors:
+
+```{r}
+x <- c(2, 4, 6, 8, 10)
+x[2] <- -4 
+x
+```
+
+You can also use indexing vectors to change multiple values at once:
+
+```{r}
+x <- c(2, 4, 6, 8, 10)
+x[c(1, 3, 5)]  <- 6
+x
+```
+
+Using logical vectors to manipulate the elements of a vector also works:
+
+```{r}
+x <- c(2, 4, 6, 8, 10)
+x[x > 5] = 5    # truncate all values to have max value 5
+x
+```
+
+
+### Additional functions for working with vectors
+
+The function `unique()` returns the unique items in a vector:
+
+```{r}
+x <- c(5, 2, 1, 4, 6, 9, 8, 5, 7, 9)
+unique(x)
+```
+
+`rev()` returns the items in reverse order (without changing the input vector):
+
+```{r}
+y <- rev(x)
+y
+x  # x is still in original order
+```
+
+There are a number of useful functions related to sorting. Plain `sort()` returns a new vector with the items in sorted order:
+
+```{r}
+sorted.x <- sort(x)  # returns items of x sorted
+sorted.x
+x        # but x remains in its unsorted state
+```
+
+The related function `order()` gives the indices which would rearrange the items into sorted order:
+
+```{r}
+order(x)
+```
+
+`order()` can be useful when you want to sort one list by the values of another:
+
+```{r}
+students <- c("fred", "tabitha", "beatriz", "jose")
+class.ranking <- c(4, 2, 1, 3)
+
+students[order(class.ranking)]  # get the students sorted by their class.ranking
+```
+
+`any()` and `all()`, return single boolean values based on a specified comparison provided as an argument:
+
+```{r}
+y <- c(2, 4, 5, 6, 8)
+
+any(y > 5) # returns TRUE if any of the elements are TRUE
+
+all(y > 5) # returns TRUE if all of the elements are TRUE
+```
+
+`which()` returns the *indices* of the vector for which the input is true:
+```{r}
+which(y > 5)
+```
+
