@@ -123,6 +123,7 @@ top1k.cdc28 <-
   filter(gene %in% top1k.genes.by.variance.in.cdc28)
 ```
 
+
 To find the time of maximum expression we'll employ the function `which.max` (`which.min`), which finds the index of the maximum (minimum) element of a vector.  For example to find the index of the maximum expression measurement for YAR018C we could do:
 
 ```{r}
@@ -277,12 +278,11 @@ First we filter our wide data set to only consider the cdc28 experiment and thos
 
 ```{r}
 top1k.cdc28.wide <- 
-  spellman.wide %>%
-  filter(expt == "cdc28") %>%
-  select(expt, time, top1k.genes.by.variance.in.cdc28) 
+  top1k.cdc28 %>%
+  spread(gene, expression)
 ```
 
-With this restricted data set, we can then calculate the correlations between every pairof genes as follows:
+With this restricted data set, we can then calculate the correlations between every pair of genes as follows:
 
 ```{r}
 cdc28.correlations <- 
@@ -317,7 +317,7 @@ We then return to our long data to show this set of genes that are strongly posi
 ```{r}
 top1k.cdc28 %>%
   filter(gene %in% pos.corr.YAR018C) %>%
-  ggplot(aes(x = time, y = expression, color = expt, group = gene)) + 
+  ggplot(aes(x = time, y = expression, group = gene)) + 
     geom_line(alpha = 0.33) +
     theme(legend.position = "none")
 ```
@@ -336,7 +336,7 @@ As before we generate a line plot showing these genes:
 ```{r}
 top1k.cdc28 %>%
   filter(gene %in% neg.corr.YAR018C) %>%
-  ggplot(aes(x = time, y = expression, color = expt, group = gene)) +
+  ggplot(aes(x = time, y = expression, group = gene)) +
     geom_line(alpha = 0.33) +
     theme(legend.position = "none")  
 ```
