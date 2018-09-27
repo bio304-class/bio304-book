@@ -276,9 +276,10 @@ Let's use a `for` loop to create a  `multi.coin.flip` function thats accepts an 
 
 ```{r}
 multi.coin.flip <- function(n = 1) {
-  flips <- c()  # create an empty vector
+  # create an empty character vector of length n
+  flips <- vector(mode="character", length=n)  
   for (i in 1:n) {
-    flips <- c(flips, coin.flip())
+    flips[i] <- coin.flip()
   }
   flips
 }
@@ -296,6 +297,28 @@ And calling `multi.coin.flip` with a numeric argument returns multiple coin flip
 multi.coin.flip(n=10)
 ```
 
+#### Efficiency tip
+
+An alternate way to write the `multi.coin.flip` function above would be:
+
+```{r}
+## This is inefficient, see description eblow
+multi.coin.flip.alt <- function(n = 1) {
+  flips <- c()
+  for (i in 1:n) {
+    flips <- c(flips, coin.flip())
+  }
+  flips
+}
+```
+
+If you know the final length of your vector, it is much faster to create an empty vector of the needed length:
+
+e.g., `vector(mode="character", length=n) # runs fast`
+
+than it is to create an empty vector of zero elength, and then extend it sequentially:
+
+e.g., `flips <- c(flips, coin.flip()) # runs slow`
 
 
 
@@ -401,3 +424,130 @@ The `ifelse` function is clearly a more compact and readable way to accomplish t
 
 
 
+## `map` and related tools
+
+Another common situation is applying a function to every element of a list or vector.  Again, we could use a `for` loop, but the `map` functions often are better alternatives.
+
+NOTE: `map` is a relative newcomer to R and must be loaded with the `purrr` package (`purrr` is loaded when we load `tidyverse`).  Although base R has a complicated series of "apply" functions (`apply`, `lapply`, `sapply`, `vapply`, `mapply`), `map` provides similar functionality with a more consistent interface. We won't use the `apply` functions in this class, but you may see them in older code.
+
+```{r}
+library(tidyverse)
+```
+
+
+***
+
+### basic `map`
+
+Typically, `map` takes two arguments -- a sequence (a vector, list, or data frame) and a function.  It then applies the function to each element of the sequence, returning the results as a list.
+
+To illustrate `map`, let's consider an example with a list of 2-vectors, where each vector gives the min and max values of some variable of interest for individuals in a sample (e.g. resting heart rate and maximum heart rate during exercise).  We can use the `map` function to quickly generate the difference between the resting and maximum heart rates:
+
+```{r}
+heart.rates <- list(bob = c(60, 120), fred = c(79, 150), jim = c(66, 110))
+diff.fxn <- function(x) {x[2] - x[1]}
+
+map(heart.rates, diff.fxn)
+```
+
+As a second example, here's how we could use `map` to get the class of each object in a list:
+
+```{r}
+x <- list(c(1,2,3), "a", "b", list(lead = "Michael", keyboard = "Jermaine"))
+map(x, class)
+```
+
+***
+
+### `map_if` and `map_at`
+
+`map_if` is a variant of `map` that takes a predicate function (a function that evaluates to TRUE or FALSE) to determine which elements of the input sequence are transformed by the map function.  All elements of the sequence that do not meet the predicate are left un-transformed. Like `map`, `map_if` always returns a list.
+
+Here's an example where we use `map_if` to apply the `stringr::str_to_upper` function to those columns of a data frame that are character vectors, and apply `abs` to obtain the absolute value of a numeric column:
+
+```{r}
+a <- rnorm(6)
+b <- c("a", "b", "c", "d", "e", "f")
+c <- c("u", "v", "w", "x", "y", "z")
+df <- data_frame(a, b, c)
+head(df)
+
+df2 <- map_if(df, is.character, str_to_upper)
+df2 <- map_if(df2, is.numeric, abs)
+head(df2)
+```
+
+Note that `df2` is a list, not a data frame. We can convert `df2` to a data frame `df3`:
+
+```{r}
+# Next, create data frame df3 
+df3 <- data_frame(df2$a, df2$b, df2$c)
+head(df3)
+```
+
+But it requires an extra step to rename the columns:
+
+```{r}
+# Check column names, then rename 
+names(df3)
+names(df3) <- c("a", "b", "c")
+head(df3)
+```
+
+***
+
+If our goal is to apply functions to the columns of a data frame, it may be easier with `mutate`:
+
+```{r}
+
+df4 <- df %>% as_tibble() %>%
+  mutate(a = abs(a),
+         b = str_to_upper(b),
+         c = str_to_upper(c))
+
+head(df4)
+```
+
+***
+
+### mapping in parallel using `map2`
+
+The `map2` function applies a transformation function to two sequences in parallel.  The following example illustrates this:
+
+```{r}
+first.names <- c("John", "Mary", "Fred")
+last.names <- c("Smith", "Hernandez", "Kidogo")
+
+map2(first.names, last.names, str_c, sep=" ")
+```
+
+Note how we can specify  arguments to the transformation function as additional arguments to `map2` (i.e., the `sep` argument gets passed to `str_c`)
+
+***
+
+### `map` variants that return vectors
+
+`map`, `map_if`, and `map_at` *always return lists*. The `purrr` library also has a series of `map` variants that *return vectors*:
+
+* `map_lgl` (for logical vectors)
+* `map_chr` (for character vectors)
+* `map_int` (integer vectors)
+* `map_dbl` (double vectors)
+
+```{r}
+# compare the outputs of map and map_chr
+a <- map(letters[1:6], str_to_upper)
+str(a)
+
+b <- map_chr(letters[1:6], str_to_upper)
+str(b) # a vector
+```
+
+Here's an example using `map_dbl`, where we create a data frame with three columns, and compute the median of each column:
+
+```{r}
+# Make data frame for analysis
+df <- tibble(a = rnorm(100), b = rnorm(100),c = rnorm(100))
+
+map_dbl(df, median) # median of each column of df
+```
