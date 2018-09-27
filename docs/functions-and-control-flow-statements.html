@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="data-wrangling-part-ii.html">
 
-<link rel="next" href="data-story-women-and-children-first-on-the-titanic.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -376,19 +376,303 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Biology 304: Biological Data Analysis</h1>
-<h4 class="author"><em>Paul M. Magwene</em></h4>
-<h4 class="date"><em>2018-09-26</em></h4>
+<div id="functions-and-control-flow-statements" class="section level1">
+<h1><span class="header-section-number">Chapter 10</span> Functions and control flow statements</h1>
+<div id="writing-your-own-functions" class="section level2">
+<h2><span class="header-section-number">10.1</span> Writing your own functions</h2>
+<p>So far we’ve been using a variety of built in functions in R. However the real power of a programming language is the ability to write your own functions. Functions are a mechanism for organizing and abstracting a set of related computations. We usually write functions to represent sets of computations that we apply frequently, or to represent some conceptually coherent set of manipulations to data.</p>
+<p>The general form of an R function is as follows:</p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1">funcname &lt;-<span class="st"> </span><span class="cf">function</span>(arg1, arg2) {</a>
+<a class="sourceLine" id="cb317-2" data-line-number="2"> <span class="co"># one or more expressions that operate on the fxn arguments</span></a>
+<a class="sourceLine" id="cb317-3" data-line-number="3"> <span class="co"># last expression is the object returned</span></a>
+<a class="sourceLine" id="cb317-4" data-line-number="4"> <span class="co"># or you can explicitly return an object</span></a>
+<a class="sourceLine" id="cb317-5" data-line-number="5">}</a></code></pre></div>
+<p>To make this concrete, here’s an example where we define a function to calculate the area of a circle:</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb318-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r){</a>
+<a class="sourceLine" id="cb318-2" data-line-number="2">  <span class="kw">return</span>(pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb318-3" data-line-number="3">}</a></code></pre></div>
+<p>Since R returns the value of the last expression in the function, the <code>return</code> call is optional and we could have simply written:</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r){</a>
+<a class="sourceLine" id="cb319-2" data-line-number="2">  pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb319-3" data-line-number="3">}</a></code></pre></div>
+<p>Very short and concise functions are often written as a single line. In practice I’d probably write the above function as:</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb320-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r) {pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>}</a></code></pre></div>
+<p>The <code>area.of.circle</code> function takes one argument, <code>r</code>, and calculates the area of a circle with radius r. Having defined the function we can immediately put it to use:</p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" data-line-number="1"><span class="kw">area.of.circle</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb321-2" data-line-number="2"><span class="co">#&gt; [1] 28.27433</span></a>
+<a class="sourceLine" id="cb321-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb321-4" data-line-number="4">radius &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb321-5" data-line-number="5"><span class="kw">area.of.circle</span>(radius)</a>
+<a class="sourceLine" id="cb321-6" data-line-number="6"><span class="co">#&gt; [1] 50.26548</span></a></code></pre></div>
+<p>If you type a function name without parentheses R shows you the
+function’s definition. This works for built-in functions as well
+(thought sometimes these functions are defined in C code in which case R
+will tell you that the function is a <code>.Primitive</code>).</p>
+<div id="function-arguments" class="section level3">
+<h3><span class="header-section-number">10.1.1</span> Function arguments</h3>
+<p>Function arguments can specify the data that a function operates on or parameters that the function uses. Function arguments can be either required or optional. In the case of optional arguments, a default value is assigned if the argument is not given.</p>
+<p>Take for example the <code>log</code> function. If you examine the help file for the <code>log</code> function (type <code>?log</code> now) you’ll see that it takes two arguments, refered to as <code>x</code> and <code>base</code>. The
+argument <code>x</code> represents the numeric vector you pass to the function and is a required argument (see what happens when you type <code>log()</code> without giving an argument). The argument <code>base</code> is optional. By default the value of <code>base</code> is <span class="math inline">\(e = 2.71828\ldots\)</span>. Therefore by default the <code>log</code> function returns natural logarithms. If you want logarithms to a different base you can change the <code>base</code> argument as in the following examples:</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb322-1" data-line-number="1"><span class="kw">log</span>(<span class="dv">2</span>) <span class="co"># log of 2, base e</span></a>
+<a class="sourceLine" id="cb322-2" data-line-number="2"><span class="co">#&gt; [1] 0.6931472</span></a>
+<a class="sourceLine" id="cb322-3" data-line-number="3"><span class="kw">log</span>(<span class="dv">2</span>,<span class="dv">2</span>) <span class="co"># log of 2, base 2</span></a>
+<a class="sourceLine" id="cb322-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></a>
+<a class="sourceLine" id="cb322-5" data-line-number="5"><span class="kw">log</span>(<span class="dv">2</span>, <span class="dv">4</span>) <span class="co"># log of 2, base 4</span></a>
+<a class="sourceLine" id="cb322-6" data-line-number="6"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
+<p>Because base 2 and base 10 logarithms are fairly commonly used, there are convenient aliases for calling <code>log</code> with these bases.</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1"><span class="kw">log2</span>(<span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb323-2" data-line-number="2"><span class="co">#&gt; [1] 3</span></a>
+<a class="sourceLine" id="cb323-3" data-line-number="3"><span class="kw">log10</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb323-4" data-line-number="4"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
 </div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<div id="how-to-use-these-lecture-notes" class="section level2">
-<h2><span class="header-section-number">1.1</span> How to use these lecture notes</h2>
-<p>In this and future materials to be posted on the course website you’ll encounter blocks of R code. <em>Your natural intuition will be to cut and paste commands or code blocks into the R interpretter to save yourself the typing.</em> <strong>DO NOT DO THIS!!</strong></p>
-<p>In each of the examples below, I provide example input, but I don’t show you the output. It’s your job to type in these examples at the R console, evaluate what you typed, and to look at and think critically about the output. <strong>You will make mistakes and generate errors!</strong> Part of learning any new skill is making mistakes, figuring out where you went wrong, and correcting those mistakes. In the process of fixing those errors, you’ll learn more about how R works, and how to avoid such errors, or correct bugs in your own code in the future. If you cut and paste the examples into the R interpretter the code will run, but you will learn less than if you input the code yourself and you’ll be less capable of apply the concepts in new situations.</p>
-<p>The R interpretter, like all programming languages, is very exacting. A mispelled variable or function name, a stray period, or an unbalanced parenthesis will raise an error and finding the sources of such errors can sometimes be tedious and frustrating. Persist! If you read your code critically, think about what your doing, and seek help when needed (teaching team, R help, Google, etc) you’ll eventually get better at debugging your code. But keep in mind that like most new skills, learning to write and debug your code efficiently takes time and experience.</p>
+<div id="writing-functions-with-optional-arguments" class="section level3">
+<h3><span class="header-section-number">10.1.2</span> Writing functions with optional arguments</h3>
+<p>To write a function that has an optional argument, you can simply specify the optional argument and its default value in the function definition as so:</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1"><span class="co"># a function to substitute missing values in a vector</span></a>
+<a class="sourceLine" id="cb324-2" data-line-number="2">sub.missing &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">sub.value =</span> <span class="dv">-99</span>){</a>
+<a class="sourceLine" id="cb324-3" data-line-number="3">  x[<span class="kw">is.na</span>(x)] &lt;-<span class="st"> </span>sub.value</a>
+<a class="sourceLine" id="cb324-4" data-line-number="4">  <span class="kw">return</span>(x)</a>
+<a class="sourceLine" id="cb324-5" data-line-number="5">}</a></code></pre></div>
+<p>You can then use this function as so:</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb325-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb325-2" data-line-number="2"><span class="kw">sub.missing</span>(m, <span class="dv">-999</span>)  <span class="co"># explicitly define sub.value</span></a>
+<a class="sourceLine" id="cb325-3" data-line-number="3"><span class="co">#&gt; [1]    1    2 -999    4</span></a>
+<a class="sourceLine" id="cb325-4" data-line-number="4"><span class="kw">sub.missing</span>(m, <span class="dt">sub.value =</span> <span class="dv">-333</span>) <span class="co"># more explicit syntax</span></a>
+<a class="sourceLine" id="cb325-5" data-line-number="5"><span class="co">#&gt; [1]    1    2 -333    4</span></a>
+<a class="sourceLine" id="cb325-6" data-line-number="6"><span class="kw">sub.missing</span>(m)   <span class="co"># use default sub.value</span></a>
+<a class="sourceLine" id="cb325-7" data-line-number="7"><span class="co">#&gt; [1]   1   2 -99   4</span></a>
+<a class="sourceLine" id="cb325-8" data-line-number="8">m  <span class="co"># notice that m wasn&#39;t modified within the function</span></a>
+<a class="sourceLine" id="cb325-9" data-line-number="9"><span class="co">#&gt; [1]  1  2 NA  4</span></a></code></pre></div>
+<p>Notice that when we called <code>sub.missing</code> with our vector <code>m</code>, the vector did <em>not</em> get modified in the function body. Rather a new vector, <code>x</code> was created within the function and returned. However, if you did the missing value subsitute outside of a function call, then the vector would be modified:</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb326-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb326-2" data-line-number="2">n[<span class="kw">is.na</span>(n)] &lt;-<span class="st"> </span><span class="dv">-99</span></a>
+<a class="sourceLine" id="cb326-3" data-line-number="3">n</a>
+<a class="sourceLine" id="cb326-4" data-line-number="4"><span class="co">#&gt; [1]   1   2 -99   4</span></a></code></pre></div>
+</div>
+<div id="putting-r-functions-in-scripts" class="section level3">
+<h3><span class="header-section-number">10.1.3</span> Putting R functions in Scripts</h3>
+<p>When you define a function at the interactive prompt and then close the interpreter your function definition will be lost. The simple way around this is to define your R functions in a script that you can than access at any time.</p>
+<p>In RStudio choose <code>File &gt; New File &gt; R Script</code>. This will bring up a blank editor window. Type your function(s) into the editor. Everything in this file will be interpretted as R code, so you should not use the code block notation that is used in Markdown notebooks. Save the source file in your R working directory with a name like
+<code>myfxns.R</code>.</p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb327-1" data-line-number="1"><span class="co"># functions defined in myfxns.R</span></a>
+<a class="sourceLine" id="cb327-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb327-3" data-line-number="3">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r) {pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>}</a>
+<a class="sourceLine" id="cb327-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb327-5" data-line-number="5">area.of.rectangle &lt;-<span class="st"> </span><span class="cf">function</span>(l, w) {l <span class="op">*</span><span class="st"> </span>w}</a>
+<a class="sourceLine" id="cb327-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb327-7" data-line-number="7">area.of.triangle &lt;-<span class="st"> </span><span class="cf">function</span>(b, h) {<span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>b <span class="op">*</span><span class="st"> </span>h }</a></code></pre></div>
+<p>Once your functions are in a script file you can make them accesible by using the <code>source</code> function, which reads the named file as input and evaluates any definitions or statements in the input file (See also the <code>Source</code> button in the R Studio GUI):</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">source</span>(<span class="st">&quot;myfxns.R&quot;</span>)</a></code></pre></div>
+<p>Having sourced the file you can now use your functions like so:</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb329-1" data-line-number="1">radius &lt;-<span class="st"> </span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb329-2" data-line-number="2">len &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb329-3" data-line-number="3">width &lt;-<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb329-4" data-line-number="4">base &lt;-<span class="st"> </span><span class="dv">6</span></a>
+<a class="sourceLine" id="cb329-5" data-line-number="5">height &lt;-<span class="st"> </span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb329-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb329-7" data-line-number="7"><span class="kw">area.of.circle</span>(radius)</a>
+<a class="sourceLine" id="cb329-8" data-line-number="8"><span class="co">#&gt; [1] 28.27433</span></a>
+<a class="sourceLine" id="cb329-9" data-line-number="9"><span class="kw">area.of.rectangle</span>(len, width)</a>
+<a class="sourceLine" id="cb329-10" data-line-number="10"><span class="co">#&gt; [1] 20</span></a>
+<a class="sourceLine" id="cb329-11" data-line-number="11"><span class="kw">area.of.triangle</span>(base, height)</a>
+<a class="sourceLine" id="cb329-12" data-line-number="12"><span class="co">#&gt; [1] 21</span></a></code></pre></div>
+<p>Note that if you change the source file, such as correcting a mistake or adding a new function, you need to call the <code>source</code> function again to make those changes available.</p>
+</div>
+</div>
+<div id="control-flow-statements" class="section level2">
+<h2><span class="header-section-number">10.2</span> Control flow statements</h2>
+<p>Control flow statements control the order of execution of different pieces of code. They can be used to do things like make sure code is only run when certain conditions are met, to iterate through data structures, to repeat something until a specified event happens, etc. Control flow statements are frequently used when writing functions or carrying out complex data transformation.</p>
+<div id="if-and-if-else-statements" class="section level3">
+<h3><span class="header-section-number">10.2.1</span> <code>if</code> and <code>if-else</code> statements</h3>
+<p><code>if</code> and <code>if-else</code> blocks allow you to structure the flow of execution so that certain expressions are executed only if particular conditions are met.</p>
+<p>The general form of an <code>if</code> expression is:</p>
+<pre><code>if (Boolean expression) {
+  Code to execute if 
+  Boolean expression is true
+}</code></pre>
+<p>Here’s a simple <code>if</code> expression in which we check whether a number is less than 0.5, and if so assign a values to a variable.</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb331-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)  <span class="co"># runif generates a random number between 0 and 1</span></a>
+<a class="sourceLine" id="cb331-2" data-line-number="2">face &lt;-<span class="st"> </span><span class="ot">NULL</span>  <span class="co"># set face to a NULL value</span></a>
+<a class="sourceLine" id="cb331-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb331-4" data-line-number="4"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
+<a class="sourceLine" id="cb331-5" data-line-number="5">  face &lt;-<span class="st"> &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb331-6" data-line-number="6">}</a>
+<a class="sourceLine" id="cb331-7" data-line-number="7">face</a>
+<a class="sourceLine" id="cb331-8" data-line-number="8"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<p>The <code>else</code> clause specifies what to do in the event that the <code>if</code> statement is <em>not</em> true. The combined general for of an <code>if-else</code> expression is:</p>
+<pre><code>if (Boolean expression) {
+  Code to execute if 
+  Boolean expression is true
+} else {
+  Code to execute if 
+  Boolean expression is false
+}</code></pre>
+<p>Our previous example makes more sense if we include an <code>else</code> clause.</p>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb333-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb333-3" data-line-number="3"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
+<a class="sourceLine" id="cb333-4" data-line-number="4">  face &lt;-<span class="st"> &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb333-5" data-line-number="5">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb333-6" data-line-number="6">  face &lt;-<span class="st"> &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb333-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb333-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb333-9" data-line-number="9">face</a>
+<a class="sourceLine" id="cb333-10" data-line-number="10"><span class="co">#&gt; [1] &quot;heads&quot;</span></a></code></pre></div>
+<p>With the addition of the <code>else</code> statement, this simple code block can be thought of as simulating the toss of a coin.</p>
+<div id="if-else-in-a-function" class="section level4">
+<h4><span class="header-section-number">10.2.1.1</span> <code>if-else</code> in a function</h4>
+<p>Let’s take our “if-else” example above and turn it into a function we’ll call <code>coin.flip</code>. A literal re-interpretation of our previous code in the context of a function is something like this:</p>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1"><span class="co"># coin.flip.literal takes no arguments</span></a>
+<a class="sourceLine" id="cb334-2" data-line-number="2">coin.flip.literal &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb334-3" data-line-number="3">  x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb334-4" data-line-number="4">  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
+<a class="sourceLine" id="cb334-5" data-line-number="5">    face &lt;-<span class="st"> &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb334-6" data-line-number="6">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb334-7" data-line-number="7">    face &lt;-<span class="st"> &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb334-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb334-9" data-line-number="9">  face</a>
+<a class="sourceLine" id="cb334-10" data-line-number="10">}</a></code></pre></div>
+<p><code>coin.flip.literal</code> is pretty long for what it does — we created a temporary variable <code>x</code> that is only used once, and we created the variable <code>face</code> to hold the results of our <code>if-else</code> statement, but then immediately returned the result. This is inefficient and decreases readability of our function. A much more compact implementation of this function is as follows:</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb335-1" data-line-number="1">coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb335-2" data-line-number="2">  <span class="cf">if</span> (<span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
+<a class="sourceLine" id="cb335-3" data-line-number="3">    <span class="kw">return</span>(<span class="st">&quot;heads&quot;</span>)</a>
+<a class="sourceLine" id="cb335-4" data-line-number="4">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb335-5" data-line-number="5">    <span class="kw">return</span>(<span class="st">&quot;tails&quot;</span>)</a>
+<a class="sourceLine" id="cb335-6" data-line-number="6">  }</a>
+<a class="sourceLine" id="cb335-7" data-line-number="7">}</a></code></pre></div>
+<p>Note that in our new version of <code>coin.flip</code> we don’t bother to create temporary the variables <code>x</code> and <code>face</code> and we immediately return the results within the <code>if-else</code> statement.</p>
+</div>
+<div id="multiple-if-else-statements" class="section level4">
+<h4><span class="header-section-number">10.2.1.2</span> Multiple <code>if-else</code> statements</h4>
+<p>When there are more than two possible outcomes of interest, multiple <code>if-else</code> statements can be chained together. Here is an example with three outcomes:</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="op">-</span><span class="dv">5</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span>)  <span class="co"># sample a random integer between -5 and 5</span></a>
+<a class="sourceLine" id="cb336-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb336-3" data-line-number="3"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb336-4" data-line-number="4">  sign.x &lt;-<span class="st"> &quot;Negative&quot;</span></a>
+<a class="sourceLine" id="cb336-5" data-line-number="5">} <span class="cf">else</span> <span class="cf">if</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb336-6" data-line-number="6">  sign.x &lt;-<span class="st"> &quot;Positive&quot;</span></a>
+<a class="sourceLine" id="cb336-7" data-line-number="7">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb336-8" data-line-number="8">  sign.x &lt;-<span class="st"> &quot;Zero&quot;</span></a>
+<a class="sourceLine" id="cb336-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb336-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb336-11" data-line-number="11">sign.x</a>
+<a class="sourceLine" id="cb336-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Positive&quot;</span></a></code></pre></div>
+</div>
+</div>
+<div id="for-loops" class="section level3">
+<h3><span class="header-section-number">10.2.2</span> for loops</h3>
+<p>A <code>for</code> statement iterates over the elements of a sequence (such as vectors or lists). A common use of for statements is to carry out a calculation on each element of a sequence (but see the discussion of <code>map</code> below) or to make a calculation that involves all the elements of a sequence.</p>
+<p>The general form of a for loop is:</p>
+<pre><code>for (elem in sequence) {
+  Do some calculations or
+  Evaluate one or more expressions
+}</code></pre>
+<p>As an example, say we wanted to call our <code>coin.flip</code> function multiple times. We could use a for loop to do so as follows:</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1">flips &lt;-<span class="st"> </span><span class="kw">c</span>() <span class="co"># empty vector to hold outcomes of coin flips</span></a>
+<a class="sourceLine" id="cb338-2" data-line-number="2"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
+<a class="sourceLine" id="cb338-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())  <span class="co"># flip coin and add to our vector</span></a>
+<a class="sourceLine" id="cb338-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb338-5" data-line-number="5">flips</a>
+<a class="sourceLine" id="cb338-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb338-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb338-8" data-line-number="8"><span class="co">#&gt; [17] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
+<p>Let’s use a <code>for</code> loop to create a <code>multi.coin.flip</code> function thats accepts an optional argument <code>n</code> that specifies the number of coin flips to carry out:</p>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1">multi.coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
+<a class="sourceLine" id="cb339-2" data-line-number="2">  flips &lt;-<span class="st"> </span><span class="kw">c</span>()  <span class="co"># create an empty vector</span></a>
+<a class="sourceLine" id="cb339-3" data-line-number="3">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
+<a class="sourceLine" id="cb339-4" data-line-number="4">    flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())</a>
+<a class="sourceLine" id="cb339-5" data-line-number="5">  }</a>
+<a class="sourceLine" id="cb339-6" data-line-number="6">  flips</a>
+<a class="sourceLine" id="cb339-7" data-line-number="7">}</a></code></pre></div>
+<p>With this new definition, a single call of <code>coin.flip</code> returns a single outcome:</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1"><span class="kw">multi.coin.flip</span>()</a>
+<a class="sourceLine" id="cb340-2" data-line-number="2"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
+<p>And calling <code>multi.coin.flip</code> with a numeric argument returns multiple coin flips:</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" data-line-number="1"><span class="kw">multi.coin.flip</span>(<span class="dt">n=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb341-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb341-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
+</div>
+<div id="break-statement" class="section level3">
+<h3><span class="header-section-number">10.2.3</span> <code>break</code> statement</h3>
+<p>A <code>break</code> statement allows you to exit a loop even if it hasn’t completed. This is useful for ending a control statement when some criteria has been satisfied. <code>break</code> statements are usually nested in <code>if</code> statements.</p>
+<p>In the following example we use a <code>break</code> statement inside a <code>for</code> loop. In this example, we pick random real numbers between 0 and 1, accumulating them in a vector (<code>random.numbers</code>). The <code>for</code> loop insures that we never pick more than 20 random numbers before the loop ends. However, the <code>break</code> statement allows the loop to end prematurely if the number picked is greater than 0.95.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb342-1" data-line-number="1">random.numbers &lt;-<span class="st"> </span><span class="kw">c</span>()</a>
+<a class="sourceLine" id="cb342-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb342-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
+<a class="sourceLine" id="cb342-4" data-line-number="4">  x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb342-5" data-line-number="5">  random.numbers &lt;-<span class="st"> </span><span class="kw">c</span>(random.numbers, x)</a>
+<a class="sourceLine" id="cb342-6" data-line-number="6">  <span class="cf">if</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.95</span>) {</a>
+<a class="sourceLine" id="cb342-7" data-line-number="7">    <span class="cf">break</span></a>
+<a class="sourceLine" id="cb342-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb342-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb342-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb342-11" data-line-number="11">random.numbers</a>
+<a class="sourceLine" id="cb342-12" data-line-number="12"><span class="co">#&gt; [1] 0.9731339</span></a></code></pre></div>
+</div>
+<div id="repeat-loops" class="section level3">
+<h3><span class="header-section-number">10.2.4</span> <code>repeat</code> loops</h3>
+<p>A <code>repeat</code> loop will loop indefinitely until we explicitly break out of the loop with a <code>break</code> statement. For example, here’s an example of how we can use <code>repeat</code> and <code>break</code> to simulate flipping coins until we get a head:</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb343-1" data-line-number="1">ct &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb343-2" data-line-number="2"><span class="cf">repeat</span> {</a>
+<a class="sourceLine" id="cb343-3" data-line-number="3">  flip &lt;-<span class="st"> </span><span class="kw">coin.flip</span>()</a>
+<a class="sourceLine" id="cb343-4" data-line-number="4">  ct &lt;-<span class="st"> </span>ct <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb343-5" data-line-number="5">  <span class="cf">if</span> (flip <span class="op">==</span><span class="st"> &quot;heads&quot;</span>){</a>
+<a class="sourceLine" id="cb343-6" data-line-number="6">    <span class="cf">break</span></a>
+<a class="sourceLine" id="cb343-7" data-line-number="7">  }</a>
+<a class="sourceLine" id="cb343-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb343-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb343-10" data-line-number="10">ct</a>
+<a class="sourceLine" id="cb343-11" data-line-number="11"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
+</div>
+<div id="next-statement" class="section level3">
+<h3><span class="header-section-number">10.2.5</span> <code>next</code> statement</h3>
+<p>A <code>next</code> satement allows you to halt the processing of the current iteration of a loop and immediately move to the next item of the loop. This is useful when you want to skip calculations for certain elements of a sequence:</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb344-1" data-line-number="1">sum.not.div3 &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb344-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb344-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
+<a class="sourceLine" id="cb344-4" data-line-number="4">  <span class="cf">if</span> (i <span class="op">%%</span><span class="st"> </span><span class="dv">3</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) { <span class="co"># skip summing values that are evenly divisible by three</span></a>
+<a class="sourceLine" id="cb344-5" data-line-number="5">    <span class="cf">next</span></a>
+<a class="sourceLine" id="cb344-6" data-line-number="6">  }</a>
+<a class="sourceLine" id="cb344-7" data-line-number="7">  sum.not.div3 &lt;-<span class="st"> </span>sum.not.div3 <span class="op">+</span><span class="st"> </span>i</a>
+<a class="sourceLine" id="cb344-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb344-9" data-line-number="9">sum.not.div3</a>
+<a class="sourceLine" id="cb344-10" data-line-number="10"><span class="co">#&gt; [1] 147</span></a></code></pre></div>
+</div>
+<div id="while-statements" class="section level3">
+<h3><span class="header-section-number">10.2.6</span> while statements</h3>
+<p>A <code>while</code> statement iterates as long as the condition statement it contains is true. In the following example, the <code>while</code> loop calls <code>coin.flip</code> until “heads” is the result, and keeps track of the number of flips. Note that this represents the same logic as the <code>repeat-break</code> example we saw earlier, but in a a more compact form.</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1">first.head &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb345-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb345-3" data-line-number="3"><span class="cf">while</span>(<span class="kw">coin.flip</span>() <span class="op">==</span><span class="st"> &quot;tails&quot;</span>){</a>
+<a class="sourceLine" id="cb345-4" data-line-number="4">  first.head &lt;-<span class="st"> </span>first.head <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb345-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb345-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb345-7" data-line-number="7">first.head</a>
+<a class="sourceLine" id="cb345-8" data-line-number="8"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
+</div>
+<div id="ifelse" class="section level3">
+<h3><span class="header-section-number">10.2.7</span> <code>ifelse</code></h3>
+<p>The <code>ifelse</code> function is equivalent to a <code>for</code>-loop with a nested <code>if-else</code> statement. <code>ifelse</code> applies the specified test to each element of a vector, and returns different values depending on if the test is true or false.</p>
+<p>Here’s an example of using <code>ifelse</code> to replace <code>NA</code> elements in a vector with zeros.</p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb346-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">9</span>, <span class="ot">NA</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb346-2" data-line-number="2">newx &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(x), <span class="dv">0</span>, x)</a>
+<a class="sourceLine" id="cb346-3" data-line-number="3">newx</a>
+<a class="sourceLine" id="cb346-4" data-line-number="4"><span class="co">#&gt;  [1] 3 1 4 5 9 0 2 6 5 4</span></a></code></pre></div>
+<p>The equivalent for-loop could be written as:</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">9</span>, <span class="ot">NA</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb347-2" data-line-number="2">newx &lt;-<span class="st"> </span><span class="kw">c</span>()  <span class="co"># create an empty vector</span></a>
+<a class="sourceLine" id="cb347-3" data-line-number="3"><span class="cf">for</span> (elem <span class="cf">in</span> x) {</a>
+<a class="sourceLine" id="cb347-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.na</span>(elem)) {</a>
+<a class="sourceLine" id="cb347-5" data-line-number="5">    newx &lt;-<span class="st"> </span><span class="kw">c</span>(newx, <span class="dv">0</span>)  <span class="co"># append zero to newx</span></a>
+<a class="sourceLine" id="cb347-6" data-line-number="6">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb347-7" data-line-number="7">    newx &lt;-<span class="st"> </span><span class="kw">c</span>(newx, elem)  <span class="co"># append elem to newx</span></a>
+<a class="sourceLine" id="cb347-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb347-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb347-10" data-line-number="10">newx</a>
+<a class="sourceLine" id="cb347-11" data-line-number="11"><span class="co">#&gt;  [1] 3 1 4 5 9 0 2 6 5 4</span></a></code></pre></div>
+<p>The <code>ifelse</code> function is clearly a more compact and readable way to accomplish this.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -396,8 +680,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
+<a href="data-wrangling-part-ii.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="data-story-women-and-children-first-on-the-titanic.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
