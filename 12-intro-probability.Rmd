@@ -231,9 +231,7 @@ Consider our urns and balls example again. What is the probability that you draw
 
 ## Probability trees
 
-Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials. 
-
-A probability tree for the urns and balls example follows below.  
+Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials.  A probability tree for the urns and balls example follows below.  
 
 ```{r, echo = FALSE, out.width = "200px", fig.align = "center", fig.cap = "Probability tree for the urns and balls example", eval = TRUE, results = "show"}
 knitr::include_graphics("./figures/fig-urns-probability-tree.png")
@@ -244,9 +242,10 @@ knitr::include_graphics("./figures/fig-urns-probability-tree.png")
  
 To solve the problem we looked at previously -- the probability of getting all white balls in three draws from the urn without replacement -- we find all the sequences that yield this outcome.  In this case there is only one sequence that results in three white balls.  The product of the probabilities along the path representing this sequence is $3/5 \times 2/4 \times 1/3 = 1/10$. 
 
-Another way to think about a probability tree is that values along the branches at a given point in the tree represent the conditional probabilities of the next possible outcomes, given all the previous outcomes that have lead to the
- 
- 
+
+
+Another way to think about a probability tree is that values along the branches at a given point in the tree represent the conditional probabilities of the next possible outcomes, given all the previous outcomes.
+
 
 ## Law of total probability
 

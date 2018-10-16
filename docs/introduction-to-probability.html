@@ -602,8 +602,7 @@ P(A\ \text{and}\ B) = P(A)P(B|A)
 </div>
 <div id="probability-trees" class="section level2">
 <h2><span class="header-section-number">13.9</span> Probability trees</h2>
-<p>Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials.</p>
-<p>A probability tree for the urns and balls example follows below.</p>
+<p>Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials. A probability tree for the urns and balls example follows below.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-356"></span>
 <img src="figures/fig-urns-probability-tree.png" alt="Probability tree for the urns and balls example" width="200px" />
 <p class="caption">
@@ -612,7 +611,7 @@ Figure 13.3: Probability tree for the urns and balls example
 </div>
 <p>The nodes in a probability tree represent the possible outcomes of each random trial. A path from the root node to one of the tips of the probability tree represents a sequence of outcomes resulting from the successive random trials. Along the edges of the probability tree we write the probability of each outcome for each trial. The probability of a specific sequence of outcomes is calculated by multiplying the probabilities along the path that represents that sequence.</p>
 <p>To solve the problem we looked at previously – the probability of getting all white balls in three draws from the urn without replacement – we find all the sequences that yield this outcome. In this case there is only one sequence that results in three white balls. The product of the probabilities along the path representing this sequence is <span class="math inline">\(3/5 \times 2/4 \times 1/3 = 1/10\)</span>.</p>
-<p>Another way to think about a probability tree is that values along the branches at a given point in the tree represent the conditional probabilities of the next possible outcomes, given all the previous outcomes that have lead to the</p>
+<p>Another way to think about a probability tree is that values along the branches at a given point in the tree represent the conditional probabilities of the next possible outcomes, given all the previous outcomes.</p>
 </div>
 <div id="law-of-total-probability" class="section level2">
 <h2><span class="header-section-number">13.10</span> Law of total probability</h2>
