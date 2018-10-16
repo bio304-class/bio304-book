@@ -1,0 +1,4 @@
+
+# Joint Frequency Distributions and Measures of Association
+
+See the lecture slides.
