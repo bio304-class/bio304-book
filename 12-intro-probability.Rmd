@@ -11,7 +11,6 @@ The exposition here largely follows that in Chapter 5 of Whitlock & Schluter.
 
 * *Event* -- a subset of the possible outcomes of a random trial
 
-* *Complement* -- the complement of an event is all the possible outcomes of a random trial that are *not* the event.
 
 
 ### Examples of random trials, outcomes, and events
@@ -71,7 +70,7 @@ Biological examples:
 
 * The probability of all possible outcomes of a random trial must sum to one.
 
-* Let $A^c$ be the complement of the event $A$. Then $P(A^c) = 1 - P(A)$
+* The *complement* of an event is all the possible outcomes of a random trial that are *not* the event.  Let $A^c$ indicate the complement of the event $A$. Then $P(A^c) = 1 - P(A)$
 
 
 ### Examples: Probability
@@ -80,11 +79,11 @@ Biological examples:
 
 In classic probabilistic examples, where we understand (approximately) the physical constraints and symmetries of a random trial, we can often assign theoretical probabilities: 
 
-* Coins: With a fair coin, the probability of each face is  0.5
+* Coins: With a fair coin, the probability of each face is 0.5
 
 * Dice: Given a fair 20-side die, the probability of rolling a 15 or better is 6/20 = 0.3
 
-* Cards: In randomly shuffled standard (French) 52-card deck, the probability of drawing a heart is 13/54 = 0.25; the probability of getting an ace is 4/52 = ~0.077; the probability of drawing the ace of hearts is 1/52 = ~0.0192 
+* Cards: In randomly shuffled standard (French) 52-card deck, the probability of drawing a heart is 13/54 = 0.25; the probability of getting an ace is 4/52 = ~0.077; the probability of drawing the ace of hearts is 1/52 = ~0.0192   The probability of not drawing an ace is 1 - 1/52 = ~0.9808
 
 * Balls and urns:  If you make three draws (without replacement) from an urn filled with three white and two black balls, the probability of drawing three white balls is 0.1.  We'll illustrate how to calculate this below.
 
@@ -116,7 +115,7 @@ library(cowplot)
 ```
 
 
-```{r discrete_prob_distn, echo=FALSE, fig.cap="Figure 1. Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.", fig.width = 6, fig.height=3, fig.align='center'}
+```{r discrete_prob_distn, echo=FALSE, fig.cap="Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.", fig.width = 6, fig.height=3, fig.align='center'}
 dice.outcomes <- seq(1,6)
 dice.probs <- rep(1/6, 6)
 dice <- data.frame(outcomes = dice.outcomes, probability = dice.probs)
@@ -142,7 +141,7 @@ plot_grid(dice.plot, urn.plot, labels = c("A","B"))
     
 *Continuous probability distribution* -- for continuous numerical variables we do not assign probability to specific numerical values, but rather to numerical intervals.  We represent a continuous probability distribution using a "Probability Density Function" (PDF).  The integral of a PDF over an interval gives the probability that the variable represented by that PDF lies within the specified interval.
 
-```{r, fig.cap = "Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution, $N(1060, 195)$, based on data  reported in the [2017 SAT annual report](https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf). The probability that a randomly cohse student got a score better than 1255 is represented by the shaded area; P(Score > 1255) = 0.1587.", fig.align='center', echo = FALSE}
+```{r, fig.cap = "Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution with mean = 1060, standard deviation = 195, based on data  reported in the [2017 SAT annual report](https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf). The probability that a randomly chosen student got a score better than 1255 is represented by the shaded area; P(Score > 1255) = 0.1587.", fig.align='center', echo = FALSE}
 
 SAT.mean = 1060
 SAT.sd = 195
@@ -232,7 +231,9 @@ Consider our urns and balls example again. What is the probability that you draw
 
 ## Probability trees
 
-Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials.  A probability tree for the urns and balls example follows below.  
+Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials. 
+
+A probability tree for the urns and balls example follows below.  
 
 ```{r, echo = FALSE, out.width = "200px", fig.align = "center", fig.cap = "Probability tree for the urns and balls example", eval = TRUE, results = "show"}
 knitr::include_graphics("./figures/fig-urns-probability-tree.png")

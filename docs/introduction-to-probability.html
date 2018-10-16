@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-15">
+<meta name="date" content="2018-10-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -420,7 +420,6 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li><p><em>Outcome</em> – the result of a process or experiment</p></li>
 <li><p><em>Random Trial</em> – a process or experiment that has two or more possible outcomes whose occurence can not be predicted with certainty</p></li>
 <li><p><em>Event</em> – a subset of the possible outcomes of a random trial</p></li>
-<li><p><em>Complement</em> – the complement of an event is all the possible outcomes of a random trial that are <em>not</em> the event.</p></li>
 </ul>
 <div id="examples-of-random-trials-outcomes-and-events" class="section level3">
 <h3><span class="header-section-number">13.1.1</span> Examples of random trials, outcomes, and events</h3>
@@ -480,7 +479,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>To indicate the probability of an event <span class="math inline">\(A\)</span>, we write <span class="math inline">\(P(A)\)</span></p></li>
 <li><p>The probability of all possible outcomes of a random trial must sum to one.</p></li>
-<li><p>Let <span class="math inline">\(A^c\)</span> be the complement of the event <span class="math inline">\(A\)</span>. Then <span class="math inline">\(P(A^c) = 1 - P(A)\)</span></p></li>
+<li><p>The <em>complement</em> of an event is all the possible outcomes of a random trial that are <em>not</em> the event. Let <span class="math inline">\(A^c\)</span> indicate the complement of the event <span class="math inline">\(A\)</span>. Then <span class="math inline">\(P(A^c) = 1 - P(A)\)</span></p></li>
 </ul>
 <div id="examples-probability" class="section level3">
 <h3><span class="header-section-number">13.2.1</span> Examples: Probability</h3>
@@ -490,7 +489,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>Coins: With a fair coin, the probability of each face is 0.5</p></li>
 <li><p>Dice: Given a fair 20-side die, the probability of rolling a 15 or better is 6/20 = 0.3</p></li>
-<li><p>Cards: In randomly shuffled standard (French) 52-card deck, the probability of drawing a heart is 13/54 = 0.25; the probability of getting an ace is 4/52 = ~0.077; the probability of drawing the ace of hearts is 1/52 = ~0.0192</p></li>
+<li><p>Cards: In randomly shuffled standard (French) 52-card deck, the probability of drawing a heart is 13/54 = 0.25; the probability of getting an ace is 4/52 = ~0.077; the probability of drawing the ace of hearts is 1/52 = ~0.0192 The probability of not drawing an ace is 1 - 1/52 = ~0.9808</p></li>
 <li><p>Balls and urns: If you make three draws (without replacement) from an urn filled with three white and two black balls, the probability of drawing three white balls is 0.1. We’ll illustrate how to calculate this below.</p></li>
 </ul>
 </div>
@@ -512,9 +511,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">13.3.1</span> Discrete probability distribution</h3>
 <p><em>Discrete probability distribution</em> – the probability of each possible value of a discrete variable. Discrete probability distributions apply to categorical variables, ordinal variables, and discerete numerical variables. The total probabilities must sum to one.</p>
 <div class="figure" style="text-align: center">
-<img src="bio304-book_files/figure-html/discrete_prob_distn-1.png" alt="Figure 1. Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls." width="576" />
+<img src="bio304-book_files/figure-html/discrete_prob_distn-1.png" alt="Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls." width="576" />
 <p class="caption">
-(#fig:discrete_prob_distn)Figure 1. Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.
+(#fig:discrete_prob_distn)Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.
 </p>
 </div>
 </div>
@@ -522,9 +521,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">13.3.2</span> Continuous probability distribution</h3>
 <p><em>Continuous probability distribution</em> – for continuous numerical variables we do not assign probability to specific numerical values, but rather to numerical intervals. We represent a continuous probability distribution using a “Probability Density Function” (PDF). The integral of a PDF over an interval gives the probability that the variable represented by that PDF lies within the specified interval.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-354"></span>
-<img src="bio304-book_files/figure-html/unnamed-chunk-354-1.png" alt="Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution, $N(1060, 195)$, based on data  reported in the [2017 SAT annual report](https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf). The probability that a randomly cohse student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587." width="576" />
+<img src="bio304-book_files/figure-html/unnamed-chunk-354-1.png" alt="Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution with mean = 1060, standard deviation = 195, based on data  reported in the [2017 SAT annual report](https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf). The probability that a randomly chosen student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587." width="576" />
 <p class="caption">
-Figure 13.1: Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution, <span class="math inline">\(N(1060, 195)\)</span>, based on data reported in the <a href="https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf">2017 SAT annual report</a>. The probability that a randomly cohse student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587.
+Figure 13.1: Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution with mean = 1060, standard deviation = 195, based on data reported in the <a href="https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf">2017 SAT annual report</a>. The probability that a randomly chosen student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587.
 </p>
 </div>
 </div>
@@ -603,7 +602,8 @@ P(A\ \text{and}\ B) = P(A)P(B|A)
 </div>
 <div id="probability-trees" class="section level2">
 <h2><span class="header-section-number">13.9</span> Probability trees</h2>
-<p>Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials. A probability tree for the urns and balls example follows below.</p>
+<p>Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials.</p>
+<p>A probability tree for the urns and balls example follows below.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-356"></span>
 <img src="figures/fig-urns-probability-tree.png" alt="Probability tree for the urns and balls example" width="200px" />
 <p class="caption">

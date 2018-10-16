@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-15">
+<meta name="date" content="2018-10-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -591,7 +591,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb336-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb336-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb336-11" data-line-number="11">sign.x</a>
-<a class="sourceLine" id="cb336-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Positive&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb336-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Negative&quot;</span></a></code></pre></div>
 </div>
 </div>
 <div id="for-loops" class="section level3">
@@ -608,9 +608,9 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb338-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())  <span class="co"># flip coin and add to our vector</span></a>
 <a class="sourceLine" id="cb338-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb338-5" data-line-number="5">flips</a>
-<a class="sourceLine" id="cb338-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb338-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb338-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb338-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb338-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb338-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot;</span></a></code></pre></div>
 <p>Let’s use a <code>for</code> loop to create a <code>multi.coin.flip</code> function thats accepts an optional argument <code>n</code> that specifies the number of coin flips to carry out:</p>
 <div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1">multi.coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
 <a class="sourceLine" id="cb339-2" data-line-number="2">  <span class="co"># create an empty character vector of length n</span></a>
@@ -625,7 +625,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb340-2" data-line-number="2"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
 <p>And calling <code>multi.coin.flip</code> with a numeric argument returns multiple coin flips:</p>
 <div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" data-line-number="1"><span class="kw">multi.coin.flip</span>(<span class="dt">n=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb341-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb341-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;</span></a>
 <a class="sourceLine" id="cb341-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;tails&quot; &quot;tails&quot;</span></a></code></pre></div>
 <div id="efficiency-tip" class="section level4">
 <h4><span class="header-section-number">10.2.2.1</span> Efficiency tip</h4>
@@ -659,10 +659,10 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb343-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb343-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb343-11" data-line-number="11">random.numbers</a>
-<a class="sourceLine" id="cb343-12" data-line-number="12"><span class="co">#&gt;  [1] 0.875462545 0.752155837 0.387476314 0.821224964 0.667819333</span></a>
-<a class="sourceLine" id="cb343-13" data-line-number="13"><span class="co">#&gt;  [6] 0.248669663 0.360040909 0.001192604 0.654938803 0.679732884</span></a>
-<a class="sourceLine" id="cb343-14" data-line-number="14"><span class="co">#&gt; [11] 0.196302736 0.739852302 0.368945926 0.554454796 0.436496508</span></a>
-<a class="sourceLine" id="cb343-15" data-line-number="15"><span class="co">#&gt; [16] 0.361607735 0.423342728 0.561710101 0.777744677 0.061855397</span></a></code></pre></div>
+<a class="sourceLine" id="cb343-12" data-line-number="12"><span class="co">#&gt;  [1] 0.842312666 0.653140322 0.316904322 0.712893426 0.659057404</span></a>
+<a class="sourceLine" id="cb343-13" data-line-number="13"><span class="co">#&gt;  [6] 0.340355319 0.827546976 0.007160407 0.067421384 0.305461359</span></a>
+<a class="sourceLine" id="cb343-14" data-line-number="14"><span class="co">#&gt; [11] 0.032797958 0.851975594 0.270432869 0.395324792 0.654719540</span></a>
+<a class="sourceLine" id="cb343-15" data-line-number="15"><span class="co">#&gt; [16] 0.598700210 0.450213737 0.132663319 0.667876665 0.844401517</span></a></code></pre></div>
 </div>
 <div id="repeat-loops" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> <code>repeat</code> loops</h3>
@@ -778,18 +778,18 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb352-6" data-line-number="6"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
 <a class="sourceLine" id="cb352-7" data-line-number="7"><span class="co">#&gt;         a b     c    </span></a>
 <a class="sourceLine" id="cb352-8" data-line-number="8"><span class="co">#&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb352-9" data-line-number="9"><span class="co">#&gt; 1 -0.4492 a     u    </span></a>
-<a class="sourceLine" id="cb352-10" data-line-number="10"><span class="co">#&gt; 2 -1.098  b     v    </span></a>
-<a class="sourceLine" id="cb352-11" data-line-number="11"><span class="co">#&gt; 3  2.670  c     w    </span></a>
-<a class="sourceLine" id="cb352-12" data-line-number="12"><span class="co">#&gt; 4  0.1963 d     x    </span></a>
-<a class="sourceLine" id="cb352-13" data-line-number="13"><span class="co">#&gt; 5  1.419  e     y    </span></a>
-<a class="sourceLine" id="cb352-14" data-line-number="14"><span class="co">#&gt; 6  0.7078 f     z</span></a>
+<a class="sourceLine" id="cb352-9" data-line-number="9"><span class="co">#&gt; 1  0.2282 a     u    </span></a>
+<a class="sourceLine" id="cb352-10" data-line-number="10"><span class="co">#&gt; 2 -0.3129 b     v    </span></a>
+<a class="sourceLine" id="cb352-11" data-line-number="11"><span class="co">#&gt; 3  0.5200 c     w    </span></a>
+<a class="sourceLine" id="cb352-12" data-line-number="12"><span class="co">#&gt; 4 -2.114  d     x    </span></a>
+<a class="sourceLine" id="cb352-13" data-line-number="13"><span class="co">#&gt; 5 -0.5647 e     y    </span></a>
+<a class="sourceLine" id="cb352-14" data-line-number="14"><span class="co">#&gt; 6  0.1612 f     z</span></a>
 <a class="sourceLine" id="cb352-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb352-16" data-line-number="16">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df, is.character, str_to_upper)</a>
 <a class="sourceLine" id="cb352-17" data-line-number="17">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df2, is.numeric, abs)</a>
 <a class="sourceLine" id="cb352-18" data-line-number="18"><span class="kw">head</span>(df2)</a>
 <a class="sourceLine" id="cb352-19" data-line-number="19"><span class="co">#&gt; $a</span></a>
-<a class="sourceLine" id="cb352-20" data-line-number="20"><span class="co">#&gt; [1] 0.4491578 1.0983839 2.6698118 0.1963409 1.4189840 0.7078161</span></a>
+<a class="sourceLine" id="cb352-20" data-line-number="20"><span class="co">#&gt; [1] 0.2281687 0.3129345 0.5200112 2.1142664 0.5646989 0.1612255</span></a>
 <a class="sourceLine" id="cb352-21" data-line-number="21"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb352-22" data-line-number="22"><span class="co">#&gt; $b</span></a>
 <a class="sourceLine" id="cb352-23" data-line-number="23"><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</span></a>
@@ -803,12 +803,12 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb353-4" data-line-number="4"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
 <a class="sourceLine" id="cb353-5" data-line-number="5"><span class="co">#&gt;   `df2$a` `df2$b` `df2$c`</span></a>
 <a class="sourceLine" id="cb353-6" data-line-number="6"><span class="co">#&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  </span></a>
-<a class="sourceLine" id="cb353-7" data-line-number="7"><span class="co">#&gt; 1  0.4492 A       U      </span></a>
-<a class="sourceLine" id="cb353-8" data-line-number="8"><span class="co">#&gt; 2  1.098  B       V      </span></a>
-<a class="sourceLine" id="cb353-9" data-line-number="9"><span class="co">#&gt; 3  2.670  C       W      </span></a>
-<a class="sourceLine" id="cb353-10" data-line-number="10"><span class="co">#&gt; 4  0.1963 D       X      </span></a>
-<a class="sourceLine" id="cb353-11" data-line-number="11"><span class="co">#&gt; 5  1.419  E       Y      </span></a>
-<a class="sourceLine" id="cb353-12" data-line-number="12"><span class="co">#&gt; 6  0.7078 F       Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb353-7" data-line-number="7"><span class="co">#&gt; 1  0.2282 A       U      </span></a>
+<a class="sourceLine" id="cb353-8" data-line-number="8"><span class="co">#&gt; 2  0.3129 B       V      </span></a>
+<a class="sourceLine" id="cb353-9" data-line-number="9"><span class="co">#&gt; 3  0.5200 C       W      </span></a>
+<a class="sourceLine" id="cb353-10" data-line-number="10"><span class="co">#&gt; 4  2.114  D       X      </span></a>
+<a class="sourceLine" id="cb353-11" data-line-number="11"><span class="co">#&gt; 5  0.5647 E       Y      </span></a>
+<a class="sourceLine" id="cb353-12" data-line-number="12"><span class="co">#&gt; 6  0.1612 F       Z</span></a></code></pre></div>
 <p>But it requires an extra step to rename the columns:</p>
 <div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1"><span class="co"># Check column names, then rename </span></a>
 <a class="sourceLine" id="cb354-2" data-line-number="2"><span class="kw">names</span>(df3)</a>
@@ -818,12 +818,12 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb354-6" data-line-number="6"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
 <a class="sourceLine" id="cb354-7" data-line-number="7"><span class="co">#&gt;        a b     c    </span></a>
 <a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb354-9" data-line-number="9"><span class="co">#&gt; 1 0.4492 A     U    </span></a>
-<a class="sourceLine" id="cb354-10" data-line-number="10"><span class="co">#&gt; 2 1.098  B     V    </span></a>
-<a class="sourceLine" id="cb354-11" data-line-number="11"><span class="co">#&gt; 3 2.670  C     W    </span></a>
-<a class="sourceLine" id="cb354-12" data-line-number="12"><span class="co">#&gt; 4 0.1963 D     X    </span></a>
-<a class="sourceLine" id="cb354-13" data-line-number="13"><span class="co">#&gt; 5 1.419  E     Y    </span></a>
-<a class="sourceLine" id="cb354-14" data-line-number="14"><span class="co">#&gt; 6 0.7078 F     Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb354-9" data-line-number="9"><span class="co">#&gt; 1 0.2282 A     U    </span></a>
+<a class="sourceLine" id="cb354-10" data-line-number="10"><span class="co">#&gt; 2 0.3129 B     V    </span></a>
+<a class="sourceLine" id="cb354-11" data-line-number="11"><span class="co">#&gt; 3 0.5200 C     W    </span></a>
+<a class="sourceLine" id="cb354-12" data-line-number="12"><span class="co">#&gt; 4 2.114  D     X    </span></a>
+<a class="sourceLine" id="cb354-13" data-line-number="13"><span class="co">#&gt; 5 0.5647 E     Y    </span></a>
+<a class="sourceLine" id="cb354-14" data-line-number="14"><span class="co">#&gt; 6 0.1612 F     Z</span></a></code></pre></div>
 <hr />
 <p>If our goal is to apply functions to the columns of a data frame, it may be easier with <code>mutate</code>:</p>
 <div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb355-1" data-line-number="1"></a>
@@ -836,12 +836,12 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb355-8" data-line-number="8"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
 <a class="sourceLine" id="cb355-9" data-line-number="9"><span class="co">#&gt;        a b     c    </span></a>
 <a class="sourceLine" id="cb355-10" data-line-number="10"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb355-11" data-line-number="11"><span class="co">#&gt; 1 0.4492 A     U    </span></a>
-<a class="sourceLine" id="cb355-12" data-line-number="12"><span class="co">#&gt; 2 1.098  B     V    </span></a>
-<a class="sourceLine" id="cb355-13" data-line-number="13"><span class="co">#&gt; 3 2.670  C     W    </span></a>
-<a class="sourceLine" id="cb355-14" data-line-number="14"><span class="co">#&gt; 4 0.1963 D     X    </span></a>
-<a class="sourceLine" id="cb355-15" data-line-number="15"><span class="co">#&gt; 5 1.419  E     Y    </span></a>
-<a class="sourceLine" id="cb355-16" data-line-number="16"><span class="co">#&gt; 6 0.7078 F     Z</span></a></code></pre></div>
+<a class="sourceLine" id="cb355-11" data-line-number="11"><span class="co">#&gt; 1 0.2282 A     U    </span></a>
+<a class="sourceLine" id="cb355-12" data-line-number="12"><span class="co">#&gt; 2 0.3129 B     V    </span></a>
+<a class="sourceLine" id="cb355-13" data-line-number="13"><span class="co">#&gt; 3 0.5200 C     W    </span></a>
+<a class="sourceLine" id="cb355-14" data-line-number="14"><span class="co">#&gt; 4 2.114  D     X    </span></a>
+<a class="sourceLine" id="cb355-15" data-line-number="15"><span class="co">#&gt; 5 0.5647 E     Y    </span></a>
+<a class="sourceLine" id="cb355-16" data-line-number="16"><span class="co">#&gt; 6 0.1612 F     Z</span></a></code></pre></div>
 <hr />
 </div>
 <div id="mapping-in-parallel-using-map2" class="section level3">
@@ -890,8 +890,8 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb358-2" data-line-number="2">df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">b =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),<span class="dt">c =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))</a>
 <a class="sourceLine" id="cb358-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb358-4" data-line-number="4"><span class="kw">map_dbl</span>(df, median) <span class="co"># median of each column of df</span></a>
-<a class="sourceLine" id="cb358-5" data-line-number="5"><span class="co">#&gt;           a           b           c </span></a>
-<a class="sourceLine" id="cb358-6" data-line-number="6"><span class="co">#&gt;  0.04716224 -0.09216783 -0.24730727</span></a></code></pre></div>
+<a class="sourceLine" id="cb358-5" data-line-number="5"><span class="co">#&gt;          a          b          c </span></a>
+<a class="sourceLine" id="cb358-6" data-line-number="6"><span class="co">#&gt;  0.2717480 -0.1065705 -0.1347286</span></a></code></pre></div>
 
 </div>
 </div>
