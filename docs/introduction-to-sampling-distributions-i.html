@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="introduction-to-probability.html">
 
-<link rel="next" href="data-story-women-and-children-first-on-the-titanic.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -423,18 +423,161 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Biology 304: Biological Data Analysis</h1>
-<h4 class="author"><em>Paul M. Magwene</em></h4>
-<h4 class="date"><em>2018-10-18</em></h4>
+<div id="introduction-to-sampling-distributions-i" class="section level1">
+<h1><span class="header-section-number">Chapter 14</span> Introduction to Sampling Distributions I</h1>
+<div id="libraries-4" class="section level2">
+<h2><span class="header-section-number">14.1</span> Libraries</h2>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb359-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb359-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">20181019</span>)  <span class="co"># initializes RNG</span></a></code></pre></div>
 </div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<div id="how-to-use-these-lecture-notes" class="section level2">
-<h2><span class="header-section-number">1.1</span> How to use these lecture notes</h2>
-<p>In this and future materials to be posted on the course website you’ll encounter blocks of R code. <em>Your natural intuition will be to cut and paste commands or code blocks into the R interpretter to save yourself the typing.</em> <strong>DO NOT DO THIS!!</strong></p>
-<p>In each of the examples below, I provide example input, but I don’t show you the output. It’s your job to type in these examples at the R console, evaluate what you typed, and to look at and think critically about the output. <strong>You will make mistakes and generate errors!</strong> Part of learning any new skill is making mistakes, figuring out where you went wrong, and correcting those mistakes. In the process of fixing those errors, you’ll learn more about how R works, and how to avoid such errors, or correct bugs in your own code in the future. If you cut and paste the examples into the R interpretter the code will run, but you will learn less than if you input the code yourself and you’ll be less capable of apply the concepts in new situations.</p>
-<p>The R interpretter, like all programming languages, is very exacting. A mispelled variable or function name, a stray period, or an unbalanced parenthesis will raise an error and finding the sources of such errors can sometimes be tedious and frustrating. Persist! If you read your code critically, think about what your doing, and seek help when needed (teaching team, R help, Google, etc) you’ll eventually get better at debugging your code. But keep in mind that like most new skills, learning to write and debug your code efficiently takes time and experience.</p>
+<div id="in-class-experiments" class="section level2">
+<h2><span class="header-section-number">14.2</span> In class experiments</h2>
+<div id="experiment-1" class="section level3">
+<h3><span class="header-section-number">14.2.1</span> Experiment 1</h3>
+<ol style="list-style-type: decimal">
+<li>Sample 10 grains of rice from the large population provided by the instructor</li>
+<li>Count the number of brown grains in your sample</li>
+<li>Enter your counts in this <a href="https://docs.google.com/spreadsheets/d/1nlg-oarr0_1xcKPsfIiUF8UGAsDXXmTmIJMH-Wj9P70/edit?usp=sharing">Google Sheets spreadsheet</a></li>
+<li>Once all the entire class has entered their data, download the spreadsheet as as CSV file, load it into R as a data frame (<code>rice</code>)</li>
+<li>Add a new column to the data frame that gives the proportion (relative frequency) of brown rice in each students sample</li>
+<li>Generate a frequency distribution plot for the proportion of brown rice</li>
+<li>Discuss as a class</li>
+</ol>
+<p>Key points:</p>
+<ul>
+<li>We all did the same experiment</li>
+<li>We all sampled from the same population</li>
+<li>We all came up with slightly different estimates of the proportion of brown rice grains</li>
+<li>If we take all of our individual estimates and combine, we have a distribution of estimated proportions</li>
+</ul>
+</div>
+<div id="experiment-2" class="section level3">
+<h3><span class="header-section-number">14.2.2</span> Experiment 2</h3>
+<ol style="list-style-type: decimal">
+<li>Sample 30 grains of rice from the large population provided by the instructor</li>
+<li>Count the number of brown grains in your sample</li>
+<li>Add your new counts as additional rows to the <a href="https://docs.google.com/spreadsheets/d/1nlg-oarr0_1xcKPsfIiUF8UGAsDXXmTmIJMH-Wj9P70/edit?usp=sharing">Google Sheets spreadsheet</a></li>
+<li>Re-download and re-load the data, again estimating the proportion of brown rice for each student’s sample</li>
+<li>Generate a facetted plot giving the frequencing distribution for the proportion of brown rice in samples of size 10 and samples of size 30.</li>
+<li>Discuss as a class</li>
+</ol>
+<p>Key points:
+- With larger sample sizes our estimates still very
+- But the spread of our estimates has decreased</p>
+</div>
+</div>
+<div id="simulating-sampling-in-r" class="section level2">
+<h2><span class="header-section-number">14.3</span> Simulating sampling in R</h2>
+<p>Before we can simulate a sampling experiment in a computer we have to make some assumptions about the probability distribution of the variables we’re simulating.</p>
+<p>To illustrate this let’s make explicit what’s going on in our rice grain experiment:</p>
+<ul>
+<li>We have a large population of rice grains</li>
+<li>A fraction, <span class="math inline">\(p\)</span>, of grains in that population are brown</li>
+<li>We draw <span class="math inline">\(n\)</span> grains of rice from the population; all of the draws are independent</li>
+<li>We count the number of brown rice grains, recording the value as <span class="math inline">\(k\)</span></li>
+</ul>
+<div id="binomial-distribution" class="section level3">
+<h3><span class="header-section-number">14.3.1</span> Binomial distribution</h3>
+<p>Under this scenario, what is the probability the we drew <span class="math inline">\(k\)</span> brown grains from a sample of size <span class="math inline">\(n\)</span>, if the true proportion of brown grains is <span class="math inline">\(p\)</span>?</p>
+<p>It turns out we can solve this problem for a the following formula:</p>
+<p><span class="math display">\[
+P(k; n, p) = {n \choose k} p^k (1-p)^{n-k}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\({n \choose k}\)</span> is called the “binomial coefficient” and it gives the different combinations that would result in <span class="math inline">\(k\)</span> successes (brown grains) in <span class="math inline">\(n\)</span> draws. For example, in our rice experiment one combination for <span class="math inline">\(k=2\)</span> would be: (brown, brown, white, white…); a second combination could be (brown, white, brown, white, white, …)</li>
+<li><span class="math inline">\(p^k(1-p)^{n-k}\)</span> is the probability of <span class="math inline">\(k\)</span> successes (brown grains) and <span class="math inline">\((n-k)\)</span> failures (white grains) for each of the combinations</li>
+</ul>
+<p>The above formula is the “Probability Mass Function” (pmf) for the <strong>Binomial Distribution</strong> – it gives the probability of a particular outcome. The complete binomial distribution for <span class="math inline">\(n\)</span> trials given a probability of success <span class="math inline">\(p\)</span> is written as <span class="math inline">\(B(n,p)\)</span> and is calculated by evaluating the probability mass function for all values of <span class="math inline">\(k\)</span> from <span class="math inline">\(0,\ldots,n\)</span>.</p>
+<div id="binomial-distribution-in-r" class="section level4">
+<h4><span class="header-section-number">14.3.1.1</span> Binomial distribution in R</h4>
+<p>R has a built-in function, <code>dbinom()</code> that calculates the probabability mass function of the binomial distribution at given values of <span class="math inline">\(k\)</span>. Tkae a moment to read the help on the <code>dbinom()</code> function in R.</p>
+<p>To calculate the Binomial pmf for <span class="math inline">\(k=5, n = 10, p = 0.3\)</span> we call <code>dbinom()</code> as so:</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" data-line-number="1"><span class="kw">dbinom</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb360-2" data-line-number="2"><span class="co">#&gt; [1] 0.1029193</span></a></code></pre></div>
+<p>This tells us that if the true proportion of brown rice in the population is 0.3, about 10% of samples of size 10 will have 5 brown grains in them.</p>
+<p>The <code>dbinom()</code> function can also take a vector of values of <span class="math inline">\(k\)</span> as it’s first argument. Here we evaluate all values of <span class="math inline">\(k\)</span> between 0 and 10, for the same scenario (<span class="math inline">\(n=10\)</span> draws; probability of success <span class="math inline">\(p = 0.3\)</span>), storing the results in a data frame.</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb361-1" data-line-number="1">k &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb361-2" data-line-number="2">binomial.ex1 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">k =</span> k,</a>
+<a class="sourceLine" id="cb361-3" data-line-number="3">                           <span class="dt">probability =</span> <span class="kw">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.3</span>))</a>
+<a class="sourceLine" id="cb361-4" data-line-number="4">binomial.ex1</a>
+<a class="sourceLine" id="cb361-5" data-line-number="5"><span class="co">#&gt; # A tibble: 11 x 2</span></a>
+<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt;        k probability</span></a>
+<a class="sourceLine" id="cb361-7" data-line-number="7"><span class="co">#&gt;    &lt;int&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb361-8" data-line-number="8"><span class="co">#&gt;  1     0 0.02825    </span></a>
+<a class="sourceLine" id="cb361-9" data-line-number="9"><span class="co">#&gt;  2     1 0.1211     </span></a>
+<a class="sourceLine" id="cb361-10" data-line-number="10"><span class="co">#&gt;  3     2 0.2335     </span></a>
+<a class="sourceLine" id="cb361-11" data-line-number="11"><span class="co">#&gt;  4     3 0.2668     </span></a>
+<a class="sourceLine" id="cb361-12" data-line-number="12"><span class="co">#&gt;  5     4 0.2001     </span></a>
+<a class="sourceLine" id="cb361-13" data-line-number="13"><span class="co">#&gt;  6     5 0.1029     </span></a>
+<a class="sourceLine" id="cb361-14" data-line-number="14"><span class="co">#&gt;  7     6 0.03676    </span></a>
+<a class="sourceLine" id="cb361-15" data-line-number="15"><span class="co">#&gt;  8     7 0.009002   </span></a>
+<a class="sourceLine" id="cb361-16" data-line-number="16"><span class="co">#&gt;  9     8 0.001447   </span></a>
+<a class="sourceLine" id="cb361-17" data-line-number="17"><span class="co">#&gt; 10     9 0.0001378  </span></a>
+<a class="sourceLine" id="cb361-18" data-line-number="18"><span class="co">#&gt; 11    10 0.000005905</span></a></code></pre></div>
+<p>And now plotting the distribution, using <code>geom_col()</code> which is like <code>geom_bar()</code> but that derives the height of the bars to plot directly from thes specified <code>y</code> aesthetic.</p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" data-line-number="1">binomial.ex1 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb362-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> k, <span class="dt">y =</span> probability)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb362-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">width=</span><span class="fl">0.25</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb362-4" data-line-number="4"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-360-1.png" width="576" /></p>
+</div>
+</div>
+<div id="sampling-from-the-binomial-distribution-in-r" class="section level3">
+<h3><span class="header-section-number">14.3.2</span> Sampling from the binomial distribution in R</h3>
+<p>To simulate sampling from the binomial distribution in R we can use the <code>rbinom()</code> function.</p>
+<p>The arguments to <code>rbinom()</code> the number of samples, the number of draws in each sample, and the probability of success. For example, to simulate the single sample of size 10 that you generated at the beginning of class (making an assumption about the actual probability in the population) you would call <code>rbinom()</code> like so:</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1"><span class="co"># draw 1 sample of size 10, where P(success) = 0.3</span></a>
+<a class="sourceLine" id="cb363-2" data-line-number="2"><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb363-3" data-line-number="3"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
+<p>The value returned by <code>rbinom()</code> is the number of successes.</p>
+<p>You can also specify more than one sample to be generated. For example, there are roughly 20 students in today’s class session. To simulate all of our 20 samples we can call <code>rbinom()</code> as so:</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1"><span class="co"># 20 samples of size 10, where P(success) = 0.3</span></a>
+<a class="sourceLine" id="cb364-2" data-line-number="2"><span class="kw">rbinom</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb364-3" data-line-number="3"><span class="co">#&gt;  [1] 1 3 3 2 5 6 2 1 3 2 3 3 3 3 5 3 6 2 5 2</span></a></code></pre></div>
+<p>Let’s repeat that, but for several thousand samples of size 10, and then plot the results in terms of the proportion of successes:</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb365-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb365-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb365-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb365-5" data-line-number="5">df10 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb365-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb365-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a>
+<a class="sourceLine" id="cb365-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb365-9" data-line-number="9">df10 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb365-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> estimated.p)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb365-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-363-1.png" width="576" /></p>
+<p>Here we’re plotting a distribution of the estimates of the proportion of successes (e.g. relative frequency of brown rice grains) in many samples of size 10.</p>
+</div>
+</div>
+<div id="distribution-of-estimates-of-the-proportion" class="section level2">
+<h2><span class="header-section-number">14.4</span> Distribution of estimates of the proportion</h2>
+<p>Repeat the simulation,but for samples of size 30:</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb366-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb366-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb366-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb366-5" data-line-number="5">df30 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb366-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb366-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a></code></pre></div>
+<p>Repeat the simulation, but for samples of size 100:</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb367-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb367-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb367-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb367-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb367-5" data-line-number="5">df100 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb367-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb367-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a></code></pre></div>
+<p>Combine the three data frames:</p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1">df.combined &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df10, df30, df100)</a></code></pre></div>
+<p>Plot distributions of estimates of <span class="math inline">\(p\)</span> for different sample sizes:</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1">df.combined <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb369-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ssize.category =</span> <span class="kw">as.factor</span>(ssize)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb369-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> estimated.p, <span class="dt">fill =</span> ssize.category)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb369-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb369-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ssize.category, <span class="dt">ncol=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-367-1.png" width="576" /></p>
 
 </div>
 </div>
@@ -443,8 +586,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
+<a href="introduction-to-probability.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="data-story-women-and-children-first-on-the-titanic.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

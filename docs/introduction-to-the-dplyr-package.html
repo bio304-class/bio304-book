@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-16">
+<meta name="date" content="2018-10-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -393,6 +393,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="13.9" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-trees"><i class="fa fa-check"></i><b>13.9</b> Probability trees</a></li>
 <li class="chapter" data-level="13.10" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#law-of-total-probability"><i class="fa fa-check"></i><b>13.10</b> Law of total probability</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions I</a><ul>
+<li class="chapter" data-level="14.1" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#libraries-4"><i class="fa fa-check"></i><b>14.1</b> Libraries</a></li>
+<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#experiment-1"><i class="fa fa-check"></i><b>14.2.1</b> Experiment 1</a></li>
+<li class="chapter" data-level="14.2.2" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#experiment-2"><i class="fa fa-check"></i><b>14.2.2</b> Experiment 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#binomial-distribution"><i class="fa fa-check"></i><b>14.3.1</b> Binomial distribution</a></li>
+<li class="chapter" data-level="14.3.2" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#sampling-from-the-binomial-distribution-in-r"><i class="fa fa-check"></i><b>14.3.2</b> Sampling from the binomial distribution in R</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="introduction-to-sampling-distributions-i.html"><a href="introduction-to-sampling-distributions-i.html#distribution-of-estimates-of-the-proportion"><i class="fa fa-check"></i><b>14.4</b> Distribution of estimates of the proportion</a></li>
 </ul></li>
 </ul>
 
@@ -932,7 +944,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cakes&quot;</span>, <span class="st">&quot;sauce&quot;</span>, <span class="st">&quot;house&quot;</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># create a vector</span></a>
 <a class="sourceLine" id="cb244-2" data-line-number="2"><span class="st">  </span><span class="kw">sample</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># pick a random single element of that vector</span></a>
 <a class="sourceLine" id="cb244-3" data-line-number="3"><span class="st">  </span><span class="kw">str_c</span>(<span class="st">&quot;hot&quot;</span>, .)  <span class="co"># string concatenate the pick with the word &quot;hot&quot;</span></a>
-<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hothouse&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotsauce&quot;</span></a></code></pre></div>
 </div>
 <div id="the-exposition-pipe-operator" class="section level3">
 <h3><span class="header-section-number">7.6.8</span> The exposition pipe operator</h3>
