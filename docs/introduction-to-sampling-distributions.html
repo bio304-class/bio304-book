@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="data-story-women-and-children-first-on-the-titanic.html">
-<link rel="next" href="r-markdown-and-r-notebooks.html">
+<link rel="prev" href="introduction-to-probability.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -423,322 +423,161 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="getting-started-with-r" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Getting Started with R</h1>
-<div id="what-is-r" class="section level2">
-<h2><span class="header-section-number">3.1</span> What is R?</h2>
-<p>R is a statistical computing environment and programming language. It is free, open source, and has a large and active community of developers and users. There are many different R packages (libraries) available for conducting a wide variety of different analyses, for everything from genome sequence data to geospatial information.</p>
+<div id="introduction-to-sampling-distributions" class="section level1">
+<h1><span class="header-section-number">Chapter 14</span> Introduction to Sampling Distributions</h1>
+<div id="libraries-4" class="section level2">
+<h2><span class="header-section-number">14.1</span> Libraries</h2>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb359-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb359-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">20181019</span>)  <span class="co"># initializes RNG</span></a></code></pre></div>
 </div>
-<div id="what-is-rstudio" class="section level2">
-<h2><span class="header-section-number">3.2</span> What is RStudio?</h2>
-<p>RStudio (<a href="http://www.rstudio.com/" class="uri">http://www.rstudio.com/</a>) is an open source integrated development environment (IDE) that provides a nicer graphical interface to R than does the default R GUI.</p>
-<p>The figure below illustrates the RStudio interface, in its default configuration. For the exercises in this chapter you’ll be primarily entering commands in the “console” window. We’ll review key parts of the RStudio interface in greater detail in class.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-30"></span>
-<img src="figures/fig-rstudio-panes-labeled.png" alt="RStudio window with the panes labeled" width="600px" />
-<p class="caption">
-Figure 3.1: RStudio window with the panes labeled
-</p>
+<div id="in-class-experiments" class="section level2">
+<h2><span class="header-section-number">14.2</span> In class experiments</h2>
+<div id="experiment-1" class="section level3">
+<h3><span class="header-section-number">14.2.1</span> Experiment 1</h3>
+<ol style="list-style-type: decimal">
+<li>Sample 10 grains of rice from the large population provided by the instructor</li>
+<li>Count the number of brown grains in your sample</li>
+<li>Enter your counts in this <a href="https://docs.google.com/spreadsheets/d/1nlg-oarr0_1xcKPsfIiUF8UGAsDXXmTmIJMH-Wj9P70/edit?usp=sharing">Google Sheets spreadsheet</a></li>
+<li>Once all the entire class has entered their data, download the spreadsheet as as CSV file, load it into R as a data frame (<code>rice</code>)</li>
+<li>Add a new column to the data frame that gives the proportion (relative frequency) of brown rice in each students sample</li>
+<li>Generate a frequency distribution plot for the proportion of brown rice</li>
+<li>Discuss as a class</li>
+</ol>
+<p>Key points:</p>
+<ul>
+<li>We all did the same experiment</li>
+<li>We all sampled from the same population</li>
+<li>We all came up with slightly different estimates of the proportion of brown rice grains</li>
+<li>If we take all of our individual estimates and combine, we have a distribution of estimated proportions</li>
+</ul>
 </div>
-</div>
-<div id="entering-commands-in-the-console" class="section level2">
-<h2><span class="header-section-number">3.3</span> Entering commands in the console</h2>
-<p>You can type commands directly in the console. When you hit Return (Enter) on your keyboard the text you typed is evaluated by the R interpreter. This means that the R program reads your commands, makes sure there are no syntax errors, and then carries out any commands that were specified.</p>
-<p>Try evaluating the following arithmetic commands in the console:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="dv">10</span> <span class="op">+</span><span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="dv">10</span> <span class="op">-</span><span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">5</span></a></code></pre></div>
-<p>If you type an incomplete command and then hit Return on your keyboard, the console will show a continuation line marked by a <code>+</code> symbol. For example enter the incomplete statement <code>(10 + 5</code> and then hit Enter. You should see something like this.</p>
-<pre><code>&gt; (10 + 5
-+</code></pre>
-<p>The continuation line tells you that R is waiting for additional input before it evaluates what you typed. Either complete your command (e.g. type the closing parenthesis) and hit Return, or hit the “Esc” key to exit the continuation line without evaluating what you typed.</p>
-</div>
-<div id="comments" class="section level2">
-<h2><span class="header-section-number">3.4</span> Comments</h2>
-<p>When working in the R console, or writing R code, the pound symbol (<code>#</code>) indicates the start of a comment. Anything after the <code>#</code>, up to the end of the current line, is ignored by the R interpretter.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># This line will be ignored</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="dv">5</span> <span class="op">+</span><span class="st"> </span><span class="dv">4</span> <span class="co"># the first part of this line, up to the #, will be evaluated</span></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="dv">2</span> <span class="co"># * 3  + 4 * 5</span></a></code></pre></div>
-<p>Throughout this course I will often include short explanatory comments in the code examples.</p>
-</div>
-<div id="using-r-as-a-calculator" class="section level2">
-<h2><span class="header-section-number">3.5</span> Using R as a Calculator</h2>
-<p>The simplest way to use R is as a fancy calculator.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="dv">10</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="co"># addition</span></a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="dv">10</span> <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="co"># subtraction</span></a>
-<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="co"># multiplication</span></a>
-<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span> <span class="co"># division</span></a>
-<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="dv">10</span> <span class="op">^</span><span class="st"> </span><span class="dv">2</span> <span class="co"># exponentiation</span></a>
-<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="dv">10</span> <span class="op">**</span><span class="st"> </span><span class="dv">2</span> <span class="co"># alternate exponentiation</span></a>
-<a class="sourceLine" id="cb33-7" data-line-number="7">pi <span class="op">*</span><span class="st"> </span><span class="fl">2.5</span><span class="op">^</span><span class="dv">2</span> <span class="co"># R knows about some constants such as Pi</span></a>
-<a class="sourceLine" id="cb33-8" data-line-number="8"><span class="dv">10</span> <span class="op">%%</span><span class="st"> </span><span class="dv">3</span> <span class="co"># modulus operator -- gives remainder after division</span></a>
-<a class="sourceLine" id="cb33-9" data-line-number="9"><span class="dv">10</span> <span class="op">%/%</span><span class="st"> </span><span class="dv">3</span> <span class="co"># integer division</span></a></code></pre></div>
-<p>Be aware that certain operators have precedence over others. For example multiplication and division have higher precedence than addition and subtraction. Use parentheses to disambiguate potentially confusing statements.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">(<span class="dv">10</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span><span class="dv">4-5</span>   <span class="co"># was the output what you expected?</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">(<span class="dv">10</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">4-5</span>) <span class="co"># compare the answer to the above</span></a></code></pre></div>
-<p>Division by zero produces an object that represents infinite numbers. Infinite values can be either positive or negative</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="dv">1</span><span class="op">/</span><span class="dv">0</span>  <span class="co"># Inf</span></a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="dv">-1</span><span class="op">/</span><span class="dv">0</span> <span class="co"># -Inf</span></a></code></pre></div>
-<p>Invalid calculations produce a objected called <code>NaN</code> which is short for “Not a Number”:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="dv">0</span><span class="op">/</span><span class="dv">0</span>  <span class="co"># invalid calculation</span></a></code></pre></div>
-<div id="common-mathematical-functions" class="section level3">
-<h3><span class="header-section-number">3.5.1</span> Common mathematical functions</h3>
-<p>Many commonly used mathematical functions are built into R. Here are some examples:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">abs</span>(<span class="op">-</span><span class="dv">3</span>)   <span class="co"># absolute value</span></a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw">abs</span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">cos</span>(pi<span class="op">/</span><span class="dv">3</span>) <span class="co"># cosine</span></a>
-<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw">sin</span>(pi<span class="op">/</span><span class="dv">3</span>) <span class="co"># sine</span></a>
-<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="kw">log</span>(<span class="dv">10</span>)   <span class="co"># natural logarithm</span></a>
-<a class="sourceLine" id="cb37-6" data-line-number="6"><span class="kw">log10</span>(<span class="dv">10</span>) <span class="co"># log base 10</span></a>
-<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="kw">log2</span>(<span class="dv">10</span>) <span class="co"># log base 2</span></a>
-<a class="sourceLine" id="cb37-8" data-line-number="8"><span class="kw">exp</span>(<span class="dv">1</span>)    <span class="co"># exponential function</span></a>
-<a class="sourceLine" id="cb37-9" data-line-number="9"><span class="kw">sqrt</span>(<span class="dv">10</span>)  <span class="co"># square root</span></a>
-<a class="sourceLine" id="cb37-10" data-line-number="10"><span class="dv">10</span> <span class="op">^</span><span class="st"> </span><span class="fl">0.5</span>  <span class="co"># same as square root</span></a></code></pre></div>
+<div id="experiment-2" class="section level3">
+<h3><span class="header-section-number">14.2.2</span> Experiment 2</h3>
+<ol style="list-style-type: decimal">
+<li>Sample 30 grains of rice from the large population provided by the instructor</li>
+<li>Count the number of brown grains in your sample</li>
+<li>Add your new counts as additional rows to the <a href="https://docs.google.com/spreadsheets/d/1nlg-oarr0_1xcKPsfIiUF8UGAsDXXmTmIJMH-Wj9P70/edit?usp=sharing">Google Sheets spreadsheet</a></li>
+<li>Re-download and re-load the data, again estimating the proportion of brown rice for each student’s sample</li>
+<li>Generate a facetted plot giving the frequencing distribution for the proportion of brown rice in samples of size 10 and samples of size 30.</li>
+<li>Discuss as a class</li>
+</ol>
+<p>Key points:
+- With larger sample sizes our estimates still very
+- But the spread of our estimates has decreased</p>
 </div>
 </div>
-<div id="the-r-help-system" class="section level2">
-<h2><span class="header-section-number">3.6</span> The R Help System</h2>
-<p>R comes with fairly extensive documentation and a simple help system. You can access HTML versions of the R documentation under the Help tab in Rstudio. The HTML documentation also includes information on any packages you’ve installed. Take a few minutes to browse through the R HTML documentation. In addition to the HTML documentation there is also a search box where you can enter a term to search on (see red arrow in figure below).</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-38"></span>
-<img src="figures/fig-rstudio-help.png" alt="The RStudio Help tab" width="600px" />
-<p class="caption">
-Figure 3.2: The RStudio Help tab
-</p>
-</div>
-<div id="getting-help-from-the-console" class="section level3">
-<h3><span class="header-section-number">3.6.1</span> Getting help from the console</h3>
-<p>In addition to getting help from the RStudio help tab, you can directly search for help from the console. The help system can be invoked using the <code>help</code> function or the <code>?</code> operator.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">help</span>(<span class="st">&quot;log&quot;</span>)</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">?log</a></code></pre></div>
-<p>If you are using RStudio, the help results will appear in the “Help” tab of the Files/Plots/Packages/Help/Viewer (lower right window by default).</p>
-<p>What if you don’t know the name of the function you want? You can use the <code>help.search()</code> function.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">help.search</span>(<span class="st">&quot;log&quot;</span>)</a></code></pre></div>
-<p>In this case <code>help.search(&quot;log&quot;)</code> returns all the functions with
-the string <code>log</code> in them. For more on <code>help.search</code> type
-<code>?help.search</code>.</p>
-<p>Other useful help related functions include <code>apropos()</code> and <code>example()</code>. <code>apropos</code> returns a list of all objects (including function names) in the current session that match the input string.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">apropos</span>(<span class="st">&quot;log&quot;</span>)</a></code></pre></div>
-<p><code>example()</code> provides examples of how a function is used.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">example</span>(log)</a></code></pre></div>
-</div>
-</div>
-<div id="variable-assignment-in-r" class="section level2">
-<h2><span class="header-section-number">3.7</span> Variable assignment in R</h2>
-<p>An important concept in all programming languages is that of “variable assignment”. Variable assignment is the act of creating labels that point to particular data values in a computers memory, which allows us to apply operations to the labels rather than directly to specific values. Variable assignment is an important mechanism of abstracting and generalizing computational operations.</p>
-<p>Variable assignment in R is accomplished with the assignment operator, which is designated as <code>&lt;-</code> (left arrow, constructed from a left angular bracket and the minus sign). This is illustrated below:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="dv">10</span>  <span class="co"># assign the variable name &#39;x&#39; the value 10</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">sin</span>(x)   <span class="co"># apply the sin function to the value x points to</span></a>
-<a class="sourceLine" id="cb42-3" data-line-number="3">x &lt;-<span class="st"> </span>pi  <span class="co"># x now points to a different value</span></a>
-<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="kw">sin</span>(x)   <span class="co"># the same function call now produces a different result </span></a></code></pre></div>
-<div id="valid-variable-names" class="section level3">
-<h3><span class="header-section-number">3.7.1</span> Valid variable names</h3>
-<p>As described in the <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/make.names.html">R documentation</a>, “A syntactically valid name consists of letters, numbers and the dot or underline characters and starts with a letter or the dot not followed by a number. Names such as ‘.2way’ are not valid, and neither are the <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html">reserved words</a>.”</p>
-<p>Here are some examples of valid and invalid variable names. Mentally evaluate these based on the definition above, and then evaluate these in the R interpetter to confirm your understanding :</p>
-<pre><code>x &lt;- 10
-x.prime &lt;- 10
-x_prime &lt;- 10
-my.long.variable.name &lt;- 10
-another_long_variable_name &lt;- 10
-_x &lt;- 10
-.x &lt;- 10
-2.x &lt;- 2 * x</code></pre>
-</div>
-</div>
-<div id="data-types" class="section level2">
-<h2><span class="header-section-number">3.8</span> Data types</h2>
-<p>All of our arithmetic examples above produced numerical values. The default numerical data type in R is called a “double”. “double” is short for “double precision floating point value” which refers to the numerical precision that R uses when carrying out calculations.</p>
-<p>R has a function called <code>typeof()</code> that we can use to get information about an object’s type. Let’s illustrate the use of <code>typeof()</code> and confirm that our numerical calculations return objects of the “double” type:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">typeof</span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="fl">10.5</span></a>
-<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">typeof</span>(x)</a></code></pre></div>
-</div>
-<div id="logical-values" class="section level2">
-<h2><span class="header-section-number">3.9</span> Logical values</h2>
-<p>When we compare values to each other, our calculations no longer return “doubles” but rather <code>TRUE</code> and <code>FALSE</code> values. This is illustrated below:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="dv">10</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>  <span class="co"># is 10 less than 9?</span></a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="dv">10</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">9</span>  <span class="co"># is 10 greater than 9?</span></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="dv">10</span> <span class="op">&lt;=</span><span class="st"> </span>(<span class="dv">5</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="co"># less than or equal to?</span></a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="dv">10</span> <span class="op">&gt;=</span><span class="st"> </span>pi <span class="co"># greater than or equal to?</span></a>
-<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="dv">10</span> <span class="op">==</span><span class="st"> </span><span class="dv">10</span> <span class="co"># equals?</span></a>
-<a class="sourceLine" id="cb45-6" data-line-number="6"><span class="dv">10</span> <span class="op">!=</span><span class="st"> </span><span class="dv">10</span> <span class="co"># does not equal?</span></a></code></pre></div>
-<p><code>TRUE</code> and <code>FALSE</code> objects are of “logical” data type (known as “Booleans” in many other languages, after the mathematician George Boole).</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">typeof</span>(<span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw">typeof</span>(<span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">x &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw">typeof</span>(x)</a></code></pre></div>
-<p>When working with numerical data, tests of equality can be tricky. For example, consider the following two comparisons:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="dv">10</span> <span class="op">==</span><span class="st"> </span>(<span class="kw">sqrt</span>(<span class="dv">10</span>)<span class="op">^</span><span class="dv">2</span>) <span class="co"># Surprised by the result? See below.</span></a>
-<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="dv">4</span> <span class="op">==</span><span class="st"> </span>(<span class="kw">sqrt</span>(<span class="dv">4</span>)<span class="op">^</span><span class="dv">2</span>) <span class="co"># Even more confused?</span></a></code></pre></div>
-<p>Mathematically we know that both <span class="math inline">\((\sqrt{10})^2 = 10\)</span> and <span class="math inline">\((\sqrt{4})^2 = 4\)</span> are true statements. Why does R tell us the first statement is false? What we’re running into here are the limits of computer precision. A computer can’t represent <span class="math inline">\(\sqrt 10\)</span> exactly, whereas <span class="math inline">\(\sqrt 4\)</span> can be exactly represented.
-Precision in numerical computing is a complex subject and a detailed discussion is beyond the scope of this course. However, it’s important to be aware of this limitation (this limitation is true of any programming language, not just R).</p>
-<p>To test “near equality” R provides a function called <code>all.equal()</code>. This function takes two inputs – the numerical values to be compared – and returns True if their values are equal up to a certain level of tolerance (defined by the built-in numerical precision of your computer).</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">all.equal</span>(<span class="dv">10</span>, <span class="kw">sqrt</span>(<span class="dv">10</span>)<span class="op">^</span><span class="dv">2</span>)</a></code></pre></div>
-<div id="logical-operators" class="section level3">
-<h3><span class="header-section-number">3.9.1</span> Logical operators</h3>
-<p>Logical values support Boolean operations, like logical negation (“not”), “and”, “or”, “xor”, etc. This is illustrated below:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="op">!</span>x  <span class="co"># logical negation -- reads as &quot;not x&quot;</span></a>
-<a class="sourceLine" id="cb49-4" data-line-number="4">x <span class="op">&amp;</span><span class="st"> </span>y <span class="co"># AND: are x and y both TRUE?</span></a>
-<a class="sourceLine" id="cb49-5" data-line-number="5">x <span class="op">|</span><span class="st"> </span>y <span class="co"># OR: are either x or y TRUE?</span></a>
-<a class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">xor</span>(x,y)  <span class="co"># XOR: is either x or y TRUE, but not both?</span></a></code></pre></div>
-<p>The function <code>isTRUE</code> is sometimes useful:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">z &lt;-<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span>y</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">isTRUE</span>(z)</a></code></pre></div>
+<div id="simulating-sampling-in-r" class="section level2">
+<h2><span class="header-section-number">14.3</span> Simulating sampling in R</h2>
+<p>Before we can simulate a sampling experiment in a computer we have to make some assumptions about the probability distribution of the variables we’re simulating.</p>
+<p>To illustrate this let’s make explicit what’s going on in our rice grain experiment:</p>
+<ul>
+<li>We have a large population of rice grains</li>
+<li>A fraction, <span class="math inline">\(p\)</span>, of grains in that population are brown</li>
+<li>We draw <span class="math inline">\(n\)</span> grains of rice from the population; all of the draws are independent</li>
+<li>We count the number of brown rice grains, recording the value as <span class="math inline">\(k\)</span></li>
+</ul>
+<div id="binomial-distribution" class="section level3">
+<h3><span class="header-section-number">14.3.1</span> Binomial distribution</h3>
+<p>Under this scenario, what is the probability the we drew <span class="math inline">\(k\)</span> brown grains from a sample of size <span class="math inline">\(n\)</span>, if the true proportion of brown grains is <span class="math inline">\(p\)</span>?</p>
+<p>It turns out we can solve this problem for a the following formula:</p>
+<p><span class="math display">\[
+P(k; n, p) = {n \choose k} p^k (1-p)^{n-k}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\({n \choose k}\)</span> is called the “binomial coefficient” and it gives the different combinations that would result in <span class="math inline">\(k\)</span> successes (brown grains) in <span class="math inline">\(n\)</span> draws. For example, in our rice experiment one combination for <span class="math inline">\(k=2\)</span> would be: (brown, brown, white, white…); a second combination could be (brown, white, brown, white, white, …)</li>
+<li><span class="math inline">\(p^k(1-p)^{n-k}\)</span> is the probability of <span class="math inline">\(k\)</span> successes (brown grains) and <span class="math inline">\((n-k)\)</span> failures (white grains) for each of the combinations</li>
+</ul>
+<p>The above formula is the “Probability Mass Function” (pmf) for the <strong>Binomial Distribution</strong> – it gives the probability of a particular outcome. The complete binomial distribution for <span class="math inline">\(n\)</span> trials given a probability of success <span class="math inline">\(p\)</span> is written as <span class="math inline">\(B(n,p)\)</span> and is calculated by evaluating the probability mass function for all values of <span class="math inline">\(k\)</span> from <span class="math inline">\(0,\ldots,n\)</span>.</p>
+<div id="binomial-distribution-in-r" class="section level4">
+<h4><span class="header-section-number">14.3.1.1</span> Binomial distribution in R</h4>
+<p>R has a built-in function, <code>dbinom()</code> that calculates the probabability mass function of the binomial distribution at given values of <span class="math inline">\(k\)</span>. Tkae a moment to read the help on the <code>dbinom()</code> function in R.</p>
+<p>To calculate the Binomial pmf for <span class="math inline">\(k=5, n = 10, p = 0.3\)</span> we call <code>dbinom()</code> as so:</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" data-line-number="1"><span class="kw">dbinom</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb360-2" data-line-number="2"><span class="co">#&gt; [1] 0.1029193</span></a></code></pre></div>
+<p>This tells us that if the true proportion of brown rice in the population is 0.3, about 10% of samples of size 10 will have 5 brown grains in them.</p>
+<p>The <code>dbinom()</code> function can also take a vector of values of <span class="math inline">\(k\)</span> as it’s first argument. Here we evaluate all values of <span class="math inline">\(k\)</span> between 0 and 10, for the same scenario (<span class="math inline">\(n=10\)</span> draws; probability of success <span class="math inline">\(p = 0.3\)</span>), storing the results in a data frame.</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb361-1" data-line-number="1">k &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb361-2" data-line-number="2">binomial.ex1 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">k =</span> k,</a>
+<a class="sourceLine" id="cb361-3" data-line-number="3">                           <span class="dt">probability =</span> <span class="kw">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.3</span>))</a>
+<a class="sourceLine" id="cb361-4" data-line-number="4">binomial.ex1</a>
+<a class="sourceLine" id="cb361-5" data-line-number="5"><span class="co">#&gt; # A tibble: 11 x 2</span></a>
+<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt;        k probability</span></a>
+<a class="sourceLine" id="cb361-7" data-line-number="7"><span class="co">#&gt;    &lt;int&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb361-8" data-line-number="8"><span class="co">#&gt;  1     0 0.02825    </span></a>
+<a class="sourceLine" id="cb361-9" data-line-number="9"><span class="co">#&gt;  2     1 0.1211     </span></a>
+<a class="sourceLine" id="cb361-10" data-line-number="10"><span class="co">#&gt;  3     2 0.2335     </span></a>
+<a class="sourceLine" id="cb361-11" data-line-number="11"><span class="co">#&gt;  4     3 0.2668     </span></a>
+<a class="sourceLine" id="cb361-12" data-line-number="12"><span class="co">#&gt;  5     4 0.2001     </span></a>
+<a class="sourceLine" id="cb361-13" data-line-number="13"><span class="co">#&gt;  6     5 0.1029     </span></a>
+<a class="sourceLine" id="cb361-14" data-line-number="14"><span class="co">#&gt;  7     6 0.03676    </span></a>
+<a class="sourceLine" id="cb361-15" data-line-number="15"><span class="co">#&gt;  8     7 0.009002   </span></a>
+<a class="sourceLine" id="cb361-16" data-line-number="16"><span class="co">#&gt;  9     8 0.001447   </span></a>
+<a class="sourceLine" id="cb361-17" data-line-number="17"><span class="co">#&gt; 10     9 0.0001378  </span></a>
+<a class="sourceLine" id="cb361-18" data-line-number="18"><span class="co">#&gt; 11    10 0.000005905</span></a></code></pre></div>
+<p>And now plotting the distribution, using <code>geom_col()</code> which is like <code>geom_bar()</code> but that derives the height of the bars to plot directly from thes specified <code>y</code> aesthetic.</p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" data-line-number="1">binomial.ex1 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb362-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> k, <span class="dt">y =</span> probability)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb362-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">width=</span><span class="fl">0.25</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb362-4" data-line-number="4"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-360-1.png" width="576" /></p>
 </div>
 </div>
-<div id="character-strings" class="section level2">
-<h2><span class="header-section-number">3.10</span> Character strings</h2>
-<p>Character strings (“character”) represent single textual characters or a longer sequence of characters. They are created by enclosing the characters in text either single our double quotes.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">typeof</span>(<span class="st">&quot;abc&quot;</span>)  <span class="co"># double quotes </span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="co">#&gt; [1] &quot;character&quot;</span></a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">typeof</span>(<span class="st">&#39;abc&#39;</span>)  <span class="co"># single quotes</span></a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="co">#&gt; [1] &quot;character&quot;</span></a></code></pre></div>
-<p>Character strings have a length, which can be found using the <code>nchar</code> function:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">first.name &lt;-<span class="st"> &quot;jasmine&quot;</span></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">nchar</span>(first.name)</a>
-<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="co">#&gt; [1] 7</span></a>
-<a class="sourceLine" id="cb52-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb52-5" data-line-number="5">last.name &lt;-<span class="st"> &#39;smith&#39;</span></a>
-<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="kw">nchar</span>(last.name)</a>
-<a class="sourceLine" id="cb52-7" data-line-number="7"><span class="co">#&gt; [1] 5</span></a></code></pre></div>
-<p>There are a number of built-in functions for manipulating character strings. Here are some of the most common ones.</p>
-<div id="joining-strings" class="section level3">
-<h3><span class="header-section-number">3.10.1</span> Joining strings</h3>
-<p>The <code>paste()</code> function joins two characters strings together:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">paste</span>(first.name, last.name)  <span class="co"># join two strings</span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="co">#&gt; [1] &quot;jasmine smith&quot;</span></a>
-<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="kw">paste</span>(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>)</a>
-<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="co">#&gt; [1] &quot;abc def&quot;</span></a></code></pre></div>
-<p>Notice that <code>paste()</code> adds a space between the strings? If we didn’t want the space we can call the <code>paste()</code> function with an optional argument called <code>sep</code> (short for separator) which specifies the character(s) that are inserted between the joined strings.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">paste</span>(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)  <span class="co"># join with no space; &quot;&quot; is an empty string</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="co">#&gt; [1] &quot;abcdef&quot;</span></a>
-<a class="sourceLine" id="cb54-3" data-line-number="3"><span class="kw">paste</span>(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;|&quot;</span>) <span class="co"># join with a vertical bar</span></a>
-<a class="sourceLine" id="cb54-4" data-line-number="4"><span class="co">#&gt; [1] &quot;abc|def&quot;</span></a></code></pre></div>
-</div>
-<div id="splitting-strings" class="section level3">
-<h3><span class="header-section-number">3.10.2</span> Splitting strings</h3>
-<p>The <code>strsplit()</code> function allows us to split a character string into substrains according to matches to a substring. For example, we could break a sentence into it’s constituent words as follows:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">sentence &lt;-<span class="st"> &quot;Call me Ishmael.&quot;</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">words &lt;-<span class="st"> </span><span class="kw">strsplit</span>(sentence, <span class="st">&quot; &quot;</span>)  <span class="co"># split on space</span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">words</a>
-<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="co">#&gt; [1] &quot;Call&quot;     &quot;me&quot;       &quot;Ishmael.&quot;</span></a></code></pre></div>
-<p>Notice that <code>strsplit()</code> is the reverse of <code>paste()</code>.</p>
-</div>
-<div id="substrings" class="section level3">
-<h3><span class="header-section-number">3.10.3</span> Substrings</h3>
-<p>The <code>substr()</code> function allows us to extract a substring from a character object by specifying the first and last positions (indices) to use in the extraction:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">substr</span>(<span class="st">&quot;abcdef&quot;</span>, <span class="dv">2</span>, <span class="dv">5</span>)  <span class="co"># get substring from characters 2 to 5</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="co">#&gt; [1] &quot;bcde&quot;</span></a>
-<a class="sourceLine" id="cb56-3" data-line-number="3"><span class="kw">substr</span>(first.name, <span class="dv">1</span>, <span class="dv">3</span>) <span class="co"># get substring from characters 1 to       </span></a>
-<a class="sourceLine" id="cb56-4" data-line-number="4"><span class="co">#&gt; [1] &quot;jas&quot;</span></a></code></pre></div>
+<div id="sampling-from-the-binomial-distribution-in-r" class="section level3">
+<h3><span class="header-section-number">14.3.2</span> Sampling from the binomial distribution in R</h3>
+<p>To simulate sampling from the binomial distribution in R we can use the <code>rbinom()</code> function.</p>
+<p>The arguments to <code>rbinom()</code> the number of samples, the number of draws in each sample, and the probability of success. For example, to simulate the single sample of size 10 that you generated at the beginning of class (making an assumption about the actual probability in the population) you would call <code>rbinom()</code> like so:</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1"><span class="co"># draw 1 sample of size 10, where P(success) = 0.3</span></a>
+<a class="sourceLine" id="cb363-2" data-line-number="2"><span class="kw">rbinom</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb363-3" data-line-number="3"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
+<p>The value returned by <code>rbinom()</code> is the number of successes.</p>
+<p>You can also specify more than one sample to be generated. For example, there are roughly 20 students in today’s class session. To simulate all of our 20 samples we can call <code>rbinom()</code> as so:</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1"><span class="co"># 20 samples of size 10, where P(success) = 0.3</span></a>
+<a class="sourceLine" id="cb364-2" data-line-number="2"><span class="kw">rbinom</span>(<span class="dv">20</span>, <span class="dv">10</span>, <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb364-3" data-line-number="3"><span class="co">#&gt;  [1] 1 3 3 2 5 6 2 1 3 2 3 3 3 3 5 3 6 2 5 2</span></a></code></pre></div>
+<p>Let’s repeat that, but for several thousand samples of size 10, and then plot the results in terms of the proportion of successes:</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb365-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb365-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb365-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb365-5" data-line-number="5">df10 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb365-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb365-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a>
+<a class="sourceLine" id="cb365-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb365-9" data-line-number="9">df10 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb365-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> estimated.p)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb365-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-363-1.png" width="576" /></p>
+<p>Here we’re plotting a distribution of the estimates of the proportion of successes (e.g. relative frequency of brown rice grains) in many samples of size 10.</p>
 </div>
 </div>
-<div id="packages" class="section level2">
-<h2><span class="header-section-number">3.11</span> Packages</h2>
-<p>Packages are libraries of R functions and data that provide additional capabilities and tools beyond the standard library of functions included with R. Hundreds of people around the world have developed packages for R that provide functions and related data structures for conducting many different types of analyses.</p>
-<p>Throughout this course you’ll need to install a variety of packages. Here I show the basic procedure for installing new packages from the console as well as from the R Studio interface.</p>
-<div id="installing-packages-from-the-console" class="section level3">
-<h3><span class="header-section-number">3.11.1</span> Installing packages from the console</h3>
-<p>The built-in function <code>install.packages</code> provides a quick and conveniet way to install packages from the R console.</p>
-</div>
-<div id="install-the-tidyverse-package" class="section level3">
-<h3><span class="header-section-number">3.11.2</span> Install the tidyverse package</h3>
-<p>To illustrate the use of <code>install.package</code>, we’ll install a collection of packages (a “meta-package”) called the <a href="http://www.tidyverse.org">tidyverse</a>. Here’s how to install the tidyverse meta-package from the R console:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p>The first argument to <code>install.packages</code> gives the names of the package we want to install. The second argument, <code>dependencies = TRUE</code>, tells R to install any additional packages that tidyverse depends on.</p>
-</div>
-<div id="installing-packages-from-the-rstudio-dialog" class="section level3">
-<h3><span class="header-section-number">3.11.3</span> Installing packages from the RStudio dialog</h3>
-<p>You can also install packages using a graphical dialog provided by RStudio. To do so pick the <code>Packages</code> tab in RStudio, and then click the <code>Install</code> button.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-58"></span>
-<img src="figures/fig-rstudio-packages-tab.png" alt="The Packages tab in RStudio" width="600px" />
-<p class="caption">
-Figure 3.3: The Packages tab in RStudio
-</p>
-</div>
-<p>In the packages entry box you can type the name of the package you wish to install.</p>
-</div>
-<div id="loading-packages-with-the-library-function" class="section level3">
-<h3><span class="header-section-number">3.11.4</span> Loading packages with the <code>library()</code> function</h3>
-<p>Once a package is installed on your computer, the package can be loaded into your R session using the <code>library</code> function. To insure our previous install commands worked correctly, let’s load the packages we just installed.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<p>Since the tidyverse pacakge is a “meta-package” it provides some additional info about the sub-packages that got loaded.</p>
-<p>When you load tidyverse, you will also see a message about “Conflicts” as several of the functions provided in the dplyr package (a sub-package in tidyverse) conflict with names of functions provided by the “stats” package which usually gets automically loaded when you start R. The conflicting funcdtions are <code>filter</code> and <code>lag</code>. The conflicting functions in the stats package are <code>lag</code> and <code>filter</code> which are used in time series analysis. The <code>dplyr</code> functions are more generally useful. Furthermore, if you need these masked functions you can still access them by prefacing the function name with the name of the package (e.g. <code>stats::filter</code>).</p>
-</div>
-</div>
-<div id="reading-data-from-a-file" class="section level2">
-<h2><span class="header-section-number">3.12</span> Reading data from a file</h2>
-<p>We’ll use the <code>read_csv</code> function defined in the <code>readr</code> package (loaded via <code>tidyverse</code>) to read a CSV formatted data file. We’ll load a data file called <code>possums.csv</code>.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">possums &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://tinyurl.com/bio304-possums-csv&quot;</span>)</a></code></pre></div>
-<p>The possums data set includes information from a study of mountain brushtail possums (<em>Trichosurus caninus</em>; Lindenmayer DB et al. 1995, Australian Journal of Zoology 43, 449-458.) The investigators recorded variables about individual possum’s sex, age, where they were collected, and a range of morphological measurements. For example the variable <code>skullw</code> is the width of the skull, <code>taill</code> is tail length, etc.</p>
-<p>Notice that we read the CSV file directly from a remote file via a URL. If instead, you wanted to load a local file on your computer you would specify the “path” – i.e. the location on your hard drive where you stored the file. For example, here is how I would load the same file if it was stored in the standard downloads directory on my Mac laptop:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co"># this assumes you&#39;re running a local version of R (i.e. on your laptop)</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">possums &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;/Users/pmagwene/Downloads/possums.csv&quot;</span>)</a></code></pre></div>
-</div>
-<div id="exploring-the-possums-data-set" class="section level2">
-<h2><span class="header-section-number">3.13</span> Exploring the “possums” data set</h2>
-<p>Let’s take a moment to explore the possums data set. First, how big is it? The <code>dim</code> function will tell us the dimensions (# of rows and columns) of the data table we loaded:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">dim</span>(possums)</a></code></pre></div>
-<p>What are the names of the columns of the table?</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">names</span>(possums)</a></code></pre></div>
-</div>
-<div id="simple-tables" class="section level2">
-<h2><span class="header-section-number">3.14</span> Simple tables</h2>
-<p>Let’s use the <code>count</code> function to count the number of male and female possums and the number collected from each of the populations of interest in this study (Victoria and “other”):</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">count</span>(possums, sex)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">count</span>(possums, Pop)</a></code></pre></div>
-<p>We can break down the counts by population and sex combinined by specifying both variables:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">count</span>(possums, Pop, sex)</a></code></pre></div>
-<p>How do the results differ if instead you write <code>count(possums, sex, Pop)</code>?</p>
-<p>Finally, let’s get counts for the different age groups in the study:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">count</span>(possums, age)</a></code></pre></div>
-<p>Notice that besides the nine age groups, there is a grouping for “NA”. “NA” means “not available” and is the standard designation for missing values. This table tells us there are two possums for which age estimates were not available.</p>
-</div>
-<div id="simple-figures" class="section level2">
-<h2><span class="header-section-number">3.15</span> Simple figures</h2>
-<p>Throughout this course we’ll use a package called “ggplot2” to generate figures. The ggplot2 package is part of the tidyverse and is automatically loaded when we load the tidyverse library. In the code below, we’ll demonstrate how to use ggplot by example. In a later lecture we’ll go into greater detail about how ggplot is structured and the broader conceptual framework that underpins its design.</p>
-</div>
-<div id="bar-plots" class="section level2">
-<h2><span class="header-section-number">3.16</span> Bar plots</h2>
-<p>First let’s create some simple bar plots as alternate representations of the counts:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sex))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-67-1.png" width="576" /></p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Pop))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-68-1.png" width="576" /></p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Pop, <span class="dt">fill =</span> sex))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-69-1.png" width="576" /></p>
-</div>
-<div id="histograms" class="section level2">
-<h2><span class="header-section-number">3.17</span> Histograms</h2>
-<p>A histogram is a special type of bar plot, typically used with continuous data. In a histogram, we divide the range of the data into bins of a given size, and use vertical bars to depict the frequency (count) of observations that fall into each bin. This gives a good sense of the intervals in which most of the observations are found.</p>
-<p>Here is a histogram for the skull width data:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> skullw))</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-70-1.png" width="576" /></p>
-<p>Notice the warning message that was generated, about the default number of bins that were used. ggplot is alerting us that that we may want to consider regenerating the plot with a different number of bins. Let’s try a smaller number of bins:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> skullw), <span class="dt">bins =</span> <span class="dv">20</span>)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-71-1.png" width="576" /></p>
-<p>Try creating histograms for <code>taill</code> and <code>totlngth</code>.</p>
-</div>
-<div id="scatter-plots" class="section level2">
-<h2><span class="header-section-number">3.18</span> Scatter plots</h2>
-<p>A scatter plot is typically used to represent two numerical variables simultaneously. Each point in a scatter plot is an individual in the data set, and the location of the points represent the measured values of the variables of interest on that individual.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> totlngth, <span class="dt">y =</span> taill))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-72-1.png" width="576" /></p>
-<p>We can add information about categorical variables to our scatter plot by using color or shape to depict different classes</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> totlngth, <span class="dt">y =</span> taill, <span class="dt">color =</span> Pop))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-73-1.png" width="576" /></p>
-<p>We can represent more than two categorical variables in our scatter plot by using both shape and color. We’ll also change the size and transparency of the plotted points (via the <code>alpha</code> argument).</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw">ggplot</span>(possums) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> totlngth, <span class="dt">y =</span> taill, <span class="dt">color =</span> Pop, <span class="dt">shape =</span> sex),</a>
-<a class="sourceLine" id="cb73-3" data-line-number="3">             <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">alpha =</span> <span class="fl">0.75</span>)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-74-1.png" width="576" /></p>
-<p>Explore some of the other bivariate relationships in the possums data by creating additional scatter plots. Given 9 numerical variables, how many distinct pairwise scatter plots could you create?</p>
+<div id="distribution-of-estimates-of-the-proportion" class="section level2">
+<h2><span class="header-section-number">14.4</span> Distribution of estimates of the proportion</h2>
+<p>Repeat the simulation,but for samples of size 30:</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb366-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb366-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb366-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb366-5" data-line-number="5">df30 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb366-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb366-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a></code></pre></div>
+<p>Repeat the simulation, but for samples of size 100:</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb367-1" data-line-number="1">nsamples =<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb367-2" data-line-number="2">ssize =<span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb367-3" data-line-number="3">p =<span class="st"> </span><span class="fl">0.3</span></a>
+<a class="sourceLine" id="cb367-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb367-5" data-line-number="5">df100 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">ssize =</span> <span class="kw">rep</span>(ssize, nsamples),</a>
+<a class="sourceLine" id="cb367-6" data-line-number="6">                   <span class="dt">k =</span> <span class="kw">rbinom</span>(nsamples, ssize, p),</a>
+<a class="sourceLine" id="cb367-7" data-line-number="7">                   <span class="dt">estimated.p =</span> k<span class="op">/</span>ssize)</a></code></pre></div>
+<p>Combine the three data frames:</p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1">df.combined &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df10, df30, df100)</a></code></pre></div>
+<p>Plot distributions of estimates of <span class="math inline">\(p\)</span> for different sample sizes:</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1">df.combined <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb369-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ssize.category =</span> <span class="kw">as.factor</span>(ssize)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb369-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> estimated.p, <span class="dt">fill =</span> ssize.category)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb369-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb369-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ssize.category, <span class="dt">ncol=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-367-1.png" width="576" /></p>
 
 </div>
 </div>
@@ -747,8 +586,8 @@ Figure 3.3: The Packages tab in RStudio
           </div>
         </div>
       </div>
-<a href="data-story-women-and-children-first-on-the-titanic.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-markdown-and-r-notebooks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction-to-probability.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
