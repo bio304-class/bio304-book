@@ -61,6 +61,49 @@ ggplot(pop.distn) +
 
 ```
 
+### Other R functions related to the normal distribution
+
+As shown above `dnorm()` function calculates the probability density at given values of a variable `x`, given the specified mean and standard deviation.  
+
+`pnorm()` gives the cumulative density function (also known as the distribution function) for the normal distribution, as shown below:
+
+```{r}
+cdf <-
+  data_frame(height = seq(100, 250, 0.5),
+             cum.prob = pnorm(height, true.mean, true.sd))
+
+ggplot(cdf) +
+  geom_line(aes(height, cum.prob)) +
+  labs(x = "Height", y = "Cumulative probability")
+```
+
+`qnorm()` is the quantile function for the normal distribution.  The input is the probabilities of interest (single value or vector), and the mean and standard deviation of the distribution. The output is the corresponding value of the variable corresponding to the given percentiles.
+
+For example, to estimate the lower 30th percentile of heights in adult males in the US we can use `qnorm()` as follows:
+
+```{r}
+qnorm(0.3, true.mean, true.sd)
+```
+
+
+```{r}
+perc.30 <- qnorm(0.3, true.mean, true.sd)
+
+label.offset <- 18 # determined by trial and error to make a 
+                   # nice looking figure
+
+heights.less.perc.30 <- seq(100, perc.30, by=0.5)
+density.less.perc.30 <- dnorm(heights.less.perc.30, true.mean, true.sd)
+
+ggplot(pop.distn) +
+  geom_line(aes(x = height, y = density)) + 
+  geom_vline(xintercept = perc.30, linetype='dashed') +
+  geom_area(aes(x = heights.less.perc.30, y = density.less.perc.30),
+            fill = "gray", data = data_frame(x = heights.less.perc.30)) +
+  annotate("text", x = perc.30 - label.offset, y = 0.025, 
+           label = "30th percentile", color = 'red') +
+  labs(title = "Probability distribution as calculated by dnorm()\nand the 30th percentile as calculated by qnorm()\nfor a normal distribution with mean and sd as given in the text.")
+```
 
 
 
@@ -76,11 +119,11 @@ set.seed(20180321)
 
 ## Random sampling from the simulated population
 
-Let's simulate the process of taking a single sample of 30 individuals from our population:
+Let's simulate the process of taking a single sample of 30 individuals from our population, using the `rnorm()` function which takes samples if size `n` from a normal distribution with the given mean and standard deviation:
 
 ```{r}
 sample.a <-
-  data_frame(height = rnorm(30, mean = true.mean, sd = true.sd))
+  data_frame(height = rnorm(n = 30, mean = true.mean, sd = true.sd))
 ```
 
 Now we'll create a histogram of the height variable in our sample. For reference we'll also plot the probability for the true population (but remember, in the typical case you don't know what the true population looks like)
@@ -363,7 +406,7 @@ sampling.distn.sd.table
 
 
 
-As we did for the sampling distribution of the mean, we can  visualize the sampling distribution of the standard deviation as shown below:
+As we did for the sampling distribution of the mean, we can visualize the sampling distribution of the standard deviation as shown below:
 
 ```{r, fig.width = 15, fig.height = 3.5}
 ggplot(df.combined, aes(x = sample.sd, y = ..density.., fill = sample.sz)) + 

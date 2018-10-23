@@ -6,6 +6,7 @@ site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
     highlight: tango
+    df_print: paged
 documentclass: book
 bibliography: [bio304-refs.bib]
 biblio-style: apalike
