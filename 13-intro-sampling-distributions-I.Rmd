@@ -1,4 +1,4 @@
-# Introduction to Sampling Distributions
+# Introduction to Sampling Distributions, Part I
 
 ## Libraries
 
