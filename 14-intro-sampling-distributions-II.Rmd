@@ -30,7 +30,41 @@ Let's simulate a population consisting of 25,000 individuals with a single trait
 
 [^1]: US Dept. of Health and Human Services; et al. (August 2016). "Anthropometric Reference Data for Children and Adults: United States, 2011–2014" (PDF). National Health Statistics Reports. 11. https://www.cdc.gov/nchs/data/series/sr_03/sr03_039.pdf
 
-### Seeding the pseudo-random number generator
+```{r}
+# male mean height and sd in centimeters from USDHHS report
+true.mean <- 175.7
+true.sd <- 15.19
+```
+
+### Properties of the underlying population
+
+Heights in human populations are approximately normally distributed, so we'll assume that the distribution of our simulated variable is also normally distributed.   Let's take a moment to visualize the probability distribution of of a normal distribution with a mean and standard deviation as given above.  Here we use the `dnorm()` function to generate the probability density for different heights.
+
+```{r}
+pop.distn <- 
+  data_frame(height =  seq(100, 250, 0.5),
+             density = dnorm(height,mean = true.mean, sd = true.sd))
+
+ggplot(pop.distn) +
+  geom_line(aes(height, density)) + 
+  # vertical line at mean
+  geom_vline(xintercept = true.mean, color="red", linetype="dashed") +
+  # vertical line at mean + 1SD
+  geom_vline(xintercept = true.mean + true.sd,
+              color = "blue", linetype="dashed") +
+  # vertical line at mean - 1SD
+  geom_vline(xintercept = true.mean - true.sd,
+              color = "blue", linetype="dashed") +
+  labs(x = "Height (cm)", y = "Density",
+       title = "Distribution of Heights in the Population of Interest",
+       subtitle = "Red and blue lines indicate the mean \nand ±1 standard deviation respectively.")  
+
+```
+
+
+
+
+## Seeding the pseudo-random number generator
 
 When carrying out simulations, we employ random number generators (e.g. to choose random samples). Most computers can not generate true random numbers -- instead they use algorithms that approximate the generation of random numbers (pseudo-random number generators). One important difference between a true random number generator and a pseudo-random number generator is that we can regenerate a series of pseudo-random numbers if we know the "seed" value that initialized the algorithm. We can specifically set this seed value, so that we can guarantee that two different people evaluating this notebook get the same results, even though we're using (pseudo)random numbers in our simulation.
 
@@ -39,76 +73,32 @@ When carrying out simulations, we employ random number generators (e.g. to choos
 set.seed(20180321)
 ```
 
-### Generating the simulated population
-
-Having seeded our RNG, we then generate our simulated population using the `rnorm()` function. `rnorm()` draws random values from a normal distribution with the given parameters of mean and standard deviation. We didn't have to use a normal distribution for our simulations, but many biological variables are approximately normally distributed, so this is a convenient assumption.
-
-```{r}
-# male mean height and sd in centimeters from USDHHS report
-mean.ht <- 175.7
-sd.ht <- 15.19
-
-height.data <- data_frame(height = rnorm(25000, mean = mean.ht, sd = sd.ht))
-```
-
-
-
-### Properties of the simulated population
-
-Let's take a moment to visualize the distribution of heights in our population of interest:
-
-```{r}
-ggplot(height.data, aes(x = height)) +
-  # note the use of y = ..density.. to generate a 
-  # density (relative frequency) histogram
-  geom_histogram(aes(y = ..density..), bins=50, alpha=0.5) + 
-  geom_density() +
-  labs(x = "Height (cm)", 
-       title = "Distribution of Heights in the Population of Interest")
-```
-
-When we generated this simulated population, I specified that the heights should be drawn from a normal distribution.  As one would expect, the histogram and density plot look fairly close to the classic bell-shaped curve of a normal distribution.
-
-Let's turn some key summary statistics of the population. The values of these summary statistics are those we're trying to estimate from our sample(s).  We'll refer to these as the "true" values.
-
-```{r}
-true.values <- 
-  height.data %>% 
-  summarize(mean.height = mean(height), 
-            sd.height = sd(height))
-
-true.values
-```
-
-In mathematical notation our population is normally distributed with a mean height of `r mean(height.data$height)`cm and standard deviation of `r sd(height.data$height)`cm. Note that these values are close to, but not exactly the parametes we passed to `rnorm()`.
-
 
 ## Random sampling from the simulated population
 
-Let's simulate the process of taking a single sample of 30 individuals from our population, using the `dplyr::sample_n()` function:
+Let's simulate the process of taking a single sample of 30 individuals from our population:
 
 ```{r}
 sample.a <-
-  height.data %>%
-  sample_n(30)
+  data_frame(height = rnorm(30, mean = true.mean, sd = true.sd))
 ```
 
-Now we'll create a histogram of the height variable in our sample. For reference we'll also plot the histogram for the true population in the background (but remember, in the typical case you don't know what the true population looks like)
+Now we'll create a histogram of the height variable in our sample. For reference we'll also plot the probability for the true population (but remember, in the typical case you don't know what the true population looks like)
 
 ```{r}
 sample.a %>%
   ggplot(aes(x = height)) + 
-  geom_histogram(data=height.data, aes(x = height, y = ..density..),
-                 alpha=0.25, bins=50) + 
   geom_histogram(aes(y = ..density..), 
-                 fill = 'steelblue', alpha=0.75, bins=9) + 
-  geom_vline(xintercept = true.values$mean.height, linetype = "solid") + 
-  geom_vline(xintercept = mean(sample.a$height), linetype = "dashed") + 
+                 fill = 'steelblue', alpha=0.75, bins=10) + 
+  geom_line(data=pop.distn, aes(x = height, y = density), 
+            alpha=0.25,size=1.5) +   
+  geom_vline(xintercept = true.mean, linetype = "dashed", color="red") + 
+  geom_vline(xintercept = mean(sample.a$height), linetype = "solid") + 
   labs(x = "Height (cm)", y = "Density", 
-       title = "Distribution of heights in the underlying population (grey)\nand a single sample of size 30 (blue)")
+       title = "Distribution of heights in the underlying population (line)\nand a single sample of size 30 (blue)")
 ```
 
-The solid vertical line represent the true mean of the population, the dashed line represents the sample mean.  Comparing the two distributions we see that while our sample of 30 observations is relatively small,its location (center) and spread that are roughly similar to those of the underlying population.
+The dashed vertical line represent the true mean of the population, the solid line represents the sample mean.  Comparing the two distributions we see that while our sample of 30 observations is relatively small,its location (center) and spread that are roughly similar to those of the underlying population.
 
 Let's create a table giving the estimates of the mean and standard deviation in our sample:
 
@@ -126,18 +116,18 @@ Let's step back and think about our experiment. We took a random sample of 30 in
 
 ```{r}
 sample.b <-
-  height.data %>%
-  sample_n(30)
+  data_frame(height = rnorm(30, mean = true.mean, sd = true.sd))
 
-ggplot(sample.b, aes(x = height)) + 
-  geom_histogram(data=height.data, 
-                 aes(x = height, y = ..density..), alpha=0.25, bins=50) + 
+sample.b %>%
+  ggplot(aes(x = height)) + 
   geom_histogram(aes(y = ..density..), 
-                 fill = 'steelblue', alpha=0.75, bins=9) +
-  geom_vline(xintercept = true.values$mean.height, linetype = "solid") + 
-  geom_vline(xintercept = mean(sample.b$height), linetype = "dashed")  +
+                 fill = 'steelblue', alpha=0.75, bins=10) + 
+  geom_line(data=pop.distn, aes(x = height, y = density), 
+            alpha=0.25,size=1.5) +   
+  geom_vline(xintercept = true.mean, linetype = "dashed", color="red") + 
+  geom_vline(xintercept = mean(sample.a$height), linetype = "solid") + 
   labs(x = "Height (cm)", y = "Density", 
-       title = "Distribution of heights in the underlying population (grey)\nand a single sample of size 30 (blue)")  
+       title = "Distribution of heights in the underlying population (line)\nand a single sample of size 30 (blue)")
 ```
 
 ```{r}
@@ -158,27 +148,26 @@ We can't know how good our estimates of statistics like the mean and standard de
 
 ### A function to estimate statistics of interest in a random sample
 
-First we're going to write a function called `rsample.stats` that carries out the following steps:
+First we're going to write a function called `rnorm.stats` that carries out the following steps:
 
-* Given a data frame `x`
-* Take a random sample of size `n`
-* For the variable specified by the character string, `var.name`, calculate the mean and standard deviation of that variable in the random sample
+* Take a random sample of size `n` from a distribution with a given mean (`mu`) and standard deviation (`sigma`)
+* Calculate the mean and standard deviation of the random sample
 * Return a table giving the sample size, sample mean, and sample standard deviation, represented as a data frame
 
 
 ```{r}
-rsample.stats <- function(x, n, var.name) {
-  sample_x <- sample_n(x, n)
+rnorm.stats <- function(n, mu, sigma) {
+  the.sample <- rnorm(n, mu, sigma)
   data_frame(sample.size = n, 
-             sample.mean = mean(sample_x[[var.name]]), 
-             sample.sd = sd(sample_x[[var.name]]))
+             sample.mean = mean(the.sample), 
+             sample.sd = sd(the.sample))
 }
 ```
 
-Let's test `rsample.stats`:
+Let's test `rsample.stats()` for a sample of size 30, drawn from a popultion with a mean and standard deviation corresponding to our  height exmaple:
 
 ```{r}
-rsample.stats(height.data, 30, "height")
+rnorm.stats(30, true.mean, true.sd)
 ```
 
 
@@ -186,55 +175,73 @@ rsample.stats(height.data, 30, "height")
 
 ### Generating statistics for many random samples
 
-Now we'll see how to combine `rsample.stats` with two additional functions to repeatedly run the `rsample.stats` function:
+Now we'll see how to combine `rnorm.stats` with two additional functions to repeatedly run the `rsample.stats` function:
 
 
 ```{r}
 df.samples.of.30 <-
-  rerun(1000,  rsample.stats(height.data, 30, "height")) %>%
+  rerun(2500,  rnorm.stats(30, true.mean, true.sd)) %>%
   bind_rows()
 ```
 
-The function `rerun` is defined in the `purrr` library (automatically loaded with tidyverse).  `purrr:rerun()` re-runs an expression(s) multiple times. The first argument to `rerun()` is the number of times you want to re-run, and the following arguments are the expressions to be re-run.  Thus the second line of the code block above re-runs the `rsample.stats` function 1000 times using `height.data` as the input,  generating sample statistics for samples of size 30 each time it's run. `rerun` returns a list whose length is the specified number of runs.
+The function `rerun` is defined in the `purrr` library (automatically loaded with tidyverse).  `purrr:rerun()` re-runs an expression(s) multiple times. The first argument to `rerun()` is the number of times you want to re-run, and the following arguments are the expressions to be re-run.  Thus the second line of the code block above re-runs the `rnorm.stats` function 2500 times,  generating sample statistics for samples of size 30 each time it's run. `rerun` returns a list whose length is the specified number of runs.
 
-The third line includes a call the `dplyr::bind_rows()`.  This simply takes the list that `rerun` returns and collapses the list into a single data frame.  `df.samples.of.30` is thus a data frame in which each row gives the sample size, sample mean, and sample standard deviation for a random sample of 30 individuals drawn from our underlying population (`height.data`).
+The third line includes a call the `dplyr::bind_rows()`.  This simply takes the list that `rerun` returns and collapses the list into a single data frame.  `df.samples.of.30` is thus a data frame in which each row gives the sample size, sample mean, and sample standard deviation for a random sample of 30 individuals drawn from our underlying population with a normally distributed variable.
 
 ```{r}
-df.samples.of.30
+head(df.samples.of.30)
 ```
 
 ## Simulated sampling distribution of the mean 
 
 Let's review what we just did:
 
-* We generated 1000 samples of size 30
-* For each of the samples we calculated the mean and standard deviation of the height variable _in that sample_
+* We generated 2500 samples of size 30, sampling a variable with an underlying normal distribution
+* For each of the samples we calculated the mean and standard deviation _in that sample_
 * We combined each of those estimates of the mean and standard deviation into a data frame
 
-The 1000 estimates of the mean we generated represents a new distribution -- what we will call a **sampling distribution of the mean for samples of size 30**.  Let's plot this sampling distribution:
+The 2500 estimates of the mean we generated represents a new distribution -- what we will call a **sampling distribution of the mean for samples of size 30**.  Let's plot this sampling distribution:
 
 
 ```{r}
 ggplot(df.samples.of.30, aes(x = sample.mean, y = ..density..)) +
   geom_histogram(bins=25, fill = 'firebrick', alpha=0.5) + 
-  geom_vline(xintercept = true.values$mean.height, linetype = "dashed") + 
+  geom_vline(xintercept = true.mean, linetype = "dashed", color="red") + 
   labs(x = "Sample means", y  = "Density",
-       title = "Distribution of mean heights for 1000 samples of size 30")
+       title = "Distribution of mean heights for 2500 samples of size 30")
 
 ```
 
-This particular sampling distribution of the mean is a probability distribution that we can use to estimate the probability that a sample mean falls within a given interval, assuming our sample is a random sample of size 30 drawn from our underlying population.
+### Differences between sampling distribution and sample/population distributions
 
-From our visualization, we see that the distribution of sample mean heights is approximately centered around the true mean height.  Most of the sample estiamtes of the mean height are within 5 cm of the true population mean height (175.6cm), but a small number of estimates of the sample mean as off by nearly 10cm. 
+Note that this is *not* a sample distribution of the variable of interest ("heights"), but rather the distribution of *means of the variable of interest* ("mean heights") you would get if you took many random samples (in one sample you'd estimate the mean height as 180cm, in another you'd estimate it as 172 cm, etc).  To emphasize this point, let's compare the simulated sampling distribution to the population distribution of the the variable:
 
-Let's make this more precise by calculating the mean and standard deviation of the sampling distribution of means (I included the min and max as well).
+```{r}
+ggplot(df.samples.of.30, aes(x = sample.mean, y = ..density..)) +
+  geom_histogram(bins=50, fill = 'firebrick', alpha=0.5) + 
+  geom_histogram(data=sample.a, 
+                 aes(x = height, y = ..density..),
+                 bins=11, fill='steelblue', alpha=0.25) +
+  geom_vline(xintercept = true.mean, linetype = "dashed", color='red') + 
+  geom_line(data=pop.distn, aes(x = height, y = density), alpha=0.25,size=1.5) +   
+  labs(x = "height or mean(height) in cm", y  = "Density",
+       title = "Distribution of mean heights for 2500 samples of size 30 (red )\ncompared to the distribution of  single sample (blue)\nand the population distribution of heights (gray line)")
+
+```
+
+
+### Use sampling distributions to understand the behavior of statistics of interest
+
+The particular sampling distribution of the mean, as simulated above, is a probability distribution that we can use to estimate the probability that a sample mean falls within a given interval, assuming our sample is a random sample of size 30 drawn from our underlying population.
+
+From our visualization, we see that the distribution of sample mean heights is approximately centered around the true mean height.  Most of the sample estiamtes of the mean height are within 5 cm of the true population mean height, but a small number of estimates of the sample mean as off by nearly 10cm. 
+
+Let's make this more precise by calculating the mean and standard deviation of the sampling distribution of means:
 
 ```{r}
 df.samples.of.30 %>%
   summarize(mean.of.means = mean(sample.mean),
-            sd.of.means = sd(sample.mean),
-            min.of.means = min(sample.mean),
-            max.of.means = max(sample.mean))
+            sd.of.means = sd(sample.mean))
 
 ```
 
@@ -246,19 +253,19 @@ In the example above we simulated the sampling distribution of the mean for samp
 
 ```{r}
 df.samples.of.50 <-
-  rerun(1000,  height.data %>% rsample.stats(50, "height")) %>%
+  rerun(2500,  rnorm.stats(50, true.mean, true.sd)) %>%
   bind_rows()
 
 df.samples.of.100 <-
-  rerun(1000,  height.data %>% rsample.stats(100, "height")) %>%
+  rerun(2500,  rnorm.stats(100, true.mean, true.sd)) %>%
   bind_rows()
 
 df.samples.of.250 <-
-  rerun(1000,  height.data %>% rsample.stats(250, "height")) %>%
+  rerun(2500,  rnorm.stats(250, true.mean, true.sd)) %>%
   bind_rows()
 
 df.samples.of.500 <-
-  rerun(1000,  height.data %>% rsample.stats(500, "height")) %>%
+  rerun(2500,  rnorm.stats(500, true.mean, true.sd)) %>%
   bind_rows()
 ```
 
@@ -281,7 +288,7 @@ We then plot each of the individual sampling distributions, faceting on sample s
 ```{r, fig.width = 15, fig.height = 3.5}
 ggplot(df.combined, aes(x = sample.mean, y = ..density.., fill = sample.sz)) + 
   geom_histogram(bins=25, alpha=0.5) + 
-  geom_vline(xintercept = true.values$mean.height, linetype = "dashed")  +
+  geom_vline(xintercept = true.mean, linetype = "dashed")  +
   facet_wrap(~ sample.sz, nrow = 1) + 
   scale_fill_brewer(palette="Set1") + # change color palette
   labs(x = "Sample means", y  = "Density",
@@ -299,9 +306,7 @@ sampling.distn.mean.table <-
   df.combined %>%
   group_by(sample.size) %>%
   summarize(mean.of.means = mean(sample.mean),
-            sd.of.means = sd(sample.mean),
-            min.of.means = min(sample.mean),
-            max.of.means = max(sample.mean))
+            sd.of.means = sd(sample.mean))
 
 sampling.distn.mean.table
 ```
@@ -314,6 +319,7 @@ We see from the graph and table above that our estimates of the mean cluster mor
 The standard deviation of the sampling distribution of a statistic of interest is called the **Standard Error** of that statistic. Here, through simulation, we are approximating the **Standard Error of the Mean**.
 
 When sample sizes are large (>30 observations), one can show mathematically that for normally distributed data the expected Standard Error of the Mean as a function of sample size is approximately:
+
 $$
 \mbox{Standard Error of Mean} \approx \frac{\sigma}{\sqrt{n}}
 $$
@@ -323,7 +329,7 @@ Let's compare that theoretical expectation to our simulated results:
 
 ```{r, fig.width=6}
 se.mean.theory <- sapply(seq(10,500,10), 
-                         function(n){ true.values$sd.height/sqrt(n) })
+                         function(n){ true.sd/sqrt(n) })
 
 df.se.mean.theory <- data_frame(sample.size = seq(10,500,10),
                                 std.error = se.mean.theory)
@@ -343,12 +349,26 @@ We see that as sample sizes increase, the standard error of the mean decreases. 
 
 Above we explored how the sampling distribution of the mean changes with sample size.  We can similarly explore the sampling distribution of any other statistic, such as the standard deviation, or the median, or the the range, etc.
 
-Recall that when we drew random samples we calculated the standard deviation of each of those samples in addition to the mean.  This means we can immediately visualize the sampling distribution of the standard deviation as shown below:
+Recall that when we drew random samples we calculated the standard deviation of each of those samples in addition to the mean.  We can look at the location and spread of the estimates of the standard deviation:
+
+```{r}
+sampling.distn.sd.table <-
+  df.combined %>%
+  group_by(sample.size) %>%
+  summarize(mean.of.sds = mean(sample.sd),
+            sd.of.sds = sd(sample.sd))
+
+sampling.distn.sd.table
+```
+
+
+
+As we did for the sampling distribution of the mean, we can  visualize the sampling distribution of the standard deviation as shown below:
 
 ```{r, fig.width = 15, fig.height = 3.5}
 ggplot(df.combined, aes(x = sample.sd, y = ..density.., fill = sample.sz)) + 
   geom_histogram(bins=25, alpha=0.5) + 
-  geom_vline(xintercept = true.values$sd.height, linetype = "dashed")  +
+  geom_vline(xintercept = true.sd, linetype = "dashed")  +
   facet_wrap(~ sample.sz, nrow = 1) + 
   scale_fill_brewer(palette="Set1") +
   labs(x = "Sample standard deviations", y  = "Density",
@@ -357,18 +377,7 @@ ggplot(df.combined, aes(x = sample.sd, y = ..density.., fill = sample.sz)) +
 
 The key trend we saw when examining the sampling distribution of the mean is also apparent for standard deviation -- bigger samples lead to tighter sampling distributions and hence less uncertainty in the sample estimates of the standard deviation.
 
-As before, we summarize key statistics of the sampling distribution in a table:
-```{r}
-sampling.distn.sd.table <-
-  df.combined %>%
-  group_by(sample.size) %>%
-  summarize(mean.of.sds = mean(sample.sd),
-            sd.of.sds = sd(sample.sd),
-            min.of.sds = min(sample.sd),
-            max.of.sds = max(sample.sd))
-
-sampling.distn.sd.table
-```
+### Standard error of standard deviations
 
 For normally distributed data the expected Standard Error of the Standard Deviation (i.e. the standard deviation of standard deviations!) is approximately:
 
@@ -381,7 +390,7 @@ As before, let's visually compare the theoretical expectation to our simulated e
 
 ```{r, fig.width=6}
 se.sd.theory <- sapply(seq(10, 500, 10), 
-                       function(n){ true.values$sd.height/sqrt(2*(n-1))})
+                       function(n){ true.sd/sqrt(2*(n-1))})
 
 df.se.sd.theory <- data_frame(sample.size = seq(10,500,10), 
                               std.error = se.sd.theory)
@@ -401,19 +410,16 @@ ggplot(sampling.distn.sd.table, aes(x = sample.size, y = sd.of.sds)) +
 
 We would hope that, regardless of sample size, the sampling distributions of both the mean and standard deviation should be centered around the true population value, $\mu$ and $\sigma$ respectively.  That seemed to be the case for the modest to large sample sizes we've looked at so far (30 to 500 observations).  Does this also hold for small samples? Let's use simulation to explore how well this is expectation is met for small samples.
 
-As we've done before, we simulate the sampling distribution of the mean and standard deviation for samples of varying size (we also calculate some other values which will be useful for our exposition below). 
+As we've done before, we simulate the sampling distribution of the mean and standard deviation for samples of varying size. 
 
 ```{r}
-# we'll use the same mean and sd we've been using previously
-mu = mean.ht
-sigma = sd.ht
+# sample sizes we'll conside
+ssizes <- c(2, 3, 4, 5, 7, 10, 20, 30, 50)
 
-# list of sample sizes we'll generate
-ssizes <- c(2, 3, 4, 5, 7, 10, 20, 30)
+# number of samples to draw *for each sample size*
+nsamples <- 2500
 
-# number of simulations to carry out *for each sample size*
-nsims <- 2500
-
+# create a data frame with empty columns
 df.combined.small <- data_frame(sample.size = double(), 
                           sample.mean = double(), 
                           sample.sd = double(),
@@ -421,24 +427,13 @@ df.combined.small <- data_frame(sample.size = double(),
                           sample.zscore = double())
 
 for (i in ssizes) {
-  # create empty vectors to hold simulation stats (for efficiency)
-  s.means <- rep(NA, nsims)
-  s.sds <- rep(NA, nsims)
-  s.SEs <- rep(NA, nsims)
-  s.zscores <- rep(NA, nsims)
+  df.samples.of.size.i <-
+    rerun(nsamples,  rnorm.stats(i, true.mean, true.sd)) %>%
+    bind_rows()  
   
-  for (j in 1:nsims) {
-    s <- rnorm(i, mean = mu, sd = sigma)  # draw random sample
-    s.means[j] <- mean(s) # calculate mean of that sample
-    s.sds[j] <- sd(s) # calculate sd of that sample
-    SE <- sd(s)/sqrt(i)  # cacluate estimated SE of that sample
-    s.SEs[j] <- SE
-    s.zscores[j] <- (mean(s) - mu)/SE
-  }
-  df <- data.frame(sample.size = i, sample.mean = s.means, sample.sd = s.sds, 
-                   estimated.SE = s.SEs, sample.zscore = s.zscores)
-  
-  df.combined.small <- bind_rows(df.combined.small, df)
+  df.combined.small <- 
+    bind_rows(df.combined.small, df.samples.of.size.i)
+
 }
 
 df.combined.small %<>%
@@ -464,14 +459,14 @@ by.sample.size <-
 by.sample.size
 ```
 
-We see that the sampling distributions of means are well centered around the true mean, and there is no systematic bias one way or the other. By contrast the sampling distribution of standard deviations tends to underestimate the true standard deviation when the samples are small (less than 30 observations).
+We see that the sampling distributions of means are well centered around the true mean for both small and medium, and there is no systematic bias one way or the other. By contrast the sampling distribution of standard deviations tends to underestimate the true standard deviation when the samples are small (less than 30 observations).
 
 We can visualize this bias as shown here:
 ```{r}
 ggplot(by.sample.size, aes(x = sample.size, y = mean.of.sds)) +
   geom_point(color = 'red') +
   geom_line(color = 'red') +
-  geom_hline(yintercept = sigma, color = 'black', linetype='dashed') +
+  geom_hline(yintercept = true.sd, color = 'black', linetype='dashed') +
   labs(x = "Sample Size", y = "Mean of Sampling Distn of Std Dev")
 
 ```
@@ -486,7 +481,7 @@ filtered.df <-
 ggplot(filtered.df, aes(x = sample.sd, y = ..density.., fill = sample.sz)) + 
   geom_histogram(bins=50, alpha=0.65) +
   facet_wrap(~sample.size, nrow = 1) +
-  geom_vline(xintercept = sigma, linetype = 'dashed') +
+  geom_vline(xintercept = true.sd, linetype = 'dashed') +
   labs(x = "Std Deviations", y = "Density",
        title = "Sampling distributions of the standard deviation\nAs a function of sample size")
   
