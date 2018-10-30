@@ -361,12 +361,12 @@ We see from the graph and table above that our estimates of the mean cluster mor
 
 The standard deviation of the sampling distribution of a statistic of interest is called the **Standard Error** of that statistic. Here, through simulation, we are approximating the **Standard Error of the Mean**.
 
-When sample sizes are large (>30 observations), one can show mathematically that for normally distributed data the expected Standard Error of the Mean as a function of sample size is approximately:
+One can show mathematically that the expected Standard Error of the Mean as a function of sample size and the standard deviation of the underlying population distribution is:
 
 $$
-\mbox{Standard Error of Mean} \approx \frac{\sigma}{\sqrt{n}}
+\mbox{Standard Error of Mean} = \frac{\sigma}{\sqrt{n}}
 $$
-where $\sigma$ is the population standard deviation (i.e. the "true" standard deviation), and $n$ is the sample size.
+where $\sigma$ is the population standard deviation (i.e. the "true" standard deviation), and $n$ is the sample size. This result for the standard error of the mean is true regardless of the form of the underlying population distribution.
 
 Let's compare that theoretical expectation to our simulated results:
 
