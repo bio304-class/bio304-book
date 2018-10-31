@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-30">
+<meta name="date" content="2018-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -604,7 +604,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb339-5" data-line-number="5">  face &lt;-<span class="st"> &quot;heads&quot;</span></a>
 <a class="sourceLine" id="cb339-6" data-line-number="6">}</a>
 <a class="sourceLine" id="cb339-7" data-line-number="7">face</a>
-<a class="sourceLine" id="cb339-8" data-line-number="8"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<a class="sourceLine" id="cb339-8" data-line-number="8"><span class="co">#&gt; [1] &quot;heads&quot;</span></a></code></pre></div>
 <p>The <code>else</code> clause specifies what to do in the event that the <code>if</code> statement is <em>not</em> true. The combined general for of an <code>if-else</code> expression is:</p>
 <pre><code>if (Boolean expression) {
   Code to execute if 
@@ -679,9 +679,9 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb346-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())  <span class="co"># flip coin and add to our vector</span></a>
 <a class="sourceLine" id="cb346-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb346-5" data-line-number="5">flips</a>
-<a class="sourceLine" id="cb346-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb346-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb346-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb346-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb346-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb346-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
 <p>Let’s use a <code>for</code> loop to create a <code>multi.coin.flip</code> function thats accepts an optional argument <code>n</code> that specifies the number of coin flips to carry out:</p>
 <div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">multi.coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
 <a class="sourceLine" id="cb347-2" data-line-number="2">  <span class="co"># create an empty character vector of length n</span></a>
@@ -693,11 +693,11 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb347-8" data-line-number="8">}</a></code></pre></div>
 <p>With this new definition, a single call of <code>coin.flip</code> returns a single outcome:</p>
 <div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb348-1" data-line-number="1"><span class="kw">multi.coin.flip</span>()</a>
-<a class="sourceLine" id="cb348-2" data-line-number="2"><span class="co">#&gt; [1] &quot;heads&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb348-2" data-line-number="2"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
 <p>And calling <code>multi.coin.flip</code> with a numeric argument returns multiple coin flips:</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="kw">multi.coin.flip</span>(<span class="dt">n=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb349-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb349-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb349-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb349-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;tails&quot; &quot;tails&quot;</span></a></code></pre></div>
 <div id="efficiency-tip" class="section level4">
 <h4><span class="header-section-number">10.2.2.1</span> Efficiency tip</h4>
 <p>An alternate way to write the <code>multi.coin.flip</code> function above would be:</p>
@@ -730,10 +730,9 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb351-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb351-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb351-11" data-line-number="11">random.numbers</a>
-<a class="sourceLine" id="cb351-12" data-line-number="12"><span class="co">#&gt;  [1] 0.21180599 0.32890809 0.30235655 0.10930359 0.04250589 0.17395090</span></a>
-<a class="sourceLine" id="cb351-13" data-line-number="13"><span class="co">#&gt;  [7] 0.31657277 0.31668214 0.79559040 0.08975318 0.31302055 0.72062710</span></a>
-<a class="sourceLine" id="cb351-14" data-line-number="14"><span class="co">#&gt; [13] 0.16184732 0.73668442 0.34124865 0.83500927 0.68951703 0.73601444</span></a>
-<a class="sourceLine" id="cb351-15" data-line-number="15"><span class="co">#&gt; [19] 0.61935607 0.17816795</span></a></code></pre></div>
+<a class="sourceLine" id="cb351-12" data-line-number="12"><span class="co">#&gt;  [1] 0.645737746 0.824698992 0.354473722 0.393976149 0.493513262</span></a>
+<a class="sourceLine" id="cb351-13" data-line-number="13"><span class="co">#&gt;  [6] 0.006277928 0.873009204 0.580893229 0.615822817 0.648167459</span></a>
+<a class="sourceLine" id="cb351-14" data-line-number="14"><span class="co">#&gt; [11] 0.547718284 0.725178728 0.993490947</span></a></code></pre></div>
 </div>
 <div id="repeat-loops" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> <code>repeat</code> loops</h3>
@@ -748,7 +747,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb352-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb352-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb352-10" data-line-number="10">ct</a>
-<a class="sourceLine" id="cb352-11" data-line-number="11"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
+<a class="sourceLine" id="cb352-11" data-line-number="11"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
 </div>
 <div id="next-statement" class="section level3">
 <h3><span class="header-section-number">10.2.5</span> <code>next</code> statement</h3>
@@ -774,7 +773,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb354-5" data-line-number="5">}</a>
 <a class="sourceLine" id="cb354-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb354-7" data-line-number="7">first.head</a>
-<a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
+<a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt; [1] 7</span></a></code></pre></div>
 </div>
 <div id="ifelse" class="section level3">
 <h3><span class="header-section-number">10.2.7</span> <code>ifelse</code></h3>
@@ -848,7 +847,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb360-5" data-line-number="5"><span class="kw">head</span>(df)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"-0.18782897","2":"a","3":"u"},{"1":"1.08077735","2":"b","3":"v"},{"1":"0.81803031","2":"c","3":"w"},{"1":"-0.05958211","2":"d","3":"x"},{"1":"1.81314443","2":"e","3":"y"},{"1":"-0.36701947","2":"f","3":"z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"a","3":"u"},{"1":"-0.1450683","2":"b","3":"v"},{"1":"-0.3147010","2":"c","3":"w"},{"1":"0.2710671","2":"d","3":"x"},{"1":"0.6313444","2":"e","3":"y"},{"1":"-0.8211964","2":"f","3":"z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb361-1" data-line-number="1"></a>
@@ -856,7 +855,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb361-3" data-line-number="3">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df2, is.numeric, abs)</a>
 <a class="sourceLine" id="cb361-4" data-line-number="4"><span class="kw">head</span>(df2)</a>
 <a class="sourceLine" id="cb361-5" data-line-number="5"><span class="co">#&gt; $a</span></a>
-<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt; [1] 0.18782897 1.08077735 0.81803031 0.05958211 1.81314443 0.36701947</span></a>
+<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt; [1] 0.5902133 0.1450683 0.3147010 0.2710671 0.6313444 0.8211964</span></a>
 <a class="sourceLine" id="cb361-7" data-line-number="7"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb361-8" data-line-number="8"><span class="co">#&gt; $b</span></a>
 <a class="sourceLine" id="cb361-9" data-line-number="9"><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</span></a>
@@ -869,7 +868,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb362-3" data-line-number="3"><span class="kw">head</span>(df3)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["df2$a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df2$b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df2$c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.18782897","2":"A","3":"U"},{"1":"1.08077735","2":"B","3":"V"},{"1":"0.81803031","2":"C","3":"W"},{"1":"0.05958211","2":"D","3":"X"},{"1":"1.81314443","2":"E","3":"Y"},{"1":"0.36701947","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["df2$a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df2$b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df2$c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>But it requires an extra step to rename the columns:</p>
@@ -880,7 +879,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb363-5" data-line-number="5"><span class="kw">head</span>(df3)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.18782897","2":"A","3":"U"},{"1":"1.08077735","2":"B","3":"V"},{"1":"0.81803031","2":"C","3":"W"},{"1":"0.05958211","2":"D","3":"X"},{"1":"1.81314443","2":"E","3":"Y"},{"1":"0.36701947","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />
@@ -894,7 +893,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb364-7" data-line-number="7"><span class="kw">head</span>(df4)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.18782897","2":"A","3":"U"},{"1":"1.08077735","2":"B","3":"V"},{"1":"0.81803031","2":"C","3":"W"},{"1":"0.05958211","2":"D","3":"X"},{"1":"1.81314443","2":"E","3":"Y"},{"1":"0.36701947","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />
@@ -945,8 +944,8 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb367-2" data-line-number="2">df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">b =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),<span class="dt">c =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))</a>
 <a class="sourceLine" id="cb367-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb367-4" data-line-number="4"><span class="kw">map_dbl</span>(df, median) <span class="co"># median of each column of df</span></a>
-<a class="sourceLine" id="cb367-5" data-line-number="5"><span class="co">#&gt;            a            b            c </span></a>
-<a class="sourceLine" id="cb367-6" data-line-number="6"><span class="co">#&gt; -0.163544185 -0.176562813 -0.006434255</span></a></code></pre></div>
+<a class="sourceLine" id="cb367-5" data-line-number="5"><span class="co">#&gt;           a           b           c </span></a>
+<a class="sourceLine" id="cb367-6" data-line-number="6"><span class="co">#&gt; -0.10595346 -0.03207076 -0.27034321</span></a></code></pre></div>
 
 </div>
 </div>

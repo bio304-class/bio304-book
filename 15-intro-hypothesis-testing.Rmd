@@ -227,7 +227,7 @@ xtabs(~premature + smoke, births)
 
 ### Contingency table analysis using the $\chi^2$ statistic
 
-In our class session on contingency analysis we introduced the $\chi^2$ statistic as a measure of association between categorical variables (see [previous notes](https://bio304-class.github.io/bio304-fall2017/association-categorical.html#association-between-variables-using-the-chi2-statistic).
+In our class session on contingency analysis we introduced the $\chi^2$ statistic as a measure of association between categorical variables (see [previous notes](https://github.com/bio304-class/bio304-course-notes/raw/master/slides/bivariate-association.pdf)).
 
 Giving a contingency table of observed counts, we can calculate the expected counts under independence of the variables.  Based on the observed and expected counts, the $\chi^2$ (chi-squared) statistic is defined as:
 
