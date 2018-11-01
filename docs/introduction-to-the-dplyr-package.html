@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-31">
+<meta name="date" content="2018-11-01">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -464,6 +464,16 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.8.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#carrying-out-a-hypothesis-test-using-the-chi2"><i class="fa fa-check"></i><b>16.8.4</b> Carrying out a hypothesis test using the <span class="math inline">\(\chi^2\)</span></a></li>
 <li class="chapter" data-level="16.8.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#interpretation-of-the-chi2-test"><i class="fa fa-check"></i><b>16.8.5</b> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a><ul>
+<li class="chapter" data-level="17.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#confidence-intervals"><i class="fa fa-check"></i><b>17.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="17.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#generic-formulation-for-confidence-intervals"><i class="fa fa-check"></i><b>17.2</b> Generic formulation for confidence intervals</a></li>
+<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a><ul>
+<li class="chapter" data-level="17.3.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#simulation-of-means"><i class="fa fa-check"></i><b>17.3.1</b> Simulation of means</a></li>
+<li class="chapter" data-level="17.3.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#distance-between-sample-means-and-true-means"><i class="fa fa-check"></i><b>17.3.2</b> Distance between sample means and true means</a></li>
+<li class="chapter" data-level="17.3.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#calculating-a-ci"><i class="fa fa-check"></i><b>17.3.3</b> Calculating a CI</a></li>
+</ul></li>
+<li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
 </ul></li>
 </ul>
 
@@ -941,7 +951,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cakes&quot;</span>, <span class="st">&quot;sauce&quot;</span>, <span class="st">&quot;house&quot;</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># create a vector</span></a>
 <a class="sourceLine" id="cb251-2" data-line-number="2"><span class="st">  </span><span class="kw">sample</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># pick a random single element of that vector</span></a>
 <a class="sourceLine" id="cb251-3" data-line-number="3"><span class="st">  </span><span class="kw">str_c</span>(<span class="st">&quot;hot&quot;</span>, .)  <span class="co"># string concatenate the pick with the word &quot;hot&quot;</span></a>
-<a class="sourceLine" id="cb251-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotcakes&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb251-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hothouse&quot;</span></a></code></pre></div>
 </div>
 <div id="the-exposition-pipe-operator" class="section level3">
 <h3><span class="header-section-number">7.6.8</span> The exposition pipe operator</h3>

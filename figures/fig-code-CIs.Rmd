@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+
+library(tidyverse)
+set.seed(20181101)
+
+rsample.stats <- function(n, mu, sigma) {
+  s <- rnorm(n, mu, sigma)
+  data_frame(sample.size = n, 
+             sample.mean = mean(s), 
+             sample.sd = sd(s),
+             SE = sigma/sqrt(n),
+             ci.95.left = (sample.mean - 1.96 * SE),
+             ci.95.right = (sample.mean + 1.96 * SE),
+             includes.true.value = (ci.95.left <= mu) & (ci.95.right >= mu))
+}
+
+samples.of.50 <-
+  rerun(1000,  rsample.stats(50, 0, 1)) %>%
+  bind_rows()
+
+samples <- samples.of.50[1:100,]
+
+point.estimate <- samples %>%
+  ggplot(aes(x = sample.mean, y = seq(1,100))) + 
+    geom_vline(xintercept = 0, color = "gray", 
+               alpha=0.75, linetype = "dashed", size = 1) +
+    geom_point() +
+  xlim(-0.5,0.5) + 
+    labs(x = "Estimates Statistic of Interest", y = "Sample", 
+         title = "Point estimates of Statistic of Interest\nfor 100 random samples")  
+
+ggsave("fig-point-estimates.png", point.estimate, width=3, height=8)
+```
+
+
+## 95% Confidence intervals for the mean for random samples of size 50
+
+```{r, fig.height = 8, fig.width=4.5, fig.align = "center"}
+
+with.CIs <-
+  samples %>%
+  ggplot(aes(x = sample.mean, y = seq(1,100), color = includes.true.value)) + 
+    geom_vline(xintercept = 0, color = "gray", alpha=0.75, linetype = "dashed", size = 1) +
+    geom_point() +
+    geom_errorbarh(aes(xmin = ci.95.left, xmax = ci.95.right)) +
+    scale_color_manual(values=c("red", "black")) +
+    labs(x = "Estimates and 95% CIs for Statistic of Interest", y = "Sample", 
+         title = "Confidence Intervals for Statistic of Interest\nfor 100 random samples")  
+ggsave("fig-CIs.png", with.CIs, width=4.5, height=8)
+```

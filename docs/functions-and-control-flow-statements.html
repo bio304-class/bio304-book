@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-10-31">
+<meta name="date" content="2018-11-01">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -465,6 +465,16 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.8.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#interpretation-of-the-chi2-test"><i class="fa fa-check"></i><b>16.8.5</b> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a><ul>
+<li class="chapter" data-level="17.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#confidence-intervals"><i class="fa fa-check"></i><b>17.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="17.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#generic-formulation-for-confidence-intervals"><i class="fa fa-check"></i><b>17.2</b> Generic formulation for confidence intervals</a></li>
+<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a><ul>
+<li class="chapter" data-level="17.3.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#simulation-of-means"><i class="fa fa-check"></i><b>17.3.1</b> Simulation of means</a></li>
+<li class="chapter" data-level="17.3.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#distance-between-sample-means-and-true-means"><i class="fa fa-check"></i><b>17.3.2</b> Distance between sample means and true means</a></li>
+<li class="chapter" data-level="17.3.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#calculating-a-ci"><i class="fa fa-check"></i><b>17.3.3</b> Calculating a CI</a></li>
+</ul></li>
+<li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -623,7 +633,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb341-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb341-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb341-9" data-line-number="9">face</a>
-<a class="sourceLine" id="cb341-10" data-line-number="10"><span class="co">#&gt; [1] &quot;heads&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb341-10" data-line-number="10"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
 <p>With the addition of the <code>else</code> statement, this simple code block can be thought of as simulating the toss of a coin.</p>
 <div id="if-else-in-a-function" class="section level4">
 <h4><span class="header-section-number">10.2.1.1</span> <code>if-else</code> in a function</h4>
@@ -662,7 +672,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb344-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb344-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb344-11" data-line-number="11">sign.x</a>
-<a class="sourceLine" id="cb344-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Negative&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb344-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Positive&quot;</span></a></code></pre></div>
 </div>
 </div>
 <div id="for-loops" class="section level3">
@@ -679,9 +689,9 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb346-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())  <span class="co"># flip coin and add to our vector</span></a>
 <a class="sourceLine" id="cb346-4" data-line-number="4">}</a>
 <a class="sourceLine" id="cb346-5" data-line-number="5">flips</a>
-<a class="sourceLine" id="cb346-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb346-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb346-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb346-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb346-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;</span></a>
+<a class="sourceLine" id="cb346-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot;</span></a></code></pre></div>
 <p>Let’s use a <code>for</code> loop to create a <code>multi.coin.flip</code> function thats accepts an optional argument <code>n</code> that specifies the number of coin flips to carry out:</p>
 <div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">multi.coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
 <a class="sourceLine" id="cb347-2" data-line-number="2">  <span class="co"># create an empty character vector of length n</span></a>
@@ -693,10 +703,10 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb347-8" data-line-number="8">}</a></code></pre></div>
 <p>With this new definition, a single call of <code>coin.flip</code> returns a single outcome:</p>
 <div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb348-1" data-line-number="1"><span class="kw">multi.coin.flip</span>()</a>
-<a class="sourceLine" id="cb348-2" data-line-number="2"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb348-2" data-line-number="2"><span class="co">#&gt; [1] &quot;heads&quot;</span></a></code></pre></div>
 <p>And calling <code>multi.coin.flip</code> with a numeric argument returns multiple coin flips:</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="kw">multi.coin.flip</span>(<span class="dt">n=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb349-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
+<a class="sourceLine" id="cb349-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot;</span></a>
 <a class="sourceLine" id="cb349-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;tails&quot; &quot;tails&quot;</span></a></code></pre></div>
 <div id="efficiency-tip" class="section level4">
 <h4><span class="header-section-number">10.2.2.1</span> Efficiency tip</h4>
@@ -730,9 +740,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb351-9" data-line-number="9">}</a>
 <a class="sourceLine" id="cb351-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb351-11" data-line-number="11">random.numbers</a>
-<a class="sourceLine" id="cb351-12" data-line-number="12"><span class="co">#&gt;  [1] 0.645737746 0.824698992 0.354473722 0.393976149 0.493513262</span></a>
-<a class="sourceLine" id="cb351-13" data-line-number="13"><span class="co">#&gt;  [6] 0.006277928 0.873009204 0.580893229 0.615822817 0.648167459</span></a>
-<a class="sourceLine" id="cb351-14" data-line-number="14"><span class="co">#&gt; [11] 0.547718284 0.725178728 0.993490947</span></a></code></pre></div>
+<a class="sourceLine" id="cb351-12" data-line-number="12"><span class="co">#&gt; [1] 0.1779788 0.9609967</span></a></code></pre></div>
 </div>
 <div id="repeat-loops" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> <code>repeat</code> loops</h3>
@@ -773,7 +781,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb354-5" data-line-number="5">}</a>
 <a class="sourceLine" id="cb354-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb354-7" data-line-number="7">first.head</a>
-<a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt; [1] 7</span></a></code></pre></div>
+<a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
 </div>
 <div id="ifelse" class="section level3">
 <h3><span class="header-section-number">10.2.7</span> <code>ifelse</code></h3>
@@ -847,7 +855,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb360-5" data-line-number="5"><span class="kw">head</span>(df)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"a","3":"u"},{"1":"-0.1450683","2":"b","3":"v"},{"1":"-0.3147010","2":"c","3":"w"},{"1":"0.2710671","2":"d","3":"x"},{"1":"0.6313444","2":"e","3":"y"},{"1":"-0.8211964","2":"f","3":"z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"-0.29511695","2":"a","3":"u"},{"1":"0.51477801","2":"b","3":"v"},{"1":"0.19353219","2":"c","3":"w"},{"1":"-0.14513675","2":"d","3":"x"},{"1":"0.07908384","2":"e","3":"y"},{"1":"-0.21881495","2":"f","3":"z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb361-1" data-line-number="1"></a>
@@ -855,7 +863,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb361-3" data-line-number="3">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df2, is.numeric, abs)</a>
 <a class="sourceLine" id="cb361-4" data-line-number="4"><span class="kw">head</span>(df2)</a>
 <a class="sourceLine" id="cb361-5" data-line-number="5"><span class="co">#&gt; $a</span></a>
-<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt; [1] 0.5902133 0.1450683 0.3147010 0.2710671 0.6313444 0.8211964</span></a>
+<a class="sourceLine" id="cb361-6" data-line-number="6"><span class="co">#&gt; [1] 0.29511695 0.51477801 0.19353219 0.14513675 0.07908384 0.21881495</span></a>
 <a class="sourceLine" id="cb361-7" data-line-number="7"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb361-8" data-line-number="8"><span class="co">#&gt; $b</span></a>
 <a class="sourceLine" id="cb361-9" data-line-number="9"><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</span></a>
@@ -868,7 +876,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb362-3" data-line-number="3"><span class="kw">head</span>(df3)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["df2$a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df2$b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df2$c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["df2$a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df2$b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df2$c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.29511695","2":"A","3":"U"},{"1":"0.51477801","2":"B","3":"V"},{"1":"0.19353219","2":"C","3":"W"},{"1":"0.14513675","2":"D","3":"X"},{"1":"0.07908384","2":"E","3":"Y"},{"1":"0.21881495","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>But it requires an extra step to rename the columns:</p>
@@ -879,7 +887,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb363-5" data-line-number="5"><span class="kw">head</span>(df3)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.29511695","2":"A","3":"U"},{"1":"0.51477801","2":"B","3":"V"},{"1":"0.19353219","2":"C","3":"W"},{"1":"0.14513675","2":"D","3":"X"},{"1":"0.07908384","2":"E","3":"Y"},{"1":"0.21881495","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />
@@ -893,7 +901,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb364-7" data-line-number="7"><span class="kw">head</span>(df4)</a></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.5902133","2":"A","3":"U"},{"1":"0.1450683","2":"B","3":"V"},{"1":"0.3147010","2":"C","3":"W"},{"1":"0.2710671","2":"D","3":"X"},{"1":"0.6313444","2":"E","3":"Y"},{"1":"0.8211964","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["a"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["b"],"name":[2],"type":["chr"],"align":["left"]},{"label":["c"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0.29511695","2":"A","3":"U"},{"1":"0.51477801","2":"B","3":"V"},{"1":"0.19353219","2":"C","3":"W"},{"1":"0.14513675","2":"D","3":"X"},{"1":"0.07908384","2":"E","3":"Y"},{"1":"0.21881495","2":"F","3":"Z"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <hr />
@@ -945,7 +953,7 @@ argument <code>x</code> represents the numeric vector you pass to the function a
 <a class="sourceLine" id="cb367-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb367-4" data-line-number="4"><span class="kw">map_dbl</span>(df, median) <span class="co"># median of each column of df</span></a>
 <a class="sourceLine" id="cb367-5" data-line-number="5"><span class="co">#&gt;           a           b           c </span></a>
-<a class="sourceLine" id="cb367-6" data-line-number="6"><span class="co">#&gt; -0.10595346 -0.03207076 -0.27034321</span></a></code></pre></div>
+<a class="sourceLine" id="cb367-6" data-line-number="6"><span class="co">#&gt;  0.03062539  0.10567326 -0.05907957</span></a></code></pre></div>
 
 </div>
 </div>
