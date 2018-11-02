@@ -43,10 +43,10 @@ The function `read_csv` does exactly what it advertises -- reads a data set from
 
 ## What's in the data?
 
-The function `read_csv` returns a table, where the columns represent the variables of interest (e.g. sex, age, etc) and the rows represent individuals or observations.  Let's take a look:
+The function `read_csv` returns a table, where the columns represent the variables of interest (e.g. sex, age, etc) and the rows represent individuals or observations.  Let's take a look at the first few rows of the data set using the `head()` function (can you guess the name of the corresponding function for looking at the last few rows?):
 
 ```{r}
-titanic
+head(titanic)
 ```
 
 If we simply wanted the dimensions of the data we could do:

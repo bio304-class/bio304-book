@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-01">
+<meta name="date" content="2018-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,8 +47,6 @@
 
 
 
-<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <style type="text/css">
@@ -82,38 +80,34 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { background-color: #f8f8f8; }
+  {  }
 @media screen {
 a.sourceLine::before { text-decoration: underline; }
 }
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
 code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -961,124 +955,172 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="single-bracket-indexing-of-the-columns-of-a-data-frame" class="section level4">
 <h4><span class="header-section-number">5.3.4.1</span> Single bracket indexing of the columns of a data frame</h4>
 <p>The <em>single bracket operator with a single numeric index</em> returns a data frame with the corresponding column.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1">df[<span class="dv">1</span>]  <span class="co"># get the first column (=age) of the data frame</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"30"},{"1":"26"},{"1":"21"},{"1":"29"},{"1":"25"},{"1":"22"},{"1":"28"},{"1":"24"},{"1":"23"},{"1":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1">df[<span class="dv">1</span>]  <span class="co"># get the first column (=age) of the data frame</span></a>
+<a class="sourceLine" id="cb132-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 1</span></a>
+<a class="sourceLine" id="cb132-3" data-line-number="3"><span class="co">#&gt;      age</span></a>
+<a class="sourceLine" id="cb132-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb132-5" data-line-number="5"><span class="co">#&gt;  1    30</span></a>
+<a class="sourceLine" id="cb132-6" data-line-number="6"><span class="co">#&gt;  2    26</span></a>
+<a class="sourceLine" id="cb132-7" data-line-number="7"><span class="co">#&gt;  3    21</span></a>
+<a class="sourceLine" id="cb132-8" data-line-number="8"><span class="co">#&gt;  4    29</span></a>
+<a class="sourceLine" id="cb132-9" data-line-number="9"><span class="co">#&gt;  5    25</span></a>
+<a class="sourceLine" id="cb132-10" data-line-number="10"><span class="co">#&gt;  6    22</span></a>
+<a class="sourceLine" id="cb132-11" data-line-number="11"><span class="co">#&gt;  7    28</span></a>
+<a class="sourceLine" id="cb132-12" data-line-number="12"><span class="co">#&gt;  8    24</span></a>
+<a class="sourceLine" id="cb132-13" data-line-number="13"><span class="co">#&gt;  9    23</span></a>
+<a class="sourceLine" id="cb132-14" data-line-number="14"><span class="co">#&gt; 10    20</span></a></code></pre></div>
 <p>The <em>single bracket operator with multiple numeric indices</em> returns a data frame with the corresponding columns.</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">df[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]  <span class="co"># first two columns</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]}],"data":[{"1":"30","2":"M"},{"1":"26","2":"F"},{"1":"21","2":"M"},{"1":"29","2":"F"},{"1":"25","2":"M"},{"1":"22","2":"F"},{"1":"28","2":"M"},{"1":"24","2":"F"},{"1":"23","2":"M"},{"1":"20","2":"F"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">df[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]  <span class="co"># columns 1 (=age) and 3 (=wt)</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["wt"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"88"},{"1":"26","2":"76"},{"1":"21","2":"67"},{"1":"29","2":"66"},{"1":"25","2":"56"},{"1":"22","2":"74"},{"1":"28","2":"71"},{"1":"24","2":"60"},{"1":"23","2":"52"},{"1":"20","2":"72"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">df[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]  <span class="co"># first two columns</span></a>
+<a class="sourceLine" id="cb133-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
+<a class="sourceLine" id="cb133-3" data-line-number="3"><span class="co">#&gt;      age sex  </span></a>
+<a class="sourceLine" id="cb133-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;fct&gt;</span></a>
+<a class="sourceLine" id="cb133-5" data-line-number="5"><span class="co">#&gt;  1    30 M    </span></a>
+<a class="sourceLine" id="cb133-6" data-line-number="6"><span class="co">#&gt;  2    26 F    </span></a>
+<a class="sourceLine" id="cb133-7" data-line-number="7"><span class="co">#&gt;  3    21 M    </span></a>
+<a class="sourceLine" id="cb133-8" data-line-number="8"><span class="co">#&gt;  4    29 F    </span></a>
+<a class="sourceLine" id="cb133-9" data-line-number="9"><span class="co">#&gt;  5    25 M    </span></a>
+<a class="sourceLine" id="cb133-10" data-line-number="10"><span class="co">#&gt;  6    22 F    </span></a>
+<a class="sourceLine" id="cb133-11" data-line-number="11"><span class="co">#&gt;  7    28 M    </span></a>
+<a class="sourceLine" id="cb133-12" data-line-number="12"><span class="co">#&gt;  8    24 F    </span></a>
+<a class="sourceLine" id="cb133-13" data-line-number="13"><span class="co">#&gt;  9    23 M    </span></a>
+<a class="sourceLine" id="cb133-14" data-line-number="14"><span class="co">#&gt; 10    20 F</span></a>
+<a class="sourceLine" id="cb133-15" data-line-number="15">df[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]  <span class="co"># columns 1 (=age) and 3 (=wt)</span></a>
+<a class="sourceLine" id="cb133-16" data-line-number="16"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
+<a class="sourceLine" id="cb133-17" data-line-number="17"><span class="co">#&gt;      age    wt</span></a>
+<a class="sourceLine" id="cb133-18" data-line-number="18"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb133-19" data-line-number="19"><span class="co">#&gt;  1    30    88</span></a>
+<a class="sourceLine" id="cb133-20" data-line-number="20"><span class="co">#&gt;  2    26    76</span></a>
+<a class="sourceLine" id="cb133-21" data-line-number="21"><span class="co">#&gt;  3    21    67</span></a>
+<a class="sourceLine" id="cb133-22" data-line-number="22"><span class="co">#&gt;  4    29    66</span></a>
+<a class="sourceLine" id="cb133-23" data-line-number="23"><span class="co">#&gt;  5    25    56</span></a>
+<a class="sourceLine" id="cb133-24" data-line-number="24"><span class="co">#&gt;  6    22    74</span></a>
+<a class="sourceLine" id="cb133-25" data-line-number="25"><span class="co">#&gt;  7    28    71</span></a>
+<a class="sourceLine" id="cb133-26" data-line-number="26"><span class="co">#&gt;  8    24    60</span></a>
+<a class="sourceLine" id="cb133-27" data-line-number="27"><span class="co">#&gt;  9    23    52</span></a>
+<a class="sourceLine" id="cb133-28" data-line-number="28"><span class="co">#&gt; 10    20    72</span></a></code></pre></div>
 <p>Column names can be substituted for indices when using the single bracket operator:</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">df[<span class="st">&quot;age&quot;</span>]  </a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"30"},{"1":"26"},{"1":"21"},{"1":"29"},{"1":"25"},{"1":"22"},{"1":"28"},{"1":"24"},{"1":"23"},{"1":"20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb136-2" data-line-number="2">df[<span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;wt&quot;</span>)]</a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["wt"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"88"},{"1":"26","2":"76"},{"1":"21","2":"67"},{"1":"29","2":"66"},{"1":"25","2":"56"},{"1":"22","2":"74"},{"1":"28","2":"71"},{"1":"24","2":"60"},{"1":"23","2":"52"},{"1":"20","2":"72"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">df[<span class="st">&quot;age&quot;</span>]  </a>
+<a class="sourceLine" id="cb134-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 1</span></a>
+<a class="sourceLine" id="cb134-3" data-line-number="3"><span class="co">#&gt;      age</span></a>
+<a class="sourceLine" id="cb134-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb134-5" data-line-number="5"><span class="co">#&gt;  1    30</span></a>
+<a class="sourceLine" id="cb134-6" data-line-number="6"><span class="co">#&gt;  2    26</span></a>
+<a class="sourceLine" id="cb134-7" data-line-number="7"><span class="co">#&gt;  3    21</span></a>
+<a class="sourceLine" id="cb134-8" data-line-number="8"><span class="co">#&gt;  4    29</span></a>
+<a class="sourceLine" id="cb134-9" data-line-number="9"><span class="co">#&gt;  5    25</span></a>
+<a class="sourceLine" id="cb134-10" data-line-number="10"><span class="co">#&gt;  6    22</span></a>
+<a class="sourceLine" id="cb134-11" data-line-number="11"><span class="co">#&gt;  7    28</span></a>
+<a class="sourceLine" id="cb134-12" data-line-number="12"><span class="co">#&gt;  8    24</span></a>
+<a class="sourceLine" id="cb134-13" data-line-number="13"><span class="co">#&gt;  9    23</span></a>
+<a class="sourceLine" id="cb134-14" data-line-number="14"><span class="co">#&gt; 10    20</span></a>
+<a class="sourceLine" id="cb134-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb134-16" data-line-number="16">df[<span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;wt&quot;</span>)]</a>
+<a class="sourceLine" id="cb134-17" data-line-number="17"><span class="co">#&gt; # A tibble: 10 x 2</span></a>
+<a class="sourceLine" id="cb134-18" data-line-number="18"><span class="co">#&gt;      age    wt</span></a>
+<a class="sourceLine" id="cb134-19" data-line-number="19"><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb134-20" data-line-number="20"><span class="co">#&gt;  1    30    88</span></a>
+<a class="sourceLine" id="cb134-21" data-line-number="21"><span class="co">#&gt;  2    26    76</span></a>
+<a class="sourceLine" id="cb134-22" data-line-number="22"><span class="co">#&gt;  3    21    67</span></a>
+<a class="sourceLine" id="cb134-23" data-line-number="23"><span class="co">#&gt;  4    29    66</span></a>
+<a class="sourceLine" id="cb134-24" data-line-number="24"><span class="co">#&gt;  5    25    56</span></a>
+<a class="sourceLine" id="cb134-25" data-line-number="25"><span class="co">#&gt;  6    22    74</span></a>
+<a class="sourceLine" id="cb134-26" data-line-number="26"><span class="co">#&gt;  7    28    71</span></a>
+<a class="sourceLine" id="cb134-27" data-line-number="27"><span class="co">#&gt;  8    24    60</span></a>
+<a class="sourceLine" id="cb134-28" data-line-number="28"><span class="co">#&gt;  9    23    52</span></a>
+<a class="sourceLine" id="cb134-29" data-line-number="29"><span class="co">#&gt; 10    20    72</span></a></code></pre></div>
 </div>
 <div id="single-bracket-indexing-of-the-rows-of-a-data-frame" class="section level4">
 <h4><span class="header-section-number">5.3.4.2</span> Single bracket indexing of the rows of a data frame</h4>
 <p>To get specific rows of a data frame, we use single bracket indexing with an additional comma following the index. For example to get the first row a data frame we would do:</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1">df[<span class="dv">1</span>,]    <span class="co"># first row</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"M","3":"88","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">df[<span class="dv">1</span>,]    <span class="co"># first row</span></a>
+<a class="sourceLine" id="cb135-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb135-3" data-line-number="3"><span class="co">#&gt;     age sex      wt</span></a>
+<a class="sourceLine" id="cb135-4" data-line-number="4"><span class="co">#&gt; * &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb135-5" data-line-number="5"><span class="co">#&gt; 1    30 M        88</span></a></code></pre></div>
 <p>This syntax extends to multiple rows:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">df[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,]  <span class="co"># first two rows</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"M","3":"88","_rn_":"1"},{"1":"26","2":"F","3":"76","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb139-2" data-line-number="2">df[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>),]  <span class="co"># rows 1, 3 and 5</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"M","3":"88","_rn_":"1"},{"1":"21","2":"M","3":"67","_rn_":"3"},{"1":"25","2":"M","3":"56","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">df[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,]  <span class="co"># first two rows</span></a>
+<a class="sourceLine" id="cb136-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 3</span></a>
+<a class="sourceLine" id="cb136-3" data-line-number="3"><span class="co">#&gt;     age sex      wt</span></a>
+<a class="sourceLine" id="cb136-4" data-line-number="4"><span class="co">#&gt; * &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb136-5" data-line-number="5"><span class="co">#&gt; 1    30 M        88</span></a>
+<a class="sourceLine" id="cb136-6" data-line-number="6"><span class="co">#&gt; 2    26 F        76</span></a>
+<a class="sourceLine" id="cb136-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb136-8" data-line-number="8">df[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>),]  <span class="co"># rows 1, 3 and 5</span></a>
+<a class="sourceLine" id="cb136-9" data-line-number="9"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb136-10" data-line-number="10"><span class="co">#&gt;     age sex      wt</span></a>
+<a class="sourceLine" id="cb136-11" data-line-number="11"><span class="co">#&gt; * &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb136-12" data-line-number="12"><span class="co">#&gt; 1    30 M        88</span></a>
+<a class="sourceLine" id="cb136-13" data-line-number="13"><span class="co">#&gt; 2    21 M        67</span></a>
+<a class="sourceLine" id="cb136-14" data-line-number="14"><span class="co">#&gt; 3    25 M        56</span></a></code></pre></div>
 </div>
 <div id="single-bracket-indexing-of-both-the-rows-and-columns-of-a-data-frame" class="section level4">
 <h4><span class="header-section-number">5.3.4.3</span> Single bracket indexing of both the rows and columns of a data frame</h4>
 <p>Single bracket indexing of data frames extends naturally to retrieve both rows and columns simultaneously:</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">df[<span class="dv">1</span>, <span class="dv">2</span>]  <span class="co"># first row, second column</span></a>
-<a class="sourceLine" id="cb140-2" data-line-number="2"><span class="co">#&gt; [1] M</span></a>
-<a class="sourceLine" id="cb140-3" data-line-number="3"><span class="co">#&gt; Levels: F M</span></a>
-<a class="sourceLine" id="cb140-4" data-line-number="4">df[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>] <span class="co"># first three rows, columns 2 and 3</span></a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sex"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"M","2":"88","_rn_":"1"},{"1":"F","2":"76","_rn_":"2"},{"1":"M","2":"67","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb141-2" data-line-number="2"><span class="co"># you can even mix numerical indexing (rows) with named indexing of columns</span></a>
-<a class="sourceLine" id="cb141-3" data-line-number="3">df[<span class="dv">5</span><span class="op">:</span><span class="dv">10</span>, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;wt&quot;</span>)]  </a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["wt"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"25","2":"56","_rn_":"5"},{"1":"22","2":"74","_rn_":"6"},{"1":"28","2":"71","_rn_":"7"},{"1":"24","2":"60","_rn_":"8"},{"1":"23","2":"52","_rn_":"9"},{"1":"20","2":"72","_rn_":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1">df[<span class="dv">1</span>, <span class="dv">2</span>]  <span class="co"># first row, second column</span></a>
+<a class="sourceLine" id="cb137-2" data-line-number="2"><span class="co">#&gt; [1] M</span></a>
+<a class="sourceLine" id="cb137-3" data-line-number="3"><span class="co">#&gt; Levels: F M</span></a>
+<a class="sourceLine" id="cb137-4" data-line-number="4">df[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>] <span class="co"># first three rows, columns 2 and 3</span></a>
+<a class="sourceLine" id="cb137-5" data-line-number="5"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
+<a class="sourceLine" id="cb137-6" data-line-number="6"><span class="co">#&gt;   sex      wt</span></a>
+<a class="sourceLine" id="cb137-7" data-line-number="7"><span class="co">#&gt; * &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb137-8" data-line-number="8"><span class="co">#&gt; 1 M        88</span></a>
+<a class="sourceLine" id="cb137-9" data-line-number="9"><span class="co">#&gt; 2 F        76</span></a>
+<a class="sourceLine" id="cb137-10" data-line-number="10"><span class="co">#&gt; 3 M        67</span></a>
+<a class="sourceLine" id="cb137-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb137-12" data-line-number="12"><span class="co"># you can even mix numerical indexing (rows) with named indexing of columns</span></a>
+<a class="sourceLine" id="cb137-13" data-line-number="13">df[<span class="dv">5</span><span class="op">:</span><span class="dv">10</span>, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;wt&quot;</span>)]  </a>
+<a class="sourceLine" id="cb137-14" data-line-number="14"><span class="co">#&gt; # A tibble: 6 x 2</span></a>
+<a class="sourceLine" id="cb137-15" data-line-number="15"><span class="co">#&gt;     age    wt</span></a>
+<a class="sourceLine" id="cb137-16" data-line-number="16"><span class="co">#&gt; * &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb137-17" data-line-number="17"><span class="co">#&gt; 1    25    56</span></a>
+<a class="sourceLine" id="cb137-18" data-line-number="18"><span class="co">#&gt; 2    22    74</span></a>
+<a class="sourceLine" id="cb137-19" data-line-number="19"><span class="co">#&gt; 3    28    71</span></a>
+<a class="sourceLine" id="cb137-20" data-line-number="20"><span class="co">#&gt; 4    24    60</span></a>
+<a class="sourceLine" id="cb137-21" data-line-number="21"><span class="co">#&gt; 5    23    52</span></a>
+<a class="sourceLine" id="cb137-22" data-line-number="22"><span class="co">#&gt; 6    20    72</span></a></code></pre></div>
 </div>
 <div id="double-bracket-and-indexing-of-data-frames" class="section level4">
 <h4><span class="header-section-number">5.3.4.4</span> Double bracket and <code>$</code> indexing of data frames</h4>
 <p>Whereas single bracket indexing of a data frame always returns a new data frame, double bracket indexing and indexing using the <code>$</code> operator, returns vectors.</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1">df[[<span class="st">&quot;age&quot;</span>]]</a>
-<a class="sourceLine" id="cb142-2" data-line-number="2"><span class="co">#&gt;  [1] 30 26 21 29 25 22 28 24 23 20</span></a>
-<a class="sourceLine" id="cb142-3" data-line-number="3"><span class="kw">typeof</span>(df[[<span class="st">&quot;age&quot;</span>]])</a>
-<a class="sourceLine" id="cb142-4" data-line-number="4"><span class="co">#&gt; [1] &quot;double&quot;</span></a>
-<a class="sourceLine" id="cb142-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb142-6" data-line-number="6">df<span class="op">$</span>wt</a>
-<a class="sourceLine" id="cb142-7" data-line-number="7"><span class="co">#&gt;  [1] 88 76 67 66 56 74 71 60 52 72</span></a>
-<a class="sourceLine" id="cb142-8" data-line-number="8"><span class="kw">typeof</span>(df<span class="op">$</span>wt)</a>
-<a class="sourceLine" id="cb142-9" data-line-number="9"><span class="co">#&gt; [1] &quot;double&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">df[[<span class="st">&quot;age&quot;</span>]]</a>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="co">#&gt;  [1] 30 26 21 29 25 22 28 24 23 20</span></a>
+<a class="sourceLine" id="cb138-3" data-line-number="3"><span class="kw">typeof</span>(df[[<span class="st">&quot;age&quot;</span>]])</a>
+<a class="sourceLine" id="cb138-4" data-line-number="4"><span class="co">#&gt; [1] &quot;double&quot;</span></a>
+<a class="sourceLine" id="cb138-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb138-6" data-line-number="6">df<span class="op">$</span>wt</a>
+<a class="sourceLine" id="cb138-7" data-line-number="7"><span class="co">#&gt;  [1] 88 76 67 66 56 74 71 60 52 72</span></a>
+<a class="sourceLine" id="cb138-8" data-line-number="8"><span class="kw">typeof</span>(df<span class="op">$</span>wt)</a>
+<a class="sourceLine" id="cb138-9" data-line-number="9"><span class="co">#&gt; [1] &quot;double&quot;</span></a></code></pre></div>
 </div>
 </div>
 <div id="logical-indexing-of-data-frames" class="section level3">
 <h3><span class="header-section-number">5.3.5</span> Logical indexing of data frames</h3>
 <p>Logical indexing using boolean values works on data frames in much the same way it works on vectors. Typically, logical indexing of a data frame is used to filter the rows of a data frame.</p>
 <p>For example, to get all the subject in our example data frame who are older than 25 we could do:</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1"> <span class="co"># </span><span class="al">NOTE</span><span class="co">: the comma after 25 is important to insure we&#39;re indexing rows!</span></a>
-<a class="sourceLine" id="cb143-2" data-line-number="2">df[df<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>, ] </a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"30","2":"M","3":"88","_rn_":"1"},{"1":"26","2":"F","3":"76","_rn_":"2"},{"1":"29","2":"F","3":"66","_rn_":"4"},{"1":"28","2":"M","3":"71","_rn_":"7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"> <span class="co"># </span><span class="al">NOTE</span><span class="co">: the comma after 25 is important to insure we&#39;re indexing rows!</span></a>
+<a class="sourceLine" id="cb139-2" data-line-number="2">df[df<span class="op">$</span>age <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>, ] </a>
+<a class="sourceLine" id="cb139-3" data-line-number="3"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb139-4" data-line-number="4"><span class="co">#&gt;     age sex      wt</span></a>
+<a class="sourceLine" id="cb139-5" data-line-number="5"><span class="co">#&gt; * &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb139-6" data-line-number="6"><span class="co">#&gt; 1    30 M        88</span></a>
+<a class="sourceLine" id="cb139-7" data-line-number="7"><span class="co">#&gt; 2    26 F        76</span></a>
+<a class="sourceLine" id="cb139-8" data-line-number="8"><span class="co">#&gt; 3    29 F        66</span></a>
+<a class="sourceLine" id="cb139-9" data-line-number="9"><span class="co">#&gt; 4    28 M        71</span></a></code></pre></div>
 <p>Similarly, to get all the individuals whose weight is between 60 and 70 kgs we could do:</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">df[(df<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>df<span class="op">$</span>wt <span class="op">&lt;=</span><span class="st"> </span><span class="dv">70</span>),]</a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["wt"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"21","2":"M","3":"67","_rn_":"3"},{"1":"29","2":"F","3":"66","_rn_":"4"},{"1":"24","2":"F","3":"60","_rn_":"8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">df[(df<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>df<span class="op">$</span>wt <span class="op">&lt;=</span><span class="st"> </span><span class="dv">70</span>),]</a>
+<a class="sourceLine" id="cb140-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb140-3" data-line-number="3"><span class="co">#&gt;     age sex      wt</span></a>
+<a class="sourceLine" id="cb140-4" data-line-number="4"><span class="co">#&gt; * &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb140-5" data-line-number="5"><span class="co">#&gt; 1    21 M        67</span></a>
+<a class="sourceLine" id="cb140-6" data-line-number="6"><span class="co">#&gt; 2    29 F        66</span></a>
+<a class="sourceLine" id="cb140-7" data-line-number="7"><span class="co">#&gt; 3    24 F        60</span></a></code></pre></div>
 </div>
 <div id="adding-columns-to-a-data-frame" class="section level3">
 <h3><span class="header-section-number">5.3.6</span> Adding columns to a data frame</h3>
 <p>Adding columns to a data frame is similar to adding items to a list. The easiest way to do so is using named indexing. For example, to add a new column to our data frame that gives the individuals ages in number of days, we could do:</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1">df[[<span class="st">&quot;age.in.days&quot;</span>]] &lt;-<span class="st"> </span>df<span class="op">$</span>age <span class="op">*</span><span class="st"> </span><span class="dv">365</span></a>
-<a class="sourceLine" id="cb145-2" data-line-number="2"><span class="kw">dim</span>(df)</a>
-<a class="sourceLine" id="cb145-3" data-line-number="3"><span class="co">#&gt; [1] 10  4</span></a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">df[[<span class="st">&quot;age.in.days&quot;</span>]] &lt;-<span class="st"> </span>df<span class="op">$</span>age <span class="op">*</span><span class="st"> </span><span class="dv">365</span></a>
+<a class="sourceLine" id="cb141-2" data-line-number="2"><span class="kw">dim</span>(df)</a>
+<a class="sourceLine" id="cb141-3" data-line-number="3"><span class="co">#&gt; [1] 10  4</span></a></code></pre></div>
 
 </div>
 </div>
@@ -1124,7 +1166,10 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "subsection"
+"collapse": "section"
+},
+"toolbar": {
+"position": "fixed"
 }
 });
 });

@@ -5,8 +5,17 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
-    highlight: tango
-    df_print: paged
+    highlight: haddock
+    df_print: tibble
+    config:
+      toc:
+        collapse: section
+      fontsettings:
+        theme: white
+        family: sans
+        size: 2 
+      toolbar:
+        position: fixed       
 documentclass: book
 bibliography: [bio304-refs.bib]
 biblio-style: apalike
@@ -16,9 +25,9 @@ description: "Hands-on materials for Bio 304 course at Duke University."
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, prompt = FALSE, eval = TRUE, 
-                      warning = FALSE, comment="#>", cache = FALSE,
+                      warning = FALSE, comment="#>", cache = TRUE,
                       fig.width = 6, fig.height = 4, #results = "hide",
-                      collapse=TRUE, results='markup')
+                      collapse=TRUE, results='markup', max.print=6)
 
 options(pillar.sigfig = 4)
 ```

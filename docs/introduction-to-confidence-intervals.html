@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-01">
+<meta name="date" content="2018-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,8 +47,6 @@
 
 
 
-<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <style type="text/css">
@@ -82,38 +80,34 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { background-color: #f8f8f8; }
+  {  }
 @media screen {
 a.sourceLine::before { text-decoration: underline; }
 }
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
 code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -546,63 +540,64 @@ In our simulation we will explore how varying the value of <span class="math inl
 <p>In our simulation we’re going to generate a large number of samples, and for each sample we will calculate the sample estimate of the mean, and then quantify how much each sample mean differs from the true mean in terms of units of the population standard error of the mean. We’ll then use this information to calibrate the wide of our confidence intervals.</p>
 <p>For the sake of simplicity we’ll simulate sampling from the “Standard Normal Distribution” – a normal distribution with mean <span class="math inline">\(\mu=0\)</span>, and standard deviation <span class="math inline">\(\sigma=1\)</span>.</p>
 <p>First we load our standard libraries:</p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb420-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb420-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb411-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb411-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a></code></pre></div>
 <p>Then we write our basic framework for our simulations:</p>
-<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb421-1" data-line-number="1">rnorm.stats &lt;-<span class="st"> </span><span class="cf">function</span>(n, mu, sigma) {</a>
-<a class="sourceLine" id="cb421-2" data-line-number="2">  s &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, mu, sigma)</a>
-<a class="sourceLine" id="cb421-3" data-line-number="3">  df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> n,</a>
-<a class="sourceLine" id="cb421-4" data-line-number="4">                   <span class="dt">sample.mean =</span> <span class="kw">mean</span>(s),</a>
-<a class="sourceLine" id="cb421-5" data-line-number="5">                   <span class="dt">sample.sd =</span> <span class="kw">sd</span>(s),</a>
-<a class="sourceLine" id="cb421-6" data-line-number="6">                   <span class="dt">pop.SE =</span> sigma<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
-<a class="sourceLine" id="cb421-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb412-1" data-line-number="1">rnorm.stats &lt;-<span class="st"> </span><span class="cf">function</span>(n, mu, sigma) {</a>
+<a class="sourceLine" id="cb412-2" data-line-number="2">  s &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, mu, sigma)</a>
+<a class="sourceLine" id="cb412-3" data-line-number="3">  df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> n,</a>
+<a class="sourceLine" id="cb412-4" data-line-number="4">                   <span class="dt">sample.mean =</span> <span class="kw">mean</span>(s),</a>
+<a class="sourceLine" id="cb412-5" data-line-number="5">                   <span class="dt">sample.sd =</span> <span class="kw">sd</span>(s),</a>
+<a class="sourceLine" id="cb412-6" data-line-number="6">                   <span class="dt">pop.SE =</span> sigma<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
+<a class="sourceLine" id="cb412-7" data-line-number="7">}</a></code></pre></div>
 <p>And then use this to simulate samples of size 25.</p>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">20180328</span>) <span class="co"># initialize RNG seed</span></a>
-<a class="sourceLine" id="cb422-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb422-3" data-line-number="3">true.mean &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb422-4" data-line-number="4">true.sd &lt;-<span class="st"> </span><span class="dv">11</span></a>
-<a class="sourceLine" id="cb422-5" data-line-number="5">n &lt;-<span class="st"> </span><span class="dv">25</span></a>
-<a class="sourceLine" id="cb422-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb422-7" data-line-number="7">samples<span class="fl">.25</span> &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb422-8" data-line-number="8"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">10000</span>, <span class="kw">rnorm.stats</span>(n, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb422-9" data-line-number="9"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb413-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">20180328</span>) <span class="co"># initialize RNG seed</span></a>
+<a class="sourceLine" id="cb413-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb413-3" data-line-number="3">true.mean &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb413-4" data-line-number="4">true.sd &lt;-<span class="st"> </span><span class="dv">11</span></a>
+<a class="sourceLine" id="cb413-5" data-line-number="5">n &lt;-<span class="st"> </span><span class="dv">25</span></a>
+<a class="sourceLine" id="cb413-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb413-7" data-line-number="7">samples<span class="fl">.25</span> &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb413-8" data-line-number="8"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">10000</span>, <span class="kw">rnorm.stats</span>(n, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb413-9" data-line-number="9"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
 </div>
 <div id="distance-between-sample-means-and-true-means" class="section level3">
 <h3><span class="header-section-number">17.3.2</span> Distance between sample means and true means</h3>
 <p>We append a new column to our <code>samples.25</code> data frame, which is the result of calculating the distance of each sample mean from the true mean, expressed in terms of units of the population standard error of the mean:</p>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1">samples<span class="fl">.25</span> &lt;-</a>
-<a class="sourceLine" id="cb423-2" data-line-number="2"><span class="st">  </span>samples<span class="fl">.25</span> <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb423-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">z.pop =</span> (sample.mean <span class="op">-</span><span class="st"> </span>true.mean)<span class="op">/</span>pop.SE)</a></code></pre></div>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb414-1" data-line-number="1">samples<span class="fl">.25</span> &lt;-</a>
+<a class="sourceLine" id="cb414-2" data-line-number="2"><span class="st">  </span>samples<span class="fl">.25</span> <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb414-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">z.pop =</span> (sample.mean <span class="op">-</span><span class="st"> </span>true.mean)<span class="op">/</span>pop.SE)</a></code></pre></div>
 <p>Since the sampling distribution of the mean of a normally distributed variable (<span class="math inline">\(N(\mu,\sigma )\)</span>) is itself normally distributed (<span class="math inline">\(N(\mu, SE_\overline{x})\)</span>), then the distribution of <span class="math inline">\(z = \frac{\overline{x} - \mu}{SE}\)</span> is <span class="math inline">\(N(0,1)\)</span>. This is illustrated in the figure below where we compare our simulated z-scores to the theoretical expectation:</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1">SE &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb424-2" data-line-number="2"><span class="kw">ggplot</span>(samples<span class="fl">.25</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb424-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> z.pop, <span class="dt">y=</span>..density..), <span class="dt">bins=</span><span class="dv">50</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-4" data-line-number="4"><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> <span class="cf">function</span>(x){<span class="kw">dnorm</span>(x, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>SE)}, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb415-1" data-line-number="1">SE &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb415-2" data-line-number="2"><span class="kw">ggplot</span>(samples<span class="fl">.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb415-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> z.pop, <span class="dt">y=</span>..density..), <span class="dt">bins=</span><span class="dv">50</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb415-4" data-line-number="4"><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> <span class="cf">function</span>(x){<span class="kw">dnorm</span>(x, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>SE)}, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-414-1.png" width="576" /></p>
 <p>For a given value of <span class="math inline">\(z\)</span> we can ask what fraction of our simulated means fall within <span class="math inline">\(\pm z\)</span> standard errors of the true mean.</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">samples<span class="fl">.25</span> <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb425-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">frac.win.1SE =</span> <span class="kw">sum</span>(<span class="kw">abs</span>(z.pop) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="kw">n</span>(),</a>
-<a class="sourceLine" id="cb425-3" data-line-number="3">            <span class="dt">frac.win.2SE =</span> <span class="kw">sum</span>(<span class="kw">abs</span>(z.pop) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span><span class="kw">n</span>())</a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["frac.win.1SE"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["frac.win.2SE"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.6826","2":"0.9549"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb416-1" data-line-number="1">samples<span class="fl">.25</span> <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb416-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">frac.win.1SE =</span> <span class="kw">sum</span>(<span class="kw">abs</span>(z.pop) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb416-3" data-line-number="3">            <span class="dt">frac.win.2SE =</span> <span class="kw">sum</span>(<span class="kw">abs</span>(z.pop) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2</span>)<span class="op">/</span><span class="kw">n</span>())</a>
+<a class="sourceLine" id="cb416-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb416-5" data-line-number="5"><span class="co">#&gt;   frac.win.1SE frac.win.2SE</span></a>
+<a class="sourceLine" id="cb416-6" data-line-number="6"><span class="co">#&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb416-7" data-line-number="7"><span class="co">#&gt; 1       0.6826       0.9549</span></a></code></pre></div>
 <p>We see that roughly 68% of our sample means are within 1 SE of the true mean; ~95% are within 2 SEs.</p>
 <p>If we wanted to get exact multiples of the SE corresponding to different percentiles of the distribution of z-scores, based on the theoretical result (z scores ~ <span class="math inline">\(N(0,1)\)</span>), we can use the <code>qnorm()</code> function:</p>
-<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1">frac.of.interest &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.68</span>, <span class="fl">0.90</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</a>
-<a class="sourceLine" id="cb426-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb426-3" data-line-number="3"><span class="co"># we use 1 - frac to get left most critical value</span></a>
-<a class="sourceLine" id="cb426-4" data-line-number="4"><span class="co"># we divide by two here two account for area under left and right tails</span></a>
-<a class="sourceLine" id="cb426-5" data-line-number="5">left.critical.value &lt;-<span class="st"> </span><span class="kw">qnorm</span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>frac.of.interest)<span class="op">/</span><span class="dv">2</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) </a>
-<a class="sourceLine" id="cb426-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb426-7" data-line-number="7"><span class="kw">data_frame</span>(<span class="dt">Percentile =</span> frac.of.interest <span class="op">*</span><span class="st"> </span><span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb426-8" data-line-number="8">           <span class="dt">Critical.value =</span> <span class="kw">abs</span>(left.critical.value))</a></code></pre></div>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Percentile"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Critical.value"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"68","2":"0.9944579"},{"1":"90","2":"1.6448536"},{"1":"95","2":"1.9599640"},{"1":"99","2":"2.5758293"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb417-1" data-line-number="1">frac.of.interest &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.68</span>, <span class="fl">0.90</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>)</a>
+<a class="sourceLine" id="cb417-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb417-3" data-line-number="3"><span class="co"># we use 1 - frac to get left most critical value</span></a>
+<a class="sourceLine" id="cb417-4" data-line-number="4"><span class="co"># we divide by two here two account for area under left and right tails</span></a>
+<a class="sourceLine" id="cb417-5" data-line-number="5">left.critical.value &lt;-<span class="st"> </span><span class="kw">qnorm</span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>frac.of.interest)<span class="op">/</span><span class="dv">2</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) </a>
+<a class="sourceLine" id="cb417-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb417-7" data-line-number="7"><span class="kw">data_frame</span>(<span class="dt">Percentile =</span> frac.of.interest <span class="op">*</span><span class="st"> </span><span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb417-8" data-line-number="8">           <span class="dt">Critical.value =</span> <span class="kw">abs</span>(left.critical.value))</a>
+<a class="sourceLine" id="cb417-9" data-line-number="9"><span class="co">#&gt; # A tibble: 4 x 2</span></a>
+<a class="sourceLine" id="cb417-10" data-line-number="10"><span class="co">#&gt;   Percentile Critical.value</span></a>
+<a class="sourceLine" id="cb417-11" data-line-number="11"><span class="co">#&gt;        &lt;dbl&gt;          &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb417-12" data-line-number="12"><span class="co">#&gt; 1         68         0.9945</span></a>
+<a class="sourceLine" id="cb417-13" data-line-number="13"><span class="co">#&gt; 2         90         1.645 </span></a>
+<a class="sourceLine" id="cb417-14" data-line-number="14"><span class="co">#&gt; 3         95         1.960 </span></a>
+<a class="sourceLine" id="cb417-15" data-line-number="15"><span class="co">#&gt; 4         99         2.576</span></a></code></pre></div>
 </div>
 <div id="calculating-a-ci" class="section level3">
 <h3><span class="header-section-number">17.3.3</span> Calculating a CI</h3>
@@ -620,7 +615,7 @@ CI_\overline{x} \pm \text{critical value} \times SE_\overline{x}
 <p><span class="math display">\[
 \widehat{SE}_\overline{x} = \frac{s_x}{\sqrt{n}}
 \]</span></p>
-<p>This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see lecture 15).</p>
+<p>This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see workbook Chapter 15).</p>
 <p>In the assignment for this class session you will explore how we can deal with the fact of biased estimates of standard deviations for small samples, and how it effects our calculation of confidence intervals for the mean.</p>
 
 </div>
@@ -672,7 +667,10 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "subsection"
+"collapse": "section"
+},
+"toolbar": {
+"position": "fixed"
 }
 });
 });
