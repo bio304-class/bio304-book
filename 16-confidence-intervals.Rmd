@@ -159,7 +159,7 @@ Instead we must estimate the standard error of the mean using our sample standar
 \widehat{SE}_\overline{x} = \frac{s_x}{\sqrt{n}}
 \]
 
-This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see lecture 15).  
+This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see workbook Chapter 15).  
 
 In the assignment for this class session you will explore how we can deal with the fact of biased estimates of standard deviations for small samples, and how it effects our calculation of confidence intervals for the mean.
 
