@@ -1,7 +1,7 @@
 
-# Normal distribution
+# Normal distributions
 
-This exposition is based on slides and text from Diez et al. 2015, OpenIntro Statistics (3rd Edition).
+This exposition is based on  Diez et al. 2015, OpenIntro Statistics (3rd Edition) and Whitlock and Schluter, 2015.  The Analysis of Biological Data (2nd Edition).
 
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
@@ -11,9 +11,9 @@ library(cowplot)
 ```
 
 
-## Basic about normal distributions
+## Basics about normal distributions
 
-```{r,echo=FALSE, fig.width = 6, fig.height = 3.5}
+```{r,echo=FALSE, fig.width = 6, fig.height = 3.5, fig.align="center", fig.cap="A normal distribution with mean μ and standard deviation σ"}
 npts <- 500
 std.norm <- data_frame(x = seq(-4, 4, length.out = npts),
                        density = dnorm(x))
@@ -30,12 +30,15 @@ std.norm.plot <-
 std.norm.plot
 ```
 
+Normal distributions are:
 
 - Unimodal 
 - Symmetric
 - Described by two parameters -- $\mu$ (mean) and $\sigma$ (standard deviation)
-  
-    - If a variable $X$ is apprximately normally distributed with mean, $\mu$, and standad deviation, $\sigma$, we write: $X \sim N(\mu,\sigma)$
+
+### Notation
+
+- If a variable $X$ is approximately normally distributed with mean, $\mu$, and standard deviation, $\sigma$, we write: $X \sim N(\mu,\sigma)$
 
 
 ## Normal distribution, probability density function
@@ -60,7 +63,69 @@ std.norm.plot +
   
 ```
 
+### `dnorm()` calculates the normal pdf
+
 - In R, the function `dnorm(x, mu, sigma)` calculates the probability density of $N(\mu,\sigma)$ at the point $x$
+
+## Approximately normal distributions are very common 
+
+The normal approximation is a good approximation to patterns of variation seen in biology, economics, and many other fields.
+
+The following figure, from your texbook, shows distributions for (a) human body temperature, (b) university undergraduate brain size, and (c) numbers of abdominal bristles on Drosophila fruit flies:
+
+```{r, echo = FALSE, out.width = "90%", fig.align = "center", fig.cap = "Examples of biological variables that are nearly normal. From Whitlock & Schluter, Chap 10", results="markup"}
+knitr::include_graphics("./figures/fig-normals-horiz.png")
+```
+
+## Central limit theorem
+
+Why is the normal distribution so ubiquitious? A key reason is the "Central Limit Theorem"
+
+The **Central Limit Theorem (CLT)** states the sum or mean of a large number of random measurements sampled from a population is approximately normally distributed, *regardless of the shape of the distribution from which they are drawn.*
+
+Many biological traits can be thought of as being produced by the summation many small effects.  Even if those effect have a non-normal distribution, the sum of their effects is approximately normal.
+
+### Example:  Continuous variation from discrete loci
+
+Studies of the genetic basis of traits like height or weight, indicate that traits like these have a "multigenic" basis. That is, there are many genomic regions (loci) that each contribute a small amount to difference in height among individuals.
+
+For the sake of illustration let's assume there are 200 loci scattered across the genome that affect height.  And that each locus has an effect on size that is exponentially distributed with a mean of 0.8cm, and that an individuals total height is the sum of the effects at each of these individual loci.
+
+In the figure below, the first plot show what the distribution of effect sizes looks.  This is quite clearly a non-normal distribution.  The second plot show what the distribution of heights of 100 individuals generated using the additive model above would look like. This second plot is approximately normal, as predicted by the CLT.
+
+```{r, echo=FALSE, fig.width=8, fig.height=4, out.width="90%", fig.align="center"}
+r <- 1.14
+
+plot.A <-
+  data_frame(x = seq(0, 10, length.out = 250),
+             density = dexp(x, rate=r)) %>%
+  ggplot(aes(x,density)) +
+  geom_line() +
+  labs(x = "Effect on height (cm)", y = "Density",
+       title="Distribution of effects on height, per locus") +
+  theme_classic() + 
+  theme(plot.title =element_text(size=10))   
+
+rexp.stats <- function(n, rate) {
+    data_frame(height = sum(rexp(n, rate)))
+}
+
+observations <- rerun(100, rexp.stats(200, r)) %>% bind_rows()
+
+plot.B <-
+  observations %>%
+  ggplot(aes(height)) + 
+  geom_histogram(bins=9)  +
+  labs(x = "Total Height (cm)", y = "Frequency",
+       title="Distribution of heights for 100 individuals\ngenerated using additive model based on 200 loci") + 
+  theme_classic() + 
+  theme(plot.title =element_text(size=10)) 
+
+plot_grid(plot.A, plot.B, labels="AUTO")
+```
+
+
+
 
 
 ## Visualizing normal distributions 
@@ -181,6 +246,32 @@ std.norm.plot.labels +
 
 - $N(0,1)$ is known as the **standard normal distribution**
 
+## 88-95-99.7 Rule
+
+If data are approximately normally distributed:
+
+- ~68% of observations lie within 1 SD of the mean
+- ~95% of observations lie within 2 SD of the mean
+- ~99.7% of observations lie within 3 SD of the mean
+
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3, fig.align = "center", out.width="60%"}
+
+std.norm.plot + 
+  geom_area(alpha=0.5) + 
+  geom_area(data=filter(std.norm, abs(x) < 2), fill="gray") + 
+  geom_area(data=filter(std.norm, abs(x) < 1), fill="oldlace") +
+  annotate("segment", x = -1, xend = 1, 
+           y = 0.22, yend = 0.22, arrow=arrow(ends="both")) + 
+  annotate("segment", x = -2, xend = 2, 
+           y = 0.15, yend = 0.15, arrow=arrow(ends="both")) +
+  annotate("segment", x = -3, xend = 3, 
+           y = 0.08, yend = 0.08, arrow=arrow(ends="both")) +
+  annotate("text", x = 0, y = 0.23, label="68%") + 
+  annotate("text", x = 0, y = 0.16, label="95%") + 
+  annotate("text", x = 0, y = 0.09, label="99.7%")
+```
+
 
 ## Percentiles
 
@@ -204,10 +295,17 @@ std.norm.plot.labels +
   labs(x = "Z-scores", title="Malaika scored higher than ~93%\nof other exam takers on the SAT")
 ```
 
+Note that if we want the fraction of the data to the right of a value $q$, we can subtract the value from one (`1 - pnorm(1.49)`) or set the `lower.tail = FALSE` argument in in `pnorm`.
+
+```{r}
+pnorm(1.49, lower.tail = FALSE) # same as (1 - pnorm(1.49))
+```
+
+
 
 ## Cutoff points
 
-- When we use the `pnorm()` function we give it a given point, $q$, and it gives us the corresponding fraction of values, $p$, that fall below that point in a normal distibution
+- When we use the `pnorm()` function we specify a  point, $q$, and it gives us the corresponding fraction of values, $p$, that fall below that point in a normal distibution
 
 - If instead we want to specify a fraction $p$, and get the corresponding point, $q$, on the normal distribution, we use the `qnorm(p, mu, sigma)` function.
 
@@ -242,91 +340,73 @@ SAT.norm %>%
 ```
 
 
-## 88-95-99.7 Rule
 
-If data are approximately normally distributed:
-
-- ~68% of observations lie within 1 SD of the mean
-- ~95% of observations lie within 2 SD of the mean
-- ~99.7% of observations lie within 3 SD of the mean
-
-
-```{r, echo=FALSE, fig.width = 6, fig.height = 3, fig.align = "center", out.width="60%"}
-
-std.norm.plot + 
-  geom_area(alpha=0.5) + 
-  geom_area(data=filter(std.norm, abs(x) < 2), fill="gray") + 
-  geom_area(data=filter(std.norm, abs(x) < 1), fill="oldlace") +
-  annotate("segment", x = -1, xend = 1, 
-           y = 0.22, yend = 0.22, arrow=arrow(ends="both")) + 
-  annotate("segment", x = -2, xend = 2, 
-           y = 0.15, yend = 0.15, arrow=arrow(ends="both")) +
-  annotate("segment", x = -3, xend = 3, 
-           y = 0.08, yend = 0.08, arrow=arrow(ends="both")) +
-  annotate("text", x = 0, y = 0.23, label="68%") + 
-  annotate("text", x = 0, y = 0.16, label="95%") + 
-  annotate("text", x = 0, y = 0.09, label="99.7%")
-```
 
 
 ## Assessing normality
 
-### Normal probability plot
+There are a number of graphical tools we have at our disposal to assess approximate normality based on observations of a variable of interest.  There are also some formal tests we can apply.  Here we focus on the graphical tools.
+
+### Comparing histograms to theoretical normals 
+
+One of the simplest approaches to assessing approximate normality for a variable of interest is to plot a histogram of the observed variable, and then to overlay on that histogram the probability density function you would expect for a normal distribution with the same mean and standard deviation.
+
+In the example below I show a histogram of heights from a sample of 100 men, overlain with the PDF of a normal distribution with the mean and standard deviation as estimated from the sample.
 
 ```{r, echo=FALSE, warning=FALSE,message=FALSE}
 male.heights <- read_tsv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/male-heights.txt")
-nba <- read_tsv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nba-heights.txt")
 ```
 
-```{r,echo=FALSE}
+```{r, echo=FALSE}
 mean.height <- mean(male.heights$heights)
 sd.height <- sd(male.heights$heights)
 
-height.histo <- 
-  male.heights %>%
-  ggplot() + 
+male.heights %>%
+  ggplot() +
   geom_histogram(aes(x = heights, y = ..density..),
                  bins=9, alpha=0.5) +
   stat_function(fun = function(x){dnorm(x, mean.height, sd.height)},
-                n  = 200) + 
+                n  = 200, color='red') + 
   labs(x = "Height (in)",
-       y = "Density")   
-  
-qq.height <-
-  male.heights %>%
+       y = "Density")     
+```
+
+The histogram matches fairly well to the theoretical normal, but histograms are rather course visualizations when sample sizes are modst.
+
+### Normal probability plot
+
+A second graphical tool for assessing normality is a "normal probability plot". A normal probability plot is a type of scatter plot for which the x-axis represents theoretical quantiles of a normal distribution, and the y-axis represents the observed quantiles of our observed data.  If the observed data perfectly matched the normal distribution with the same mean and standard deviation, then all the points should fall on a straight line.  Deviations from normality are represented by runs of points off the line.
+
+The ggplot functions `geom_qq()` and `gome_qq_line()` take care of the necessary calculations required to generate a normal probability plot. Here is the normal probability plot for the male height data:
+
+```{r,echo=FALSE}
+male.heights %>%
   ggplot(aes(sample = heights)) + 
   geom_qq(alpha=0.5, color='steelblue') + 
   geom_qq_line() + 
   labs(x = "Theoretical quantile",
        y = "Height (in)")
 
-plot_grid(height.histo, qq.height)
 ```
 
+This plot suggests that the male heights are approximately normally distributed, though there are maybe a few more very short men and a few less very tall men in our sample then we would expect under perfect normality.
 
+### Comparing the empirical CDF to the theoretical CDF
 
+A third visual approach is to estimate a cumulative distribution function (CDF) for the variable of interest from the data and compare this to the theoertical cumulative distribution function you'd expected for a normal distribution (as provided by `pnorm()`).  When you estimate a cumulative distribution function from data, this is a called an "empirical CDF".
 
-```{r,echo=FALSE}
-nba.mean.height <- mean(nba$h.in)
-nba.sd.height <- sd(nba$h.in)
+The function `ggplot::stat_ecdf` estimates the empirical CDF for us and plots it, we can combine this with `stat_function()` to plot the theoertical CDF using pnorm, as shown below for the height data.
 
-nba.height.histo <- 
-  nba %>%
-  ggplot() + 
-  geom_histogram(aes(x = h.in, y = ..density..),
-                 breaks=seq(68,92,2), alpha=0.5) +
-  stat_function(fun = function(x){dnorm(x, nba.mean.height, nba.sd.height)},
-                n  = 200) +
-  labs(x = "Height (in)",
-       y = "Density")  
-  
-nba.qq.height <-
-  nba %>%
-  ggplot(aes(sample = h.in)) + 
-  geom_qq(alpha=0.5, color='steelblue') + 
-  geom_qq_line() + 
-  labs(x = "Theoretical quantile",
-       y = "Height (in)")
-
-plot_grid(nba.height.histo, nba.qq.height)
+```{r, fig.width = 5, fig.height = 4, fig.align="center"}
+male.heights %>%
+  ggplot(aes(x = heights)) + 
+  stat_ecdf() + 
+  stat_function(fun=pnorm, 
+                args=list(mean = mean.height, sd = sd.height),
+                color='red', linetype='dashed', n = 200) +
+  labs(x = "Height, h", y = "Prob(height < h)",
+       title = "Emprirical (black) and Theoretical (red) CDFs\n for a normal distribution estiamted from observed male height data") + 
+    theme(plot.title =element_text(size=10)) 
 ```
+
+Here the match between the empirical CDF and the theoretical CDF is pretty good, again suggesting that the data is approximately normal.

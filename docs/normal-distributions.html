@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="joint-frequency-distributions-and-measures-of-association.html">
-<link rel="next" href="introduction-to-sampling-distributions-part-i.html">
+<link rel="prev" href="introduction-to-confidence-intervals.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -511,224 +511,198 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction-to-probability" class="section level1">
-<h1><span class="header-section-number">Chapter 13</span> Introduction to Probability</h1>
-<p>The exposition here largely follows that in Chapter 5 of Whitlock &amp; Schluter.</p>
-<div id="terms" class="section level2">
-<h2><span class="header-section-number">13.1</span> Terms</h2>
-<ul>
-<li><p><em>Outcome</em> – the result of a process or experiment</p></li>
-<li><p><em>Random Trial</em> – a process or experiment that has two or more possible outcomes whose occurence can not be predicted with certainty</p></li>
-<li><p><em>Event</em> – a subset of the possible outcomes of a random trial</p></li>
-</ul>
-<div id="examples-of-random-trials-outcomes-and-events" class="section level3">
-<h3><span class="header-section-number">13.1.1</span> Examples of random trials, outcomes, and events</h3>
-<div id="random-trials" class="section level4">
-<h4><span class="header-section-number">13.1.1.1</span> Random trials</h4>
-<p>Classic examples of random trials</p>
-<ul>
-<li>flipping a coin</li>
-<li>rolling a die</li>
-<li>choosing a shuffled deck</li>
-<li>picking three balls, without replacement, from an urn filled with 3 white and 2 black balls</li>
-</ul>
-<p>Biological examples of random trials</p>
-<ul>
-<li>Determining the sex of offspring in a genetic cross</li>
-<li>Weight loss/gain following treatment with a drug</li>
-<li>Count the plant species in one acre of forest</li>
-</ul>
-</div>
-<div id="outcomes" class="section level4">
-<h4><span class="header-section-number">13.1.1.2</span> Outcomes</h4>
-<p>Classic examples:</p>
-<ul>
-<li>Coins: heads or tails</li>
-<li>Dice: The numbers <span class="math inline">\(1\)</span> to <span class="math inline">\(n\)</span>, where <span class="math inline">\(n\)</span> is the number of sides on the die that was thrown</li>
-<li>Cards: Any of the numbered or face cards and their suits</li>
-<li>Balls and urns: the number of black and white balls drawn</li>
-</ul>
-<p>Biological examples:</p>
-<ul>
-<li>Sex of offspring: male and female</li>
-<li>Weight loss/gain: positive and negative real numbers in an interval</li>
-<li>Species: integers values <span class="math inline">\(\geq 0\)</span></li>
-</ul>
-</div>
-<div id="events" class="section level4">
-<h4><span class="header-section-number">13.1.1.3</span> Events</h4>
-<p>Classic examples:</p>
-<ul>
-<li>Coins: heads or tails (the events are the outcomes when the experiment is a single flip)</li>
-<li>Dice: rolled a specific number, rolled an event number, rolled a number greater than three, etc</li>
-<li>Cards: drew a face card, drew a heart, drew an ace of hearts, etc</li>
-<li>Balls and urns: all white balls, only one white ball, etc</li>
-</ul>
-<p>Biological examples:</p>
-<ul>
-<li>Sex of offspring: male or female</li>
-<li>Weight loss/gain: lost weight, lost more than 5 lbs, gained between 10 and 20 lbs, etc</li>
-<li>Species: counted 10 species, counted more than 25 species, etc</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="frequentist-definition-of-probability" class="section level2">
-<h2><span class="header-section-number">13.2</span> Frequentist definition of probability</h2>
-<p><em>Probability</em> of an event – the proportion of times the event would occur if we repeated a random trial an infinite (or very large) number of times under the same conditions.</p>
-<ul>
-<li><p>To indicate the probability of an event <span class="math inline">\(A\)</span>, we write <span class="math inline">\(P(A)\)</span></p></li>
-<li><p>The probability of all possible outcomes of a random trial must sum to one.</p></li>
-<li><p>The <em>complement</em> of an event is all the possible outcomes of a random trial that are <em>not</em> the event. Let <span class="math inline">\(A^c\)</span> indicate the complement of the event <span class="math inline">\(A\)</span>. Then <span class="math inline">\(P(A^c) = 1 - P(A)\)</span></p></li>
-</ul>
-<div id="examples-probability" class="section level3">
-<h3><span class="header-section-number">13.2.1</span> Examples: Probability</h3>
-<div id="classic-examples" class="section level4">
-<h4><span class="header-section-number">13.2.1.1</span> Classic examples</h4>
-<p>In classic probabilistic examples, where we understand (approximately) the physical constraints and symmetries of a random trial, we can often assign theoretical probabilities:</p>
-<ul>
-<li><p>Coins: With a fair coin, the probability of each face is 0.5</p></li>
-<li><p>Dice: Given a fair 20-side die, the probability of rolling a 15 or better is 6/20 = 0.3</p></li>
-<li><p>Cards: In randomly shuffled standard (French) 52-card deck, the probability of drawing a heart is 13/54 = 0.25; the probability of getting an ace is 4/52 = ~0.077; the probability of drawing the ace of hearts is 1/52 = ~0.0192 The probability of not drawing an ace is 1 - 1/52 = ~0.9808</p></li>
-<li><p>Balls and urns: If you make three draws (without replacement) from an urn filled with three white and two black balls, the probability of drawing three white balls is 0.1. We’ll illustrate how to calculate this below.</p></li>
-</ul>
-</div>
-<div id="biological-examples" class="section level4">
-<h4><span class="header-section-number">13.2.1.2</span> Biological examples</h4>
-<p>For real-world examples, we can not usually invoke physical symmetries to assign theoretical probabilities <em>a prioiri</em> to an event (though sometimes we’ll use such symmetries when stating “null hypotheses”; more on this in a later lecture),</p>
-<ul>
-<li>Sex of offspring in humans: In human populations, the <em>sex ratio at birth</em> is <em>not</em> 1:1. The probability of a child being male is ~0.512, and the probability of having a female child is ~0.488. This surprising deviation from the 1:1 ratio is well documented. Additional factors contributes to further deviations in actual human populations. See for example Hesketh and Xing (2006), Abnormal sex ratios in human populations: causes and consequences. PNAS 103(36):13271-5.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="probability-distribution" class="section level2">
-<h2><span class="header-section-number">13.3</span> Probability distribution</h2>
-<p><em>Probability distribution</em> – A list, or equivalent representation, of the probabilities of all mutually exclusive outcomes of a random trial. Two events are mutually exclusive if than cannot both occur at the same time. The total probabilities in a probability distribution sums to 1.</p>
-<p>For most cases of biological interest, probability distributions are unknowable and thus we use relative frequency distributions to estimate the underlying probability distributions of interest (relative frequencies are sometimes referred to as empirical probabilities).</p>
-<p>Referring back to our earlier “frequentist definition”, another way of thinking about a probability distribution is as relative frequency distribution as the number of observations approaches the size (in some cases infinite) of the population under study (using the broad definition of “population” discussed several lectures ago)</p>
-<div id="discrete-probability-distribution" class="section level3">
-<h3><span class="header-section-number">13.3.1</span> Discrete probability distribution</h3>
-<p><em>Discrete probability distribution</em> – the probability of each possible value of a discrete variable. Discrete probability distributions apply to categorical variables, ordinal variables, and discerete numerical variables. The total probabilities must sum to one.</p>
-<div class="figure" style="text-align: center">
-<img src="bio304-book_files/figure-html/discrete_prob_distn-1.png" alt="Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls." width="576" />
+<div id="normal-distributions" class="section level1">
+<h1><span class="header-section-number">Chapter 18</span> Normal distributions</h1>
+<p>This exposition is based on Diez et al. 2015, OpenIntro Statistics (3rd Edition) and Whitlock and Schluter, 2015. The Analysis of Biological Data (2nd Edition).</p>
+<div id="basics-about-normal-distributions" class="section level2">
+<h2><span class="header-section-number">18.1</span> Basics about normal distributions</h2>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-418"></span>
+<img src="bio304-book_files/figure-html/unnamed-chunk-418-1.png" alt="A normal distribution with mean μ and standard deviation σ" width="576" />
 <p class="caption">
-(#fig:discrete_prob_distn)Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.
+Figure 18.1: A normal distribution with mean μ and standard deviation σ
+</p>
+</div>
+<p>Normal distributions are:</p>
+<ul>
+<li>Unimodal</li>
+<li>Symmetric</li>
+<li>Described by two parameters – <span class="math inline">\(\mu\)</span> (mean) and <span class="math inline">\(\sigma\)</span> (standard deviation)</li>
+</ul>
+<div id="notation" class="section level3">
+<h3><span class="header-section-number">18.1.1</span> Notation</h3>
+<ul>
+<li>If a variable <span class="math inline">\(X\)</span> is approximately normally distributed with mean, <span class="math inline">\(\mu\)</span>, and standard deviation, <span class="math inline">\(\sigma\)</span>, we write: <span class="math inline">\(X \sim N(\mu,\sigma)\)</span></li>
+</ul>
+</div>
+</div>
+<div id="normal-distribution-probability-density-function" class="section level2">
+<h2><span class="header-section-number">18.2</span> Normal distribution, probability density function</h2>
+<p>The probability density function for a normal distribution <span class="math inline">\(N(\mu,\sigma)\)</span> is described by the following equation:</p>
+<p><span class="math display">\[
+f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]</span></p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-419-1.png" width="576" /></p>
+<div id="dnorm-calculates-the-normal-pdf" class="section level3">
+<h3><span class="header-section-number">18.2.1</span> <code>dnorm()</code> calculates the normal pdf</h3>
+<ul>
+<li>In R, the function <code>dnorm(x, mu, sigma)</code> calculates the probability density of <span class="math inline">\(N(\mu,\sigma)\)</span> at the point <span class="math inline">\(x\)</span></li>
+</ul>
+</div>
+</div>
+<div id="approximately-normal-distributions-are-very-common" class="section level2">
+<h2><span class="header-section-number">18.3</span> Approximately normal distributions are very common</h2>
+<p>The normal approximation is a good approximation to patterns of variation seen in biology, economics, and many other fields.</p>
+<p>The following figure, from your texbook, shows distributions for (a) human body temperature, (b) university undergraduate brain size, and (c) numbers of abdominal bristles on Drosophila fruit flies:</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-420"></span>
+<img src="figures/fig-normals-horiz.png" alt="Examples of biological variables that are nearly normal. From Whitlock &amp; Schluter, Chap 10" width="90%" />
+<p class="caption">
+Figure 18.2: Examples of biological variables that are nearly normal. From Whitlock &amp; Schluter, Chap 10
 </p>
 </div>
 </div>
-<div id="continuous-probability-distribution" class="section level3">
-<h3><span class="header-section-number">13.3.2</span> Continuous probability distribution</h3>
-<p><em>Continuous probability distribution</em> – for continuous numerical variables we do not assign probability to specific numerical values, but rather to numerical intervals. We represent a continuous probability distribution using a “Probability Density Function” (PDF). The integral of a PDF over an interval gives the probability that the variable represented by that PDF lies within the specified interval.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-354"></span>
-<img src="bio304-book_files/figure-html/unnamed-chunk-354-1.png" alt="Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution with mean = 1060, standard deviation = 195, based on data  reported in the [2017 SAT annual report](https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf). The probability that a randomly chosen student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587." width="576" />
-<p class="caption">
-Figure 13.1: Figure 2. Distribution of total SAT scores for 2017 high school graduates. Assuming a normal distribution with mean = 1060, standard deviation = 195, based on data reported in the <a href="https://reports.collegeboard.org/pdf/2017-total-group-sat-suite-assessments-annual-report.pdf">2017 SAT annual report</a>. The probability that a randomly chosen student got a score better than 1255 is represented by the shaded area; P(Score &gt; 1255) = 0.1587.
-</p>
+<div id="central-limit-theorem" class="section level2">
+<h2><span class="header-section-number">18.4</span> Central limit theorem</h2>
+<p>Why is the normal distribution so ubiquitious? A key reason is the “Central Limit Theorem”</p>
+<p>The <strong>Central Limit Theorem (CLT)</strong> states the sum or mean of a large number of random measurements sampled from a population is approximately normally distributed, <em>regardless of the shape of the distribution from which they are drawn.</em></p>
+<p>Many biological traits can be thought of as being produced by the summation many small effects. Even if those effect have a non-normal distribution, the sum of their effects is approximately normal.</p>
+<div id="example-continuous-variation-from-discrete-loci" class="section level3">
+<h3><span class="header-section-number">18.4.1</span> Example: Continuous variation from discrete loci</h3>
+<p>Studies of the genetic basis of traits like height or weight, indicate that traits like these have a “multigenic” basis. That is, there are many genomic regions (loci) that each contribute a small amount to difference in height among individuals.</p>
+<p>For the sake of illustration let’s assume there are 200 loci scattered across the genome that affect height. And that each locus has an effect on size that is exponentially distributed with a mean of 0.8cm, and that an individuals total height is the sum of the effects at each of these individual loci.</p>
+<p>In the figure below, the first plot show what the distribution of effect sizes looks. This is quite clearly a non-normal distribution. The second plot show what the distribution of heights of 100 individuals generated using the additive model above would look like. This second plot is approximately normal, as predicted by the CLT.</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-421-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-</div>
-<div id="mutually-exclusive-events" class="section level2">
-<h2><span class="header-section-number">13.4</span> Mutually exclusive events</h2>
-<p><em>Mutually exclusive events</em> are events that can <em>not</em> both occur <em>simultaneously</em> in the same random trial.</p>
-<div id="addition-rule-mutually-exclusive-events" class="section level3">
-<h3><span class="header-section-number">13.4.1</span> Addition rule, mutually exclusive events</h3>
-<p>If A and B are mutually exclusive, then the probability of either event occuring is the sum of their individual probabilities:
-<span class="math display">\[
-P(A\ \text{or}\ B) = P(A) + P(B)
-\]</span></p>
-</div>
-</div>
-<div id="independence" class="section level2">
-<h2><span class="header-section-number">13.5</span> Independence</h2>
+<div id="visualizing-normal-distributions" class="section level2">
+<h2><span class="header-section-number">18.5</span> Visualizing normal distributions</h2>
 <ul>
-<li><p><em>Independence</em> – two events are independent if the occurence of one does not inform us about the probability that the second.</p></li>
-<li><p><em>Dependence</em> – any events that are not independent are considered to be <em>dependent</em>.</p></li>
+<li>Different normal distributions look alike when plotted on their own scales</li>
 </ul>
-<div id="multiplication-rule-independent-events" class="section level3">
-<h3><span class="header-section-number">13.5.1</span> Multiplication rule, independent events</h3>
-<p>The simple version of the multiplication rules states that if events A and B are independent than:
-<span class="math display">\[
-P(A\ \text{and}\ B) = P(A)P(B) 
-\]</span></p>
-</div>
-</div>
-<div id="general-addition-rule" class="section level2">
-<h2><span class="header-section-number">13.6</span> General addition rule</h2>
-<p>The general form of the addition rule states:
-<span class="math display">\[
-  P(A\ \text{or}\ B) = P(A) + P(B) - P(A\ \text{and}\ B)
-\]</span></p>
-<p>Graphically, this can be represented as:</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-355"></span>
-<img src="figures/fig-probability-addition-rule.png" alt="Graphical illustration of the general addition rule for probababilities." width="75%" />
-<p class="caption">
-Figure 13.2: Graphical illustration of the general addition rule for probababilities.
-</p>
-</div>
-</div>
-<div id="conditional-probability" class="section level2">
-<h2><span class="header-section-number">13.7</span> Conditional probability</h2>
-<p><em>Conditional probability</em> – is the probability that an event occurs given that a condition is met.</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-422-1.png" width="864" /></p>
 <ul>
-<li>Denoted: <span class="math inline">\(P(A|B)\)</span>. Read this as “the probability of A given B”or “the probability of A conditioned on B”.</li>
+<li>Must plot normals on a common scale to see the differences</li>
 </ul>
-<div id="example-conditional-probability" class="section level3">
-<h3><span class="header-section-number">13.7.1</span> Example: Conditional probability</h3>
-<p>Consider our urns and balls example, in which we make three draws (without replacement) from an urn filled with three white balls and two black balls.</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-423-1.png" width="864" /></p>
+</div>
+<div id="comparing-values-from-different-normal-distributions" class="section level2">
+<h2><span class="header-section-number">18.6</span> Comparing values from different normal distributions</h2>
+<p>Q: SAT scores are approximately normally distributed with a mean of 1060 and a standard deviation of 195. ACT scores are approximately normal with a mean of 20.9 and a standard deviation of 5.6. A college admissions officer wants to determine which of the two applicants scored better on their standardized test with respect to the other test takers: Malaika, who earned an 1350 on her SAT, or Jim, who scored a 28 on his ACT?</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-424-1.png" width="864" /></p>
+<p>A: Since the scores are measured on different scales we can not directly compare them, however we can measure the difference of each score in terms of units of standard deviation</p>
+<div id="standardized-or-z-scores" class="section level3">
+<h3><span class="header-section-number">18.6.1</span> Standardized or Z-scores</h3>
+<p>Differences from the mean, measured in units of standard deviation are called “standardized scores” or “Z-scores”</p>
 <ul>
-<li><p>The initial probability of drawing a black ball, P(B) = 2/5 = 0.4</p></li>
-<li><p>If the first draw was a white ball, the probability of drawing a black ball is now, P(B|1st ball was white) = 2/4 = 0.5</p></li>
+<li><p>The Z score of an observation is the number of standard deviations it falls above or below the mean.
+<span class="math display">\[
+Z_i = \frac{x_i - \mu}{\sigma}
+\]</span></p></li>
+<li><p>For our SAT/ACT example above:
+<span class="math display">\[
+\begin{align}
+Z_\text{Malaika} &amp;= \frac{1350 - 1060}{195} = 1.49\\
+\\
+Z_\text{Jim} &amp;= \frac{28 - 20.9}{5.6} = 1.27\\
+\end{align}
+\]</span>
+In this case, Malaika’s score is 1.49 standard deviation above the mean, while Jim’s is 1.27. Based on this, Malaika scored better than Jim.</p></li>
+</ul>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-425-1.png" width="576" /></p>
+</div>
+</div>
+<div id="standard-normal-distribution" class="section level2">
+<h2><span class="header-section-number">18.7</span> Standard normal distribution</h2>
+<ul>
+<li><p>If <span class="math inline">\(X \sim N(\mu,\sigma)\)</span> then the standardized distribution, <span class="math inline">\(Z_X \sim N(0,1)\)</span>. If <span class="math inline">\(X\)</span> is normally distributed, then the Z-scores based on <span class="math inline">\(X\)</span> have a mean of 0 and a standard deviation of 1.</p></li>
+<li><p><span class="math inline">\(N(0,1)\)</span> is known as the <strong>standard normal distribution</strong></p></li>
 </ul>
 </div>
-</div>
-<div id="general-multiplication-rule" class="section level2">
-<h2><span class="header-section-number">13.8</span> General multiplication rule</h2>
-<p>The general form of the multiplication rule is:
-<span class="math display">\[
-P(A\ \text{and}\ B) = P(A)P(B|A)
-\]</span></p>
-<div id="example-general-multiplication-rule" class="section level3">
-<h3><span class="header-section-number">13.8.1</span> Example: General multiplication rule</h3>
-<p>Consider our urns and balls example again. What is the probability that you draw, without replacement, three balls and they’re all white?</p>
+<div id="rule" class="section level2">
+<h2><span class="header-section-number">18.8</span> 88-95-99.7 Rule</h2>
+<p>If data are approximately normally distributed:</p>
 <ul>
-<li>The initial probability of drawing a white ball in the first draw is P(W) = 3/5</li>
-<li>The probability of drawing a white ball in the second draw, conditional on the first ball being white is P(W|1st White) = 1/2</li>
-<li>Therefore the P(1st White and 2nd White) = P(W)P(W|first White) = 3/10</li>
-<li>The probability of drawing a white ball in the third draw, conditional on the first two balls being white is P(W|1st White and 2nd White) = 1/3</li>
-<li>Therefore the P(1st White and 2nd White and 3rd White) = P(1st White and 2nd White)P(W|1st White and 2nd White) = (3/10)(1/3) = 1/10</li>
+<li>~68% of observations lie within 1 SD of the mean</li>
+<li>~95% of observations lie within 2 SD of the mean</li>
+<li>~99.7% of observations lie within 3 SD of the mean</li>
 </ul>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-426-1.png" width="60%" style="display: block; margin: auto;" /></p>
 </div>
+<div id="percentiles" class="section level2">
+<h2><span class="header-section-number">18.9</span> Percentiles</h2>
+<ul>
+<li><p>The <em>percentile</em> is the percentage of observations that fall below a given point, <span class="math inline">\(q\)</span></p></li>
+<li><p>In R, for a normal distribution the fraction of observations below a given point (the probability that a random observation drawn from the distribution is less than the given value) can be calculatedusing the <code>pnorm(q, mu, sigma)</code> function:</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb418-1" data-line-number="1"><span class="co"># Malaika&#39;s z-score was 1.49. What percentile was she in?</span></a>
+<a class="sourceLine" id="cb418-2" data-line-number="2"><span class="kw">pnorm</span>(<span class="fl">1.49</span>) </a>
+<a class="sourceLine" id="cb418-3" data-line-number="3"><span class="co">#&gt; [1] 0.9318879</span></a></code></pre></div>
+<p>Therefore, Malaika is approximately at the 93-percentile. Note that we didn’t have to include the mean and standard deviation in the call to pnorm because we’re dealing with standardized scores, and the defaults for <code>pnorm</code> are <code>mean = 0</code> and <code>sd = 1</code>. A similar calculation would show that Jim’s percentile is 89.7957685.</p></li>
+</ul>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-428-1.png" width="576" /></p>
+<p>Note that if we want the fraction of the data to the right of a value <span class="math inline">\(q\)</span>, we can subtract the value from one (<code>1 - pnorm(1.49)</code>) or set the <code>lower.tail = FALSE</code> argument in in <code>pnorm</code>.</p>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb419-1" data-line-number="1"><span class="kw">pnorm</span>(<span class="fl">1.49</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>) <span class="co"># same as (1 - pnorm(1.49))</span></a>
+<a class="sourceLine" id="cb419-2" data-line-number="2"><span class="co">#&gt; [1] 0.06811212</span></a></code></pre></div>
 </div>
-<div id="probability-trees" class="section level2">
-<h2><span class="header-section-number">13.9</span> Probability trees</h2>
-<p>Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials. A probability tree for the urns and balls example follows below.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-356"></span>
-<img src="figures/fig-urns-probability-tree.png" alt="Probability tree for the urns and balls example" width="200px" />
-<p class="caption">
-Figure 13.3: Probability tree for the urns and balls example
-</p>
+<div id="cutoff-points" class="section level2">
+<h2><span class="header-section-number">18.10</span> Cutoff points</h2>
+<ul>
+<li><p>When we use the <code>pnorm()</code> function we specify a point, <span class="math inline">\(q\)</span>, and it gives us the corresponding fraction of values, <span class="math inline">\(p\)</span>, that fall below that point in a normal distibution</p></li>
+<li><p>If instead we want to specify a fraction <span class="math inline">\(p\)</span>, and get the corresponding point, <span class="math inline">\(q\)</span>, on the normal distribution, we use the <code>qnorm(p, mu, sigma)</code> function.</p></li>
+</ul>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb420-1" data-line-number="1"><span class="co"># To get the 75-th percentile (3rd quartile) of SAT scores </span></a>
+<a class="sourceLine" id="cb420-2" data-line-number="2"><span class="co"># based on the parameters provided previously</span></a>
+<a class="sourceLine" id="cb420-3" data-line-number="3"><span class="kw">qnorm</span>(<span class="fl">0.75</span>, <span class="dv">1060</span>, <span class="dv">195</span>)</a>
+<a class="sourceLine" id="cb420-4" data-line-number="4"><span class="co">#&gt; [1] 1191.526</span></a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-431-1.png" width="60%" style="display: block; margin: auto;" /></p>
 </div>
-<p>The nodes in a probability tree represent the possible outcomes of each random trial. A path from the root node to one of the tips of the probability tree represents a sequence of outcomes resulting from the successive random trials. Along the edges of the probability tree we write the probability of each outcome for each trial. The probability of a specific sequence of outcomes is calculated by multiplying the probabilities along the path that represents that sequence.</p>
-<p>To solve the problem we looked at previously – the probability of getting all white balls in three draws from the urn without replacement – we find all the sequences that yield this outcome. In this case there is only one sequence that results in three white balls. The product of the probabilities along the path representing this sequence is <span class="math inline">\(3/5 \times 2/4 \times 1/3 = 1/10\)</span>.</p>
-<p>Another way to think about a probability tree is that values along the branches at a given point in the tree represent the conditional probabilities of the next possible outcomes, given all the previous outcomes.</p>
+<div id="assessing-normality" class="section level2">
+<h2><span class="header-section-number">18.11</span> Assessing normality</h2>
+<p>There are a number of graphical tools we have at our disposal to assess approximate normality based on observations of a variable of interest. There are also some formal tests we can apply. Here we focus on the graphical tools.</p>
+<div id="comparing-histograms-to-theoretical-normals" class="section level3">
+<h3><span class="header-section-number">18.11.1</span> Comparing histograms to theoretical normals</h3>
+<p>One of the simplest approaches to assessing approximate normality for a variable of interest is to plot a histogram of the observed variable, and then to overlay on that histogram the probability density function you would expect for a normal distribution with the same mean and standard deviation.</p>
+<p>In the example below I show a histogram of heights from a sample of 100 men, overlain with the PDF of a normal distribution with the mean and standard deviation as estimated from the sample.</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-433-1.png" width="576" /></p>
+<p>The histogram matches fairly well to the theoretical normal, but histograms are rather course visualizations when sample sizes are modst.</p>
 </div>
-<div id="law-of-total-probability" class="section level2">
-<h2><span class="header-section-number">13.10</span> Law of total probability</h2>
-<p>The law of total probability states:
-<span class="math display">\[
-P(A) = \sum_{\mbox{all values of B}} P(B)P(A|B)
-\]</span></p>
+<div id="normal-probability-plot" class="section level3">
+<h3><span class="header-section-number">18.11.2</span> Normal probability plot</h3>
+<p>A second graphical tool for assessing normality is a “normal probability plot”. A normal probability plot is a type of scatter plot for which the x-axis represents theoretical quantiles of a normal distribution, and the y-axis represents the observed quantiles of our observed data. If the observed data perfectly matched the normal distribution with the same mean and standard deviation, then all the points should fall on a straight line. Deviations from normality are represented by runs of points off the line.</p>
+<p>The ggplot functions <code>geom_qq()</code> and <code>gome_qq_line()</code> take care of the necessary calculations required to generate a normal probability plot. Here is the normal probability plot for the male height data:</p>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-434-1.png" width="576" /></p>
+<p>This plot suggests that the male heights are approximately normally distributed, though there are maybe a few more very short men and a few less very tall men in our sample then we would expect under perfect normality.</p>
+</div>
+<div id="comparing-the-empirical-cdf-to-the-theoretical-cdf" class="section level3">
+<h3><span class="header-section-number">18.11.3</span> Comparing the empirical CDF to the theoretical CDF</h3>
+<p>A third visual approach is to estimate a cumulative distribution function (CDF) for the variable of interest from the data and compare this to the theoertical cumulative distribution function you’d expected for a normal distribution (as provided by <code>pnorm()</code>). When you estimate a cumulative distribution function from data, this is a called an “empirical CDF”.</p>
+<p>The function <code>ggplot::stat_ecdf</code> estimates the empirical CDF for us and plots it, we can combine this with <code>stat_function()</code> to plot the theoertical CDF using pnorm, as shown below for the height data.</p>
+<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb421-1" data-line-number="1">male.heights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb421-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> heights)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb421-3" data-line-number="3"><span class="st">  </span><span class="kw">stat_ecdf</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb421-4" data-line-number="4"><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>pnorm, </a>
+<a class="sourceLine" id="cb421-5" data-line-number="5">                <span class="dt">args=</span><span class="kw">list</span>(<span class="dt">mean =</span> mean.height, <span class="dt">sd =</span> sd.height),</a>
+<a class="sourceLine" id="cb421-6" data-line-number="6">                <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>, <span class="dt">n =</span> <span class="dv">200</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb421-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height, h&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Prob(height &lt; h)&quot;</span>,</a>
+<a class="sourceLine" id="cb421-8" data-line-number="8">       <span class="dt">title =</span> <span class="st">&quot;Emprirical (black) and Theoretical (red) CDFs</span><span class="ch">\n</span><span class="st"> for a normal distribution estiamted from observed male height data&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb421-9" data-line-number="9"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) </a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-435-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Here the match between the empirical CDF and the theoretical CDF is pretty good, again suggesting that the data is approximately normal.</p>
 
 </div>
 </div>
+</div>
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="joint-frequency-distributions-and-measures-of-association.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="introduction-to-sampling-distributions-part-i.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction-to-confidence-intervals.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

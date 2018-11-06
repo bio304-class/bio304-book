@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-02">
+<meta name="date" content="2018-11-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="introduction-to-hypothesis-testing.html">
-
+<link rel="next" href="normal-distributions.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -469,6 +469,31 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
 </ul></li>
+<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a><ul>
+<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a><ul>
+<li class="chapter" data-level="18.1.1" data-path="normal-distributions.html"><a href="normal-distributions.html#notation"><i class="fa fa-check"></i><b>18.1.1</b> Notation</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="normal-distributions.html"><a href="normal-distributions.html#dnorm-calculates-the-normal-pdf"><i class="fa fa-check"></i><b>18.2.1</b> <code>dnorm()</code> calculates the normal pdf</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="normal-distributions.html"><a href="normal-distributions.html#approximately-normal-distributions-are-very-common"><i class="fa fa-check"></i><b>18.3</b> Approximately normal distributions are very common</a></li>
+<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a><ul>
+<li class="chapter" data-level="18.4.1" data-path="normal-distributions.html"><a href="normal-distributions.html#example-continuous-variation-from-discrete-loci"><i class="fa fa-check"></i><b>18.4.1</b> Example: Continuous variation from discrete loci</a></li>
+</ul></li>
+<li class="chapter" data-level="18.5" data-path="normal-distributions.html"><a href="normal-distributions.html#visualizing-normal-distributions"><i class="fa fa-check"></i><b>18.5</b> Visualizing normal distributions</a></li>
+<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a><ul>
+<li class="chapter" data-level="18.6.1" data-path="normal-distributions.html"><a href="normal-distributions.html#standardized-or-z-scores"><i class="fa fa-check"></i><b>18.6.1</b> Standardized or Z-scores</a></li>
+</ul></li>
+<li class="chapter" data-level="18.7" data-path="normal-distributions.html"><a href="normal-distributions.html#standard-normal-distribution"><i class="fa fa-check"></i><b>18.7</b> Standard normal distribution</a></li>
+<li class="chapter" data-level="18.8" data-path="normal-distributions.html"><a href="normal-distributions.html#rule"><i class="fa fa-check"></i><b>18.8</b> 88-95-99.7 Rule</a></li>
+<li class="chapter" data-level="18.9" data-path="normal-distributions.html"><a href="normal-distributions.html#percentiles"><i class="fa fa-check"></i><b>18.9</b> Percentiles</a></li>
+<li class="chapter" data-level="18.10" data-path="normal-distributions.html"><a href="normal-distributions.html#cutoff-points"><i class="fa fa-check"></i><b>18.10</b> Cutoff points</a></li>
+<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a><ul>
+<li class="chapter" data-level="18.11.1" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-histograms-to-theoretical-normals"><i class="fa fa-check"></i><b>18.11.1</b> Comparing histograms to theoretical normals</a></li>
+<li class="chapter" data-level="18.11.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-probability-plot"><i class="fa fa-check"></i><b>18.11.2</b> Normal probability plot</a></li>
+<li class="chapter" data-level="18.11.3" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-the-empirical-cdf-to-the-theoretical-cdf"><i class="fa fa-check"></i><b>18.11.3</b> Comparing the empirical CDF to the theoretical CDF</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -620,19 +645,13 @@ CI_\overline{x} \pm \text{critical value} \times SE_\overline{x}
 
 </div>
 </div>
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="introduction-to-hypothesis-testing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="introduction-to-hypothesis-testing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="normal-distributions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
