@@ -1,0 +1,332 @@
+
+# Normal distribution
+
+This exposition is based on slides and text from Diez et al. 2015, OpenIntro Statistics (3rd Edition).
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+library(tidyverse)
+library(magrittr)
+library(cowplot)
+```
+
+
+## Basic about normal distributions
+
+```{r,echo=FALSE, fig.width = 6, fig.height = 3.5}
+npts <- 500
+std.norm <- data_frame(x = seq(-4, 4, length.out = npts),
+                       density = dnorm(x))
+
+std.norm.plot <- 
+  ggplot(std.norm, aes(x, density)) +
+  geom_line() + 
+  scale_x_continuous(breaks=c(-3, -2, -1, 0, 1, 2, 3),
+                     labels=c("μ-3σ", "μ-2σ", "μ-1σ", "μ", "μ+1σ", "μ+2σ",  "μ+3σ"))+
+  labs(y = "Density") +
+  theme_classic() +
+  theme(axis.title.x=element_blank()) 
+
+std.norm.plot
+```
+
+
+- Unimodal 
+- Symmetric
+- Described by two parameters -- $\mu$ (mean) and $\sigma$ (standard deviation)
+  
+    - If a variable $X$ is apprximately normally distributed with mean, $\mu$, and standad deviation, $\sigma$, we write: $X \sim N(\mu,\sigma)$
+
+
+## Normal distribution, probability density function
+
+The probability density function for a normal distribution $N(\mu,\sigma)$ is described by the following equation:
+
+\[
+f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3.5}
+x.pt <- -0.5
+
+std.norm.plot +
+  geom_segment(x = x.pt, y = -1, xend = x.pt, yend = dnorm(x.pt),
+               linetype = "dashed") + 
+  geom_point(x = x.pt, y = dnorm(x.pt), color='red') +
+  geom_text(x = x.pt-0.15, y = 0, label = "x") +
+  geom_text(x = x.pt-0.25, y = dnorm(x.pt), label = "f(x)") +
+  theme_classic() +
+  theme(axis.title.x=element_blank()) 
+  
+```
+
+- In R, the function `dnorm(x, mu, sigma)` calculates the probability density of $N(\mu,\sigma)$ at the point $x$
+
+
+## Visualizing normal distributions 
+
+- Different normal distributions look alike when plotted on their own scales
+
+```{r, echo=FALSE, fig.width = 9, fig.height = 3.5}
+norm.19.4 <- data_frame(x = seq(4, 34, length.out = npts),
+                       density = dnorm(x, 19, 4))
+
+std.norm.plot.labels <- 
+  ggplot(std.norm, aes(x, density)) +
+  geom_line() + 
+  labs(y = "Density", title = "N(0,1)") +
+  theme_classic()
+
+norm.19.4.plot <- 
+  ggplot(norm.19.4, aes(x, density)) +
+  geom_line() + 
+  labs(y = "Density", title = "N(19,4)") + 
+  theme_classic()
+
+plot_grid(std.norm.plot.labels, norm.19.4.plot, labels="AUTO")
+```
+
+- Must plot normals on a common scale to see the differences
+
+```{r, echo=FALSE, fig.width = 9, fig.height = 3.5}
+combined.norms <- 
+  bind_rows(mutate(std.norm, distn="N(0,1)"),
+            mutate(norm.19.4, distn="N(19,4)"))
+
+ggplot(combined.norms, aes(x, density, color=distn)) +
+  geom_line() + 
+  labs(y = "Density", title = "N(0,1) and N(19,4) in common scale") + 
+  theme_classic()
+```
+
+
+## Comparing values from different normal distributions
+
+
+Q: SAT scores are approximately normally distributed with a mean of 1060 and a standard deviation of 195. ACT  scores are approximately normal with a mean of 20.9 and a standard deviation of 5.6. A college admissions officer wants to determine which of the two applicants scored better on their standardized test with respect to the other test takers: Malaika, who earned an 1350 on her SAT, or Jim, who scored a 28 on his ACT?
+
+```{r, echo=FALSE, fig.width = 9, fig.height = 3.5}
+SAT.norm <- data_frame(x = seq(480, 1600, length.out = npts),
+                       density = dnorm(x, 1060, 195))
+
+ACT.norm <- data_frame(x = seq(3, 39, length.out = npts),
+                       density = dnorm(x, 20.9, 5.6))
+
+SAT.plot <-
+  SAT.norm %>%
+  ggplot(aes(x, density)) +
+  geom_line() + 
+  geom_vline(xintercept = 1350, color='red', linetype='dashed') + 
+  annotate("text", x = 1400, y = dnorm(1060, 1060, 195), color='red', label='Malaika') +
+  labs(x = "Score", y = "Density",  title = "Distribution of SAT scores") +
+  theme_classic() + 
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        plot.title = element_text(size = 10, hjust=0.5))  
+
+ACT.plot <-
+  ACT.norm %>%
+  ggplot(aes(x, density)) +
+  geom_line() + 
+  geom_vline(xintercept = 28, color='blue', linetype='dashed') + 
+  annotate("text", x = 29, y = dnorm(20.9, 20.9, 5.6), color='blue', label='Jim') +   
+  labs(x = "Score", title = "Distribution of ACT scores") +
+  theme_classic() + 
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        plot.title = element_text(size = 10, hjust=0.5))
+
+plot_grid(SAT.plot, ACT.plot, labels = "AUTO")
+```
+
+
+A: Since the scores are measured on different scales we can not directly compare them, however we can measure the difference of each score in terms of units of standard deviation
+
+### Standardized or Z-scores
+
+Differences from the mean, measured in units of standard deviation are called "standardized scores" or "Z-scores"
+
+- The Z score of an observation is the number of standard deviations it falls above or below the mean.
+\[
+Z_i = \frac{x_i - \mu}{\sigma}
+\]
+
+
+- For our SAT/ACT example above:
+\[
+\begin{align}
+Z_\text{Malaika} &= \frac{1350 - 1060}{195} = 1.49\\
+\\
+Z_\text{Jim} &= \frac{28 - 20.9}{5.6} = 1.27\\
+\end{align}
+\]
+In this case, Malaika's score is 1.49 standard deviation above the mean, while Jim's is 1.27. Based on this, Malaika scored better than Jim.
+
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3.5}
+std.norm.plot.labels +
+  geom_vline(xintercept = 1.49, color="red", linetype="dashed") + 
+  annotate("text", x = 1.75, y = 0.4, color='red', label='Malaika') +
+  geom_vline(xintercept = 1.27, color="blue", linetype="dashed") + 
+  annotate("text", x = 1.1, y = 0.4, color='blue', label='Jim') +
+  labs(x = "Z-scores", title="Comparison of Malaika's and Jim's\n standardized college entrance exam scores")
+```
+
+
+## Standard normal distribution
+
+- If $X \sim N(\mu,\sigma)$ then the standardized distribution, $Z_X \sim N(0,1)$. If $X$ is normally distributed, then the Z-scores based on $X$ have a mean of 0 and a standard deviation of 1. 
+
+- $N(0,1)$ is known as the **standard normal distribution**
+
+
+## Percentiles
+
+- The *percentile* is the percentage of observations that fall below a given point, $q$
+
+- In R, for a normal distribution the fraction of observations below a given point (the probability that a random observation drawn from the distribution is less than the given value) can be calculatedusing the `pnorm(q, mu, sigma)` function:
+
+    ```{r}
+# Malaika's z-score was 1.49. What percentile was she in?
+pnorm(1.49) 
+```
+Therefore, Malaika is approximately at the 93-percentile. Note that we didn't have to include the mean and standard deviation in the call to pnorm because we're dealing with standardized scores, and the defaults for `pnorm` are `mean = 0` and `sd = 1`.  A similar calculation would show that Jim's percentile is `r pnorm(1.27) * 100`. 
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3.5}
+std.norm.plot.labels +
+  geom_vline(xintercept = 1.49, color="red", linetype="dashed") + 
+  annotate("text", label="Malaika's z-score: 1.49",
+           x = 1.49 + 0.1, y = 0.4, color='red', hjust=0) +
+  annotate("text", x = 0, y = 0.1, color='black', label='pnorm(1.49) = 0.93',size=5) +
+  geom_area(data = filter(std.norm, x < 1.49), alpha=0.25) + 
+  labs(x = "Z-scores", title="Malaika scored higher than ~93%\nof other exam takers on the SAT")
+```
+
+
+## Cutoff points
+
+- When we use the `pnorm()` function we give it a given point, $q$, and it gives us the corresponding fraction of values, $p$, that fall below that point in a normal distibution
+
+- If instead we want to specify a fraction $p$, and get the corresponding point, $q$, on the normal distribution, we use the `qnorm(p, mu, sigma)` function.
+
+```{r}
+# To get the 75-th percentile (3rd quartile) of SAT scores 
+# based on the parameters provided previously
+qnorm(0.75, 1060, 195)
+```
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3.5, fig.align = "center", out.width="60%"}
+perc.75 <- qnorm(0.75, 1060, 195)
+
+SAT.norm %>%
+  ggplot(aes(x, density)) +
+  geom_line() + 
+  geom_vline(xintercept = perc.75, linetype="dashed") +
+  geom_area(data = filter(SAT.norm, x < perc.75), alpha=0.25) +
+  annotate("text", x = 1060, y = 0.001, color='black', label='p = 0.75',size=5) +
+  annotate("point", x = perc.75, y = 0, color='red', size=4) +
+  annotate("text", x = 1300, hjust=0, y = 0.0012, color='red', label='qnorm(0.75, 1060, 195)', size=4) +
+  annotate("segment", 
+           x = 1295, y = 0.00115, 
+           xend = perc.75 + 5, yend = 0 + 0.00005,
+           color='red', arrow = arrow(type="closed"), size=1) +
+  labs(x = "Score", y = "Density",  title = "Distribution of SAT scores") +
+  theme_classic() + 
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        plot.title = element_text(size = 10, hjust=0.5))  
+  
+```
+
+
+## 88-95-99.7 Rule
+
+If data are approximately normally distributed:
+
+- ~68% of observations lie within 1 SD of the mean
+- ~95% of observations lie within 2 SD of the mean
+- ~99.7% of observations lie within 3 SD of the mean
+
+
+```{r, echo=FALSE, fig.width = 6, fig.height = 3, fig.align = "center", out.width="60%"}
+
+std.norm.plot + 
+  geom_area(alpha=0.5) + 
+  geom_area(data=filter(std.norm, abs(x) < 2), fill="gray") + 
+  geom_area(data=filter(std.norm, abs(x) < 1), fill="oldlace") +
+  annotate("segment", x = -1, xend = 1, 
+           y = 0.22, yend = 0.22, arrow=arrow(ends="both")) + 
+  annotate("segment", x = -2, xend = 2, 
+           y = 0.15, yend = 0.15, arrow=arrow(ends="both")) +
+  annotate("segment", x = -3, xend = 3, 
+           y = 0.08, yend = 0.08, arrow=arrow(ends="both")) +
+  annotate("text", x = 0, y = 0.23, label="68%") + 
+  annotate("text", x = 0, y = 0.16, label="95%") + 
+  annotate("text", x = 0, y = 0.09, label="99.7%")
+```
+
+
+## Assessing normality
+
+### Normal probability plot
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+male.heights <- read_tsv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/male-heights.txt")
+nba <- read_tsv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/nba-heights.txt")
+```
+
+```{r,echo=FALSE}
+mean.height <- mean(male.heights$heights)
+sd.height <- sd(male.heights$heights)
+
+height.histo <- 
+  male.heights %>%
+  ggplot() + 
+  geom_histogram(aes(x = heights, y = ..density..),
+                 bins=9, alpha=0.5) +
+  stat_function(fun = function(x){dnorm(x, mean.height, sd.height)},
+                n  = 200) + 
+  labs(x = "Height (in)",
+       y = "Density")   
+  
+qq.height <-
+  male.heights %>%
+  ggplot(aes(sample = heights)) + 
+  geom_qq(alpha=0.5, color='steelblue') + 
+  geom_qq_line() + 
+  labs(x = "Theoretical quantile",
+       y = "Height (in)")
+
+plot_grid(height.histo, qq.height)
+```
+
+
+
+
+```{r,echo=FALSE}
+nba.mean.height <- mean(nba$h.in)
+nba.sd.height <- sd(nba$h.in)
+
+nba.height.histo <- 
+  nba %>%
+  ggplot() + 
+  geom_histogram(aes(x = h.in, y = ..density..),
+                 breaks=seq(68,92,2), alpha=0.5) +
+  stat_function(fun = function(x){dnorm(x, nba.mean.height, nba.sd.height)},
+                n  = 200) +
+  labs(x = "Height (in)",
+       y = "Density")  
+  
+nba.qq.height <-
+  nba %>%
+  ggplot(aes(sample = h.in)) + 
+  geom_qq(alpha=0.5, color='steelblue') + 
+  geom_qq_line() + 
+  labs(x = "Theoretical quantile",
+       y = "Height (in)")
+
+plot_grid(nba.height.histo, nba.qq.height)
+```
