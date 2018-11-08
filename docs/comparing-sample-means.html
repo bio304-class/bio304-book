@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="data-wrangling-part-ii.html">
-<link rel="next" href="frequency-distributions-and-descriptive-statistics.html">
+<link rel="prev" href="normal-distributions.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -536,495 +536,376 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="functions-and-control-flow-statements" class="section level1">
-<h1><span class="header-section-number">Chapter 10</span> Functions and control flow statements</h1>
-<div id="writing-your-own-functions" class="section level2">
-<h2><span class="header-section-number">10.1</span> Writing your own functions</h2>
-<p>So far we’ve been using a variety of built in functions in R. However the real power of a programming language is the ability to write your own functions. Functions are a mechanism for organizing and abstracting a set of related computations. We usually write functions to represent sets of computations that we apply frequently, or to represent some conceptually coherent set of manipulations to data.</p>
-<p>The general form of an R function is as follows:</p>
-<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1">funcname &lt;-<span class="st"> </span><span class="cf">function</span>(arg1, arg2) {</a>
-<a class="sourceLine" id="cb317-2" data-line-number="2"> <span class="co"># one or more expressions that operate on the fxn arguments</span></a>
-<a class="sourceLine" id="cb317-3" data-line-number="3"> <span class="co"># last expression is the object returned</span></a>
-<a class="sourceLine" id="cb317-4" data-line-number="4"> <span class="co"># or you can explicitly return an object</span></a>
-<a class="sourceLine" id="cb317-5" data-line-number="5">}</a></code></pre></div>
-<p>To make this concrete, here’s an example where we define a function to calculate the area of a circle:</p>
-<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb318-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r){</a>
-<a class="sourceLine" id="cb318-2" data-line-number="2">  <span class="kw">return</span>(pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb318-3" data-line-number="3">}</a></code></pre></div>
-<p>Since R returns the value of the last expression in the function, the <code>return</code> call is optional and we could have simply written:</p>
-<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r){</a>
-<a class="sourceLine" id="cb319-2" data-line-number="2">  pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb319-3" data-line-number="3">}</a></code></pre></div>
-<p>Very short and concise functions are often written as a single line. In practice I’d probably write the above function as:</p>
-<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb320-1" data-line-number="1">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r) {pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>}</a></code></pre></div>
-<p>The <code>area.of.circle</code> function takes one argument, <code>r</code>, and calculates the area of a circle with radius r. Having defined the function we can immediately put it to use:</p>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" data-line-number="1"><span class="kw">area.of.circle</span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb321-2" data-line-number="2"><span class="co">#&gt; [1] 28.27433</span></a>
-<a class="sourceLine" id="cb321-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb321-4" data-line-number="4">radius &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb321-5" data-line-number="5"><span class="kw">area.of.circle</span>(radius)</a>
-<a class="sourceLine" id="cb321-6" data-line-number="6"><span class="co">#&gt; [1] 50.26548</span></a></code></pre></div>
-<p>If you type a function name without parentheses R shows you the
-function’s definition. This works for built-in functions as well
-(thought sometimes these functions are defined in C code in which case R
-will tell you that the function is a <code>.Primitive</code>).</p>
-<div id="function-arguments" class="section level3">
-<h3><span class="header-section-number">10.1.1</span> Function arguments</h3>
-<p>Function arguments can specify the data that a function operates on or parameters that the function uses. Function arguments can be either required or optional. In the case of optional arguments, a default value is assigned if the argument is not given.</p>
-<p>Take for example the <code>log</code> function. If you examine the help file for the <code>log</code> function (type <code>?log</code> now) you’ll see that it takes two arguments, refered to as <code>x</code> and <code>base</code>. The
-argument <code>x</code> represents the numeric vector you pass to the function and is a required argument (see what happens when you type <code>log()</code> without giving an argument). The argument <code>base</code> is optional. By default the value of <code>base</code> is <span class="math inline">\(e = 2.71828\ldots\)</span>. Therefore by default the <code>log</code> function returns natural logarithms. If you want logarithms to a different base you can change the <code>base</code> argument as in the following examples:</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb322-1" data-line-number="1"><span class="kw">log</span>(<span class="dv">2</span>) <span class="co"># log of 2, base e</span></a>
-<a class="sourceLine" id="cb322-2" data-line-number="2"><span class="co">#&gt; [1] 0.6931472</span></a>
-<a class="sourceLine" id="cb322-3" data-line-number="3"><span class="kw">log</span>(<span class="dv">2</span>,<span class="dv">2</span>) <span class="co"># log of 2, base 2</span></a>
-<a class="sourceLine" id="cb322-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></a>
-<a class="sourceLine" id="cb322-5" data-line-number="5"><span class="kw">log</span>(<span class="dv">2</span>, <span class="dv">4</span>) <span class="co"># log of 2, base 4</span></a>
-<a class="sourceLine" id="cb322-6" data-line-number="6"><span class="co">#&gt; [1] 0.5</span></a></code></pre></div>
-<p>Because base 2 and base 10 logarithms are fairly commonly used, there are convenient aliases for calling <code>log</code> with these bases.</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1"><span class="kw">log2</span>(<span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb323-2" data-line-number="2"><span class="co">#&gt; [1] 3</span></a>
-<a class="sourceLine" id="cb323-3" data-line-number="3"><span class="kw">log10</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb323-4" data-line-number="4"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
+<div id="comparing-sample-means" class="section level1">
+<h1><span class="header-section-number">Chapter 19</span> Comparing sample means</h1>
+<div id="hypothesis-test-for-the-mean-using-the-t-distribution" class="section level2">
+<h2><span class="header-section-number">19.1</span> Hypothesis test for the mean using the t-distribution</h2>
+<p>We consider three different situations for hypothesis tests regarding means.</p>
 </div>
-<div id="writing-functions-with-optional-arguments" class="section level3">
-<h3><span class="header-section-number">10.1.2</span> Writing functions with optional arguments</h3>
-<p>To write a function that has an optional argument, you can simply specify the optional argument and its default value in the function definition as so:</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1"><span class="co"># a function to substitute missing values in a vector</span></a>
-<a class="sourceLine" id="cb324-2" data-line-number="2">sub.missing &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">sub.value =</span> <span class="dv">-99</span>){</a>
-<a class="sourceLine" id="cb324-3" data-line-number="3">  x[<span class="kw">is.na</span>(x)] &lt;-<span class="st"> </span>sub.value</a>
-<a class="sourceLine" id="cb324-4" data-line-number="4">  <span class="kw">return</span>(x)</a>
-<a class="sourceLine" id="cb324-5" data-line-number="5">}</a></code></pre></div>
-<p>You can then use this function as so:</p>
-<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb325-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb325-2" data-line-number="2"><span class="kw">sub.missing</span>(m, <span class="dv">-999</span>)  <span class="co"># explicitly define sub.value</span></a>
-<a class="sourceLine" id="cb325-3" data-line-number="3"><span class="co">#&gt; [1]    1    2 -999    4</span></a>
-<a class="sourceLine" id="cb325-4" data-line-number="4"><span class="kw">sub.missing</span>(m, <span class="dt">sub.value =</span> <span class="dv">-333</span>) <span class="co"># more explicit syntax</span></a>
-<a class="sourceLine" id="cb325-5" data-line-number="5"><span class="co">#&gt; [1]    1    2 -333    4</span></a>
-<a class="sourceLine" id="cb325-6" data-line-number="6"><span class="kw">sub.missing</span>(m)   <span class="co"># use default sub.value</span></a>
-<a class="sourceLine" id="cb325-7" data-line-number="7"><span class="co">#&gt; [1]   1   2 -99   4</span></a>
-<a class="sourceLine" id="cb325-8" data-line-number="8">m  <span class="co"># notice that m wasn&#39;t modified within the function</span></a>
-<a class="sourceLine" id="cb325-9" data-line-number="9"><span class="co">#&gt; [1]  1  2 NA  4</span></a></code></pre></div>
-<p>Notice that when we called <code>sub.missing</code> with our vector <code>m</code>, the vector did <em>not</em> get modified in the function body. Rather a new vector, <code>x</code> was created within the function and returned. However, if you did the missing value subsitute outside of a function call, then the vector would be modified:</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb326-1" data-line-number="1">n &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb326-2" data-line-number="2">n[<span class="kw">is.na</span>(n)] &lt;-<span class="st"> </span><span class="dv">-99</span></a>
-<a class="sourceLine" id="cb326-3" data-line-number="3">n</a>
-<a class="sourceLine" id="cb326-4" data-line-number="4"><span class="co">#&gt; [1]   1   2 -99   4</span></a></code></pre></div>
-</div>
-<div id="putting-r-functions-in-scripts" class="section level3">
-<h3><span class="header-section-number">10.1.3</span> Putting R functions in Scripts</h3>
-<p>When you define a function at the interactive prompt and then close the interpreter your function definition will be lost. The simple way around this is to define your R functions in a script that you can than access at any time.</p>
-<p>In RStudio choose <code>File &gt; New File &gt; R Script</code>. This will bring up a blank editor window. Type your function(s) into the editor. Everything in this file will be interpretted as R code, so you should not use the code block notation that is used in Markdown notebooks. Save the source file in your R working directory with a name like
-<code>myfxns.R</code>.</p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb327-1" data-line-number="1"><span class="co"># functions defined in myfxns.R</span></a>
-<a class="sourceLine" id="cb327-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb327-3" data-line-number="3">area.of.circle &lt;-<span class="st"> </span><span class="cf">function</span>(r) {pi <span class="op">*</span><span class="st"> </span>r<span class="op">^</span><span class="dv">2</span>}</a>
-<a class="sourceLine" id="cb327-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb327-5" data-line-number="5">area.of.rectangle &lt;-<span class="st"> </span><span class="cf">function</span>(l, w) {l <span class="op">*</span><span class="st"> </span>w}</a>
-<a class="sourceLine" id="cb327-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb327-7" data-line-number="7">area.of.triangle &lt;-<span class="st"> </span><span class="cf">function</span>(b, h) {<span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>b <span class="op">*</span><span class="st"> </span>h }</a></code></pre></div>
-<p>Once your functions are in a script file you can make them accesible by using the <code>source</code> function, which reads the named file as input and evaluates any definitions or statements in the input file (See also the <code>Source</code> button in the R Studio GUI):</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">source</span>(<span class="st">&quot;myfxns.R&quot;</span>)</a></code></pre></div>
-<p>Having sourced the file you can now use your functions like so:</p>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb329-1" data-line-number="1">radius &lt;-<span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb329-2" data-line-number="2">len &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb329-3" data-line-number="3">width &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb329-4" data-line-number="4">base &lt;-<span class="st"> </span><span class="dv">6</span></a>
-<a class="sourceLine" id="cb329-5" data-line-number="5">height &lt;-<span class="st"> </span><span class="dv">7</span></a>
-<a class="sourceLine" id="cb329-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb329-7" data-line-number="7"><span class="kw">area.of.circle</span>(radius)</a>
-<a class="sourceLine" id="cb329-8" data-line-number="8"><span class="co">#&gt; [1] 28.27433</span></a>
-<a class="sourceLine" id="cb329-9" data-line-number="9"><span class="kw">area.of.rectangle</span>(len, width)</a>
-<a class="sourceLine" id="cb329-10" data-line-number="10"><span class="co">#&gt; [1] 20</span></a>
-<a class="sourceLine" id="cb329-11" data-line-number="11"><span class="kw">area.of.triangle</span>(base, height)</a>
-<a class="sourceLine" id="cb329-12" data-line-number="12"><span class="co">#&gt; [1] 21</span></a></code></pre></div>
-<p>Note that if you change the source file, such as correcting a mistake or adding a new function, you need to call the <code>source</code> function again to make those changes available.</p>
-</div>
-</div>
-<div id="control-flow-statements" class="section level2">
-<h2><span class="header-section-number">10.2</span> Control flow statements</h2>
-<p>Control flow statements control the order of execution of different pieces of code. They can be used to do things like make sure code is only run when certain conditions are met, to iterate through data structures, to repeat something until a specified event happens, etc. Control flow statements are frequently used when writing functions or carrying out complex data transformation.</p>
-<div id="if-and-if-else-statements" class="section level3">
-<h3><span class="header-section-number">10.2.1</span> <code>if</code> and <code>if-else</code> statements</h3>
-<p><code>if</code> and <code>if-else</code> blocks allow you to structure the flow of execution so that certain expressions are executed only if particular conditions are met.</p>
-<p>The general form of an <code>if</code> expression is:</p>
-<pre><code>if (Boolean expression) {
-  Code to execute if 
-  Boolean expression is true
-}</code></pre>
-<p>Here’s a simple <code>if</code> expression in which we check whether a number is less than 0.5, and if so assign a values to a variable.</p>
-<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb331-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)  <span class="co"># runif generates a random number between 0 and 1</span></a>
-<a class="sourceLine" id="cb331-2" data-line-number="2">face &lt;-<span class="st"> </span><span class="ot">NULL</span>  <span class="co"># set face to a NULL value</span></a>
-<a class="sourceLine" id="cb331-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb331-4" data-line-number="4"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
-<a class="sourceLine" id="cb331-5" data-line-number="5">  face &lt;-<span class="st"> &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb331-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb331-7" data-line-number="7">face</a>
-<a class="sourceLine" id="cb331-8" data-line-number="8"><span class="co">#&gt; NULL</span></a></code></pre></div>
-<p>The <code>else</code> clause specifies what to do in the event that the <code>if</code> statement is <em>not</em> true. The combined general for of an <code>if-else</code> expression is:</p>
-<pre><code>if (Boolean expression) {
-  Code to execute if 
-  Boolean expression is true
-} else {
-  Code to execute if 
-  Boolean expression is false
-}</code></pre>
-<p>Our previous example makes more sense if we include an <code>else</code> clause.</p>
-<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb333-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb333-3" data-line-number="3"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
-<a class="sourceLine" id="cb333-4" data-line-number="4">  face &lt;-<span class="st"> &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb333-5" data-line-number="5">} <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb333-6" data-line-number="6">  face &lt;-<span class="st"> &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb333-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb333-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb333-9" data-line-number="9">face</a>
-<a class="sourceLine" id="cb333-10" data-line-number="10"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
-<p>With the addition of the <code>else</code> statement, this simple code block can be thought of as simulating the toss of a coin.</p>
-<div id="if-else-in-a-function" class="section level4">
-<h4><span class="header-section-number">10.2.1.1</span> <code>if-else</code> in a function</h4>
-<p>Let’s take our “if-else” example above and turn it into a function we’ll call <code>coin.flip</code>. A literal re-interpretation of our previous code in the context of a function is something like this:</p>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1"><span class="co"># coin.flip.literal takes no arguments</span></a>
-<a class="sourceLine" id="cb334-2" data-line-number="2">coin.flip.literal &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb334-3" data-line-number="3">  x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb334-4" data-line-number="4">  <span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
-<a class="sourceLine" id="cb334-5" data-line-number="5">    face &lt;-<span class="st"> &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb334-6" data-line-number="6">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb334-7" data-line-number="7">    face &lt;-<span class="st"> &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb334-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb334-9" data-line-number="9">  face</a>
-<a class="sourceLine" id="cb334-10" data-line-number="10">}</a></code></pre></div>
-<p><code>coin.flip.literal</code> is pretty long for what it does — we created a temporary variable <code>x</code> that is only used once, and we created the variable <code>face</code> to hold the results of our <code>if-else</code> statement, but then immediately returned the result. This is inefficient and decreases readability of our function. A much more compact implementation of this function is as follows:</p>
-<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb335-1" data-line-number="1">coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb335-2" data-line-number="2">  <span class="cf">if</span> (<span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>) {</a>
-<a class="sourceLine" id="cb335-3" data-line-number="3">    <span class="kw">return</span>(<span class="st">&quot;heads&quot;</span>)</a>
-<a class="sourceLine" id="cb335-4" data-line-number="4">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb335-5" data-line-number="5">    <span class="kw">return</span>(<span class="st">&quot;tails&quot;</span>)</a>
-<a class="sourceLine" id="cb335-6" data-line-number="6">  }</a>
-<a class="sourceLine" id="cb335-7" data-line-number="7">}</a></code></pre></div>
-<p>Note that in our new version of <code>coin.flip</code> we don’t bother to create temporary the variables <code>x</code> and <code>face</code> and we immediately return the results within the <code>if-else</code> statement.</p>
-</div>
-<div id="multiple-if-else-statements" class="section level4">
-<h4><span class="header-section-number">10.2.1.2</span> Multiple <code>if-else</code> statements</h4>
-<p>When there are more than two possible outcomes of interest, multiple <code>if-else</code> statements can be chained together. Here is an example with three outcomes:</p>
-<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="op">-</span><span class="dv">5</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span>)  <span class="co"># sample a random integer between -5 and 5</span></a>
-<a class="sourceLine" id="cb336-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb336-3" data-line-number="3"><span class="cf">if</span> (x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb336-4" data-line-number="4">  sign.x &lt;-<span class="st"> &quot;Negative&quot;</span></a>
-<a class="sourceLine" id="cb336-5" data-line-number="5">} <span class="cf">else</span> <span class="cf">if</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb336-6" data-line-number="6">  sign.x &lt;-<span class="st"> &quot;Positive&quot;</span></a>
-<a class="sourceLine" id="cb336-7" data-line-number="7">} <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb336-8" data-line-number="8">  sign.x &lt;-<span class="st"> &quot;Zero&quot;</span></a>
-<a class="sourceLine" id="cb336-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb336-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb336-11" data-line-number="11">sign.x</a>
-<a class="sourceLine" id="cb336-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Negative&quot;</span></a></code></pre></div>
-</div>
-</div>
-<div id="for-loops" class="section level3">
-<h3><span class="header-section-number">10.2.2</span> for loops</h3>
-<p>A <code>for</code> statement iterates over the elements of a sequence (such as vectors or lists). A common use of for statements is to carry out a calculation on each element of a sequence (but see the discussion of <code>map</code> below) or to make a calculation that involves all the elements of a sequence.</p>
-<p>The general form of a for loop is:</p>
-<pre><code>for (elem in sequence) {
-  Do some calculations or
-  Evaluate one or more expressions
-}</code></pre>
-<p>As an example, say we wanted to call our <code>coin.flip</code> function multiple times. We could use a for loop to do so as follows:</p>
-<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1">flips &lt;-<span class="st"> </span><span class="kw">c</span>() <span class="co"># empty vector to hold outcomes of coin flips</span></a>
-<a class="sourceLine" id="cb338-2" data-line-number="2"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
-<a class="sourceLine" id="cb338-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())  <span class="co"># flip coin and add to our vector</span></a>
-<a class="sourceLine" id="cb338-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb338-5" data-line-number="5">flips</a>
-<a class="sourceLine" id="cb338-6" data-line-number="6"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb338-7" data-line-number="7"><span class="co">#&gt;  [9] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot;</span></a>
-<a class="sourceLine" id="cb338-8" data-line-number="8"><span class="co">#&gt; [17] &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;heads&quot;</span></a></code></pre></div>
-<p>Let’s use a <code>for</code> loop to create a <code>multi.coin.flip</code> function thats accepts an optional argument <code>n</code> that specifies the number of coin flips to carry out:</p>
-<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1">multi.coin.flip &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
-<a class="sourceLine" id="cb339-2" data-line-number="2">  <span class="co"># create an empty character vector of length n</span></a>
-<a class="sourceLine" id="cb339-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode=</span><span class="st">&quot;character&quot;</span>, <span class="dt">length=</span>n)  </a>
-<a class="sourceLine" id="cb339-4" data-line-number="4">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb339-5" data-line-number="5">    flips[i] &lt;-<span class="st"> </span><span class="kw">coin.flip</span>()</a>
-<a class="sourceLine" id="cb339-6" data-line-number="6">  }</a>
-<a class="sourceLine" id="cb339-7" data-line-number="7">  flips</a>
-<a class="sourceLine" id="cb339-8" data-line-number="8">}</a></code></pre></div>
-<p>With this new definition, a single call of <code>coin.flip</code> returns a single outcome:</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1"><span class="kw">multi.coin.flip</span>()</a>
-<a class="sourceLine" id="cb340-2" data-line-number="2"><span class="co">#&gt; [1] &quot;tails&quot;</span></a></code></pre></div>
-<p>And calling <code>multi.coin.flip</code> with a numeric argument returns multiple coin flips:</p>
-<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" data-line-number="1"><span class="kw">multi.coin.flip</span>(<span class="dt">n=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb341-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot;</span></a>
-<a class="sourceLine" id="cb341-3" data-line-number="3"><span class="co">#&gt;  [9] &quot;heads&quot; &quot;tails&quot;</span></a></code></pre></div>
-<div id="efficiency-tip" class="section level4">
-<h4><span class="header-section-number">10.2.2.1</span> Efficiency tip</h4>
-<p>An alternate way to write the <code>multi.coin.flip</code> function above would be:</p>
-<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb342-1" data-line-number="1">## This is inefficient, see description eblow</a>
-<a class="sourceLine" id="cb342-2" data-line-number="2">multi.coin.flip.alt &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">1</span>) {</a>
-<a class="sourceLine" id="cb342-3" data-line-number="3">  flips &lt;-<span class="st"> </span><span class="kw">c</span>()</a>
-<a class="sourceLine" id="cb342-4" data-line-number="4">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</a>
-<a class="sourceLine" id="cb342-5" data-line-number="5">    flips &lt;-<span class="st"> </span><span class="kw">c</span>(flips, <span class="kw">coin.flip</span>())</a>
-<a class="sourceLine" id="cb342-6" data-line-number="6">  }</a>
-<a class="sourceLine" id="cb342-7" data-line-number="7">  flips</a>
-<a class="sourceLine" id="cb342-8" data-line-number="8">}</a></code></pre></div>
-<p>If you know the final length of your vector, it is much faster to create an empty vector of the needed length:</p>
-<p>e.g., <code>vector(mode=&quot;character&quot;, length=n) # runs fast</code></p>
-<p>than it is to create an empty vector of zero elength, and then extend it sequentially:</p>
-<p>e.g., <code>flips &lt;- c(flips, coin.flip()) # runs slow</code></p>
-</div>
-</div>
-<div id="break-statement" class="section level3">
-<h3><span class="header-section-number">10.2.3</span> <code>break</code> statement</h3>
-<p>A <code>break</code> statement allows you to exit a loop even if it hasn’t completed. This is useful for ending a control statement when some criteria has been satisfied. <code>break</code> statements are usually nested in <code>if</code> statements.</p>
-<p>In the following example we use a <code>break</code> statement inside a <code>for</code> loop. In this example, we pick random real numbers between 0 and 1, accumulating them in a vector (<code>random.numbers</code>). The <code>for</code> loop insures that we never pick more than 20 random numbers before the loop ends. However, the <code>break</code> statement allows the loop to end prematurely if the number picked is greater than 0.95.</p>
-<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb343-1" data-line-number="1">random.numbers &lt;-<span class="st"> </span><span class="kw">c</span>()</a>
-<a class="sourceLine" id="cb343-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb343-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
-<a class="sourceLine" id="cb343-4" data-line-number="4">  x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb343-5" data-line-number="5">  random.numbers &lt;-<span class="st"> </span><span class="kw">c</span>(random.numbers, x)</a>
-<a class="sourceLine" id="cb343-6" data-line-number="6">  <span class="cf">if</span> (x <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.95</span>) {</a>
-<a class="sourceLine" id="cb343-7" data-line-number="7">    <span class="cf">break</span></a>
-<a class="sourceLine" id="cb343-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb343-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb343-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb343-11" data-line-number="11">random.numbers</a>
-<a class="sourceLine" id="cb343-12" data-line-number="12"><span class="co">#&gt; [1] 0.1297524 0.3954792 0.3552705 0.2000849 0.3664324 0.7377768 0.9623073</span></a></code></pre></div>
-</div>
-<div id="repeat-loops" class="section level3">
-<h3><span class="header-section-number">10.2.4</span> <code>repeat</code> loops</h3>
-<p>A <code>repeat</code> loop will loop indefinitely until we explicitly break out of the loop with a <code>break</code> statement. For example, here’s an example of how we can use <code>repeat</code> and <code>break</code> to simulate flipping coins until we get a head:</p>
-<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb344-1" data-line-number="1">ct &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb344-2" data-line-number="2"><span class="cf">repeat</span> {</a>
-<a class="sourceLine" id="cb344-3" data-line-number="3">  flip &lt;-<span class="st"> </span><span class="kw">coin.flip</span>()</a>
-<a class="sourceLine" id="cb344-4" data-line-number="4">  ct &lt;-<span class="st"> </span>ct <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb344-5" data-line-number="5">  <span class="cf">if</span> (flip <span class="op">==</span><span class="st"> &quot;heads&quot;</span>){</a>
-<a class="sourceLine" id="cb344-6" data-line-number="6">    <span class="cf">break</span></a>
-<a class="sourceLine" id="cb344-7" data-line-number="7">  }</a>
-<a class="sourceLine" id="cb344-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb344-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb344-10" data-line-number="10">ct</a>
-<a class="sourceLine" id="cb344-11" data-line-number="11"><span class="co">#&gt; [1] 4</span></a></code></pre></div>
-</div>
-<div id="next-statement" class="section level3">
-<h3><span class="header-section-number">10.2.5</span> <code>next</code> statement</h3>
-<p>A <code>next</code> satement allows you to halt the processing of the current iteration of a loop and immediately move to the next item of the loop. This is useful when you want to skip calculations for certain elements of a sequence:</p>
-<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1">sum.not.div3 &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb345-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb345-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>) {</a>
-<a class="sourceLine" id="cb345-4" data-line-number="4">  <span class="cf">if</span> (i <span class="op">%%</span><span class="st"> </span><span class="dv">3</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) { <span class="co"># skip summing values that are evenly divisible by three</span></a>
-<a class="sourceLine" id="cb345-5" data-line-number="5">    <span class="cf">next</span></a>
-<a class="sourceLine" id="cb345-6" data-line-number="6">  }</a>
-<a class="sourceLine" id="cb345-7" data-line-number="7">  sum.not.div3 &lt;-<span class="st"> </span>sum.not.div3 <span class="op">+</span><span class="st"> </span>i</a>
-<a class="sourceLine" id="cb345-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb345-9" data-line-number="9">sum.not.div3</a>
-<a class="sourceLine" id="cb345-10" data-line-number="10"><span class="co">#&gt; [1] 147</span></a></code></pre></div>
-</div>
-<div id="while-statements" class="section level3">
-<h3><span class="header-section-number">10.2.6</span> while statements</h3>
-<p>A <code>while</code> statement iterates as long as the condition statement it contains is true. In the following example, the <code>while</code> loop calls <code>coin.flip</code> until “heads” is the result, and keeps track of the number of flips. Note that this represents the same logic as the <code>repeat-break</code> example we saw earlier, but in a a more compact form.</p>
-<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb346-1" data-line-number="1">first.head &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb346-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb346-3" data-line-number="3"><span class="cf">while</span>(<span class="kw">coin.flip</span>() <span class="op">==</span><span class="st"> &quot;tails&quot;</span>){</a>
-<a class="sourceLine" id="cb346-4" data-line-number="4">  first.head &lt;-<span class="st"> </span>first.head <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb346-5" data-line-number="5">}</a>
-<a class="sourceLine" id="cb346-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb346-7" data-line-number="7">first.head</a>
-<a class="sourceLine" id="cb346-8" data-line-number="8"><span class="co">#&gt; [1] 1</span></a></code></pre></div>
-</div>
-<div id="ifelse" class="section level3">
-<h3><span class="header-section-number">10.2.7</span> <code>ifelse</code></h3>
-<p>The <code>ifelse</code> function is equivalent to a <code>for</code>-loop with a nested <code>if-else</code> statement. <code>ifelse</code> applies the specified test to each element of a vector, and returns different values depending on if the test is true or false.</p>
-<p>Here’s an example of using <code>ifelse</code> to replace <code>NA</code> elements in a vector with zeros.</p>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">9</span>, <span class="ot">NA</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb347-2" data-line-number="2">newx &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(x), <span class="dv">0</span>, x)</a>
-<a class="sourceLine" id="cb347-3" data-line-number="3">newx</a>
-<a class="sourceLine" id="cb347-4" data-line-number="4"><span class="co">#&gt;  [1] 3 1 4 5 9 0 2 6 5 4</span></a></code></pre></div>
-<p>The equivalent for-loop could be written as:</p>
-<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb348-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">9</span>, <span class="ot">NA</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb348-2" data-line-number="2">newx &lt;-<span class="st"> </span><span class="kw">c</span>()  <span class="co"># create an empty vector</span></a>
-<a class="sourceLine" id="cb348-3" data-line-number="3"><span class="cf">for</span> (elem <span class="cf">in</span> x) {</a>
-<a class="sourceLine" id="cb348-4" data-line-number="4">  <span class="cf">if</span> (<span class="kw">is.na</span>(elem)) {</a>
-<a class="sourceLine" id="cb348-5" data-line-number="5">    newx &lt;-<span class="st"> </span><span class="kw">c</span>(newx, <span class="dv">0</span>)  <span class="co"># append zero to newx</span></a>
-<a class="sourceLine" id="cb348-6" data-line-number="6">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb348-7" data-line-number="7">    newx &lt;-<span class="st"> </span><span class="kw">c</span>(newx, elem)  <span class="co"># append elem to newx</span></a>
-<a class="sourceLine" id="cb348-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb348-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb348-10" data-line-number="10">newx</a>
-<a class="sourceLine" id="cb348-11" data-line-number="11"><span class="co">#&gt;  [1] 3 1 4 5 9 0 2 6 5 4</span></a></code></pre></div>
-<p>The <code>ifelse</code> function is clearly a more compact and readable way to accomplish this.</p>
-</div>
-</div>
-<div id="map-and-related-tools" class="section level2">
-<h2><span class="header-section-number">10.3</span> <code>map</code> and related tools</h2>
-<p>Another common situation is applying a function to every element of a list or vector. Again, we could use a <code>for</code> loop, but the <code>map</code> functions often are better alternatives.</p>
-<p>NOTE: <code>map</code> is a relative newcomer to R and must be loaded with the <code>purrr</code> package (<code>purrr</code> is loaded when we load <code>tidyverse</code>). Although base R has a complicated series of “apply” functions (<code>apply</code>, <code>lapply</code>, <code>sapply</code>, <code>vapply</code>, <code>mapply</code>), <code>map</code> provides similar functionality with a more consistent interface. We won’t use the <code>apply</code> functions in this class, but you may see them in older code.</p>
-<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<hr />
-<div id="basic-map" class="section level3">
-<h3><span class="header-section-number">10.3.1</span> basic <code>map</code></h3>
-<p>Typically, <code>map</code> takes two arguments – a sequence (a vector, list, or data frame) and a function. It then applies the function to each element of the sequence, returning the results as a list.</p>
-<p>To illustrate <code>map</code>, let’s consider an example with a list of 2-vectors, where each vector gives the min and max values of some variable of interest for individuals in a sample (e.g. resting heart rate and maximum heart rate during exercise). We can use the <code>map</code> function to quickly generate the difference between the resting and maximum heart rates:</p>
-<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1">heart.rates &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">bob =</span> <span class="kw">c</span>(<span class="dv">60</span>, <span class="dv">120</span>), <span class="dt">fred =</span> <span class="kw">c</span>(<span class="dv">79</span>, <span class="dv">150</span>), <span class="dt">jim =</span> <span class="kw">c</span>(<span class="dv">66</span>, <span class="dv">110</span>))</a>
-<a class="sourceLine" id="cb350-2" data-line-number="2">diff.fxn &lt;-<span class="st"> </span><span class="cf">function</span>(x) {x[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>]}</a>
-<a class="sourceLine" id="cb350-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb350-4" data-line-number="4"><span class="kw">map</span>(heart.rates, diff.fxn)</a>
-<a class="sourceLine" id="cb350-5" data-line-number="5"><span class="co">#&gt; $bob</span></a>
-<a class="sourceLine" id="cb350-6" data-line-number="6"><span class="co">#&gt; [1] 60</span></a>
-<a class="sourceLine" id="cb350-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb350-8" data-line-number="8"><span class="co">#&gt; $fred</span></a>
-<a class="sourceLine" id="cb350-9" data-line-number="9"><span class="co">#&gt; [1] 71</span></a>
-<a class="sourceLine" id="cb350-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb350-11" data-line-number="11"><span class="co">#&gt; $jim</span></a>
-<a class="sourceLine" id="cb350-12" data-line-number="12"><span class="co">#&gt; [1] 44</span></a></code></pre></div>
-<p>As a second example, here’s how we could use <code>map</code> to get the class of each object in a list:</p>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="kw">list</span>(<span class="dt">lead =</span> <span class="st">&quot;Michael&quot;</span>, <span class="dt">keyboard =</span> <span class="st">&quot;Jermaine&quot;</span>))</a>
-<a class="sourceLine" id="cb351-2" data-line-number="2"><span class="kw">map</span>(x, class)</a>
-<a class="sourceLine" id="cb351-3" data-line-number="3"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb351-4" data-line-number="4"><span class="co">#&gt; [1] &quot;numeric&quot;</span></a>
-<a class="sourceLine" id="cb351-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb351-6" data-line-number="6"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb351-7" data-line-number="7"><span class="co">#&gt; [1] &quot;character&quot;</span></a>
-<a class="sourceLine" id="cb351-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb351-9" data-line-number="9"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb351-10" data-line-number="10"><span class="co">#&gt; [1] &quot;character&quot;</span></a>
-<a class="sourceLine" id="cb351-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb351-12" data-line-number="12"><span class="co">#&gt; [[4]]</span></a>
-<a class="sourceLine" id="cb351-13" data-line-number="13"><span class="co">#&gt; [1] &quot;list&quot;</span></a></code></pre></div>
-<hr />
-</div>
-<div id="map_if-and-map_at" class="section level3">
-<h3><span class="header-section-number">10.3.2</span> <code>map_if</code> and <code>map_at</code></h3>
-<p><code>map_if</code> is a variant of <code>map</code> that takes a predicate function (a function that evaluates to TRUE or FALSE) to determine which elements of the input sequence are transformed by the map function. All elements of the sequence that do not meet the predicate are left un-transformed. Like <code>map</code>, <code>map_if</code> always returns a list.</p>
-<p>Here’s an example where we use <code>map_if</code> to apply the <code>stringr::str_to_upper</code> function to those columns of a data frame that are character vectors, and apply <code>abs</code> to obtain the absolute value of a numeric column:</p>
-<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb352-1" data-line-number="1">a &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb352-2" data-line-number="2">b &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>)</a>
-<a class="sourceLine" id="cb352-3" data-line-number="3">c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;u&quot;</span>, <span class="st">&quot;v&quot;</span>, <span class="st">&quot;w&quot;</span>, <span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;z&quot;</span>)</a>
-<a class="sourceLine" id="cb352-4" data-line-number="4">df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(a, b, c)</a>
-<a class="sourceLine" id="cb352-5" data-line-number="5"><span class="kw">head</span>(df)</a>
-<a class="sourceLine" id="cb352-6" data-line-number="6"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb352-7" data-line-number="7"><span class="co">#&gt;         a b     c    </span></a>
-<a class="sourceLine" id="cb352-8" data-line-number="8"><span class="co">#&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb352-9" data-line-number="9"><span class="co">#&gt; 1  1.405  a     u    </span></a>
-<a class="sourceLine" id="cb352-10" data-line-number="10"><span class="co">#&gt; 2  1.086  b     v    </span></a>
-<a class="sourceLine" id="cb352-11" data-line-number="11"><span class="co">#&gt; 3  0.9035 c     w    </span></a>
-<a class="sourceLine" id="cb352-12" data-line-number="12"><span class="co">#&gt; 4 -0.9785 d     x    </span></a>
-<a class="sourceLine" id="cb352-13" data-line-number="13"><span class="co">#&gt; 5  1.368  e     y    </span></a>
-<a class="sourceLine" id="cb352-14" data-line-number="14"><span class="co">#&gt; 6  0.5525 f     z</span></a>
-<a class="sourceLine" id="cb352-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb352-16" data-line-number="16">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df, is.character, str_to_upper)</a>
-<a class="sourceLine" id="cb352-17" data-line-number="17">df2 &lt;-<span class="st"> </span><span class="kw">map_if</span>(df2, is.numeric, abs)</a>
-<a class="sourceLine" id="cb352-18" data-line-number="18"><span class="kw">head</span>(df2)</a>
-<a class="sourceLine" id="cb352-19" data-line-number="19"><span class="co">#&gt; $a</span></a>
-<a class="sourceLine" id="cb352-20" data-line-number="20"><span class="co">#&gt; [1] 1.4049192 1.0864187 0.9035167 0.9785450 1.3681453 0.5525043</span></a>
-<a class="sourceLine" id="cb352-21" data-line-number="21"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb352-22" data-line-number="22"><span class="co">#&gt; $b</span></a>
-<a class="sourceLine" id="cb352-23" data-line-number="23"><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</span></a>
-<a class="sourceLine" id="cb352-24" data-line-number="24"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb352-25" data-line-number="25"><span class="co">#&gt; $c</span></a>
-<a class="sourceLine" id="cb352-26" data-line-number="26"><span class="co">#&gt; [1] &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</span></a></code></pre></div>
-<p>Note that <code>df2</code> is a list, not a data frame. We can convert <code>df2</code> to a data frame <code>df3</code>:</p>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" data-line-number="1"><span class="co"># Next, create data frame df3 </span></a>
-<a class="sourceLine" id="cb353-2" data-line-number="2">df3 &lt;-<span class="st"> </span><span class="kw">data_frame</span>(df2<span class="op">$</span>a, df2<span class="op">$</span>b, df2<span class="op">$</span>c)</a>
-<a class="sourceLine" id="cb353-3" data-line-number="3"><span class="kw">head</span>(df3)</a>
-<a class="sourceLine" id="cb353-4" data-line-number="4"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb353-5" data-line-number="5"><span class="co">#&gt;   `df2$a` `df2$b` `df2$c`</span></a>
-<a class="sourceLine" id="cb353-6" data-line-number="6"><span class="co">#&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  </span></a>
-<a class="sourceLine" id="cb353-7" data-line-number="7"><span class="co">#&gt; 1  1.405  A       U      </span></a>
-<a class="sourceLine" id="cb353-8" data-line-number="8"><span class="co">#&gt; 2  1.086  B       V      </span></a>
-<a class="sourceLine" id="cb353-9" data-line-number="9"><span class="co">#&gt; 3  0.9035 C       W      </span></a>
-<a class="sourceLine" id="cb353-10" data-line-number="10"><span class="co">#&gt; 4  0.9785 D       X      </span></a>
-<a class="sourceLine" id="cb353-11" data-line-number="11"><span class="co">#&gt; 5  1.368  E       Y      </span></a>
-<a class="sourceLine" id="cb353-12" data-line-number="12"><span class="co">#&gt; 6  0.5525 F       Z</span></a></code></pre></div>
-<p>But it requires an extra step to rename the columns:</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1"><span class="co"># Check column names, then rename </span></a>
-<a class="sourceLine" id="cb354-2" data-line-number="2"><span class="kw">names</span>(df3)</a>
-<a class="sourceLine" id="cb354-3" data-line-number="3"><span class="co">#&gt; [1] &quot;df2$a&quot; &quot;df2$b&quot; &quot;df2$c&quot;</span></a>
-<a class="sourceLine" id="cb354-4" data-line-number="4"><span class="kw">names</span>(df3) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)</a>
-<a class="sourceLine" id="cb354-5" data-line-number="5"><span class="kw">head</span>(df3)</a>
-<a class="sourceLine" id="cb354-6" data-line-number="6"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb354-7" data-line-number="7"><span class="co">#&gt;        a b     c    </span></a>
-<a class="sourceLine" id="cb354-8" data-line-number="8"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb354-9" data-line-number="9"><span class="co">#&gt; 1 1.405  A     U    </span></a>
-<a class="sourceLine" id="cb354-10" data-line-number="10"><span class="co">#&gt; 2 1.086  B     V    </span></a>
-<a class="sourceLine" id="cb354-11" data-line-number="11"><span class="co">#&gt; 3 0.9035 C     W    </span></a>
-<a class="sourceLine" id="cb354-12" data-line-number="12"><span class="co">#&gt; 4 0.9785 D     X    </span></a>
-<a class="sourceLine" id="cb354-13" data-line-number="13"><span class="co">#&gt; 5 1.368  E     Y    </span></a>
-<a class="sourceLine" id="cb354-14" data-line-number="14"><span class="co">#&gt; 6 0.5525 F     Z</span></a></code></pre></div>
-<hr />
-<p>If our goal is to apply functions to the columns of a data frame, it may be easier with <code>mutate</code>:</p>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb355-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb355-2" data-line-number="2">df4 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb355-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">a =</span> <span class="kw">abs</span>(a),</a>
-<a class="sourceLine" id="cb355-4" data-line-number="4">         <span class="dt">b =</span> <span class="kw">str_to_upper</span>(b),</a>
-<a class="sourceLine" id="cb355-5" data-line-number="5">         <span class="dt">c =</span> <span class="kw">str_to_upper</span>(c))</a>
-<a class="sourceLine" id="cb355-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb355-7" data-line-number="7"><span class="kw">head</span>(df4)</a>
-<a class="sourceLine" id="cb355-8" data-line-number="8"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb355-9" data-line-number="9"><span class="co">#&gt;        a b     c    </span></a>
-<a class="sourceLine" id="cb355-10" data-line-number="10"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb355-11" data-line-number="11"><span class="co">#&gt; 1 1.405  A     U    </span></a>
-<a class="sourceLine" id="cb355-12" data-line-number="12"><span class="co">#&gt; 2 1.086  B     V    </span></a>
-<a class="sourceLine" id="cb355-13" data-line-number="13"><span class="co">#&gt; 3 0.9035 C     W    </span></a>
-<a class="sourceLine" id="cb355-14" data-line-number="14"><span class="co">#&gt; 4 0.9785 D     X    </span></a>
-<a class="sourceLine" id="cb355-15" data-line-number="15"><span class="co">#&gt; 5 1.368  E     Y    </span></a>
-<a class="sourceLine" id="cb355-16" data-line-number="16"><span class="co">#&gt; 6 0.5525 F     Z</span></a></code></pre></div>
-<hr />
-</div>
-<div id="mapping-in-parallel-using-map2" class="section level3">
-<h3><span class="header-section-number">10.3.3</span> mapping in parallel using <code>map2</code></h3>
-<p>The <code>map2</code> function applies a transformation function to two sequences in parallel. The following example illustrates this:</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">first.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;John&quot;</span>, <span class="st">&quot;Mary&quot;</span>, <span class="st">&quot;Fred&quot;</span>)</a>
-<a class="sourceLine" id="cb356-2" data-line-number="2">last.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Smith&quot;</span>, <span class="st">&quot;Hernandez&quot;</span>, <span class="st">&quot;Kidogo&quot;</span>)</a>
-<a class="sourceLine" id="cb356-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb356-4" data-line-number="4"><span class="kw">map2</span>(first.names, last.names, str_c, <span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
-<a class="sourceLine" id="cb356-5" data-line-number="5"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb356-6" data-line-number="6"><span class="co">#&gt; [1] &quot;John Smith&quot;</span></a>
-<a class="sourceLine" id="cb356-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb356-8" data-line-number="8"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb356-9" data-line-number="9"><span class="co">#&gt; [1] &quot;Mary Hernandez&quot;</span></a>
-<a class="sourceLine" id="cb356-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb356-11" data-line-number="11"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb356-12" data-line-number="12"><span class="co">#&gt; [1] &quot;Fred Kidogo&quot;</span></a></code></pre></div>
-<p>Note how we can specify arguments to the transformation function as additional arguments to <code>map2</code> (i.e., the <code>sep</code> argument gets passed to <code>str_c</code>)</p>
-<hr />
-</div>
-<div id="map-variants-that-return-vectors" class="section level3">
-<h3><span class="header-section-number">10.3.4</span> <code>map</code> variants that return vectors</h3>
-<p><code>map</code>, <code>map_if</code>, and <code>map_at</code> <em>always return lists</em>. The <code>purrr</code> library also has a series of <code>map</code> variants that <em>return vectors</em>:</p>
+<div id="one-sample-t-test" class="section level2">
+<h2><span class="header-section-number">19.2</span> One sample t-test</h2>
+<p>A one sample t-test is appropriate when you want to compare an observed sample mean to some a priori hypothesis about what the mean should be.</p>
 <ul>
-<li><code>map_lgl</code> (for logical vectors)</li>
-<li><code>map_chr</code> (for character vectors)</li>
-<li><code>map_int</code> (integer vectors)</li>
-<li><code>map_dbl</code> (double vectors)</li>
+<li><span class="math inline">\(H_0\)</span>: The mean of variable <span class="math inline">\(X\)</span> equals <span class="math inline">\(\mu_0\)</span> (some a priori value for the mean)</li>
+<li><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> does not equal <span class="math inline">\(\mu_0\)</span></li>
 </ul>
-<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" data-line-number="1"><span class="co"># compare the outputs of map and map_chr</span></a>
-<a class="sourceLine" id="cb357-2" data-line-number="2">a &lt;-<span class="st"> </span><span class="kw">map</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], str_to_upper)</a>
-<a class="sourceLine" id="cb357-3" data-line-number="3"><span class="kw">str</span>(a)</a>
-<a class="sourceLine" id="cb357-4" data-line-number="4"><span class="co">#&gt; List of 6</span></a>
-<a class="sourceLine" id="cb357-5" data-line-number="5"><span class="co">#&gt;  $ : chr &quot;A&quot;</span></a>
-<a class="sourceLine" id="cb357-6" data-line-number="6"><span class="co">#&gt;  $ : chr &quot;B&quot;</span></a>
-<a class="sourceLine" id="cb357-7" data-line-number="7"><span class="co">#&gt;  $ : chr &quot;C&quot;</span></a>
-<a class="sourceLine" id="cb357-8" data-line-number="8"><span class="co">#&gt;  $ : chr &quot;D&quot;</span></a>
-<a class="sourceLine" id="cb357-9" data-line-number="9"><span class="co">#&gt;  $ : chr &quot;E&quot;</span></a>
-<a class="sourceLine" id="cb357-10" data-line-number="10"><span class="co">#&gt;  $ : chr &quot;F&quot;</span></a>
-<a class="sourceLine" id="cb357-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb357-12" data-line-number="12">b &lt;-<span class="st"> </span><span class="kw">map_chr</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>], str_to_upper)</a>
-<a class="sourceLine" id="cb357-13" data-line-number="13"><span class="kw">str</span>(b) <span class="co"># a vector</span></a>
-<a class="sourceLine" id="cb357-14" data-line-number="14"><span class="co">#&gt;  chr [1:6] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot;</span></a></code></pre></div>
-<p>Here’s an example using <code>map_dbl</code>, where we create a data frame with three columns, and compute the median of each column:</p>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb358-1" data-line-number="1"><span class="co"># Make data frame for analysis</span></a>
-<a class="sourceLine" id="cb358-2" data-line-number="2">df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">a =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">b =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),<span class="dt">c =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>))</a>
-<a class="sourceLine" id="cb358-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb358-4" data-line-number="4"><span class="kw">map_dbl</span>(df, median) <span class="co"># median of each column of df</span></a>
-<a class="sourceLine" id="cb358-5" data-line-number="5"><span class="co">#&gt;           a           b           c </span></a>
-<a class="sourceLine" id="cb358-6" data-line-number="6"><span class="co">#&gt;  0.20560294  0.06252533 -0.10024751</span></a></code></pre></div>
+<div id="one-sample-t-test-test-statistic" class="section level3">
+<h3><span class="header-section-number">19.2.1</span> One sample t-test, test statistic</h3>
+<p>To carry out a one sample t-test, first calculate the test statistic:</p>
+<p><span class="math display">\[
+t^{\star} = \frac{\overline{x} - \mu_0}{SE_\overline{x}}
+\]</span></p>
+<p>where <span class="math inline">\(\overline{x}\)</span> is the sample mean and <span class="math inline">\(SE_\overline{x}\)</span> is the sample standard error of the mean (<span class="math inline">\(SE_\overline{x} = s_x/\sqrt{n}\)</span>). In words, <span class="math inline">\(t^{\star}\)</span> measures the difference between the observed mean, and the null hypothesis mean, in unit of standard error.</p>
+<p>To calculate a P-value, we compare the test statistic to the t-distribution with the appropriate degrees of freedom to calculate the probability that you’d observe a mean value at least as extreme as <span class="math inline">\(\overline{x}\)</span> if the null hypothesis was true. For a two-tailed test this is:</p>
+<p><span class="math display">\[
+P = P(t &lt; -|t^\star|) + P(t &gt; |t^\star|)
+\]</span></p>
+<p>Since the t-distribution is symmetric, this simplifies to:</p>
+<p><span class="math display">\[
+P = 2 \times P(t &gt; |t^\star|)
+\]</span></p>
+</div>
+<div id="assumptions-of-one-sample-t-tests" class="section level3">
+<h3><span class="header-section-number">19.2.2</span> Assumptions of one sample t-tests</h3>
+<ul>
+<li>Data are randomly sampled from the population</li>
+<li>The variable of interest is approximately normally distributed</li>
+</ul>
+</div>
+<div id="example-gene-expression-in-mice" class="section level3">
+<h3><span class="header-section-number">19.2.3</span> Example: Gene expression in mice</h3>
+<p>You are an investigator studying the effects of various drugs on the expression of key genes that regulate apoptosis. The gene YFG1 is one such gene of interest. It has been previously established, using very sample sizes, that average expression level of the gene YFG1 in untreated (control) mice is 10 units.</p>
+<p>You treat a sample of mice with Drug X, and measure the expression of the gene YFG1 following treatment. For a sample of five mice you observe the following expression values:</p>
+<ul>
+<li>YFG1 = {11.25, 10.5, 12, 11.75, 10}</li>
+</ul>
+<p>You wish to determine whether the average expression of YFG1 in mice treated with the drug differs from control mice. The null and alternative hypotheses for this hypothesis test are:</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: the mean expression of YFG1 is 10</li>
+<li><span class="math inline">\(H_A\)</span>: the mean expression of YFG1 does not equal 10</li>
+</ul>
+<p>It’s relatively easy to calculate the various quantities of interest needed to carry out a one sided t-test:</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb422-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb422-3" data-line-number="3">mu0 =<span class="st"> </span><span class="dv">10</span>  <span class="co"># mean under H0</span></a>
+<a class="sourceLine" id="cb422-4" data-line-number="4">mice<span class="fl">.1</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1 =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb422-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb422-6" data-line-number="6">YFG1.tstats &lt;-</a>
+<a class="sourceLine" id="cb422-7" data-line-number="7"><span class="st">  </span>mice<span class="fl">.1</span>sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb422-8" data-line-number="8"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(YFG1),</a>
+<a class="sourceLine" id="cb422-9" data-line-number="9">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(YFG1),</a>
+<a class="sourceLine" id="cb422-10" data-line-number="10">            <span class="dt">sample.se =</span> sample.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
+<a class="sourceLine" id="cb422-11" data-line-number="11">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb422-12" data-line-number="12">            <span class="dt">mu0 =</span> mu0,</a>
+<a class="sourceLine" id="cb422-13" data-line-number="13">            <span class="dt">t.star =</span> (sample.mean <span class="op">-</span><span class="st"> </span>mu0)<span class="op">/</span>sample.se,</a>
+<a class="sourceLine" id="cb422-14" data-line-number="14">            <span class="dt">P.value =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t.star), <span class="dt">df =</span> df, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb422-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb422-16" data-line-number="16">YFG1.tstats</a>
+<a class="sourceLine" id="cb422-17" data-line-number="17"><span class="co">#&gt; # A tibble: 1 x 7</span></a>
+<a class="sourceLine" id="cb422-18" data-line-number="18"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value</span></a>
+<a class="sourceLine" id="cb422-19" data-line-number="19"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb422-20" data-line-number="20"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295</span></a></code></pre></div>
+<p>Under the conventional <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis that the mean expression of YFG1 in mice treated with the drug is the same as the mean expression of YFG1 in control mice.</p>
+</div>
+<div id="confidence-intervals-for-the-mean" class="section level3">
+<h3><span class="header-section-number">19.2.4</span> Confidence intervals for the mean</h3>
+<p>The hypothesis test using a one-side t-test we carried out above is approximately equivalent to asking if the null mean, <span class="math inline">\(\mu_0\)</span>, falls within the 95% confidence intervals estimated for the sample mean.</p>
+<p>Recall that the <span class="math inline">\(100(1-\alpha)\)</span>% confidence interval for the mean can be calculated as</p>
+<p><span class="math display">\[
+CI_\alpha = \overline{x} \pm (t_{\alpha/2,df} \times \widehat{SE}_{\overline{x}})
+\]</span></p>
+<p>Let’s modify the table of <span class="math inline">\(t\)</span>-related stats we created in the previous code block to include the lower and upper limits of the 95% confidence interval for the mean:</p>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1">YFG1.tstats &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb423-2" data-line-number="2"><span class="st">  </span>YFG1.tstats <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb423-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci95.lower =</span> sample.mean <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se,</a>
+<a class="sourceLine" id="cb423-4" data-line-number="4">         <span class="dt">ci95.upper =</span> sample.mean <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se)</a>
+<a class="sourceLine" id="cb423-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb423-6" data-line-number="6">YFG1.tstats</a>
+<a class="sourceLine" id="cb423-7" data-line-number="7"><span class="co">#&gt; # A tibble: 1 x 9</span></a>
+<a class="sourceLine" id="cb423-8" data-line-number="8"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value ci95.lower</span></a>
+<a class="sourceLine" id="cb423-9" data-line-number="9"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb423-10" data-line-number="10"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295      10.06</span></a>
+<a class="sourceLine" id="cb423-11" data-line-number="11"><span class="co">#&gt; # ... with 1 more variable: ci95.upper &lt;dbl&gt;</span></a></code></pre></div>
+<p>If we wanted to crate a figure illustrating our 95% CI for the mean of YFG1 following drug treatment, relative to the mean under the null hypothesis we can use the <code>geom_pointrange()</code> function to draw the interval (for more info on <code>geom_pointrange()</code> and related functions see the <a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">ggplot2 documentation</a>).</p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1">YFG1.tstats <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb424-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb424-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb424-4" data-line-number="4">                      <span class="dt">y =</span> sample.mean,</a>
+<a class="sourceLine" id="cb424-5" data-line-number="5">                      <span class="dt">ymin =</span> ci95.lower, <span class="dt">ymax =</span> ci95.upper)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Drug X&quot;</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> mu0, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-8" data-line-number="8"><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>,<span class="dv">15</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean(YFG1)&quot;</span>, </a>
+<a class="sourceLine" id="cb424-10" data-line-number="10">       <span class="dt">title =</span> <span class="st">&quot;Sample mean and 95% CI for expression of YFG1 in treated mice&quot;</span>,</a>
+<a class="sourceLine" id="cb424-11" data-line-number="11">       <span class="dt">subtitle =</span> <span class="st">&quot;Red line indicates mean expression in control mice.&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-12" data-line-number="12"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb424-14" data-line-number="14">        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>))</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-439-1.png" width="576" /></p>
+</div>
+</div>
+<div id="the-t.test-function-in-r" class="section level2">
+<h2><span class="header-section-number">19.3</span> The <code>t.test</code> function in R</h2>
+<p>The built-in <code>t.test()</code> function will take care of the all the calcuations we did by hand above.</p>
+<p>For a one sample t-test <code>t.test</code> we need to pass in the variable of interest, and the null hypothoses mean value, <code>mu</code>:</p>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">YFG1_t.test &lt;-<span class="st"> </span><span class="kw">t.test</span>(mice<span class="fl">.1</span>sample<span class="op">$</span>YFG1, <span class="dt">mu =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb425-2" data-line-number="2">YFG1_t.test</a>
+<a class="sourceLine" id="cb425-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb425-4" data-line-number="4"><span class="co">#&gt;  One Sample t-test</span></a>
+<a class="sourceLine" id="cb425-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb425-6" data-line-number="6"><span class="co">#&gt; data:  mice.1sample$YFG1</span></a>
+<a class="sourceLine" id="cb425-7" data-line-number="7"><span class="co">#&gt; t = 2.9268, df = 4, p-value = 0.04295</span></a>
+<a class="sourceLine" id="cb425-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true mean is not equal to 10</span></a>
+<a class="sourceLine" id="cb425-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb425-10" data-line-number="10"><span class="co">#&gt;  10.05652 12.14348</span></a>
+<a class="sourceLine" id="cb425-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb425-12" data-line-number="12"><span class="co">#&gt; mean of x </span></a>
+<a class="sourceLine" id="cb425-13" data-line-number="13"><span class="co">#&gt;      11.1</span></a></code></pre></div>
+<p>The <code>broom::tidye()</code> function defined in the “broom” package is a convenient way to display the output of many model tests in R. Load the broom (install it first if need be) and use <code>tidy()</code> to represent the information returned by <code>t.test()</code> as a data frame:</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb426-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb426-3" data-line-number="3"><span class="kw">tidy</span>(YFG1_t.test)</a>
+<a class="sourceLine" id="cb426-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 8</span></a>
+<a class="sourceLine" id="cb426-5" data-line-number="5"><span class="co">#&gt;   estimate statistic p.value parameter conf.low conf.high method</span></a>
+<a class="sourceLine" id="cb426-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; </span></a>
+<a class="sourceLine" id="cb426-7" data-line-number="7"><span class="co">#&gt; 1     11.1     2.927 0.04295         4    10.06     12.14 One S…</span></a>
+<a class="sourceLine" id="cb426-8" data-line-number="8"><span class="co">#&gt; # ... with 1 more variable: alternative &lt;chr&gt;</span></a></code></pre></div>
+</div>
+<div id="two-sample-t-test" class="section level2">
+<h2><span class="header-section-number">19.4</span> Two sample t-test</h2>
+<p>We use a two sample t-test to analyze the difference between the means of the same variable measured in two different groups or treatments. It is assumed that the two groups are independent samples from two populations.</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e., <span class="math inline">\(\overline{x}_1 = \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 = 0\)</span>.</p></li>
+<li><p><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is not the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e. <span class="math inline">\(\overline{x}_1 \neq \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 \neq 0\)</span>.</p></li>
+</ul>
+<div id="standard-error-for-the-difference-in-means" class="section level3">
+<h3><span class="header-section-number">19.4.1</span> Standard error for the difference in means</h3>
+<p>In a two-sample t-test, we have to account for the uncertainty associated with the means of both groups, which we express in terms of the standard error of the difference in the means between the groups:</p>
+<p><span class="math display">\[
+SE_{\overline{x}_1 - \overline{x}_2}  =  \sqrt{s^2_p\left(\frac{1}{n_1} + \frac{1}{n_2} \right)}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+s^2_p = \frac{df_1 s_1^2 + df_2 s_2^2}{df_1 + df_2}
+\]</span></p>
+<p><span class="math inline">\(s^2_p\)</span> is called the “pooled sample variance” and is a weighted average of the sample variances, <span class="math inline">\(s_1^2\)</span> and <span class="math inline">\(s_2^2\)</span>, of the two groups.</p>
+</div>
+<div id="two-sample-t-test-test-statistic" class="section level3">
+<h3><span class="header-section-number">19.4.2</span> Two sample t-test, test statistic</h3>
+<p>Given the standard error for the difference in means between groups as defined above, we define our test statistic for a two sample t-test as:</p>
+<p><span class="math display">\[
+t^\star = \frac{(\overline{x}_1 - \overline{x}_2)}{SE_{\overline{x}_1 - \overline{x}_2}}
+\]</span></p>
+<p>The degrees of freedom for this test statistic are:</p>
+<p><span class="math display">\[
+df = df_1 + df_2 = n_1 + n_2 - 2
+\]</span></p>
+</div>
+<div id="assumptions-of-two-sample-t-test" class="section level3">
+<h3><span class="header-section-number">19.4.3</span> Assumptions of two sample t-test</h3>
+<ul>
+<li>Data are randomly sampled from the population</li>
+<li>Paired differences are normally distributed</li>
+<li>Standard deviation is the same in both populations</li>
+</ul>
+</div>
+<div id="example-comparing-the-effects-of-two-drugs" class="section level3">
+<h3><span class="header-section-number">19.4.4</span> Example: Comparing the effects of two drugs</h3>
+<p>You treat samples of mice with two drugs, X and Y. We want to know if the two drugs have the same average effect on expression of the gene <em>YFG1</em>. The measurements of <em>YFG1</em> in samples treated with X and Y are as follows:</p>
+<ul>
+<li>X = {11.25, 10.5, 12, 11.75, 10}</li>
+<li>Y = {8.75, 10, 11, 9.75, 10.5}</li>
+</ul>
+<p>For simplicity, we skip the “by-hand” calculations and simply use the built-in <code>t.test</code> function.</p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb427-1" data-line-number="1">mice<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1_X =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb427-2" data-line-number="2">                           <span class="dt">YFG1_Y =</span> <span class="kw">c</span>(<span class="fl">8.75</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="fl">9.75</span>, <span class="fl">10.5</span>))</a>
+<a class="sourceLine" id="cb427-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb427-4" data-line-number="4">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb427-5" data-line-number="5"><span class="st">  </span><span class="kw">t.test</span>(mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_X, mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_Y)</a>
+<a class="sourceLine" id="cb427-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb427-7" data-line-number="7">ttest<span class="fl">.2</span>sample</a>
+<a class="sourceLine" id="cb427-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb427-9" data-line-number="9"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
+<a class="sourceLine" id="cb427-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb427-11" data-line-number="11"><span class="co">#&gt; data:  mice.2sample$YFG1_X and mice.2sample$YFG1_Y</span></a>
+<a class="sourceLine" id="cb427-12" data-line-number="12"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
+<a class="sourceLine" id="cb427-13" data-line-number="13"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb427-14" data-line-number="14"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb427-15" data-line-number="15"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
+<a class="sourceLine" id="cb427-16" data-line-number="16"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb427-17" data-line-number="17"><span class="co">#&gt; mean of x mean of y </span></a>
+<a class="sourceLine" id="cb427-18" data-line-number="18"><span class="co">#&gt;      11.1      10.0</span></a></code></pre></div>
+<p>This output provides information on:</p>
+<ul>
+<li>the data vectors used in this analysis</li>
+<li>t, df, and p-value</li>
+<li>the alternative hypothesis</li>
+<li>the 95% CI for the difference between the group means</li>
+<li>the group means</li>
+</ul>
+<p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we fail to reject the null hypothesis that the mean expression of <em>YFG1</em> is different in mice treated with Drug X versus those treated with Drug Y.</p>
+<p>As we saw previously, <code>broom::tidy()</code> is a good way to turn the results of the <code>t.test()</code> function into a convenient table for further computation or plotting:</p>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1"><span class="kw">tidy</span>(ttest<span class="fl">.2</span>sample)</a>
+<a class="sourceLine" id="cb428-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 10</span></a>
+<a class="sourceLine" id="cb428-3" data-line-number="3"><span class="co">#&gt;   estimate estimate1 estimate2 statistic p.value parameter conf.low</span></a>
+<a class="sourceLine" id="cb428-4" data-line-number="4"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb428-5" data-line-number="5"><span class="co">#&gt; 1    1.100      11.1        10     2.060 0.07331     7.999  -0.1311</span></a>
+<a class="sourceLine" id="cb428-6" data-line-number="6"><span class="co">#&gt; # ... with 3 more variables: conf.high &lt;dbl&gt;, method &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb428-7" data-line-number="7"><span class="co">#&gt; #   alternative &lt;chr&gt;</span></a></code></pre></div>
+</div>
+<div id="specifying-t.test-in-terms-of-a-formula" class="section level3">
+<h3><span class="header-section-number">19.4.5</span> Specifying <code>t.test()</code> in terms of a formula</h3>
+<p>In the example above, our data frame included two columns for YFG1 expression values – <code>YFG1_X</code> and <code>YFG1_Y</code> – representing the expression measurements under the two drug treatments. This is not a very “tidy” way to organize our data, and is somewhat limiting when we want to create plots and do other analyses. Let’s use some of the tools we’ve seen earlier for tidying and restructuring data frames to unite these into a single column, and create a new column indicating treatment type:</p>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1">mice.long &lt;-</a>
+<a class="sourceLine" id="cb429-2" data-line-number="2"><span class="st">  </span>mice<span class="fl">.2</span>sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb429-3" data-line-number="3"><span class="st">  </span><span class="kw">gather</span>(expt, expression) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb429-4" data-line-number="4"><span class="st">  </span><span class="kw">separate</span>(expt, <span class="kw">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;treatment&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
+<a class="sourceLine" id="cb429-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb429-6" data-line-number="6"><span class="kw">head</span>(mice.long)</a>
+<a class="sourceLine" id="cb429-7" data-line-number="7"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
+<a class="sourceLine" id="cb429-8" data-line-number="8"><span class="co">#&gt;   gene  treatment expression</span></a>
+<a class="sourceLine" id="cb429-9" data-line-number="9"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb429-10" data-line-number="10"><span class="co">#&gt; 1 YFG1  X              11.25</span></a>
+<a class="sourceLine" id="cb429-11" data-line-number="11"><span class="co">#&gt; 2 YFG1  X              10.5 </span></a>
+<a class="sourceLine" id="cb429-12" data-line-number="12"><span class="co">#&gt; 3 YFG1  X              12   </span></a>
+<a class="sourceLine" id="cb429-13" data-line-number="13"><span class="co">#&gt; 4 YFG1  X              11.75</span></a>
+<a class="sourceLine" id="cb429-14" data-line-number="14"><span class="co">#&gt; 5 YFG1  X              10   </span></a>
+<a class="sourceLine" id="cb429-15" data-line-number="15"><span class="co">#&gt; 6 YFG1  Y               8.75</span></a></code></pre></div>
+<p>Using this “long” data frame we can carry out the t.test as follows:</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">t.test</span>(expression <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> mice.long)</a>
+<a class="sourceLine" id="cb430-2" data-line-number="2">ttest<span class="fl">.2</span>sample</a>
+<a class="sourceLine" id="cb430-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb430-4" data-line-number="4"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
+<a class="sourceLine" id="cb430-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb430-6" data-line-number="6"><span class="co">#&gt; data:  expression by treatment</span></a>
+<a class="sourceLine" id="cb430-7" data-line-number="7"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
+<a class="sourceLine" id="cb430-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb430-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb430-10" data-line-number="10"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
+<a class="sourceLine" id="cb430-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb430-12" data-line-number="12"><span class="co">#&gt; mean in group X mean in group Y </span></a>
+<a class="sourceLine" id="cb430-13" data-line-number="13"><span class="co">#&gt;            11.1            10.0</span></a></code></pre></div>
+<p>This long version of the data is also more easily used for calculating confidence intervals of the mean for each treatment, and for plotting as illustrated bloew</p>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb431-1" data-line-number="1">ci.by.treatment &lt;-</a>
+<a class="sourceLine" id="cb431-2" data-line-number="2"><span class="st">  </span>mice.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb431-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb431-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(expression),</a>
+<a class="sourceLine" id="cb431-5" data-line-number="5">            <span class="dt">se =</span> <span class="kw">sd</span>(expression)<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
+<a class="sourceLine" id="cb431-6" data-line-number="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">pt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
+<a class="sourceLine" id="cb431-7" data-line-number="7">            <span class="dt">ci.low =</span> mean <span class="op">-</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se,</a>
+<a class="sourceLine" id="cb431-8" data-line-number="8">            <span class="dt">ci.hi =</span> mean <span class="op">+</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se)</a>
+<a class="sourceLine" id="cb431-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb431-10" data-line-number="10">ci.by.treatment</a>
+<a class="sourceLine" id="cb431-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb431-12" data-line-number="12"><span class="co">#&gt;   treatment  mean     se  tcrit ci.low ci.hi</span></a>
+<a class="sourceLine" id="cb431-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb431-14" data-line-number="14"><span class="co">#&gt; 1 X          11.1 0.3758 0.5094 10.91  11.29</span></a>
+<a class="sourceLine" id="cb431-15" data-line-number="15"><span class="co">#&gt; 2 Y          10   0.3791 0.5094  9.807 10.19</span></a></code></pre></div>
+<p>Here I combine the raw expression measurements and mean and confidence intervals into a single plot:</p>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1">mice.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb432-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> expression, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.35</span>, <span class="dt">shape=</span><span class="dv">17</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="dt">data =</span> ci.by.treatment,</a>
+<a class="sourceLine" id="cb432-5" data-line-number="5">                  <span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> mean,</a>
+<a class="sourceLine" id="cb432-6" data-line-number="6">                      <span class="dt">ymin =</span> ci.low, <span class="dt">ymax=</span> ci.hi)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb432-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Drug Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb432-8" data-line-number="8"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.caption =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">8</span>))</a></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-447"></span>
+<img src="bio304-book_files/figure-html/unnamed-chunk-447-1.png" alt="Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means." width="576" />
+<p class="caption">
+Figure 19.1: Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means.
+</p>
+</div>
+</div>
+</div>
+<div id="paired-t-test" class="section level2">
+<h2><span class="header-section-number">19.5</span> Paired t-test</h2>
+<p>In a paired t-test there are two groups/treatments, but the samples in the two groups are paired or matched. This typically arises in “before-after” studies where the same individual/object is measured at different time points, before and after application of a treatment. The repeated measurement of the same individual/object means that we can’t treat the two sets of observations as independent. Null and alternative hypotheses are thus typically framed in terms of a mean difference between time points/conditions</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: The mean difference of variable <span class="math inline">\(X\)</span> in the paired measurements is zero, i.e., <span class="math inline">\(\overline{D} = 0\)</span> where <span class="math inline">\(D = X_\text{after} - X_\text{before}\)</span></p></li>
+<li><p><span class="math inline">\(H_A\)</span>: The mean difference of variable <span class="math inline">\(X\)</span> in the paired measurements is not zero, i.e., <span class="math inline">\(\overline{D} \neq 0\)</span></p></li>
+</ul>
+<div id="paired-t-test-test-statistic" class="section level3">
+<h3><span class="header-section-number">19.5.1</span> Paired t-test, test statistic</h3>
+<ul>
+<li>Let the variable of interest for individual <span class="math inline">\(i\)</span> in the paired conditions be designated <span class="math inline">\(x_{i,\text{before}}\)</span> and <span class="math inline">\(x_{i, \text{after}}\)</span></li>
+<li>Let <span class="math inline">\(D_i = x_{i, \text{after}} - x_{i, \text{before}}\)</span> be the paired difference for individual <span class="math inline">\(i\)</span></li>
+<li>Let <span class="math inline">\(\overline{D}\)</span> be the mean difference and <span class="math inline">\(s_D\)</span> be the standard deviation of the differences</li>
+<li>The standard error of the mean difference is <span class="math inline">\(SE(\overline{D}) = \frac{s_D}{\sqrt{n}}\)</span></li>
+</ul>
+<p>The test statistic is thus:
+<span class="math display">\[
+t^\star = \frac{\overline{D}}{SE(\overline{D})}
+\]</span></p>
+<p>Under the null hypothesis, this statistic follows a t-distribution with <span class="math inline">\(n-1\)</span> degrees of freedom.</p>
+</div>
+<div id="assumptions-of-paired-t-test" class="section level3">
+<h3><span class="header-section-number">19.5.2</span> Assumptions of paired t-test</h3>
+<ul>
+<li>Data are randomly sampled from the population</li>
+<li>Paired differences are normally distributed</li>
+</ul>
+</div>
+<div id="paired-t-test-example" class="section level3">
+<h3><span class="header-section-number">19.5.3</span> Paired t-test, example</h3>
+<p>You measure the expression of gene <em>YFG1</em> in five mice. You then treat those five mice with drug Z and measure gene expression again.</p>
+<ul>
+<li><em>YFG1</em> expression before treatment = {12, 11.75, 11.25, 10.5, 10}</li>
+<li><em>YFG1</em> expression after treatment = {11, 10, 10.50, 8.75, 9.75}</li>
+</ul>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1">mice.paired &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1.before =</span> <span class="kw">c</span>(<span class="dv">12</span>, <span class="fl">11.75</span>, <span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb433-2" data-line-number="2">                          <span class="dt">YFG1.after =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">10</span>, <span class="fl">10.50</span>, <span class="fl">8.75</span>, <span class="fl">9.75</span>))</a>
+<a class="sourceLine" id="cb433-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb433-4" data-line-number="4"><span class="kw">t.test</span>(mice.paired<span class="op">$</span>YFG1.before, mice.paired<span class="op">$</span>YFG1.after,</a>
+<a class="sourceLine" id="cb433-5" data-line-number="5">       <span class="dt">paired =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb433-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb433-7" data-line-number="7"><span class="co">#&gt;  Paired t-test</span></a>
+<a class="sourceLine" id="cb433-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb433-9" data-line-number="9"><span class="co">#&gt; data:  mice.paired$YFG1.before and mice.paired$YFG1.after</span></a>
+<a class="sourceLine" id="cb433-10" data-line-number="10"><span class="co">#&gt; t = 3.773, df = 4, p-value = 0.01955</span></a>
+<a class="sourceLine" id="cb433-11" data-line-number="11"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb433-12" data-line-number="12"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb433-13" data-line-number="13"><span class="co">#&gt;  0.2905341 1.9094659</span></a>
+<a class="sourceLine" id="cb433-14" data-line-number="14"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb433-15" data-line-number="15"><span class="co">#&gt; mean of the differences </span></a>
+<a class="sourceLine" id="cb433-16" data-line-number="16"><span class="co">#&gt;                     1.1</span></a></code></pre></div>
+<p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis of no difference in the average expression of <em>YFG1</em> before and after treatment with Drug Z.</p>
+</div>
+</div>
+<div id="the-fallacy-of-indirect-comparison" class="section level2">
+<h2><span class="header-section-number">19.6</span> The fallacy of indirect comparison</h2>
+<p>WS 12.5 considers an example where baby photos were compared to photos of their mother, father, and several unrelated pictures. Volunteers were asked to identify the mother and father of each baby, and the accuracy of their choices was compared between mothers and fathers. In Fig. 12.5-1 (below), the horizontal line shows the null hypotheses expected for random guessing, while means and 95% CIs are shown for mothers and fathers. The success rate for picking fathers was significantly better than random expectation, while the CI for mothers overlapped the null expected value. Given these CIs, the authors of the study concluded that babies resemble their fathers more than their mothers.</p>
+<p><img src="figures/whitlock_12.5-1.png" width="75%" /></p>
+<p>This is an example of the fallacy of indirect comparison: <font color='blue'>“Comparisons between two groups should always be made directly, not indirectly by comparing both to the same null hypothesis”</font> WS 12.5.</p>
+<hr />
+<div id="interpreting-confidence-intervals-in-light-of-two-sample-t-tests" class="section level3">
+<h3><span class="header-section-number">19.6.1</span> Interpreting confidence intervals in light of two sample t-tests</h3>
+<p>Figure 12.6-1 from WS (below) considers the relationship between overlap of confidence intervals and significant difference between groups (<span class="math inline">\(H_0\)</span>: group means do not differ). Shown are group means and their 95% confidence intervals in three cases. (a) When 95% CIs do not overlap, then group means will be significantly different. (b) When the confidence interval of one group overlaps the mean value for the other group, then the groups are not significantly different. Finally, (c) when the confidence intervals overlap each other, but they do not overlap the mean of the other group, then the result of the hypothesis test is unclear.</p>
+<p>In each case, figures with confidence intervals are helpful, but it is the P-value from our test of <span class="math inline">\(H_0\)</span> that provides clear indication for our statistical conclusions.</p>
+<div class="figure"><span id="fig:unnamed-chunk-450"></span>
+<img src="figures/whitlock_12.6-1.png" alt="Figure from Whitlock and Schluter, Chapter 12." width="90%" />
+<p class="caption">
+Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
+</p>
+</div>
 
 </div>
 </div>
 </div>
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="data-wrangling-part-ii.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="frequency-distributions-and-descriptive-statistics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="normal-distributions.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
