@@ -357,3 +357,12 @@ include_graphics(filename)
 ```
 
 
+## Summary table for different t-tests
+
+Here is a summary table giving the test statistic and degrees of freedom for each of the different types of t-tests described above.  Notice that they all boil down to a difference of two means, expressed in units of standard error. The associated P-value associated with each test is thus a measure of how surprising that scaled difference in means is under the null model.
+
+|          | test statistic | df|
+|:---------|:--------------:|:---:|
+|one-sample| $\frac{\overline{x}-\mu_0}{SE_\overline{x}}$ | $n-1$ |
+|two-sample| $\frac{\overline{x}_1-\overline{x}_2}{SE_{(\overline{x}_1-\overline{x}_2})}$ | $n_1 + n_2 - 2$ |
+|paired    | $\frac{\overline{D}-0}{SE_\overline{D}}$ | $n-1$ |
