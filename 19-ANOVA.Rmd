@@ -185,7 +185,7 @@ circadian <- read_csv("https://raw.githubusercontent.com/bio304-class/bio304-cou
 
 The data is very simple: just two columns indicating treatment group and the variable of interest:
 
-```{r}
+```{r, paged.print=TRUE}
 head(circadian, n=3)
 ```
 
@@ -226,7 +226,7 @@ summary(circadian.aov)
 
 If you want the ANOVA table in a form you can compute with, the `broom::tidy` function we explored previously comes in handy:
 
-```{r}
+```{r, paged.print=TRUE}
 circadian.aov.table <- tidy(circadian.aov)
 circadian.aov.table
 ```
@@ -279,7 +279,7 @@ The `aov()` function carries out all the ANOVA calculations behind the scenes. I
 
 **Total SS**
 
-```{r}
+```{r, paged.print=TRUE}
 grand.mean <- mean(circadian$shift)
 
 # total sum of squares
@@ -295,7 +295,7 @@ total.table
 
 We use `group_by` and `summarize` to calculates group means and the group deviates (the difference between the group means and the grand mean):
 
-```{r}
+```{r, paged.print=TRUE}
 group.df <-
   circadian %>% 
   group_by(treatment) %>% 
@@ -310,7 +310,7 @@ group.df
 Having calculated the group deviates, we calculate the group sum of squares and related quantities:
 
 
-```{r}
+```{r, paged.print=TRUE}
 group.table <-
   group.df %>%
   summarize(SS = sum(n * group.deviates**2),
@@ -325,7 +325,7 @@ group.table
 
 Next we turn to variation of the individual observations around the group means, which is the basis of the error sum of squares and mean square. Again we calculate this in two steps:
 
-```{r}
+```{r, paged.print=TRUE}
 error.df <-
   circadian %>% 
   group_by(treatment) %>% 
@@ -337,9 +337,9 @@ error.df <-
 error.df
 ```
 
-Now we calculate the rror sum of squares and related quantities:
+Now we calculate the error sum of squares and related quantities:
 
-```{r}  
+```{r, paged.print=TRUE}  
 error.table <-
   error.df %>%
   summarize(SS = sum(SS),

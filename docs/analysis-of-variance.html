@@ -872,7 +872,7 @@ F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_
 <a class="sourceLine" id="cb448-13" data-line-number="13"><span class="co">#&gt; 1 control   2.670     8</span></a>
 <a class="sourceLine" id="cb448-14" data-line-number="14"><span class="co">#&gt; 2 eyes      2.993     7</span></a>
 <a class="sourceLine" id="cb448-15" data-line-number="15"><span class="co">#&gt; 3 knee      3.752     7</span></a></code></pre></div>
-<p>Now we calculate the rror sum of squares and related quantities:</p>
+<p>Now we calculate the error sum of squares and related quantities:</p>
 <div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1">error.table &lt;-</a>
 <a class="sourceLine" id="cb449-2" data-line-number="2"><span class="st">  </span>error.df <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb449-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(SS),</a>
