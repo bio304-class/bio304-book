@@ -84,20 +84,26 @@ SS_\text{error} = \sum_{g=1}^k\sum_{i=1}^{n_g} (x_{i,g} - \overline{X}_g)^2
 MS_\text{error} = \frac{SS_\text{error}}{N-k}
 \]
 
-## ANOVA table
+**Variation explained: $R^2$**
 
-The results of an analysis of variance test are often presented in the form of a table organized as follows:
+We can summarize the contribution of the group differences to the total variation in the data, using the $R^2$ **value**.
 
-|Source | $SS$ | $df$ | $MS$ | $F$  |
-|:------|:----:|:----:|:----:|:----:|
-| Group |$SS_\text{group}$|$k-1$|$MS_\text{group}$|$MS_\text{group}/MS_\text{error}$|
-| Error |$SS_\text{error}$|$N-k$|$MS_\text{error}$|      |
-| Total |$SS_\text{total}$|$N-1$|$MS_\text{total}$|      |
+To do this we note that the total sum of squares is the sum of the group and error sum of squares:
+\[
+SS_\text{total} = SS_\text{group} + SS_\text{error}
+\]
+
+The $R^2$-value is thus defined as:
+\[
+R^2 = \frac{SS_\text{groups}}{SS_\text{total}}
+\]
 
 
-## ANOVA test statistic, $F$
+## ANOVA test statistic and sampling distribution
 
-* The test statistic used in ANOVA is designated $F$, and is based on the ratio of the group mean square deviation ($MS_\text{groups}$) to the error mean square deviation" ($MS_\text{error}$):
+**F-statistic**
+
+The test statistic used in ANOVA is designated $F$, and is defined as follows:
 
 \[
 F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_\text{group}}{\text{MS}_\text{error}}
@@ -107,16 +113,41 @@ F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_
 
 * Large values of the $F$-statistic means that the between group variance exceeds the within group variance, indicating that at least one of the means is different from the others
 
-## The F-distribution
+
+**The F-distribution**
 
 The sampling distribution of the $F$-statistic is called the $F$-distribution.  
 
 The $F$-distribution depends on two parameters: 
 
-    1) the degrees of freedom associated with the group sum of squares, $df_\text{group} = k - 1$; 
-    2) the degrees of freedom associated with the error sum of squares, $df_\text{error} = N - k$;
+  1) the degrees of freedom associated with the group sum of squares, $df_\text{group} = k - 1$; 
+  
+  2) the degrees of freedom associated with the error sum of squares, $df_\text{error} = N - k$;
     
-We designate a particular $F$-distribution as $F_{k-1,N-k}$.
+We designate a particular $F$-distribution as $F_{k-1,N-k}$.  We will illustrate what an F-distribution looks like for particular parameters below.
+
+
+## ANOVA tables
+
+The results of an analysis of variance test are often presented in the form of a table organized as follows:
+
+|Source | $SS$ | $df$ | $MS$ | $F$  |
+|:------|:----:|:----:|:----:|:----:|
+| Group |$SS_\text{group}$|$k-1$|$MS_\text{group}$|$MS_\text{group}/MS_\text{error}$|
+| Error |$SS_\text{error}$|$N-k$|$MS_\text{error}$|      |
+| Total |$SS_\text{total}$|$N-1$|                 |      |
+
+
+
+
+
+## The `aov()` function
+
+As you would suspect, there is a built in R function to carry out ANOVA. This function is designated `aov()`. `aov` takes a formula style argument where the variable of interest is on the left, and the grouping variable indicated on the right.
+
+```
+aov(variable.of.interest ~ grouping.variable, data = df)
+```
 
 
 
@@ -131,7 +162,13 @@ Your textbook describes an examplar data set from a study designed to test the e
     
 These data are available at: [ABD-circadian-rythms.csv](https://raw.githubusercontent.com/bio304-class/bio304-course-notes/master/datasets/ABD-circadian-rythms.csv)
 
+The null and alternative hypotheses associated with the ANOVA of these data are:
+
+* $H_0$: the means of the treatments groups are the same
+* $H_1$: the mean of at least one of the treatment groups is different from the others
+
 **Libraries**
+
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(magrittr)
@@ -141,23 +178,24 @@ set.seed(20180113)
 ```
 
 **Load the data**
+
 ```{r,message=FALSE}
 circadian <- read_csv("https://raw.githubusercontent.com/bio304-class/bio304-course-notes/master/datasets/ABD-circadian-rythms.csv")
 ```
 
-## The `aov()` function
+The data is very simple: just two columns indicating treatment group and the variable of interest:
 
-As you would suspect, there is a built in R function to carry out ANOVA. This function is designated `aov()`. `aov` takes a formula style argument where the variable of interest is on the left, and the grouping variable indicated on the right.
+```{r}
+head(circadian, n=3)
+```
 
 
+### Visualizing the data
 
-## Visualizing the data
-
-As we usually do, let's start by visualizing the data. We'll create a point plot depicting the observations colored by treatment group. 
+As is our standard practice, let's start by visualizing the data. We'll create a point plot depicting the observations colored by treatment group. 
 
 ```{r, fig.width = 5, fig.height = 4}
-
-# we're going to re-use our jitterying across plots so
+# we're going to re-use our jittering across plots so
 # assign it to a variable
 pd <- position_jitter(width=0.2, height=0)
 
@@ -168,10 +206,176 @@ point.plot <-
     geom_point(position = pd) +
     ylim(-3,1)+ 
     labs(x = "Treatment", y = "Phase shift (h)")
+
+point.plot
 ```
+
+### Carrying out the ANOVA
+
+From our visualization it certainly seems like there may be differences among the group (treatment) means.  Let's test this formally using the `aov()` function:
+
+```{r}
+circadian.aov <- aov(shift ~ treatment, data = circadian)
+```
+
+The `summary` function applied to the `aov` fit will print out a typical ANOVA table and calculate the associated P-value for the $F$ test statistic:
+
+```{r}
+summary(circadian.aov)
+```
+
+If you want the ANOVA table in a form you can compute with, the `broom::tidy` function we explored previously comes in handy:
+
+```{r}
+circadian.aov.table <- tidy(circadian.aov)
+circadian.aov.table
+```
+
+The table above tells us that the $F$-statistic for this ANOVA is ~7.29.  The table also tells us that the P-value associated with this F-statistic, is quite small, P-value < 0.005.  
+
+The P-value can be calculated explicitly using the `pf()` function (similar to the `pnorm()` and `pt()` functions we've seen previously):
+
+```{r}
+circadian.F.stat <- circadian.aov.table$statistic[1]
+pf(circadian.F.stat, df1 = 2, df2 = 19, lower.tail = FALSE)
+```
+Note that we set `lower.tail = FALSE` to calculate the probability of getting an F-statistic this large or greater.
+
+**Visualizing the F-distribution**
+
+Let's draw the corresponding F-distribution, $F_{2,19}$, using the `df()` function (parallel to `dnorm()` and `dt()`, with the region corresponding to an F-statistic greater than 7.29 shaded red. Because the area in the right tail we're interested in is quite small, in a second plot we've zoomed in on this region.
+
+```{r, fig.width=11, fig.height=4, fig.align="center",warning=FALSE}
+fdist <- data_frame(f = seq(0, 10, length.out = 250),
+                    density = df(f, df1=2, df2=19))
+
+plot.a <- 
+  ggplot(fdist, aes(f, density)) + 
+  geom_line() + 
+  geom_area(data = filter(fdist, f >= 7.29), fill='red', alpha=0.25) +
+  labs(x = "F", y = "Density", title="F(2,19)")
+
+plot.b <- 
+  plot.a + xlim(5,10) + ylim(0, 0.02) + 
+  labs(title = "Zoomed in view of right tail of F(2,19)")
+
+plot_grid(plot.a, plot.b, labels="AUTO")
+```
+
+**Critical values of the F-distribution**
+
+If we wanted to know what the critical F value is for a corresponding type I error rate we can use the `qf()` function:
+
+```{r}
+# the critical value of F for alpha = 0.05
+qf(0.05, 2, 19, lower.tail = FALSE)
+```
+
+
+
+## ANOVA calculations: Step-by-step
+
+The `aov()` function carries out all the ANOVA calculations behind the scenes. It's useful to pull back the curtain and see how the various quantities are calculated.
+
+**Total SS**
 
 ```{r}
 grand.mean <- mean(circadian$shift)
+
+# total sum of squares
+total.table <- 
+  circadian %>%
+  summarize(SS = sum((shift - grand.mean)**2),
+            df = n() - 1)
+
+total.table
+```
+
+**Group SS and MS**
+
+We use `group_by` and `summarize` to calculates group means and the group deviates (the difference between the group means and the grand mean):
+
+```{r}
+group.df <-
+  circadian %>% 
+  group_by(treatment) %>% 
+  summarize(n = n(), 
+            group.mean = mean(shift), 
+            grand.mean = grand.mean,
+            group.deviates = group.mean - grand.mean)
+
+group.df
+```
+
+Having calculated the group deviates, we calculate the group sum of squares and related quantities:
+
+
+```{r}
+group.table <-
+  group.df %>%
+  summarize(SS = sum(n * group.deviates**2),
+            k = n(),
+            df = k-1,
+            MS = SS/df)
+
+group.table
+```
+
+**Error SS and MS**
+
+Next we turn to variation of the individual observations around the group means, which is the basis of the error sum of squares and mean square. Again we calculate this in two steps:
+
+```{r}
+error.df <-
+  circadian %>% 
+  group_by(treatment) %>% 
+  mutate(group.mean = mean(shift),
+         error.deviates = shift - group.mean) %>%
+  summarize(SS = sum(error.deviates**2),
+            n = n())
+
+error.df
+```
+
+Now we calculate the rror sum of squares and related quantities:
+
+```{r}  
+error.table <-
+  error.df %>%
+  summarize(SS = sum(SS),
+            k = n(),
+            N = sum(n),
+            df = N - k,
+            MS = SS/df)
+
+error.table
+```
+
+
+**Calculating the F-statistic and $R^2$**
+
+Having calculated our estimates of between group variance and within group variance ($MS_\text{group}$ and $MS_\text{error}) we're now ready to calculate the $F$ test statistic.
+
+```{r}
+F.stat <- group.table$MS/error.table$MS
+F.stat
+```
+
+The variation "explained" by the group is:
+
+```{r}
+R2 <- group.table$SS/total.table$SS
+R2
+```
+Thus about 43% of the total sum of squared deviation among subjects, with respect to the phase shift variable, is explained by differences in light treatment.
+
+
+
+## Visualizing the partitioning of sum-of-squares
+
+**Total SS**
+
+```{r}
 total.plot <-
   circadian %>%
   ggplot(aes(x=treatment, y=shift, 
@@ -183,39 +387,10 @@ total.plot <-
          title = "Deviation of observations around the grand mean (dashed line)") + 
     theme(plot.title = element_text(size=9))
 
-plot_grid(point.plot, total.plot)
+total.plot
 ```
 
-
-
-
-## Total sum of squares
-
-We call the sum of the squared deviations around the grand mean the "total sum of sqaures" ($SS_\text{total}$). Here's how we calculate it and the associated degrees of freedom:
-
-```{r}
-# total sum of squares
-total.table <- 
-  circadian %>%
-  summarize(sum.squares = sum((shift - grand.mean)**2),
-            df = n() - 1)
-
-total.table
-```
-
-## Group sum of squares and mean square
-
-Next we turn to variation of the group means around the grand mean. We use `group_by` and `summarize` to calculates group means and the group deviates (the difference between the group means and the grand mean):
-
-```{r}
-group.df <-
-  circadian %>% 
-  group_by(treatment) %>% 
-  summarize(n = n(), 
-            group.mean = mean(shift), 
-            grand.mean = grand.mean,
-            group.deviates = group.mean - grand.mean)
-```
+**Group SS**
 
 Let's visualize the difference of the group means from the grand mean:
 
@@ -234,32 +409,9 @@ group.plot <-
 group.plot
 ```
 
-Now we calculate the group sum of squares ($SS_\text{group}$) and the group mean square ($MS_\text{group}$).  This calculation takes into account the size of each group (for the group sum of squares) and the degrees of freedom associated with the number of groups (for the group mean square).
+**Error SS**
 
-```{r}
-group.table <-
-  group.df %>%
-  summarize(SS = sum(n * group.deviates**2),
-            k = n(),
-            df = k-1,
-            MS = SS/df)
-```
-
-## Error sum of squares and mean square
-
-Next we turn to variation of the individual observations around the group means, which is the basis of the error sum of squares and mean square.
-
-```{r}
-error.df <-
-  circadian %>% 
-  group_by(treatment) %>% 
-  mutate(group.mean = mean(shift),
-         error.deviates = shift - group.mean) %>%
-  summarize(SS = sum(error.deviates**2),
-            n = n())
-```
-
-We can visualize these individual deviates around the group means as so:
+We can visualize the individual deviates around the group means as so:
 
 ```{r}
 error.plot <-
@@ -277,20 +429,9 @@ error.plot <-
 error.plot
 ```
 
-Now we calculate the error sum of squares ($SS_\text{error}$) and the error mean square ($MS_\text{error}$).  Here the degrees of freedom is the total sample size minus the number of groups.
-
-```{r}  
-error.table <-
-  error.df %>%
-  summarize(SS = sum(SS),
-            k = n(),
-            N = sum(n),
-            df = N - k,
-            MS = SS/df)
-```
 
 
-## Combined visualization
+**Combined visualization**
 
 We can combine our three plots created above into a single figure using `cowplot::plot_grid`:
 
@@ -300,74 +441,7 @@ combined.plot <-plot_grid(total.plot, group.plot, error.plot,
 combined.plot
 ```
 
-## Calculating the F-statistic
 
-Having calculated our estimates of between group variance and within group variance ($MS_\text{group}$ and $MS_\text{error}) we're now ready to calculate the $F$ test statistic.
-
-```{r}
-F.stat <- group.table$MS/error.table$MS
-F.stat
-```
-
-## The F-distribution
-
-Our calculated F statistic is much larger than 1. To calculate the probability of observing an F-statistic this large or greater under the null hypothesis, we can need to examine the F-distribution.  
-
-The F-distribution has two degree of freedom parameters, indicating the degrees of freedom associated with the group variance and the degrees of freedom associated with the error variance.  Here is an illustration of the F-distribution, $F_{2,19}$
-
-```{r}
-f <- seq(0, 10, length.out = 200)
-df1 <- 2
-df2 <- 19
-f.density <- df(f, df1, df2)
-
-ggplot(data_frame(F = f, Density = f.density), aes(x = F, y = Density)) +
-  geom_line() + 
-  labs(title = "F-distribution with df1=2, df2 = 19")
-```
-
-We can use the F distribution function, `pf()` to lookup the probability of getting a value of `r F.stat` or larger under the null hypothesis:
-
-```{r}
-# degrees of freedom for group and error sum of squares
-df.group <- group.table$df
-df.error <- error.table$df
-
-# use the F distribution function 
-pf(F.stat, df.group, df.error, lower.tail = FALSE)
-```
-
-### Critical values of the F-distribution
-
-If we wanted to know what the critical F value is for a corresponding type I error rate we can use the `qf()` function:
-
-```{r}
-# the critical value of F for alpha = 0.05
-qf(0.05, df.group, df.error, lower.tail = FALSE)
-```
-
-
-
-
-
-## The `aov` function
-
-As you would suspect, there is a built in R function to carry out ANOVA. This function is designated `aov()`. `aov` takes a formula style argument where the variable of interest is on the left, and the grouping variable indicated on the right.
-
-```{r}
-anova.circadian <- aov(shift ~ treatment, data = circadian)
-```
-
-The `summary` function applied to the `aov` fit will print out a typical ANOVA table and calculate the associated P-value for the $F$ test statistic:
-
-```{r}
-summary(anova.circadian)
-```
-
-If you want the ANOVA table in a form you can compute with, the `broom::tidy` function we explored previously comes in handy:
-```{r}
-tidy(anova.circadian)
-```
 
 ## Which pairs of group means are different?
 
@@ -380,13 +454,13 @@ Here we focus on a common test for unplanned comparisons, called the Tukey Hones
 The function `TukeyHSD` implements the Tukey-Kramer test. The input to `TukeyHSD` is the fit from `aov`:
 
 ```{r}
-TukeyHSD(anova.circadian)
+TukeyHSD(circadian.aov)
 ```
 
 Here again, the `broom::tidy` function comes in handy:
 
 ```{r}
-tidy(TukeyHSD(anova.circadian))
+tidy(TukeyHSD(circadian.aov))
 ```
 
 The Tukey HSD test by default give us 95% confidence intervals for the differences in means between each pair of groups, and an associated P-value for the null hypothesis of equal means between pairs.  Interpretting the results above, we see that we fail to reject the null hypothesis of equal means for the knee and control treatment groups (i.e. we have no statistical support to conclude they are different).  However, we reject the null hypothesis for equality of means between control and eye treatments and between knee and eye treatements.  We have evidence that light treatments applied to the eye cause a mean negative shift in the phase of melatonin production relative to control and knee treatment groups.
