@@ -1,0 +1,945 @@
+--- 
+title: "Biology 304: Biological Data Analysis"
+author: "Paul M. Magwene"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    highlight: haddock
+    df_print: tibble
+    config:
+      toc:
+        collapse: section
+      fontsettings:
+        theme: white
+        family: sans
+        size: 2 
+      toolbar:
+        position: fixed       
+documentclass: book
+bibliography: [bio304-refs.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Hands-on materials for Bio 304 course at Duke University."
+---
+
+# Introduction 
+
+Placeholder
+
+
+## How to use these lecture notes
+
+<!--chapter:end:index.Rmd-->
+
+
+# Data story: Women and children first on the Titanic?
+
+Placeholder
+
+
+## Background
+## Dataset
+## Libraries
+## Read data
+## What's in the data?
+### Simple data wrangling
+## Categorizing passengers
+### How many people survived?
+### Women first?
+#### Contingency tables
+### A bar plot using proportions rather than counts
+### Mosaic plots
+## Passenger ages
+## How does age relate to survival?
+### Strip charts
+### Box plots
+### Fitting a model relating survival to age and sex
+## How does class affect survival?
+### Combining Sex and Class
+### Extending the logistic regression model to consider class, age, sex, and survival
+## Conclusion
+
+<!--chapter:end:01-data-story-titanic.Rmd-->
+
+
+# Getting Started with R
+
+Placeholder
+
+
+## What is R?
+## What is RStudio?
+## Entering commands in the console
+## Comments
+## Using R as a Calculator
+### Common mathematical functions
+## The R Help System
+### Getting help from the console
+## Variable assignment in R
+### Valid variable names
+## Data types
+## Logical values
+### Logical operators
+## Character strings
+### Joining strings
+### Splitting strings
+### Substrings
+## Packages {#packages}
+### Installing packages from the console
+### Install the tidyverse package
+### Installing packages from the RStudio dialog
+### Loading packages with the `library()` function
+## Reading data from a file
+## Exploring the "possums" data set
+## Simple tables
+## Simple figures
+## Bar plots
+## Histograms
+## Scatter plots
+
+<!--chapter:end:02-getting-started-R.Rmd-->
+
+
+#  R Markdown and R Notebooks
+
+Placeholder
+
+
+## R Notebooks
+## Creating an R Notebook
+## The default R Notebook template
+## Code and Non-code blocks
+### Non-code blocks
+## Bullet points lists
+## Numbered lists
+## Mathematics
+### Code blocks
+## Running a code chunk
+## Running all code chunks above
+## "Knitting an" R Markdown to HTML
+## Sharing your reproducible R Notebook
+
+<!--chapter:end:03-intro-R-markdown.Rmd-->
+
+
+# More R Basics: Data structures
+
+Placeholder
+
+
+## Vectors
+### Vector Arithmetic
+### Vector recycling
+### Simple statistical functions for numeric vectors
+### Indexing Vectors
+### Comparison operators applied to vectors
+### Combining Indexing and Comparison of Vectors
+### Vector manipulation
+### Vectors from regular sequences
+### Additional functions for working with vectors
+## Lists
+### Length and type of lists
+### Indexing lists
+#### Single bracket list indexing
+#### Double bracket list indexing
+### Naming list elements
+### The `$` operator
+### Changing and adding lists items
+### Combining lists
+### Converting lists to vectors
+## Data frames
+### Creating a data frame
+### Type and class for data frames
+### Length and dimension for data frames
+### Indexing and accessing data frames
+#### Single bracket indexing of the columns of a data frame
+#### Single bracket indexing of the rows of a data frame
+#### Single bracket indexing of both the rows and columns of a data frame
+#### Double bracket and `$` indexing of data frames
+### Logical indexing of data frames
+### Adding columns to a data frame
+
+<!--chapter:end:04-basic-data-structures.Rmd-->
+
+
+# Introduction to ggplot2
+
+Placeholder
+
+
+## Loading ggplot2
+## Example data set: Anderson's Iris Data
+## Template for single layer plots in ggplot2
+## An aside about function arguments
+## Strip plots
+### Jittering data
+### Adding categorical information
+### Rotating plot coordinates
+## Histograms
+### Variations on histograms when considering categorical data
+## Faceting to depict categorical information
+## Density plots
+## Violin or Beanplot
+## Boxplots
+## Building complex visualizations with layers
+## Useful combination plots
+### Boxplot plus strip plot
+### Setting shared aesthetics
+## ggplot layers  can be assigned to variables
+### Violin plot plus strip plot
+## Adding titles and tweaking axis labels
+## ggplot2 themes
+### Further customization with `ggplot2::theme`
+## Other aspects of ggplots can be assigned to variables
+## Bivariate plots
+### Scatter plots
+### Adding a trend line to a scatter plot
+#### Linear trend lines
+## Bivariate density plots
+## Combining Scatter Plots and Density Plots with Categorical Information
+## Density plots with fill
+## 2D bin and hex plots
+## The `cowplot` package
+
+<!--chapter:end:05-ggplot-intro.Rmd-->
+
+
+# Introduction to the `dplyr` package
+
+Placeholder
+
+
+## Libraries
+## Reading data with the `readr` package
+### Example data: NC Births
+### Reading Excel files
+## A note on "tibbles"
+## Data filtering and transformation with `dplyr`
+## dplyr's "verbs"
+### `select`
+### `filter`
+### `mutate`
+### `arrange`
+### `summarize`
+### `group_by`
+### Combining grouping and summarizing
+### Scoped variants of `mutate` and `summarize`
+#### `summarize_all()`
+#### `summarize_if()`
+#### `summarize_at()`
+### Combining summarize with grouping aesthetics in `ggplot2`
+## Pipes
+### Install and load `magrittr`
+### The basic pipe operator
+### An example without pipes
+### The same example using pipes
+### Assigning the output of a statement involving pipes to a variable
+### Compound assignment pipe operator
+### The dot operator with pipes
+### The exposition pipe operator
+
+<!--chapter:end:06-dplyr-intro.Rmd-->
+
+
+# Data wrangling, Part I
+
+Placeholder
+
+
+## Libraries
+## Data
+## Renaming data frame columms 
+## Dropping unneeded columns
+### Finding all empty columns
+### Dropping columns by matching names
+## Merging data frames
+## Reshaping data with tidyr
+### Wide to long conversions using `tidyr::gather`
+### Extracting information from combined variables using `tidyr::extract`
+###  Subsetting rows 
+### Splitting columns
+#### A fancier regex for the cdc experiments
+### Combining data frames
+### Sorting data frame rows
+## Using your tidy data
+### Visualizing gene expression time series
+### Finding the most variable genes
+
+<!--chapter:end:07-data-wrangling.Rmd-->
+
+
+# Data wrangling, Part II
+
+Placeholder
+
+
+## Libraries
+## Data
+## Heat maps
+### Better color schemes with RColorBrewer
+### Looking for patterns using sorted data and heat maps
+## Long-to-wide conversion using `tidyr::spread`
+## Exploring bivariate relationships using "wide" data
+### Large scale patterns of correlations
+### Adding new columns and combining filtered data frames
+### A heat mapped sorted by correlations
+### A "fancy" figure
+
+<!--chapter:end:08-data-wrangling-part2.Rmd-->
+
+
+# Functions and control flow statements
+
+Placeholder
+
+
+## Writing your own functions
+### Function arguments
+### Writing functions with optional arguments
+### Putting R functions in Scripts
+## Control flow statements
+### `if` and `if-else` statements
+#### `if-else` in a function
+#### Multiple `if-else` statements
+### for loops
+#### Efficiency tip
+## This is inefficient, see description eblow
+### `break` statement
+### `repeat` loops
+### `next` statement
+### while statements
+### `ifelse`
+## `map` and related tools
+### basic `map`
+### `map_if` and `map_at`
+### mapping in parallel using `map2`
+### `map` variants that return vectors
+
+<!--chapter:end:09-functions-and-control-flow.Rmd-->
+
+# Frequency Distributions and Descriptive Statistics
+
+See the lecture slides.
+
+<!--chapter:end:10-frequency-distns-descriptive-stats.Rmd-->
+
+
+# Joint Frequency Distributions and Measures of Association
+
+See the lecture slides.
+
+<!--chapter:end:11-joint-frequency-distns-bivariate-association.Rmd-->
+
+
+# Introduction to Probability
+
+Placeholder
+
+
+## Terms
+### Examples of random trials, outcomes, and events
+#### Random trials
+#### Outcomes
+#### Events
+## Frequentist definition of probability
+### Examples: Probability
+#### Classic examples
+#### Biological examples
+## Probability distribution
+### Discrete probability distribution
+### Continuous probability distribution
+## Mutually exclusive events
+### Addition rule, mutually exclusive events
+## Independence
+### Multiplication rule, independent events
+## General addition rule
+## Conditional probability
+### Example: Conditional probability
+## General multiplication rule
+### Example: General multiplication rule
+## Probability trees
+## Law of total probability
+
+<!--chapter:end:12-intro-probability.Rmd-->
+
+
+# Introduction to Sampling Distributions, Part I
+
+Placeholder
+
+
+## Libraries
+## In class experiments
+### Experiment 1
+### Experiment 2
+## Simulating sampling in R
+### Binomial distribution
+#### Binomial distribution in R
+### Sampling from the binomial distribution in R
+## Distribution of estimates of the proportion
+
+<!--chapter:end:13-intro-sampling-distributions-I.Rmd-->
+
+
+# Introduction to Sampling Distributions, Part II
+
+Placeholder
+
+
+## Libraries
+## Data set: Simulated male heights
+### Properties of the underlying population
+### Other R functions related to the normal distribution
+## Seeding the pseudo-random number generator
+## Random sampling from the simulated population
+### Another random sample
+### Simulating the generation of many random samples
+### A function to estimate statistics of interest in a random sample
+### Generating statistics for many random samples
+## Simulated sampling distribution of the mean 
+### Differences between sampling distribution and sample/population distributions
+### Use sampling distributions to understand the behavior of statistics of interest
+### Sampling distributions for different sample sizes
+### Discussion of trends for sampling distributions of different sample sizes
+## Standard Error of the Mean
+## Sampling Distribution of the Standard Deviation
+### Standard error of standard deviations
+## What happens to the sampling distribution of the mean and standard deviation when our sample size is small?
+### For small samples, sample standard deviations systematically underestimate the population standard deviation
+### Underestimates of the standard deviation given small $n$ lead to understimates of the SE of the mean
+
+<!--chapter:end:14-intro-sampling-distributions-II.Rmd-->
+
+
+# Introduction to hypothesis testing
+
+Placeholder
+
+
+## Libraries
+## Null and Alternative Hypotheses
+### Null hypotheses
+### Alternative hypotheses
+## Rejecting / failing to reject null hypotheses
+## Outcomes of hypothesis tests
+## Using p-values to assess the strength of evidence against the null hypothesis
+## Example: Comparing a sample mean to an hypothesized normal distribution
+### Null and alternative hypotheses
+### Sampling distribution of the mean 
+### Calculating a p-value
+## Example: Handedness of toads
+### Null and alternative hypotheses
+### Data
+### Sampling distribution for proportions: Binomial distribution
+### Calculating a p-value for the binomial test
+### The `binom.test()` function
+## Example: Measuring the association between maternal smoking and premature births
+### Null and alternative hypotheses:
+### Contingency table analysis using the $\chi^2$ statistic
+### $\chi^2$-distribution
+### Carrying out a hypothesis test using the $\chi^2$
+### Interpretation of the $\chi^2$-test
+
+<!--chapter:end:15-intro-hypothesis-testing.Rmd-->
+
+
+# Introduction to confidence intervals
+
+Placeholder
+
+
+## Confidence Intervals
+## Generic formulation for confidence intervals
+## Example: Confidence intervals for the mean
+### Simulation of means
+### Distance between sample means and true means
+### Calculating a CI
+## A problem arises!
+
+<!--chapter:end:16-confidence-intervals.Rmd-->
+
+
+# Normal distributions
+
+Placeholder
+
+
+## Basics about normal distributions
+### Notation
+## Normal distribution, probability density function
+### `dnorm()` calculates the normal pdf
+## Approximately normal distributions are very common 
+## Central limit theorem
+### Example:  Continuous variation from discrete loci
+## Visualizing normal distributions 
+## Comparing values from different normal distributions
+### Standardized or Z-scores
+## Standard normal distribution
+## 88-95-99.7 Rule
+## Percentiles
+## Cutoff points
+## Assessing normality
+### Comparing histograms to theoretical normals 
+### Normal probability plot
+### Comparing the empirical CDF to the theoretical CDF
+
+<!--chapter:end:17-normal-distribution.Rmd-->
+
+
+# Comparing sample means
+
+Placeholder
+
+
+## Hypothesis test for the mean using the t-distribution
+## One sample t-test
+### One sample t-test, test statistic
+### Assumptions of one sample t-tests
+### Example: Gene expression in mice
+### Confidence intervals for the mean
+## The `t.test` function in R
+## Two sample t-test
+### Standard error for the difference in means
+### Two sample t-test, test statistic
+### Assumptions of two sample t-test
+### Example: Comparing the effects of two drugs
+### Specifying `t.test()` in terms of a formula
+## Paired t-test
+### Paired t-test, test statistic
+### Assumptions of paired t-test
+### Paired t-test, example
+## The fallacy of indirect comparison
+### Interpreting confidence intervals in light of two sample t-tests
+## Summary table for different t-tests
+
+<!--chapter:end:18-comparing-sample-means.Rmd-->
+
+
+# Analysis of Variance
+
+Placeholder
+
+
+## Hypotheses for ANOVA
+## ANOVA, assumptions
+## ANOVA, key idea
+## Partioning of sum of squares
+## Mathematical partitioning of sums of squares
+## ANOVA test statistic and sampling distribution
+## ANOVA tables
+## The `aov()` function
+## Example, circadian rythm data
+### Visualizing the data
+### Carrying out the ANOVA
+## ANOVA calculations: Step-by-step
+## Visualizing the partitioning of sum-of-squares
+## Which pairs of group means are different?
+### Tukey-Kramer test
+## Repeatability
+### Estimating Repeatability using ANOVA {-}
+### Repeatability: Walking stick example {-}
+
+<!--chapter:end:19-ANOVA.Rmd-->
+
+# Violations of Assumptions
+
+Both t-tests and ANOVA make assumptions about the variable of interest. Namely, both assume:
+
+- The variable of interest approximately normally distributed
+- The variance of the variable is approximately the same in the groups being compared
+
+When our data violate the assumptions of standard statistical tests, we have several options:
+
+- Ignore violations of the assumptions, especially with large sample sizes and modest violations
+- Transform the data (e.g., log transformation)
+- Nonparametric methods
+- Permutation tests
+
+**Libraries**
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(magrittr)
+library(cowplot)
+```
+
+
+## Graphical methods for detecting deviations from normality
+
+As we have seen, histogram and density plot can highlight distributions that deviate from normality.
+
+Look for:
+  * distinctly non-symmetric spread -- long tails, data up against a lower or upper limit
+  * multiple modes
+  * Varying bin widths (histograms) and the degree of smoothing (density plots) can both be useful.
+
+
+#### Example data: Marine reserves{-}
+
+Example 13.1 in your text book describes a study aimed at understanding whether marine reserves are effective at preserving marine life. The data provided are "biomass ratios" between reserves and similar unprotected sites nearby. A ratio of one means the reserve and the nearby unprotected site had equal biomass; values greater than one indicate greater biomass in the rserve while values less than one indicate greater biomass in the unprotected site.
+
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(magrittr)
+library(cowplot)
+
+marine.reserves <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-marine-reserves.csv")
+
+ggplot(marine.reserves, aes(x = biomassRatio, y = ..density..)) +
+  geom_histogram(bins=8, color='gray', alpha=0.5) + 
+  stat_density(geom="line",
+               adjust = 1.25,   # adjust is in multiples of smoothing bandwidth
+               color = 'firebrick', size=1.5) +
+  labs(x = "Biomass ratio", y = "Probability density")
+```
+
+Both the histogram and the density plot suggest the biomass ratio distribution is strongly right skewed.
+
+### Normal probability plots {-}
+
+Normal probability plots are another visualization tools we saw previously for judging deviations from normality. If the observed data are approximately normally distributed, the scatter of points should fall roughly along a straight line with slope equal to the standard deviation of the data and intercept equal to the mean of the data.
+
+```{r, fig.asp = 1}
+ggplot(marine.reserves, aes(sample = biomassRatio)) + 
+  geom_qq() + 
+  geom_qq_line()
+```
+
+
+### Formal test of normality
+
+The *Shapiro-Wilk test* <font color='blue'>"evaluates the goodness of fit of a normal distribution to a set of data randomly sampled from a population"</font> WS 13.
+
+With the Shapiro-Wilk test, the null hypothesis proposes that the data follow a normal distribution. Therefore, small P-values reject the null hypothesis of normality. 
+
+```{r, eval=FALSE}
+shapiro.test(x)
+```
+
+We will use function `shapiro.test` when we consider the effects of data transformation (below).
+
+
+***
+
+### When to ignore violations of assumptions
+
+Estimation and testing of means tends to be robust to violation of assumptions of normality and homogeneity of variance. This robustness is a consequence of the Central Limit Theorem.
+
+However, if <font color='blue'>"two groups are being compared and both differ from normality in different ways, then even subtle deviations from normality can cause errors in the analysis (even with fairly large sample sizes)"</font> WS 13.
+
+***
+
+### Data transformations
+
+**Log transformation**: This widely-used transformation can only be applied to positive numbers, since `log(x)` is undefined when `x` is negative or zero. However, addition of a small positive constant can be used to ensure that all data are positive. For example, if a vector `x` includes negative numbers, then `x + abs(min(x)) + 1` results in positive numbers that can be log transformed.
+
+**Arcsine square root transformation**: $p' = arcsin[\sqrt{p}]$ is often used when the data are proportions. If the original data are percentages, first divide by 100 to convert to proportions.
+
+**Square root transformation**: $Y' = \sqrt{Y + K}$, where $K$ is a constant to ensure that no data points are negative. Results from the square root transformation are often very similar to log transformation.
+
+**Square transformation**: $Y' = Y^2$. This may be helpful when the data are skewed left. (See panel B of the first figure, above).
+
+**Antilog transformation**: $Y' = e^Y$ may be helpful if the square transformation does not resolve the problem. Only usable when all data points have the same sign.  If all data points are less than zero, take the absolute value before applying the antilog transformation.
+
+**Reciprocal transformation**: $Y' = {\frac{1}{Y}}$ When data are right skewed (panel A of the first figure, above), this transformation may be helpful. If all data points are less than zero, take the absolute value before applying the reciprocal transformation.
+
+### Confidence intervals and data transformations
+
+Sometimes we need to transform our data before analysis, and then we want to know the confidence intervals on the original scale. In such cases, we back-transform the upper and lower CIs to the original scale of measurement.
+
+WS example 13.1 considers a paired t-test examining biomass levels found in protected marine reserves vs. paired control areas that are unprotected. For 32 reserves, the *biomass ratio* is the ratio of biomass in each protected area, divided by biomass in the paired unprotected control area. (The histogram and QQ-plot for these data are shown in figure 3, above.) Given this distribution of biomass ratio, log-transformed data were used to compute the mean and 95% CI around the mean.
+
+```{r}
+biomassRatio <- c(1.34, 1.96, 2.49, 1.27, 1.19, 1.15, 1.29, 1.05, 
+                  1.1, 1.21, 1.31, 1.26, 1.38, 1.49, 1.84, 1.84, 
+                  3.06, 2.65, 4.25, 3.35, 2.55, 1.72, 1.52, 1.49, 
+                  1.67, 1.78, 1.71, 1.88, 0.83, 1.16, 1.31, 1.4)
+log.bmr <- log(biomassRatio)
+
+(t.res <- t.test(log.bmr, mu = 0)) # t.test on log scale
+
+(CI <- t.res$conf.int) # save and print CI on log scale
+```
+
+This analysis finds the 95% CI around the mean ranges from `r CI[[1]]` to `r CI[[2]]`.
+
+To understand the biological implications of this analysis, we back-transform the log data results to the original scale, computing the *antilog* by using function `exp`. After this, the back-transformed CI is now on the scale of $e^{log.X} = X$. 
+
+Letting $\mu'$ = `mean(log.X)`, we have $0.347 < \mu' < 0.611$ on the log scale.
+
+On the original scale:  
+
+```{r}
+(original.scale.CI <- exp(CI)) # back-transform CI to original scale
+```
+
+Hence, 1.41 < geometric mean < 1.84.
+
+The *geometric mean* equals $\sqrt[n]{x_1x_2 ... x_n}$, computed by multiplying all these _n_ numbers together, then taking the $n^{th}$ root.
+
+Biologically, <font color='blue'>"this 95% confidence interval indicates that marine reserves have 1.41 to 1.84 times more biomass on average than the control sites do"</font>. WS13.3
+
+***
+
+### Example: Log transformation of data with outliers
+
+Data distributions in biology often show outliers for various traits. Examples might look like the following. In the histogram you can see a small group of outliers on the right:
+
+```{r, echo = FALSE}
+set.seed(1)
+df <- data_frame(norm.dat=rnorm(200), 
+                 other = rnorm(200, mean=3), 
+                 outlier = runif(200))
+df <- mutate(df, has_outliers = ifelse(outlier >= 0.95, other, norm.dat),
+             trait = has_outliers + abs(min(has_outliers)) + 1,
+             log.trait = log(trait))
+df <- select(df, trait, log.trait)
+```
+
+```{r, out.width = "60%"}
+head(df)
+
+ggplot(df) + geom_histogram(aes(x = trait), bins = 50)
+```
+
+And the deviation from linearity is clear in the QQ-plot (upper right).
+
+```{r, out.width = "60%"}
+ggqqplot(df$trait)
+```
+
+We will use the Shapiro-Wilk test to check normality. With this test, the null hypothesis proposes that the data follow a normal distribution. Therefore, small P-values reject the null hypothesis of normality.
+
+```{r}
+shapiro.test(df$trait)
+```
+
+Log transformation may improve the data distribution, so that it is closer to normality:
+
+```{r, out.width = "60%"}
+ggplot(df) + geom_histogram(aes(x = log.trait), bins = 50)
+ggqqplot(df$log.trait)
+```
+
+With this log transformation, the histogram and QQ-plot look reasonably normal. And the Shapiro-Wilk test on the transformed data is compatible with normality:
+
+```{r}
+shapiro.test(df$log.trait)
+```
+
+The P-value > 0.05, so we do not reject the null hypothesis of normality.
+
+***
+
+### Example: Zero-inflated data
+
+Several Duke Biology labs transplant genotypes to the field and measure the fitness of each individual plant. Fitness equals the number of seeds produced, which is zero when individuals die early in life.  Such "zero-inflated" distributions cannot easily be transformed to normality, and thus require other statistical approaches for analysis.
+
+```{r, out.width = "60%", echo=FALSE}
+set.seed(1)
+df <- data_frame(norm.dat = rnorm(500, mean = 1, sd = 1))
+df2 <- mutate(df, 
+              zero.infl = ifelse(norm.dat < 0, 0, norm.dat),
+              fitness = zero.infl / mean(zero.infl))
+ggplot(df2) + geom_histogram(aes(x = fitness), bins = 50) +
+  labs(title="Zero-inflated distribution of fitness", 
+       x = "Individual fitness",
+       y = "Frequency")
+```
+
+***
+
+### Nonparametric tests
+
+Nonparametric tests are helpful for non-normal data distributions, especially with outliers. Typically, these tests use the ranks of the data points rather than the actual values of the data. Because they are not using all available data, nonparametric tests have lower statistical power than parametric tests. As with parametric tests, nonparametric approaches assume that the data are a random sample from the population.
+
+**Sign test** <font color='blue'>"compares the median of a sample to a constant specified in the null hypothesis. It makes no assumption about the distribution of the measurment in the population."</font> (WS 13). However, the sign test has very low statistical power. WS example 13.4 shows an application of the sign test.
+
+**Wilcoxon signed-rank test** This test assumes that the distribution of the data is symmetrical around the median. Given this restrictive assumption, we do not consider this further.
+
+**Mann-Whitney U-test** compares the data distribution of two groups, without requiring the normality assumptions of the two-sample t-test. The null hypothesis of this test is that the within-group data *distributions* are the same. Therefore, it is possible to reject the null hypothesis because the distributions differ, *even if the means are the same*. The Mann-Whitney U-test is sensitive to unequal variances or different patterns of skew. Therefore, this test should be used to compare distributions, not to compare means. 
+
+Confusingly, the Mann-Whitney U-test is also called the Mann–Whitney–Wilcoxon test, which is similar to the Wilcoxon rank-sum test. **Remember the following:**:
+
+<font color='red'>
+* Do not confuse the Wilcoxon rank-sum test with the Wilcoxon signed-rank test. They are different; we won't use either one.</font>
+
+<font color='red'>
+* We will focus on the Mann-Whitney U-test, which we will perform with function `wilcox.test`.</font>
+
+### Mann-Whitney U example
+
+WS 13.5 examines a rather disgusting example of sexual cannablism in sagebrush crickets. Without going into the gory details, our null hypothesis is:
+
+* $H_0$: Time to mating is the same for female crickets that were starved or fed.
+* $H_A$: Time to mating differs between these groups.
+
+The following data were obtained in that study:
+
+```{r}
+starved <- c(1.9, 2.1, 3.8, 9.0, 9.6, 13.0, 14.7, 17.9, 21.7, 29.0, 72.3)
+fed <- c(1.5, 1.7, 2.4, 3.6, 5.7, 22.6, 22.8, 39.0, 54.4, 72.1, 73.6, 79.5, 88.9)
+time <- c(starved, fed)
+grp <- c(rep("starved", length(starved)), rep("fed", length(fed)))
+df <- data_frame(Time = time, Group = grp)
+head(df)
+tail(df)
+
+ggplot(df) +
+  geom_density(aes(x = Time, color = Group)) +
+  labs(x = "Time to mating", y = "Density")
+```
+
+Clearly these distributions differ from each other, and are far from normal. To perform the Mann-Whitney U text, we use function `wilcox.test` ([details here](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html)). This can take a data frame as input:
+
+```{r}
+wilcox.test(time ~ Group, alternative = "two.sided", paired = FALSE, data = df)
+```
+
+***
+
+### Type I and Type II error rates
+
+Violation of statistical assumptions (such as normality) may cause parametric tests to have an elevated probability of rejecting the null hypothesis when it is true -- an elevated Type I error rate. 
+
+A nonparametric test may solve this problem, at the cost of failing to reject the null hypothesis when it is false (Type II errors). Thus, nonparametric tests typically have lower statistical power.
+
+Therefore, we prefer to use parametric tests whenever possible.
+
+***
+
+### Permutation tests = Randomization tests
+
+<font color='blue'>A _permutation test_ generates a null distribution for the association between two variables by repeatedly and randomly rearranging the values of one of the two variables in the data.</font> WS 13.8
+
+```{r, echo=FALSE}
+# Generate real data set and three permuted columns
+set.seed(79) # set seed for random numbers
+grp <- c("A", "A", "A", "A", "B", "B", "B", "B", "mean.A", "mean.B", "mean.diff")
+obs.data <- c(1.1, 0.9, 1.3, 1.0, 2.1, 2.2, 1.9, 2.1, NA, NA, NA)
+obs.data[9] <- mean(obs.data[1:4])
+obs.data[10] <- mean(obs.data[5:8])
+obs.data[11] <- obs.data[10] - obs.data[9]
+df.obs <- data_frame(Group = grp, obs = obs.data)
+
+perm.vec <- function(my.vec){
+  my.vec[1:8] = sample(my.vec[1:8])
+  my.vec[9]  <- mean(my.vec[1:4])
+  my.vec[10] <- mean(my.vec[5:8])
+  my.vec[11] <- my.vec[10] - my.vec[9]
+  return(my.vec)
+}
+  
+df.perm <- mutate(df.obs,
+                  perm1 = perm.vec(obs),
+                  perm2 = perm.vec(obs),
+                  perm3 = perm.vec(obs))
+```
+
+To illustrate permutation of an observed data set, we create a data frame with 4 observations from group A (rows 1-4), and four observations from group B (rows 5 - 8). Then, in the next three rows, we compute the mean of group A, the mean of group B, and the difference between the means. This is shown in the two columns of the data set:
+
+```{r}
+df.obs
+```
+
+We hypothesize that:
+
+$H_0$: The means of the two groups are equal. The difference between means equals zero.
+
+$H_A$: The means of the two groups are not equal
+
+`mean.diff` is our _test statistic_, and the observed value of `mean.diff` = `r df.obs$obs[[11]]`.
+
+Next, we permute ("randomize" or "shuffle") the first eight rows. After randomization, $H_0$ is true, because we have removed any relationship between Group and the permuted data. Columns `perm1`, `perm2`, `perm3` show three reshuffled outcomes under the null hypothesis, and the last line shows the differences in group means under $H_0$.
+
+```{r}
+df.perm
+```
+
+And if we do this 1000 times, we estimate the _null distribution_ of `mean.diff` when $H_0$ is true. Using this, we can compare the observed value of our test statistic to the null distribution, in order to determine whether the observed `mean.diff` is an extreme outlier, or else represents a common occurrence under the null hypothesis. By placing the observed test statistic within the null distribution (figure below), we can estimate the P.value for our observed data.
+
+***
+
+Next we perform a permutation test to compare the group means for the cricket example. (Code is in the rmd file, but not shown in the html output.) We again use
+
+$H_0$: The means of the two groups are equal. The difference between means equals zero.
+
+```{r, echo=FALSE}
+# compute basic information for the cricket data set
+starved <- c(1.9, 2.1, 3.8, 9.0, 9.6, 13.0, 14.7, 17.9, 21.7, 29.0, 72.3)
+fed <- c(1.5, 1.7, 2.4, 3.6, 5.7, 22.6, 22.8, 39.0, 54.4, 72.1, 73.6, 79.5, 88.9)
+obs.mean.diff <- mean(starved) - mean(fed) # mean difference
+len.starv <- length(starved) # length of vector
+len.fed <- length(fed)       # length of vector
+time <- c(starved, fed)      # concatenate two vectors
+len.tot <- length(time)      # total lenght of concatenated vector
+start.fed <- len.starv + 1   # beginning of second group in vector
+```
+
+```{r, echo=FALSE}
+# Function to reshuffle the data and return difference in the means
+mixup <- function(time, len.tot, len.starv, start.fed){
+  z <- sample(time, len.tot) # permute data into random order within vector
+  # Compute means, and difference between means
+  mean1 <- mean(z[1:len.starv])
+  mean2 <- mean(z[start.fed:len.tot])
+  mean.diff <- mean1 - mean2
+  return(mean.diff) # return mean diff between the (reshuffled) groups
+}
+```
+
+```{r, echo=FALSE}
+# Set up book-keeping for this analysis
+NumPermute <-  10000 # Number of permutations
+# Vector to hold differences between permuted groups
+res <- vector(mode = "numeric", length = NumPermute)
+
+# For every permutation, save mean.diff between permuted groups
+set.seed(79) # set seed for random numbers
+for (i in 1:NumPermute){
+  res[i] <- mixup(time, len.tot, len.starv, start.fed)
+}
+
+# For observed mean difference, where is it in permuted distribution?
+percentile <- ecdf(res) # get CDF within null distribution
+p.value <- 2.0 * percentile(obs.mean.diff) # two tailed test
+
+# graph permuted distribution and the observed mean diff (red line)
+df.res <- data.frame(res = res)
+ggplot(df.res) + 
+  geom_histogram(aes(x = res), color="lightgray", fill="lightgray", bins = 60) +
+  labs(title="Permuted null distribution of difference between group means", 
+       x = "Difference between group means", y = "Frequency") +
+  geom_vline(xintercept = obs.mean.diff, linetype = "dashed", 
+             color = "red", size=0.75) + theme_bw()
+```
+
+The figure shows the permuted (null) distribution of the difference between group means, and the vertical red line shows the observed value of this test statistic. The P-value for the observed difference between means = P = `r p.value`. Therefore, we do not reject the null hypothesis. 
+
+*Assumptions of permutation tests*: Data must represent a random sample of the population. The distribution of the variable must have similar shape in each population. (With large sample sizes, permutation tests will be robust to violations of this assumption.)
+
+*Using permutation tests*: This approach allows flexible statistical testing for a wide variety of tests and data distributions. For example, a genetic analysis of the zero-inflated distribution of fitness (zero-inflated histogram, above) would pose no difficulty for a permutation test. This emphasizes the importance of basic coding skills, such as you have already achieved, for flexible problem solving in scientific analyses.
+
+***
+
+### Steps for a permutation test
+
+<font color='blue'>Outline from WS 13.8:
+
+* 1) "Create a permuted set of data in which the values of the response variables are randomly reordered ...
+* 2) Calculate the measure of association for the permuted sample ...
+* 3) Repeat the permutation process many times" ...</font>
+* 4) Locate the observed test statistic within the permuted null distribution, and compute the P-value.
+
+***
+
+### Acknowledgements
+
+Figures from WS13.
+
+***
+
+<!--chapter:end:20-violations-of-assumptions.Rmd-->
+

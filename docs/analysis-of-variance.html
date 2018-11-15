@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-13">
+<meta name="date" content="2018-11-14">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="comparing-sample-means.html">
-
+<link rel="next" href="violations-of-assumptions.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -538,7 +538,12 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a><ul>
 <li class="chapter" data-level="20.12.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#tukey-kramer-test"><i class="fa fa-check"></i><b>20.12.1</b> Tukey-Kramer test</a></li>
 </ul></li>
+<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a><ul>
+<li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#estimating-repeatability-using-anova"><i class="fa fa-check"></i>Estimating Repeatability using ANOVA</a></li>
+<li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability-walking-stick-example"><i class="fa fa-check"></i>Repeatability: Walking stick example</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a></li>
 </ul>
 
       </nav>
@@ -978,23 +983,83 @@ F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_
 <a class="sourceLine" id="cb457-6" data-line-number="6"><span class="co">#&gt; 2 treatment knee-control -0.02696  -0.9525    0.8986    0.9970  </span></a>
 <a class="sourceLine" id="cb457-7" data-line-number="7"><span class="co">#&gt; 3 treatment knee-eyes     1.216     0.2598    2.172     0.01168</span></a></code></pre></div>
 <p>The Tukey HSD test by default give us 95% confidence intervals for the differences in means between each pair of groups, and an associated P-value for the null hypothesis of equal means between pairs. Interpretting the results above, we see that we fail to reject the null hypothesis of equal means for the knee and control treatment groups (i.e. we have no statistical support to conclude they are different). However, we reject the null hypothesis for equality of means between control and eye treatments and between knee and eye treatements. We have evidence that light treatments applied to the eye cause a mean negative shift in the phase of melatonin production relative to control and knee treatment groups.</p>
+</div>
+</div>
+<div id="repeatability" class="section level2">
+<h2><span class="header-section-number">20.13</span> Repeatability</h2>
+<ul>
+<li><p>Nearly every measure of a continuous measurement or assay we apply in biology (and other sicences) has associated with it some <strong>measurement error</strong>.</p></li>
+<li><p>Measurement error is not “biological variation” of interest, but rather “technical variation” associated with our ability to measure quantities of interest precisely</p>
+<ul>
+<li><strong>Example</strong>: Have three people independently measure the length of a human femur to the nearest millimeter. Unless the values are aggressively rounded, there is a high likelihood that you’ll get three different values.</li>
+</ul></li>
+</ul>
+<div id="estimating-repeatability-using-anova" class="section level3 unnumbered">
+<h3>Estimating Repeatability using ANOVA</h3>
+<p>ANOVA can be used to estimate the <strong>Repeatability</strong> of a measure, which provides a way to quanify how much of the variance we observe between individuals is due to measurement error.</p>
+<p><strong>Estimating Repeatability: Experimental steps</strong></p>
+<ul>
+<li>Repeatedly, but independently, measure the same variable in the same individual or other unit of observation</li>
+<li>Carry out the same repeated measurements across individuals</li>
+</ul>
+<p><strong>Estimating Repeatability: Statistical steps</strong></p>
+<ul>
+<li>Calculate <span class="math inline">\(MS_\text{groups}\)</span> and <span class="math inline">\(MS_\text{error}\)</span> where individuals are the grouping unit.</li>
+<li>Estimate the variance among groups, <span class="math inline">\(s_A^2\)</span> as:
+<span class="math display">\[
+s_A^2 = \frac{MS_\text{groups} - MS_\text{error}}{n}
+\]</span></li>
+</ul>
+<p>where <span class="math inline">\(n\)</span> is the number of replicate measures per individual.</p>
+<ul>
+<li><p>Estimate the repeatability as:
+<span class="math display">\[
+\text{Repeatability} = \frac{s_A^2}{s_A^2 + MS_\text{error}}
+\]</span></p></li>
+<li><p><span class="math inline">\(0 \leq \text{Repeatability} \leq 1\)</span>; values near zero indicate nearly all variance is due to measurement error, values near one indicate small fraction of variance due to measurement error</p></li>
+</ul>
+</div>
+<div id="repeatability-walking-stick-example" class="section level3 unnumbered">
+<h3>Repeatability: Walking stick example</h3>
+<p>Nosil and Crespi measured various morphological features of walking stick insects from digital photographs. For each specimen they took two independent photographs and measured femur length (in cm) on each photograph.</p>
+<pre><code>#&gt; Parsed with column specification:
+#&gt; cols(
+#&gt;   specimen = col_integer(),
+#&gt;   femurLength = col_double()
+#&gt; )</code></pre>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-475-1.png" width="312" style="display: block; margin: auto;" /></p>
+<p>First we carry out the ANOVA in the standard way, using the specimen variable as the grouping variable:</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" data-line-number="1">sticks.aov &lt;-<span class="st"> </span><span class="kw">aov</span>(femurLength <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(specimen), </a>
+<a class="sourceLine" id="cb459-2" data-line-number="2">                  <span class="dt">data =</span> walking.sticks)</a>
+<a class="sourceLine" id="cb459-3" data-line-number="3">sticks.table &lt;-<span class="st"> </span><span class="kw">tidy</span>(sticks.aov)</a>
+<a class="sourceLine" id="cb459-4" data-line-number="4">sticks.table</a>
+<a class="sourceLine" id="cb459-5" data-line-number="5"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb459-6" data-line-number="6"><span class="co">#&gt;   term                   df   sumsq   meansq statistic      p.value</span></a>
+<a class="sourceLine" id="cb459-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb459-8" data-line-number="8"><span class="co">#&gt; 1 as.factor(specimen)    24 0.05913 0.002464     6.921  0.000004077</span></a>
+<a class="sourceLine" id="cb459-9" data-line-number="9"><span class="co">#&gt; 2 Residuals              25 0.0089  0.000356    NA     NA</span></a></code></pre></div>
+<p>From the ANOVA table, use <span class="math inline">\(MS_\text{group}\)</span> and <span class="math inline">\(MS_\text{error}\)</span> to calculate <span class="math inline">\(s_A\)</span>:</p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" data-line-number="1">MS.groups &lt;-<span class="st"> </span>sticks.table<span class="op">$</span>meansq[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb460-2" data-line-number="2">MS.error &lt;-<span class="st"> </span>sticks.table<span class="op">$</span>meansq[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb460-3" data-line-number="3">sA =<span class="st"> </span>(MS.groups <span class="op">-</span><span class="st"> </span>MS.error)<span class="op">/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb460-4" data-line-number="4">repeatability =<span class="st"> </span>sA<span class="op">/</span>(sA <span class="op">+</span><span class="st"> </span>MS.error)</a></code></pre></div>
+<p>From the table we calculated:</p>
+<ul>
+<li><span class="math inline">\(s_A^2 =\)</span> 0.0010539</li>
+<li><span class="math inline">\(\text{Repeatability} =\)</span> 0.7475028</li>
+</ul>
+<p>A repeatability of 0.75 indicates that we would estimate that ~75% of the total variance in femure length measurements in our population of walking stick insects is the result of true differences in femur length between individuals, while roughly 25% of the variance is attributable to measurement error.</p>
 
 </div>
 </div>
 </div>
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="comparing-sample-means.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="comparing-sample-means.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="violations-of-assumptions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
