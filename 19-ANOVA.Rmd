@@ -471,14 +471,14 @@ The Tukey HSD test by default give us 95% confidence intervals for the differenc
 
 * Nearly every measure of a continuous measurement or assay we apply in biology (and other sicences) has associated with it some **measurement error**. 
 
-* Measurement error is not "biological variation" of interest, but rather "technical variation" associated with our ability to measure quantities of interest precisely 
+* Measurement error is usually not "biological variation" of interest, but rather "technical variation" associated with our ability to measure quantities of interest precisely 
 
   - **Example**: Have three people independently measure the length of a human femur to the nearest millimeter. Unless the values are aggressively rounded, there is a high likelihood that you'll get three different values.
 
 
 ### Estimating Repeatability using ANOVA {-}
 
-ANOVA can be used to estimate the **Repeatability** of a measure, which provides a way to quanify how much of the variance we observe between individuals is due to measurement error.
+ANOVA can be used to estimate the **Repeatability** of a measure, which provides a way to quantify how much of the variance we observe between individuals is due to measurement error.
 
 **Estimating Repeatability: Experimental steps**
 
@@ -507,9 +507,11 @@ where $n$ is the number of replicate measures per individual.
 
 Nosil and Crespi measured various morphological features of walking stick insects from digital photographs.  For each specimen they took two independent photographs and measured femur length (in cm) on each photograph. 
 
-```{r, fig.width = 3.25, fig.height = 2.5, fig.align="center", echo=FALSE}
+```{r, warning=FALSE, message=FALSE}
 walking.sticks <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-walking-sticks.csv")
+```
 
+```{r, fig.width = 3.25, fig.height = 2.5, fig.align="center"}
 by.specimen <-
   walking.sticks %>%
   group_by(specimen) %>%
@@ -530,7 +532,7 @@ ggplot(by.specimen, aes(x = rank.fl)) +
 
 First we carry out the ANOVA in the standard way, using the specimen variable as the grouping variable:
 
-```{r, echo=TRUE}
+```{r}
 sticks.aov <- aov(femurLength ~ as.factor(specimen), 
                   data = walking.sticks)
 sticks.table <- tidy(sticks.aov)
@@ -539,16 +541,19 @@ sticks.table
 
 
 From the ANOVA table, use $MS_\text{group}$ and $MS_\text{error}$ to calculate $s_A$: 
-```{r, echo = TRUE}
-MS.groups <- sticks.table$meansq[1]
-MS.error <- sticks.table$meansq[2]
-sA = (MS.groups - MS.error)/2
-repeatability = sA/(sA + MS.error)
+```{r}
+repeatability.table <- data_frame(
+  MS.groups = sticks.table$meansq[1],
+  MS.error = sticks.table$meansq[2],
+  sA = (MS.groups - MS.error)/2,
+  repeatability = sA/(sA + MS.error))
+
+repeatability.table
 ```
 
 From the table we calculated:
 
-  * $s_A^2 =$ `r sA`
-  * $\text{Repeatability} =$ `r repeatability`
+  * $s_A^2 =$ `r repeatability.table$sA`
+  * $\text{Repeatability} =$ `r repeatability.table$repeatability`
 
 A repeatability of 0.75 indicates that we would estimate that ~75% of the total variance in femure length measurements in our population of walking stick insects is the result of true differences in femur length between individuals, while roughly 25% of the variance is attributable to measurement error.

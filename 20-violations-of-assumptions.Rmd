@@ -18,6 +18,7 @@ When our data violate the assumptions of standard statistical tests, we have sev
 library(tidyverse)
 library(magrittr)
 library(cowplot)
+library(broom)
 ```
 
 
@@ -126,7 +127,7 @@ shapiro.test(log(marine.reserves$biomassRatio))
 ```
 
 
-### Confidence intervals and data transformations {-}
+### Confidence intervals and data transformations
 
 Sometimes we need to transform our data before analysis, and then we want to know the confidence intervals on the original scale. In such cases, we back-transform the upper and lower CIs to the original scale of measurement.
 
@@ -140,14 +141,14 @@ log.biomass.CI <-
             sd = sd(log.biomassRatio),
             n = n(),
             SE = sd/sqrt(n),
-            CI.low = mean - abs(qt(0.025, df = n-1)) * SE,
-            CI.high = mean + abs(qt(0.025, df = n-1)) * SE) %>%
-  select(CI.low, CI.high)
+            CI.low.log = mean - abs(qt(0.025, df = n-1)) * SE,
+            CI.high.log = mean + abs(qt(0.025, df = n-1)) * SE) %>%
+  select(CI.low.log, CI.high.log)
 
 log.biomass.CI 
 ```
 
-This analysis finds the 95% CI around the mean of the log transformed data ranges is `r c(log.biomass.CI$CI.low, log.biomass.CI$CI.high)`.
+This analysis finds the 95% CI around the mean of the log transformed data ranges is `r c(log.biomass.CI$CI.low.log, log.biomass.CI$CI.high.log)`.
 
 To understand the biological implications of this analysis, we back-transform the log data results to the original scale, computing the *antilog* by using function `exp`. After this, the back-transformed CI is now on the scale of $e^{\log X} = X$. 
 
@@ -158,8 +159,8 @@ On the original scale:
 ```{r}
 log.biomass.CI %>%
   # back-transform CI to original scale
-  mutate(CI.low.original  = exp(CI.low),
-         CI.high.original = exp(CI.high))
+  mutate(CI.low.original  = exp(CI.low.log),
+         CI.high.original = exp(CI.high.log))
 ```
 
 Hence, 1.41 < geometric mean < 1.84.
@@ -168,262 +169,81 @@ The *geometric mean* equals $\sqrt[n]{x_1 x_2 \cdots x_n}$, computed by multiply
 
 Biologically, "this 95% confidence interval indicates that marine reserves have 1.41 to 1.84 times more biomass on average than the control sites do" (W&S 13.3)
 
-***
 
-### Example: Log transformation of data with outliers
+## Nonparametric tests
 
-Data distributions in biology often show outliers for various traits. Examples might look like the following. In the histogram you can see a small group of outliers on the right:
+Non-parametric tests are ones that make no (or fewer) assumptions about the particular distributions from which the data of interest are drawn. Nonparametric tests are helpful for non-normal data distributions, especially with outliers. Typically, these tests use the ranks of the data points rather than the actual values of the data. Because they are not using all available data, nonparametric tests have lower statistical power than parametric tests. Nonparametric approaches still assume that the data are a random sample from the population.
 
-```{r, echo = FALSE}
-set.seed(1)
-df <- data_frame(norm.dat=rnorm(200), 
-                 other = rnorm(200, mean=3), 
-                 outlier = runif(200))
-df <- mutate(df, has_outliers = ifelse(outlier >= 0.95, other, norm.dat),
-             trait = has_outliers + abs(min(has_outliers)) + 1,
-             log.trait = log(trait))
-df <- select(df, trait, log.trait)
+We present here two common non-parametric alternatives to t-tests and ANOVA.
+
+### Mann-Whitney U-test: non-parametric alternative to t-test
+
+When the normality assumption is not met, and none of the the standard mathematical transformations are suitable (or desirable), the **Mann-Whitney U-test** can be used in place of a two-sample $t$-test to compare the *distribution* of two groups.  The Mann-Whitney U-test compares the data distribution of two groups, without requiring the normality assumptions of the two-sample t-test. The null hypothesis of this test is that the within-group data *distributions* are the same. Therefore, it is possible to reject the null hypothesis because the distributions differ, *even if the means are the same*. The Mann-Whitney U-test is sensitive to unequal variances or different patterns of skew. Therefore, this test should be used to compare distributions, not to compare means. 
+
+Confusingly, the Mann-Whitney U-test is also called the Mann–Whitney–Wilcoxon test. Do not confuse this with another test called the Wilcoxon signed-rank test. 
+
+Your textbook details the calculations involved, here we simply demonstrate the appropriate R function.
+
+
+#### Example data: Sexual cannibalism in crickets {-}
+
+Example 13.5 in your textbook demonstrates the Mann-Whitney U-test with an application to a study of sexual cannabilism in sage crickets. During mating, male sage crickets offer their fleshy hind wings to females to eat. Johnson et al. (1999) studied whether female sage crickets are more likely to mate if they are hungry.  They measured the time to mating (in hours) for female crickets that had be starved or fed.  The null and alternative hypotheses for this comparison are:
+
+* $H_0$: The distribution of time to mating is the same for starved and fed female crickets
+* $H_A$: The distribution of time to mating differs between starved and fed female crickets
+
+Here's what the data look like:
+
+```{r, fig.width = 8, fig.height = 4, fig.align = "center"}
+crickets <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-cricket-cannibalism.csv")
+
+ggplot(crickets, aes(x = timeToMating)) +
+  geom_histogram(binwidth = 20, alpha = 0.75, fill = 'firebrick', color='black', center=10) +
+  facet_wrap(~ feedingStatus, nrow=1)
 ```
 
-```{r, out.width = "60%"}
-head(df)
+As is apparent from the histograms, these data are decidedly non-normal. None of the standard mathematical transforms appear to work well in normalizing these data either.
 
-ggplot(df) + geom_histogram(aes(x = trait), bins = 50)
-```
-
-And the deviation from linearity is clear in the QQ-plot (upper right).
-
-```{r, out.width = "60%"}
-ggqqplot(df$trait)
-```
-
-We will use the Shapiro-Wilk test to check normality. With this test, the null hypothesis proposes that the data follow a normal distribution. Therefore, small P-values reject the null hypothesis of normality.
+To perform the Mann-Whitney U text, we use function `wilcox.test` ([details here](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html)). This can take a data frame as input:
 
 ```{r}
-shapiro.test(df$trait)
+wilcox.test(timeToMating ~ feedingStatus, 
+            alternative = "two.sided", paired = FALSE, data = crickets)
 ```
 
-Log transformation may improve the data distribution, so that it is closer to normality:
+The test statistic $W$ is the equivalent to the $U$ test statistic of the Mann Whitney U-test.  In this case, our observed value of $U$ ($W$) is quite probable ($p$ = 0.4) under the null hypothesis of no difference in the distributions between the two groups, therefore we fail to reject the null hypothesis.
 
-```{r, out.width = "60%"}
-ggplot(df) + geom_histogram(aes(x = log.trait), bins = 50)
-ggqqplot(df$log.trait)
+
+### Kruskal-Wallis test: non-parametric alternative to ANOVA
+
+When there are more than two groups to compare, the non-parametric alternative to ANOVA is the Kruskal-Wallis Test. Like the Mann-Whitney U-test, the Kruskal-Wallis test is based on ranks rather than observed values.  While the Kruskal-Wallis test does not assume the data are normally distributed, it still assumes the distributions of the variable of interest have similar shapes across the groups. The test statistic for the Kruskal-Wallis test is designated $H$.
+
+#### Example data: Daphnia resistance to cyanobacteria {-}
+
+This is from Assignment Problem 13.17 in Whitlock & Schluter.
+
+Daphnia is a freshwater planktonic crustacean. Hairson et al. (1999) were interested in local adaptation of Daphnia populations in Lake Constance (bordering Germany, Austria, and Switzerland).  Cyanobacteria, is a toxic food type that has increased in density in Lake Constance since the 1960s in response to increased nutrients.  The investigators collected Daphnia eggs from sediments laid down during years of low, medium, and high cyanobacteria density and measured resistance to cyanobacteria in each group.  Visual inspection of these data suggest they violate the normality assumptions of standard ANOVA. 
+
+
+```{r, fig.width = 12, fig.height = 4, fig.align="center"}
+daphnia <- read_csv("https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-daphnia-resistance.csv")
+
+ggplot(daphnia, aes(x = resistance)) + 
+  geom_histogram(bins=8, alpha = 0.75, fill = 'firebrick', color='black') + 
+  facet_wrap(~ cyandensity)
 ```
 
-With this log transformation, the histogram and QQ-plot look reasonably normal. And the Shapiro-Wilk test on the transformed data is compatible with normality:
+To carry out the Kruskal-Wallis test, and summarize the output in a data frame using `broom::tidy` we do:
 
 ```{r}
-shapiro.test(df$log.trait)
+kw.results <- kruskal.test(resistance ~ as.factor(cyandensity), daphnia)
+tidy(kw.results)
 ```
 
-The P-value > 0.05, so we do not reject the null hypothesis of normality.
+Based on a the estimated P-value, we have evidence upon which to reject the null hypothesis of equal means at a Type I error rate of $\alpha = 0.5$. However some caution is warranted as the shape of the distributions appear to be somewhat different among the groups.
 
-***
 
-### Example: Zero-inflated data
+## Acknowledgements {-}
 
-Several Duke Biology labs transplant genotypes to the field and measure the fitness of each individual plant. Fitness equals the number of seeds produced, which is zero when individuals die early in life.  Such "zero-inflated" distributions cannot easily be transformed to normality, and thus require other statistical approaches for analysis.
+Figures and examples from W&S Chap 13; lecture notes from T. Mitchell-Olds.
 
-```{r, out.width = "60%", echo=FALSE}
-set.seed(1)
-df <- data_frame(norm.dat = rnorm(500, mean = 1, sd = 1))
-df2 <- mutate(df, 
-              zero.infl = ifelse(norm.dat < 0, 0, norm.dat),
-              fitness = zero.infl / mean(zero.infl))
-ggplot(df2) + geom_histogram(aes(x = fitness), bins = 50) +
-  labs(title="Zero-inflated distribution of fitness", 
-       x = "Individual fitness",
-       y = "Frequency")
-```
-
-***
-
-### Nonparametric tests
-
-Nonparametric tests are helpful for non-normal data distributions, especially with outliers. Typically, these tests use the ranks of the data points rather than the actual values of the data. Because they are not using all available data, nonparametric tests have lower statistical power than parametric tests. As with parametric tests, nonparametric approaches assume that the data are a random sample from the population.
-
-**Sign test** <font color='blue'>"compares the median of a sample to a constant specified in the null hypothesis. It makes no assumption about the distribution of the measurment in the population."</font> (WS 13). However, the sign test has very low statistical power. WS example 13.4 shows an application of the sign test.
-
-**Wilcoxon signed-rank test** This test assumes that the distribution of the data is symmetrical around the median. Given this restrictive assumption, we do not consider this further.
-
-**Mann-Whitney U-test** compares the data distribution of two groups, without requiring the normality assumptions of the two-sample t-test. The null hypothesis of this test is that the within-group data *distributions* are the same. Therefore, it is possible to reject the null hypothesis because the distributions differ, *even if the means are the same*. The Mann-Whitney U-test is sensitive to unequal variances or different patterns of skew. Therefore, this test should be used to compare distributions, not to compare means. 
-
-Confusingly, the Mann-Whitney U-test is also called the Mann–Whitney–Wilcoxon test, which is similar to the Wilcoxon rank-sum test. **Remember the following:**:
-
-<font color='red'>
-* Do not confuse the Wilcoxon rank-sum test with the Wilcoxon signed-rank test. They are different; we won't use either one.</font>
-
-<font color='red'>
-* We will focus on the Mann-Whitney U-test, which we will perform with function `wilcox.test`.</font>
-
-### Mann-Whitney U example
-
-WS 13.5 examines a rather disgusting example of sexual cannablism in sagebrush crickets. Without going into the gory details, our null hypothesis is:
-
-* $H_0$: Time to mating is the same for female crickets that were starved or fed.
-* $H_A$: Time to mating differs between these groups.
-
-The following data were obtained in that study:
-
-```{r}
-starved <- c(1.9, 2.1, 3.8, 9.0, 9.6, 13.0, 14.7, 17.9, 21.7, 29.0, 72.3)
-fed <- c(1.5, 1.7, 2.4, 3.6, 5.7, 22.6, 22.8, 39.0, 54.4, 72.1, 73.6, 79.5, 88.9)
-time <- c(starved, fed)
-grp <- c(rep("starved", length(starved)), rep("fed", length(fed)))
-df <- data_frame(Time = time, Group = grp)
-head(df)
-tail(df)
-
-ggplot(df) +
-  geom_density(aes(x = Time, color = Group)) +
-  labs(x = "Time to mating", y = "Density")
-```
-
-Clearly these distributions differ from each other, and are far from normal. To perform the Mann-Whitney U text, we use function `wilcox.test` ([details here](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html)). This can take a data frame as input:
-
-```{r}
-wilcox.test(time ~ Group, alternative = "two.sided", paired = FALSE, data = df)
-```
-
-***
-
-### Type I and Type II error rates
-
-Violation of statistical assumptions (such as normality) may cause parametric tests to have an elevated probability of rejecting the null hypothesis when it is true -- an elevated Type I error rate. 
-
-A nonparametric test may solve this problem, at the cost of failing to reject the null hypothesis when it is false (Type II errors). Thus, nonparametric tests typically have lower statistical power.
-
-Therefore, we prefer to use parametric tests whenever possible.
-
-***
-
-### Permutation tests = Randomization tests
-
-<font color='blue'>A _permutation test_ generates a null distribution for the association between two variables by repeatedly and randomly rearranging the values of one of the two variables in the data.</font> WS 13.8
-
-```{r, echo=FALSE}
-# Generate real data set and three permuted columns
-set.seed(79) # set seed for random numbers
-grp <- c("A", "A", "A", "A", "B", "B", "B", "B", "mean.A", "mean.B", "mean.diff")
-obs.data <- c(1.1, 0.9, 1.3, 1.0, 2.1, 2.2, 1.9, 2.1, NA, NA, NA)
-obs.data[9] <- mean(obs.data[1:4])
-obs.data[10] <- mean(obs.data[5:8])
-obs.data[11] <- obs.data[10] - obs.data[9]
-df.obs <- data_frame(Group = grp, obs = obs.data)
-
-perm.vec <- function(my.vec){
-  my.vec[1:8] = sample(my.vec[1:8])
-  my.vec[9]  <- mean(my.vec[1:4])
-  my.vec[10] <- mean(my.vec[5:8])
-  my.vec[11] <- my.vec[10] - my.vec[9]
-  return(my.vec)
-}
-  
-df.perm <- mutate(df.obs,
-                  perm1 = perm.vec(obs),
-                  perm2 = perm.vec(obs),
-                  perm3 = perm.vec(obs))
-```
-
-To illustrate permutation of an observed data set, we create a data frame with 4 observations from group A (rows 1-4), and four observations from group B (rows 5 - 8). Then, in the next three rows, we compute the mean of group A, the mean of group B, and the difference between the means. This is shown in the two columns of the data set:
-
-```{r}
-df.obs
-```
-
-We hypothesize that:
-
-$H_0$: The means of the two groups are equal. The difference between means equals zero.
-
-$H_A$: The means of the two groups are not equal
-
-`mean.diff` is our _test statistic_, and the observed value of `mean.diff` = `r df.obs$obs[[11]]`.
-
-Next, we permute ("randomize" or "shuffle") the first eight rows. After randomization, $H_0$ is true, because we have removed any relationship between Group and the permuted data. Columns `perm1`, `perm2`, `perm3` show three reshuffled outcomes under the null hypothesis, and the last line shows the differences in group means under $H_0$.
-
-```{r}
-df.perm
-```
-
-And if we do this 1000 times, we estimate the _null distribution_ of `mean.diff` when $H_0$ is true. Using this, we can compare the observed value of our test statistic to the null distribution, in order to determine whether the observed `mean.diff` is an extreme outlier, or else represents a common occurrence under the null hypothesis. By placing the observed test statistic within the null distribution (figure below), we can estimate the P.value for our observed data.
-
-***
-
-Next we perform a permutation test to compare the group means for the cricket example. (Code is in the rmd file, but not shown in the html output.) We again use
-
-$H_0$: The means of the two groups are equal. The difference between means equals zero.
-
-```{r, echo=FALSE}
-# compute basic information for the cricket data set
-starved <- c(1.9, 2.1, 3.8, 9.0, 9.6, 13.0, 14.7, 17.9, 21.7, 29.0, 72.3)
-fed <- c(1.5, 1.7, 2.4, 3.6, 5.7, 22.6, 22.8, 39.0, 54.4, 72.1, 73.6, 79.5, 88.9)
-obs.mean.diff <- mean(starved) - mean(fed) # mean difference
-len.starv <- length(starved) # length of vector
-len.fed <- length(fed)       # length of vector
-time <- c(starved, fed)      # concatenate two vectors
-len.tot <- length(time)      # total lenght of concatenated vector
-start.fed <- len.starv + 1   # beginning of second group in vector
-```
-
-```{r, echo=FALSE}
-# Function to reshuffle the data and return difference in the means
-mixup <- function(time, len.tot, len.starv, start.fed){
-  z <- sample(time, len.tot) # permute data into random order within vector
-  # Compute means, and difference between means
-  mean1 <- mean(z[1:len.starv])
-  mean2 <- mean(z[start.fed:len.tot])
-  mean.diff <- mean1 - mean2
-  return(mean.diff) # return mean diff between the (reshuffled) groups
-}
-```
-
-```{r, echo=FALSE}
-# Set up book-keeping for this analysis
-NumPermute <-  10000 # Number of permutations
-# Vector to hold differences between permuted groups
-res <- vector(mode = "numeric", length = NumPermute)
-
-# For every permutation, save mean.diff between permuted groups
-set.seed(79) # set seed for random numbers
-for (i in 1:NumPermute){
-  res[i] <- mixup(time, len.tot, len.starv, start.fed)
-}
-
-# For observed mean difference, where is it in permuted distribution?
-percentile <- ecdf(res) # get CDF within null distribution
-p.value <- 2.0 * percentile(obs.mean.diff) # two tailed test
-
-# graph permuted distribution and the observed mean diff (red line)
-df.res <- data.frame(res = res)
-ggplot(df.res) + 
-  geom_histogram(aes(x = res), color="lightgray", fill="lightgray", bins = 60) +
-  labs(title="Permuted null distribution of difference between group means", 
-       x = "Difference between group means", y = "Frequency") +
-  geom_vline(xintercept = obs.mean.diff, linetype = "dashed", 
-             color = "red", size=0.75) + theme_bw()
-```
-
-The figure shows the permuted (null) distribution of the difference between group means, and the vertical red line shows the observed value of this test statistic. The P-value for the observed difference between means = P = `r p.value`. Therefore, we do not reject the null hypothesis. 
-
-*Assumptions of permutation tests*: Data must represent a random sample of the population. The distribution of the variable must have similar shape in each population. (With large sample sizes, permutation tests will be robust to violations of this assumption.)
-
-*Using permutation tests*: This approach allows flexible statistical testing for a wide variety of tests and data distributions. For example, a genetic analysis of the zero-inflated distribution of fitness (zero-inflated histogram, above) would pose no difficulty for a permutation test. This emphasizes the importance of basic coding skills, such as you have already achieved, for flexible problem solving in scientific analyses.
-
-***
-
-### Steps for a permutation test
-
-<font color='blue'>Outline from WS 13.8:
-
-* 1) "Create a permuted set of data in which the values of the response variables are randomly reordered ...
-* 2) Calculate the measure of association for the permuted sample ...
-* 3) Repeat the permutation process many times" ...</font>
-* 4) Locate the observed test statistic within the permuted null distribution, and compute the P-value.
-
-***
-
-### Acknowledgements
-
-Figures from WS13.
-
-***
