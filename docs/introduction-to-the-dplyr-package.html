@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-20">
+<meta name="date" content="2018-11-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,12 +47,19 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
+<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -65,13 +72,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -579,6 +584,24 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </ul></li>
 <li class="chapter" data-level="22.11" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#example-predicting-lion-age-based-on-nose-color"><i class="fa fa-check"></i><b>22.11</b> Example: Predicting lion age based on nose color</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.1" data-path="multiple-regression.html"><a href="multiple-regression.html#libraries-to-install"><i class="fa fa-check"></i><b>23.1</b> Libraries to install</a></li>
+<li class="chapter" data-level="23.2" data-path="multiple-regression.html"><a href="multiple-regression.html#review-of-bivariate-regression"><i class="fa fa-check"></i><b>23.2</b> Review of bivariate regression</a></li>
+<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#geometrical-interpretation"><i class="fa fa-check"></i><b>23.3.1</b> Geometrical interpretation</a></li>
+<li class="chapter" data-level="23.3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#coefficient-of-determination-for-multiple-regression"><i class="fa fa-check"></i><b>23.3.2</b> Coefficient of determination for multiple regression</a></li>
+</ul></li>
+<li class="chapter" data-level="23.4" data-path="multiple-regression.html"><a href="multiple-regression.html#interpretting-multiple-regression"><i class="fa fa-check"></i><b>23.4</b> Interpretting Multiple Regression</a></li>
+<li class="chapter" data-level="23.5" data-path="multiple-regression.html"><a href="multiple-regression.html#libaries"><i class="fa fa-check"></i><b>23.5</b> Libaries</a></li>
+<li class="chapter" data-level="23.6" data-path="multiple-regression.html"><a href="multiple-regression.html#example-data-set-mtcars"><i class="fa fa-check"></i><b>23.6</b> Example data set: <code>mtcars</code></a></li>
+<li class="chapter" data-level="23.7" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-and-summarizing-the-variables-of-interest"><i class="fa fa-check"></i><b>23.7</b> Visualizing and summarizing the variables of interest</a></li>
+<li class="chapter" data-level="23.8" data-path="multiple-regression.html"><a href="multiple-regression.html#d-plots"><i class="fa fa-check"></i><b>23.8</b> 3D plots</a></li>
+<li class="chapter" data-level="23.9" data-path="multiple-regression.html"><a href="multiple-regression.html#fitting-a-multiple-regression-model-in-r"><i class="fa fa-check"></i><b>23.9</b> Fitting a multiple regression model in R</a></li>
+<li class="chapter" data-level="23.10" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-the-regression-plane"><i class="fa fa-check"></i><b>23.10</b> Visualizing the regression plane</a></li>
+<li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
+<li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
+<li class="chapter" data-level="23.13" data-path="multiple-regression.html"><a href="multiple-regression.html#in-class-assignment-1"><i class="fa fa-check"></i><b>23.13</b> <font color='red'> In-class Assignment #1 </font></a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -841,11 +864,10 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p>Some functions, like <code>count()</code> and <code>summarize()</code> (see below) know how to use the grouping information. For example, to count the number of births conditional on mother smoking status we could do:</p>
 <div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1"><span class="kw">count</span>(by_smoking)</a>
 <a class="sourceLine" id="cb221-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb221-3" data-line-number="3"><span class="co">#&gt; # Groups:   smoke [2]</span></a>
-<a class="sourceLine" id="cb221-4" data-line-number="4"><span class="co">#&gt;   smoke         n</span></a>
-<a class="sourceLine" id="cb221-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb221-6" data-line-number="6"><span class="co">#&gt; 1 nonsmoker   100</span></a>
-<a class="sourceLine" id="cb221-7" data-line-number="7"><span class="co">#&gt; 2 smoker       50</span></a></code></pre></div>
+<a class="sourceLine" id="cb221-3" data-line-number="3"><span class="co">#&gt;   smoke         n</span></a>
+<a class="sourceLine" id="cb221-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb221-5" data-line-number="5"><span class="co">#&gt; 1 nonsmoker   100</span></a>
+<a class="sourceLine" id="cb221-6" data-line-number="6"><span class="co">#&gt; 2 smoker       50</span></a></code></pre></div>
 <p><code>group_by</code> also works with multiple grouping variables, with each added grouping variable specified as an additional argument:</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">by_smoking.and.mAge &lt;-<span class="st"> </span><span class="kw">group_by</span>(births, smoke, mAge <span class="op">&gt;</span><span class="st"> </span><span class="dv">35</span>)</a></code></pre></div>
 </div>
@@ -861,13 +883,12 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p>Similarly to get the mean birth weight of children conditioned on mothers smoking status and age:</p>
 <div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="kw">summarize</span>(by_smoking.and.mAge, <span class="kw">mean</span>(weight))</a>
 <a class="sourceLine" id="cb224-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb224-3" data-line-number="3"><span class="co">#&gt; # Groups:   smoke [?]</span></a>
-<a class="sourceLine" id="cb224-4" data-line-number="4"><span class="co">#&gt;   smoke     `mAge &gt; 35` `mean(weight)`</span></a>
-<a class="sourceLine" id="cb224-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;     &lt;lgl&gt;                &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb224-6" data-line-number="6"><span class="co">#&gt; 1 nonsmoker FALSE                7.171</span></a>
-<a class="sourceLine" id="cb224-7" data-line-number="7"><span class="co">#&gt; 2 nonsmoker TRUE                 7.258</span></a>
-<a class="sourceLine" id="cb224-8" data-line-number="8"><span class="co">#&gt; 3 smoker    FALSE                6.832</span></a>
-<a class="sourceLine" id="cb224-9" data-line-number="9"><span class="co">#&gt; 4 smoker    TRUE                 6.302</span></a></code></pre></div>
+<a class="sourceLine" id="cb224-3" data-line-number="3"><span class="co">#&gt;   smoke     `mAge &gt; 35` `mean(weight)`</span></a>
+<a class="sourceLine" id="cb224-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;lgl&gt;                &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb224-5" data-line-number="5"><span class="co">#&gt; 1 nonsmoker FALSE                7.171</span></a>
+<a class="sourceLine" id="cb224-6" data-line-number="6"><span class="co">#&gt; 2 nonsmoker TRUE                 7.258</span></a>
+<a class="sourceLine" id="cb224-7" data-line-number="7"><span class="co">#&gt; 3 smoker    FALSE                6.832</span></a>
+<a class="sourceLine" id="cb224-8" data-line-number="8"><span class="co">#&gt; 4 smoker    TRUE                 6.302</span></a></code></pre></div>
 </div>
 <div id="scoped-variants-of-mutate-and-summarize" class="section level3">
 <h3><span class="header-section-number">7.5.8</span> Scoped variants of <code>mutate</code> and <code>summarize</code></h3>
@@ -1117,7 +1138,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cakes&quot;</span>, <span class="st">&quot;sauce&quot;</span>, <span class="st">&quot;house&quot;</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># create a vector</span></a>
 <a class="sourceLine" id="cb244-2" data-line-number="2"><span class="st">  </span><span class="kw">sample</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># pick a random single element of that vector</span></a>
 <a class="sourceLine" id="cb244-3" data-line-number="3"><span class="st">  </span><span class="kw">str_c</span>(<span class="st">&quot;hot&quot;</span>, .)  <span class="co"># string concatenate the pick with the word &quot;hot&quot;</span></a>
-<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotcakes&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb244-4" data-line-number="4"><span class="co">#&gt; [1] &quot;hotsauce&quot;</span></a></code></pre></div>
 </div>
 <div id="the-exposition-pipe-operator" class="section level3">
 <h3><span class="header-section-number">7.6.8</span> The exposition pipe operator</h3>

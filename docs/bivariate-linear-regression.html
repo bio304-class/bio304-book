@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-20">
+<meta name="date" content="2018-11-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="violations-of-assumptions.html">
-
+<link rel="next" href="multiple-regression.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -47,12 +47,19 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
+<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -65,13 +72,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -579,6 +584,24 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </ul></li>
 <li class="chapter" data-level="22.11" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#example-predicting-lion-age-based-on-nose-color"><i class="fa fa-check"></i><b>22.11</b> Example: Predicting lion age based on nose color</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.1" data-path="multiple-regression.html"><a href="multiple-regression.html#libraries-to-install"><i class="fa fa-check"></i><b>23.1</b> Libraries to install</a></li>
+<li class="chapter" data-level="23.2" data-path="multiple-regression.html"><a href="multiple-regression.html#review-of-bivariate-regression"><i class="fa fa-check"></i><b>23.2</b> Review of bivariate regression</a></li>
+<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#geometrical-interpretation"><i class="fa fa-check"></i><b>23.3.1</b> Geometrical interpretation</a></li>
+<li class="chapter" data-level="23.3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#coefficient-of-determination-for-multiple-regression"><i class="fa fa-check"></i><b>23.3.2</b> Coefficient of determination for multiple regression</a></li>
+</ul></li>
+<li class="chapter" data-level="23.4" data-path="multiple-regression.html"><a href="multiple-regression.html#interpretting-multiple-regression"><i class="fa fa-check"></i><b>23.4</b> Interpretting Multiple Regression</a></li>
+<li class="chapter" data-level="23.5" data-path="multiple-regression.html"><a href="multiple-regression.html#libaries"><i class="fa fa-check"></i><b>23.5</b> Libaries</a></li>
+<li class="chapter" data-level="23.6" data-path="multiple-regression.html"><a href="multiple-regression.html#example-data-set-mtcars"><i class="fa fa-check"></i><b>23.6</b> Example data set: <code>mtcars</code></a></li>
+<li class="chapter" data-level="23.7" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-and-summarizing-the-variables-of-interest"><i class="fa fa-check"></i><b>23.7</b> Visualizing and summarizing the variables of interest</a></li>
+<li class="chapter" data-level="23.8" data-path="multiple-regression.html"><a href="multiple-regression.html#d-plots"><i class="fa fa-check"></i><b>23.8</b> 3D plots</a></li>
+<li class="chapter" data-level="23.9" data-path="multiple-regression.html"><a href="multiple-regression.html#fitting-a-multiple-regression-model-in-r"><i class="fa fa-check"></i><b>23.9</b> Fitting a multiple regression model in R</a></li>
+<li class="chapter" data-level="23.10" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-the-regression-plane"><i class="fa fa-check"></i><b>23.10</b> Visualizing the regression plane</a></li>
+<li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
+<li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
+<li class="chapter" data-level="23.13" data-path="multiple-regression.html"><a href="multiple-regression.html#in-class-assignment-1"><i class="fa fa-check"></i><b>23.13</b> <font color='red'> In-class Assignment #1 </font></a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -896,19 +919,13 @@ R^2 = \left( 1 - \frac{SS_{residuals}}{SS_{total}} \right)
 
 </div>
 </div>
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="violations-of-assumptions.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="violations-of-assumptions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multiple-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
