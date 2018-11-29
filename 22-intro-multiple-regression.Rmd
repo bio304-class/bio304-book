@@ -11,9 +11,7 @@ We'll be using several new packages for this class session. Install the followin
 
 ## Review of bivariate regression
 
-Recall the model for bivariate least-squares regression.
-
-When we regress $Y$ and $X$ we're looking for a linear function, $f(X)$, for which the following sum-of-squared deviations is minimized:
+Recall the model for bivariate least-squares regression. When we regress $Y$ and $X$ we're looking for a linear function, $f(X)$, for which the following sum-of-squared deviations is minimized:
 
 $$
 \sum_{i=1}^n (y_i - f(x_i))^2
@@ -52,7 +50,6 @@ Geometrically the regression coefficients have the same interpretation as in the
 ![Multiple regression, two predictor variables](./figures/fig-regression-variable-space.png)
 
 
-
 Mathematically, the best fitting regression coefficients, $b_1, b_2,\ldots,b_m$, are found using linear algebra.  Since we haven't covered linear algebra in this course, I will omit the details.  Conceptually the thing to remember is that the regression coefficients are related to the magnitude of the standard deviations of the the predictor variables and the covariances between the predictor and outcome variables.
 
 ### Coefficient of determination for multiple regression
@@ -66,17 +63,17 @@ Here are some things to keep in mind when interpretting a multple regression:
 
 * In most cases of regression, causal interpretation of the model is not justified.
 
-* Standard bivariate and multiple regression assumes that the predictor variables ( ($X_1, X_2, \ldots$) are observed without error.
+* Standard bivariate and multiple regression assumes that the predictor variables ( ($X_1, X_2, \ldots$) are observed without error. That is, uncertainty in the regression model is only associated with the outcome variable, not the predictors.
 
 * Comparing the size of regression coefficients only makes sense if all the predictor (explanatory) variables have the same scale
 
-* If the explanatory variables ($X_1, X_2,\ldots,X_m$) are highly correlated, then the regression solution can be "unstable" -- a small change in the data could lead to a very large change in the regression model.
+* If the explanatory variables ($X_1, X_2,\ldots,X_m$) are highly correlated, then the regression solution can be "unstable" -- a small change in the data could lead to a large change in the regression model.
 
 
 
 ## Libaries
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(cowplot)
 library(broom)
@@ -103,7 +100,7 @@ hist.mpg <- ggplot(mtcars, aes(mpg)) + geom_histogram(bins=8)
 plot_grid(hist.wt, hist.hp, hist.mpg, nrow = 1, labels = c("A", "B", "C"))
 ```
 
-Let's create also do some quick data summaries for our variables:
+Let's also create some quick data summaries for our variables:
 
 ```{r}
 mtcars.subset <- 
@@ -113,13 +110,13 @@ mtcars.subset <-
 summary(mtcars.subset)
 ```
 
-And a correlation matrix to summarize the bivariate association between the variables:
+And a correlation matrix to summarize the bivariate associations between the variables:
 
 ```{r}
 cor(mtcars.subset)
 ```
 
-Let's also use the `GGally::ggpairs` function to create visualization of the bivariate relationships:
+We can use the `GGally::ggpairs()` function, which we've seen previously, to create a visualization of the bivariate relationships:
 
 ```{r}
 ggpairs(mtcars.subset)
@@ -129,9 +126,9 @@ From the scatter plots and correlation matrix we see that weight and horsepower 
 
 ## 3D plots 
 
-Since we're building a model that involves three variables, it makes sense to look at at 3D plotl. ggplot has no built in facilities for 3D scatter plots so we'll use a package called  [`plot3D`](http://www.rforscience.com/rpackages/visualisation/plot3d/). `plot3D` follows the plotting conventions of the base R-graphics capabilities, so we can't build up figures in layers.  Instead we pass all the formatting arguments to a single function call.  
+Since we're building a model that involves three variables, it makes sense to look at at 3D plot. ggplot2 has no built in facilities for 3D scatter plots so we'll use a package called  [`plot3D`](http://www.rforscience.com/rpackages/visualisation/plot3d/). `plot3D` follows the plotting conventions of the base R-graphics capabilities, so we can't build up figures in layers in the same way we do in ggplot.  Instead we pass all the formatting arguments to a single function call.  
 
-To create a 3D scatter plot we can use the `plot3D::points3D` function. The argument `pch` sets the type of plotting character to use in the plot (for agraphical key of the available plotting characters see [this link](https://www.statmethods.net/advgraphs/parameters.html)).
+To create a 3D scatter plot we can use the `plot3D::points3D` function. The argument `pch` sets the type of plotting character to use in the plot (for a graphical key of the available plotting characters see [this link](https://www.statmethods.net/advgraphs/parameters.html)).
 
 ```{r, results = "hold"}
 library(plot3D)
@@ -175,7 +172,7 @@ For more examples of how you can modify plots generated with the  `plot3D` packa
 
 ## Fitting a multiple regression model in R
 
-Using the `lm` function, fitting multiple regression models is a straightforward extension of fitting a bivariate regression model.
+Using the `lm()` function, fitting multiple regression models is a straightforward extension of fitting a bivariate regression model.
 
 ```{r, results = "markup"}
 fit.mpg <- lm(mpg ~ wt + hp, data = mtcars.subset)
@@ -239,11 +236,9 @@ points3D(wt, hp, mpg,
 The package `rgl` is another package that we can use for 3D visualization. `rgl` is powerful because it lets us create interactive plots we can rotate and zoom in/out on. 
 
 
-Once you've installed `rgl` try the following code.  To make this work with knitr, make your codeblock start with this header: `{r, webgl=TRUE, results = "asis"}`
+Once you've installed and loaded `rgl` try the following code. 
 
-```{r, webgl=TRUE, results = "asis"}
-library(rgl)
-
+```{r}
 # create 3D scatter, using spheres to draw points
 plot3d(wt, hp, mpg, 
        type = "s", 
@@ -254,9 +249,9 @@ plot3d(wt, hp, mpg,
 rglwidget() 
 ```
 
-We can add a 3d plane to our plot, representing the multiple regression model, with the `rgl.planes` function as shown below.
+We can add a 3d plane to our plot, representing the multiple regression model, with the `rgl.planes()` function as shown below.
 
-```{r, webgl=TRUE, results = "asis"}
+```{r}
 coefs <- coef(fit.mpg)
 b1 <- coefs["wt"]
 b2 <- coefs["hp"]
@@ -297,9 +292,9 @@ plot_grid(wt.resids, hp.resids, labels=c("A", "B"))
 ```
 
 
-And now we plot the residuals in 3D space, with a plane parallel to the xy-plane (wt,hp-plane) representing the plane about which the residuals should be homogeneously scattered if the assumptions of the linear regression model hold.
+And now we plot the residuals in 3D space, with a plane parallel to the xy-plane (wt, hp-plane) representing the plane about which the residuals should be homogeneously scattered if the assumptions of the linear regression model hold.
 
-```{r, webgl=TRUE, results = "asis"}
+```{r} 
 .resid <- mtcars.subset.augmented$.resid
 
 # coefficients for plane perpindicular to 
