@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -788,229 +788,229 @@ F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_
 <li><span class="math inline">\(H_1\)</span>: the mean of at least one of the treatment groups is different from the others</li>
 </ul>
 <p><strong>Libraries</strong></p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb435-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb435-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb435-3" data-line-number="3"><span class="kw">library</span>(cowplot)</a>
-<a class="sourceLine" id="cb435-4" data-line-number="4"><span class="kw">library</span>(broom)</a>
-<a class="sourceLine" id="cb435-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">20180113</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb435-1" title="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb435-2" title="2"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb435-3" title="3"><span class="kw">library</span>(cowplot)</a>
+<a class="sourceLine" id="cb435-4" title="4"><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb435-5" title="5"><span class="kw">set.seed</span>(<span class="dv">20180113</span>)</a></code></pre></div>
 <p><strong>Load the data</strong></p>
-<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1">circadian &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/bio304-class/bio304-course-notes/master/datasets/ABD-circadian-rythms.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" title="1">circadian &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/bio304-class/bio304-course-notes/master/datasets/ABD-circadian-rythms.csv&quot;</span>)</a></code></pre></div>
 <p>The data is very simple: just two columns indicating treatment group and the variable of interest:</p>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb437-1" data-line-number="1"><span class="kw">head</span>(circadian, <span class="dt">n=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb437-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb437-3" data-line-number="3"><span class="co">#&gt;   treatment shift</span></a>
-<a class="sourceLine" id="cb437-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb437-5" data-line-number="5"><span class="co">#&gt; 1 control    0.53</span></a>
-<a class="sourceLine" id="cb437-6" data-line-number="6"><span class="co">#&gt; 2 control    0.36</span></a>
-<a class="sourceLine" id="cb437-7" data-line-number="7"><span class="co">#&gt; 3 control    0.2</span></a></code></pre></div>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb437-1" title="1"><span class="kw">head</span>(circadian, <span class="dt">n=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb437-2" title="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
+<a class="sourceLine" id="cb437-3" title="3"><span class="co">#&gt;   treatment shift</span></a>
+<a class="sourceLine" id="cb437-4" title="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb437-5" title="5"><span class="co">#&gt; 1 control    0.53</span></a>
+<a class="sourceLine" id="cb437-6" title="6"><span class="co">#&gt; 2 control    0.36</span></a>
+<a class="sourceLine" id="cb437-7" title="7"><span class="co">#&gt; 3 control    0.2</span></a></code></pre></div>
 <div id="visualizing-the-data" class="section level3">
 <h3><span class="header-section-number">20.9.1</span> Visualizing the data</h3>
 <p>As is our standard practice, let’s start by visualizing the data. We’ll create a point plot depicting the observations colored by treatment group.</p>
-<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" data-line-number="1"><span class="co"># we&#39;re going to re-use our jittering across plots so</span></a>
-<a class="sourceLine" id="cb438-2" data-line-number="2"><span class="co"># assign it to a variable</span></a>
-<a class="sourceLine" id="cb438-3" data-line-number="3">pd &lt;-<span class="st"> </span><span class="kw">position_jitter</span>(<span class="dt">width=</span><span class="fl">0.2</span>, <span class="dt">height=</span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb438-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb438-5" data-line-number="5">point.plot &lt;-</a>
-<a class="sourceLine" id="cb438-6" data-line-number="6"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb438-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>treatment, <span class="dt">y=</span>shift, </a>
-<a class="sourceLine" id="cb438-8" data-line-number="8">             <span class="dt">color=</span>treatment, <span class="dt">group=</span><span class="kw">row.names</span>(circadian))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb438-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">position =</span> pd) <span class="op">+</span></a>
-<a class="sourceLine" id="cb438-10" data-line-number="10"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>)<span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb438-11" data-line-number="11"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>)</a>
-<a class="sourceLine" id="cb438-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb438-13" data-line-number="13">point.plot</a></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" title="1"><span class="co"># we&#39;re going to re-use our jittering across plots so</span></a>
+<a class="sourceLine" id="cb438-2" title="2"><span class="co"># assign it to a variable</span></a>
+<a class="sourceLine" id="cb438-3" title="3">pd &lt;-<span class="st"> </span><span class="kw">position_jitter</span>(<span class="dt">width=</span><span class="fl">0.2</span>, <span class="dt">height=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb438-4" title="4"></a>
+<a class="sourceLine" id="cb438-5" title="5">point.plot &lt;-</a>
+<a class="sourceLine" id="cb438-6" title="6"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb438-7" title="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>treatment, <span class="dt">y=</span>shift, </a>
+<a class="sourceLine" id="cb438-8" title="8">             <span class="dt">color=</span>treatment, <span class="dt">group=</span><span class="kw">row.names</span>(circadian))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb438-9" title="9"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">position =</span> pd) <span class="op">+</span></a>
+<a class="sourceLine" id="cb438-10" title="10"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>)<span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb438-11" title="11"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>)</a>
+<a class="sourceLine" id="cb438-12" title="12"></a>
+<a class="sourceLine" id="cb438-13" title="13">point.plot</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-455-1.png" width="480" /></p>
 </div>
 <div id="carrying-out-the-anova" class="section level3">
 <h3><span class="header-section-number">20.9.2</span> Carrying out the ANOVA</h3>
 <p>From our visualization it certainly seems like there may be differences among the group (treatment) means. Let’s test this formally using the <code>aov()</code> function:</p>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb439-1" data-line-number="1">circadian.aov &lt;-<span class="st"> </span><span class="kw">aov</span>(shift <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> circadian)</a></code></pre></div>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb439-1" title="1">circadian.aov &lt;-<span class="st"> </span><span class="kw">aov</span>(shift <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> circadian)</a></code></pre></div>
 <p>The <code>summary</code> function applied to the <code>aov</code> fit will print out a typical ANOVA table and calculate the associated P-value for the <span class="math inline">\(F\)</span> test statistic:</p>
-<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" data-line-number="1"><span class="kw">summary</span>(circadian.aov)</a>
-<a class="sourceLine" id="cb440-2" data-line-number="2"><span class="co">#&gt;             Df Sum Sq Mean Sq F value  Pr(&gt;F)   </span></a>
-<a class="sourceLine" id="cb440-3" data-line-number="3"><span class="co">#&gt; treatment    2  7.224   3.612   7.289 0.00447 **</span></a>
-<a class="sourceLine" id="cb440-4" data-line-number="4"><span class="co">#&gt; Residuals   19  9.415   0.496                   </span></a>
-<a class="sourceLine" id="cb440-5" data-line-number="5"><span class="co">#&gt; ---</span></a>
-<a class="sourceLine" id="cb440-6" data-line-number="6"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" title="1"><span class="kw">summary</span>(circadian.aov)</a>
+<a class="sourceLine" id="cb440-2" title="2"><span class="co">#&gt;             Df Sum Sq Mean Sq F value  Pr(&gt;F)   </span></a>
+<a class="sourceLine" id="cb440-3" title="3"><span class="co">#&gt; treatment    2  7.224   3.612   7.289 0.00447 **</span></a>
+<a class="sourceLine" id="cb440-4" title="4"><span class="co">#&gt; Residuals   19  9.415   0.496                   </span></a>
+<a class="sourceLine" id="cb440-5" title="5"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb440-6" title="6"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a></code></pre></div>
 <p>If you want the ANOVA table in a form you can compute with, the <code>broom::tidy</code> function we explored previously comes in handy:</p>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb441-1" data-line-number="1">circadian.aov.table &lt;-<span class="st"> </span><span class="kw">tidy</span>(circadian.aov)</a>
-<a class="sourceLine" id="cb441-2" data-line-number="2">circadian.aov.table</a>
-<a class="sourceLine" id="cb441-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb441-4" data-line-number="4"><span class="co">#&gt;   term         df sumsq meansq statistic   p.value</span></a>
-<a class="sourceLine" id="cb441-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb441-6" data-line-number="6"><span class="co">#&gt; 1 treatment     2 7.224 3.612      7.289  0.004472</span></a>
-<a class="sourceLine" id="cb441-7" data-line-number="7"><span class="co">#&gt; 2 Residuals    19 9.415 0.4955    NA     NA</span></a></code></pre></div>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb441-1" title="1">circadian.aov.table &lt;-<span class="st"> </span><span class="kw">tidy</span>(circadian.aov)</a>
+<a class="sourceLine" id="cb441-2" title="2">circadian.aov.table</a>
+<a class="sourceLine" id="cb441-3" title="3"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb441-4" title="4"><span class="co">#&gt;   term         df sumsq meansq statistic   p.value</span></a>
+<a class="sourceLine" id="cb441-5" title="5"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb441-6" title="6"><span class="co">#&gt; 1 treatment     2 7.224 3.612      7.289  0.004472</span></a>
+<a class="sourceLine" id="cb441-7" title="7"><span class="co">#&gt; 2 Residuals    19 9.415 0.4955    NA     NA</span></a></code></pre></div>
 <p>The table above tells us that the <span class="math inline">\(F\)</span>-statistic for this ANOVA is ~7.29. The table also tells us that the P-value associated with this F-statistic, is quite small, P-value &lt; 0.005.</p>
 <p>The P-value can be calculated explicitly using the <code>pf()</code> function (similar to the <code>pnorm()</code> and <code>pt()</code> functions we’ve seen previously):</p>
-<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1">circadian.F.stat &lt;-<span class="st"> </span>circadian.aov.table<span class="op">$</span>statistic[<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb442-2" data-line-number="2"><span class="kw">pf</span>(circadian.F.stat, <span class="dt">df1 =</span> <span class="dv">2</span>, <span class="dt">df2 =</span> <span class="dv">19</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb442-3" data-line-number="3"><span class="co">#&gt; [1] 0.004472271</span></a></code></pre></div>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" title="1">circadian.F.stat &lt;-<span class="st"> </span>circadian.aov.table<span class="op">$</span>statistic[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb442-2" title="2"><span class="kw">pf</span>(circadian.F.stat, <span class="dt">df1 =</span> <span class="dv">2</span>, <span class="dt">df2 =</span> <span class="dv">19</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb442-3" title="3"><span class="co">#&gt; [1] 0.004472271</span></a></code></pre></div>
 <p>Note that we set <code>lower.tail = FALSE</code> to calculate the probability of getting an F-statistic this large or greater.</p>
 <p><strong>Visualizing the F-distribution</strong></p>
 <p>Let’s draw the corresponding F-distribution, <span class="math inline">\(F_{2,19}\)</span>, using the <code>df()</code> function (parallel to <code>dnorm()</code> and <code>dt()</code>, with the region corresponding to an F-statistic greater than 7.29 shaded red. Because the area in the right tail we’re interested in is quite small, in a second plot we’ve zoomed in on this region.</p>
-<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb443-1" data-line-number="1">fdist &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">f =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length.out =</span> <span class="dv">250</span>),</a>
-<a class="sourceLine" id="cb443-2" data-line-number="2">                    <span class="dt">density =</span> <span class="kw">df</span>(f, <span class="dt">df1=</span><span class="dv">2</span>, <span class="dt">df2=</span><span class="dv">19</span>))</a>
-<a class="sourceLine" id="cb443-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb443-4" data-line-number="4">plot.a &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb443-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(fdist, <span class="kw">aes</span>(f, density)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb443-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb443-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_area</span>(<span class="dt">data =</span> <span class="kw">filter</span>(fdist, f <span class="op">&gt;=</span><span class="st"> </span><span class="fl">7.29</span>), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb443-8" data-line-number="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;F&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, <span class="dt">title=</span><span class="st">&quot;F(2,19)&quot;</span>)</a>
-<a class="sourceLine" id="cb443-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb443-10" data-line-number="10">plot.b &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb443-11" data-line-number="11"><span class="st">  </span>plot.a <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">5</span>,<span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="fl">0.02</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb443-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Zoomed in view of right tail of F(2,19)&quot;</span>)</a>
-<a class="sourceLine" id="cb443-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb443-14" data-line-number="14"><span class="kw">plot_grid</span>(plot.a, plot.b, <span class="dt">labels=</span><span class="st">&quot;AUTO&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb443-1" title="1">fdist &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">f =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">length.out =</span> <span class="dv">250</span>),</a>
+<a class="sourceLine" id="cb443-2" title="2">                    <span class="dt">density =</span> <span class="kw">df</span>(f, <span class="dt">df1=</span><span class="dv">2</span>, <span class="dt">df2=</span><span class="dv">19</span>))</a>
+<a class="sourceLine" id="cb443-3" title="3"></a>
+<a class="sourceLine" id="cb443-4" title="4">plot.a &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb443-5" title="5"><span class="st">  </span><span class="kw">ggplot</span>(fdist, <span class="kw">aes</span>(f, density)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb443-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb443-7" title="7"><span class="st">  </span><span class="kw">geom_area</span>(<span class="dt">data =</span> <span class="kw">filter</span>(fdist, f <span class="op">&gt;=</span><span class="st"> </span><span class="fl">7.29</span>), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb443-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;F&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, <span class="dt">title=</span><span class="st">&quot;F(2,19)&quot;</span>)</a>
+<a class="sourceLine" id="cb443-9" title="9"></a>
+<a class="sourceLine" id="cb443-10" title="10">plot.b &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb443-11" title="11"><span class="st">  </span>plot.a <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">5</span>,<span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="fl">0.02</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb443-12" title="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Zoomed in view of right tail of F(2,19)&quot;</span>)</a>
+<a class="sourceLine" id="cb443-13" title="13"></a>
+<a class="sourceLine" id="cb443-14" title="14"><span class="kw">plot_grid</span>(plot.a, plot.b, <span class="dt">labels=</span><span class="st">&quot;AUTO&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-460-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <p><strong>Critical values of the F-distribution</strong></p>
 <p>If we wanted to know what the critical F value is for a corresponding type I error rate we can use the <code>qf()</code> function:</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="co"># the critical value of F for alpha = 0.05</span></a>
-<a class="sourceLine" id="cb444-2" data-line-number="2"><span class="kw">qf</span>(<span class="fl">0.05</span>, <span class="dv">2</span>, <span class="dv">19</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb444-3" data-line-number="3"><span class="co">#&gt; [1] 3.521893</span></a></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" title="1"><span class="co"># the critical value of F for alpha = 0.05</span></a>
+<a class="sourceLine" id="cb444-2" title="2"><span class="kw">qf</span>(<span class="fl">0.05</span>, <span class="dv">2</span>, <span class="dv">19</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb444-3" title="3"><span class="co">#&gt; [1] 3.521893</span></a></code></pre></div>
 </div>
 </div>
 <div id="anova-calculations-step-by-step" class="section level2">
 <h2><span class="header-section-number">20.10</span> ANOVA calculations: Step-by-step</h2>
 <p>The <code>aov()</code> function carries out all the ANOVA calculations behind the scenes. It’s useful to pull back the curtain and see how the various quantities are calculated.</p>
 <p><strong>Total SS</strong></p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1">grand.mean &lt;-<span class="st"> </span><span class="kw">mean</span>(circadian<span class="op">$</span>shift)</a>
-<a class="sourceLine" id="cb445-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb445-3" data-line-number="3"><span class="co"># total sum of squares</span></a>
-<a class="sourceLine" id="cb445-4" data-line-number="4">total.table &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb445-5" data-line-number="5"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb445-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>((shift <span class="op">-</span><span class="st"> </span>grand.mean)<span class="op">**</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb445-7" data-line-number="7">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb445-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb445-9" data-line-number="9">total.table</a>
-<a class="sourceLine" id="cb445-10" data-line-number="10"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb445-11" data-line-number="11"><span class="co">#&gt;      SS    df</span></a>
-<a class="sourceLine" id="cb445-12" data-line-number="12"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb445-13" data-line-number="13"><span class="co">#&gt; 1 16.64    21</span></a></code></pre></div>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" title="1">grand.mean &lt;-<span class="st"> </span><span class="kw">mean</span>(circadian<span class="op">$</span>shift)</a>
+<a class="sourceLine" id="cb445-2" title="2"></a>
+<a class="sourceLine" id="cb445-3" title="3"><span class="co"># total sum of squares</span></a>
+<a class="sourceLine" id="cb445-4" title="4">total.table &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb445-5" title="5"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb445-6" title="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>((shift <span class="op">-</span><span class="st"> </span>grand.mean)<span class="op">**</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb445-7" title="7">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb445-8" title="8"></a>
+<a class="sourceLine" id="cb445-9" title="9">total.table</a>
+<a class="sourceLine" id="cb445-10" title="10"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb445-11" title="11"><span class="co">#&gt;      SS    df</span></a>
+<a class="sourceLine" id="cb445-12" title="12"><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb445-13" title="13"><span class="co">#&gt; 1 16.64    21</span></a></code></pre></div>
 <p><strong>Group SS and MS</strong></p>
 <p>We use <code>group_by</code> and <code>summarize</code> to calculates group means and the group deviates (the difference between the group means and the grand mean):</p>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb446-1" data-line-number="1">group.df &lt;-</a>
-<a class="sourceLine" id="cb446-2" data-line-number="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb446-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb446-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>(), </a>
-<a class="sourceLine" id="cb446-5" data-line-number="5">            <span class="dt">group.mean =</span> <span class="kw">mean</span>(shift), </a>
-<a class="sourceLine" id="cb446-6" data-line-number="6">            <span class="dt">grand.mean =</span> grand.mean,</a>
-<a class="sourceLine" id="cb446-7" data-line-number="7">            <span class="dt">group.deviates =</span> group.mean <span class="op">-</span><span class="st"> </span>grand.mean)</a>
-<a class="sourceLine" id="cb446-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb446-9" data-line-number="9">group.df</a>
-<a class="sourceLine" id="cb446-10" data-line-number="10"><span class="co">#&gt; # A tibble: 3 x 5</span></a>
-<a class="sourceLine" id="cb446-11" data-line-number="11"><span class="co">#&gt;   treatment     n group.mean grand.mean group.deviates</span></a>
-<a class="sourceLine" id="cb446-12" data-line-number="12"><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb446-13" data-line-number="13"><span class="co">#&gt; 1 control       8    -0.3088    -0.7127         0.4040</span></a>
-<a class="sourceLine" id="cb446-14" data-line-number="14"><span class="co">#&gt; 2 eyes          7    -1.551     -0.7127        -0.8387</span></a>
-<a class="sourceLine" id="cb446-15" data-line-number="15"><span class="co">#&gt; 3 knee          7    -0.3357    -0.7127         0.3770</span></a></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb446-1" title="1">group.df &lt;-</a>
+<a class="sourceLine" id="cb446-2" title="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb446-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb446-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>(), </a>
+<a class="sourceLine" id="cb446-5" title="5">            <span class="dt">group.mean =</span> <span class="kw">mean</span>(shift), </a>
+<a class="sourceLine" id="cb446-6" title="6">            <span class="dt">grand.mean =</span> grand.mean,</a>
+<a class="sourceLine" id="cb446-7" title="7">            <span class="dt">group.deviates =</span> group.mean <span class="op">-</span><span class="st"> </span>grand.mean)</a>
+<a class="sourceLine" id="cb446-8" title="8"></a>
+<a class="sourceLine" id="cb446-9" title="9">group.df</a>
+<a class="sourceLine" id="cb446-10" title="10"><span class="co">#&gt; # A tibble: 3 x 5</span></a>
+<a class="sourceLine" id="cb446-11" title="11"><span class="co">#&gt;   treatment     n group.mean grand.mean group.deviates</span></a>
+<a class="sourceLine" id="cb446-12" title="12"><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb446-13" title="13"><span class="co">#&gt; 1 control       8    -0.3088    -0.7127         0.4040</span></a>
+<a class="sourceLine" id="cb446-14" title="14"><span class="co">#&gt; 2 eyes          7    -1.551     -0.7127        -0.8387</span></a>
+<a class="sourceLine" id="cb446-15" title="15"><span class="co">#&gt; 3 knee          7    -0.3357    -0.7127         0.3770</span></a></code></pre></div>
 <p>Having calculated the group deviates, we calculate the group sum of squares and related quantities:</p>
-<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">group.table &lt;-</a>
-<a class="sourceLine" id="cb447-2" data-line-number="2"><span class="st">  </span>group.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb447-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(n <span class="op">*</span><span class="st"> </span>group.deviates<span class="op">**</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb447-4" data-line-number="4">            <span class="dt">k =</span> <span class="kw">n</span>(),</a>
-<a class="sourceLine" id="cb447-5" data-line-number="5">            <span class="dt">df =</span> k<span class="dv">-1</span>,</a>
-<a class="sourceLine" id="cb447-6" data-line-number="6">            <span class="dt">MS =</span> SS<span class="op">/</span>df)</a>
-<a class="sourceLine" id="cb447-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb447-8" data-line-number="8">group.table</a>
-<a class="sourceLine" id="cb447-9" data-line-number="9"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb447-10" data-line-number="10"><span class="co">#&gt;      SS     k    df    MS</span></a>
-<a class="sourceLine" id="cb447-11" data-line-number="11"><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb447-12" data-line-number="12"><span class="co">#&gt; 1 7.224     3     2 3.612</span></a></code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" title="1">group.table &lt;-</a>
+<a class="sourceLine" id="cb447-2" title="2"><span class="st">  </span>group.df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb447-3" title="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(n <span class="op">*</span><span class="st"> </span>group.deviates<span class="op">**</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb447-4" title="4">            <span class="dt">k =</span> <span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb447-5" title="5">            <span class="dt">df =</span> k<span class="dv">-1</span>,</a>
+<a class="sourceLine" id="cb447-6" title="6">            <span class="dt">MS =</span> SS<span class="op">/</span>df)</a>
+<a class="sourceLine" id="cb447-7" title="7"></a>
+<a class="sourceLine" id="cb447-8" title="8">group.table</a>
+<a class="sourceLine" id="cb447-9" title="9"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb447-10" title="10"><span class="co">#&gt;      SS     k    df    MS</span></a>
+<a class="sourceLine" id="cb447-11" title="11"><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb447-12" title="12"><span class="co">#&gt; 1 7.224     3     2 3.612</span></a></code></pre></div>
 <p><strong>Error SS and MS</strong></p>
 <p>Next we turn to variation of the individual observations around the group means, which is the basis of the error sum of squares and mean square. Again we calculate this in two steps:</p>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb448-1" data-line-number="1">error.df &lt;-</a>
-<a class="sourceLine" id="cb448-2" data-line-number="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb448-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb448-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group.mean =</span> <span class="kw">mean</span>(shift),</a>
-<a class="sourceLine" id="cb448-5" data-line-number="5">         <span class="dt">error.deviates =</span> shift <span class="op">-</span><span class="st"> </span>group.mean) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb448-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(error.deviates<span class="op">**</span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb448-7" data-line-number="7">            <span class="dt">n =</span> <span class="kw">n</span>())</a>
-<a class="sourceLine" id="cb448-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb448-9" data-line-number="9">error.df</a>
-<a class="sourceLine" id="cb448-10" data-line-number="10"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
-<a class="sourceLine" id="cb448-11" data-line-number="11"><span class="co">#&gt;   treatment    SS     n</span></a>
-<a class="sourceLine" id="cb448-12" data-line-number="12"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb448-13" data-line-number="13"><span class="co">#&gt; 1 control   2.670     8</span></a>
-<a class="sourceLine" id="cb448-14" data-line-number="14"><span class="co">#&gt; 2 eyes      2.993     7</span></a>
-<a class="sourceLine" id="cb448-15" data-line-number="15"><span class="co">#&gt; 3 knee      3.752     7</span></a></code></pre></div>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb448-1" title="1">error.df &lt;-</a>
+<a class="sourceLine" id="cb448-2" title="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb448-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb448-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group.mean =</span> <span class="kw">mean</span>(shift),</a>
+<a class="sourceLine" id="cb448-5" title="5">         <span class="dt">error.deviates =</span> shift <span class="op">-</span><span class="st"> </span>group.mean) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb448-6" title="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(error.deviates<span class="op">**</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb448-7" title="7">            <span class="dt">n =</span> <span class="kw">n</span>())</a>
+<a class="sourceLine" id="cb448-8" title="8"></a>
+<a class="sourceLine" id="cb448-9" title="9">error.df</a>
+<a class="sourceLine" id="cb448-10" title="10"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb448-11" title="11"><span class="co">#&gt;   treatment    SS     n</span></a>
+<a class="sourceLine" id="cb448-12" title="12"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb448-13" title="13"><span class="co">#&gt; 1 control   2.670     8</span></a>
+<a class="sourceLine" id="cb448-14" title="14"><span class="co">#&gt; 2 eyes      2.993     7</span></a>
+<a class="sourceLine" id="cb448-15" title="15"><span class="co">#&gt; 3 knee      3.752     7</span></a></code></pre></div>
 <p>Now we calculate the error sum of squares and related quantities:</p>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1">error.table &lt;-</a>
-<a class="sourceLine" id="cb449-2" data-line-number="2"><span class="st">  </span>error.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb449-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(SS),</a>
-<a class="sourceLine" id="cb449-4" data-line-number="4">            <span class="dt">k =</span> <span class="kw">n</span>(),</a>
-<a class="sourceLine" id="cb449-5" data-line-number="5">            <span class="dt">N =</span> <span class="kw">sum</span>(n),</a>
-<a class="sourceLine" id="cb449-6" data-line-number="6">            <span class="dt">df =</span> N <span class="op">-</span><span class="st"> </span>k,</a>
-<a class="sourceLine" id="cb449-7" data-line-number="7">            <span class="dt">MS =</span> SS<span class="op">/</span>df)</a>
-<a class="sourceLine" id="cb449-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb449-9" data-line-number="9">error.table</a>
-<a class="sourceLine" id="cb449-10" data-line-number="10"><span class="co">#&gt; # A tibble: 1 x 5</span></a>
-<a class="sourceLine" id="cb449-11" data-line-number="11"><span class="co">#&gt;      SS     k     N    df     MS</span></a>
-<a class="sourceLine" id="cb449-12" data-line-number="12"><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb449-13" data-line-number="13"><span class="co">#&gt; 1 9.415     3    22    19 0.4955</span></a></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" title="1">error.table &lt;-</a>
+<a class="sourceLine" id="cb449-2" title="2"><span class="st">  </span>error.df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb449-3" title="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">SS =</span> <span class="kw">sum</span>(SS),</a>
+<a class="sourceLine" id="cb449-4" title="4">            <span class="dt">k =</span> <span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb449-5" title="5">            <span class="dt">N =</span> <span class="kw">sum</span>(n),</a>
+<a class="sourceLine" id="cb449-6" title="6">            <span class="dt">df =</span> N <span class="op">-</span><span class="st"> </span>k,</a>
+<a class="sourceLine" id="cb449-7" title="7">            <span class="dt">MS =</span> SS<span class="op">/</span>df)</a>
+<a class="sourceLine" id="cb449-8" title="8"></a>
+<a class="sourceLine" id="cb449-9" title="9">error.table</a>
+<a class="sourceLine" id="cb449-10" title="10"><span class="co">#&gt; # A tibble: 1 x 5</span></a>
+<a class="sourceLine" id="cb449-11" title="11"><span class="co">#&gt;      SS     k     N    df     MS</span></a>
+<a class="sourceLine" id="cb449-12" title="12"><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb449-13" title="13"><span class="co">#&gt; 1 9.415     3    22    19 0.4955</span></a></code></pre></div>
 <p><strong>Calculating the F-statistic and <span class="math inline">\(R^2\)</span></strong></p>
 <p>Having calculated our estimates of between group variance and within group variance (<span class="math inline">\(MS_\text{group}\)</span> and $MS_) we’re now ready to calculate the <span class="math inline">\(F\)</span> test statistic.</p>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb450-1" data-line-number="1">F.stat &lt;-<span class="st"> </span>group.table<span class="op">$</span>MS<span class="op">/</span>error.table<span class="op">$</span>MS</a>
-<a class="sourceLine" id="cb450-2" data-line-number="2">F.stat</a>
-<a class="sourceLine" id="cb450-3" data-line-number="3"><span class="co">#&gt; [1] 7.289449</span></a></code></pre></div>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb450-1" title="1">F.stat &lt;-<span class="st"> </span>group.table<span class="op">$</span>MS<span class="op">/</span>error.table<span class="op">$</span>MS</a>
+<a class="sourceLine" id="cb450-2" title="2">F.stat</a>
+<a class="sourceLine" id="cb450-3" title="3"><span class="co">#&gt; [1] 7.289449</span></a></code></pre></div>
 <p>The variation “explained” by the group is:</p>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" data-line-number="1">R2 &lt;-<span class="st"> </span>group.table<span class="op">$</span>SS<span class="op">/</span>total.table<span class="op">$</span>SS</a>
-<a class="sourceLine" id="cb451-2" data-line-number="2">R2</a>
-<a class="sourceLine" id="cb451-3" data-line-number="3"><span class="co">#&gt; [1] 0.4341684</span></a></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" title="1">R2 &lt;-<span class="st"> </span>group.table<span class="op">$</span>SS<span class="op">/</span>total.table<span class="op">$</span>SS</a>
+<a class="sourceLine" id="cb451-2" title="2">R2</a>
+<a class="sourceLine" id="cb451-3" title="3"><span class="co">#&gt; [1] 0.4341684</span></a></code></pre></div>
 <p>Thus about 43% of the total sum of squared deviation among subjects, with respect to the phase shift variable, is explained by differences in light treatment.</p>
 </div>
 <div id="visualizing-the-partitioning-of-sum-of-squares" class="section level2">
 <h2><span class="header-section-number">20.11</span> Visualizing the partitioning of sum-of-squares</h2>
 <p><strong>Total SS</strong></p>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" data-line-number="1">total.plot &lt;-</a>
-<a class="sourceLine" id="cb452-2" data-line-number="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb452-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>treatment, <span class="dt">y=</span>shift, </a>
-<a class="sourceLine" id="cb452-4" data-line-number="4">             <span class="dt">color=</span>treatment, <span class="dt">group=</span><span class="kw">row.names</span>(circadian))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb452-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> grand.mean, <span class="dt">ymax =</span> shift), <span class="dt">position =</span> pd) <span class="op">+</span></a>
-<a class="sourceLine" id="cb452-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> grand.mean, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb452-7" data-line-number="7"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>)<span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb452-8" data-line-number="8"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
-<a class="sourceLine" id="cb452-9" data-line-number="9">         <span class="dt">title =</span> <span class="st">&quot;Deviation of observations around the grand mean (dashed line)&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb452-10" data-line-number="10"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb452-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb452-12" data-line-number="12">total.plot</a></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" title="1">total.plot &lt;-</a>
+<a class="sourceLine" id="cb452-2" title="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb452-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>treatment, <span class="dt">y=</span>shift, </a>
+<a class="sourceLine" id="cb452-4" title="4">             <span class="dt">color=</span>treatment, <span class="dt">group=</span><span class="kw">row.names</span>(circadian))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb452-5" title="5"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> grand.mean, <span class="dt">ymax =</span> shift), <span class="dt">position =</span> pd) <span class="op">+</span></a>
+<a class="sourceLine" id="cb452-6" title="6"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> grand.mean, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb452-7" title="7"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>)<span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb452-8" title="8"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
+<a class="sourceLine" id="cb452-9" title="9">         <span class="dt">title =</span> <span class="st">&quot;Deviation of observations around the grand mean (dashed line)&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb452-10" title="10"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb452-11" title="11"></a>
+<a class="sourceLine" id="cb452-12" title="12">total.plot</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-469-1.png" width="576" /></p>
 <p><strong>Group SS</strong></p>
 <p>Let’s visualize the difference of the group means from the grand mean:</p>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" data-line-number="1">group.plot &lt;-</a>
-<a class="sourceLine" id="cb453-2" data-line-number="2"><span class="st">  </span>group.df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb453-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> group.mean, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb453-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> grand.mean, <span class="dt">ymax =</span> group.mean), <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb453-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.25</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb453-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> grand.mean, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb453-7" data-line-number="7"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb453-8" data-line-number="8"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
-<a class="sourceLine" id="cb453-9" data-line-number="9">         <span class="dt">title =</span> <span class="st">&quot;Deviation of group means around the grand mean&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb453-10" data-line-number="10"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb453-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb453-12" data-line-number="12">group.plot</a></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" title="1">group.plot &lt;-</a>
+<a class="sourceLine" id="cb453-2" title="2"><span class="st">  </span>group.df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb453-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> group.mean, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb453-4" title="4"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> grand.mean, <span class="dt">ymax =</span> group.mean), <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb453-5" title="5"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb453-6" title="6"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> grand.mean, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb453-7" title="7"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb453-8" title="8"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
+<a class="sourceLine" id="cb453-9" title="9">         <span class="dt">title =</span> <span class="st">&quot;Deviation of group means around the grand mean&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb453-10" title="10"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb453-11" title="11"></a>
+<a class="sourceLine" id="cb453-12" title="12">group.plot</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-470-1.png" width="576" /></p>
 <p><strong>Error SS</strong></p>
 <p>We can visualize the individual deviates around the group means as so:</p>
-<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" data-line-number="1">error.plot &lt;-</a>
-<a class="sourceLine" id="cb454-2" data-line-number="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb454-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb454-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group.mean =</span> <span class="kw">mean</span>(shift)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb454-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> shift, <span class="dt">color =</span> treatment)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb454-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> group.mean),<span class="dt">size=</span><span class="dv">3</span>,<span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb454-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> group.mean, <span class="dt">ymax =</span> shift), <span class="dt">position =</span> pd) <span class="op">+</span></a>
-<a class="sourceLine" id="cb454-8" data-line-number="8"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb454-9" data-line-number="9"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
-<a class="sourceLine" id="cb454-10" data-line-number="10">         <span class="dt">title =</span> <span class="st">&quot;Deviation of observations around the groups means&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb454-11" data-line-number="11"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
-<a class="sourceLine" id="cb454-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb454-13" data-line-number="13">error.plot</a></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" title="1">error.plot &lt;-</a>
+<a class="sourceLine" id="cb454-2" title="2"><span class="st">  </span>circadian <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb454-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb454-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">group.mean =</span> <span class="kw">mean</span>(shift)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb454-5" title="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> shift, <span class="dt">color =</span> treatment)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb454-6" title="6"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> group.mean),<span class="dt">size=</span><span class="dv">3</span>,<span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb454-7" title="7"><span class="st">    </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> group.mean, <span class="dt">ymax =</span> shift), <span class="dt">position =</span> pd) <span class="op">+</span></a>
+<a class="sourceLine" id="cb454-8" title="8"><span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb454-9" title="9"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Phase shift (h)&quot;</span>,</a>
+<a class="sourceLine" id="cb454-10" title="10">         <span class="dt">title =</span> <span class="st">&quot;Deviation of observations around the groups means&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb454-11" title="11"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb454-12" title="12"></a>
+<a class="sourceLine" id="cb454-13" title="13">error.plot</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-471-1.png" width="576" /></p>
 <p><strong>Combined visualization</strong></p>
 <p>We can combine our three plots created above into a single figure using <code>cowplot::plot_grid</code>:</p>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb455-1" data-line-number="1">combined.plot &lt;-<span class="kw">plot_grid</span>(total.plot, group.plot, error.plot, </a>
-<a class="sourceLine" id="cb455-2" data-line-number="2">                          <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="dt">nrow =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb455-3" data-line-number="3">combined.plot</a></code></pre></div>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb455-1" title="1">combined.plot &lt;-<span class="kw">plot_grid</span>(total.plot, group.plot, error.plot, </a>
+<a class="sourceLine" id="cb455-2" title="2">                          <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="dt">nrow =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb455-3" title="3">combined.plot</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-472-1.png" width="1440" /></p>
 </div>
 <div id="which-pairs-of-group-means-are-different" class="section level2">
@@ -1020,25 +1020,25 @@ F = \frac{\text{group mean square}}{\text{error mean square}} = \frac{\text{MS}_
 <div id="tukey-kramer-test" class="section level3">
 <h3><span class="header-section-number">20.12.1</span> Tukey-Kramer test</h3>
 <p>The function <code>TukeyHSD</code> implements the Tukey-Kramer test. The input to <code>TukeyHSD</code> is the fit from <code>aov</code>:</p>
-<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" data-line-number="1"><span class="kw">TukeyHSD</span>(circadian.aov)</a>
-<a class="sourceLine" id="cb456-2" data-line-number="2"><span class="co">#&gt;   Tukey multiple comparisons of means</span></a>
-<a class="sourceLine" id="cb456-3" data-line-number="3"><span class="co">#&gt;     95% family-wise confidence level</span></a>
-<a class="sourceLine" id="cb456-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb456-5" data-line-number="5"><span class="co">#&gt; Fit: aov(formula = shift ~ treatment, data = circadian)</span></a>
-<a class="sourceLine" id="cb456-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb456-7" data-line-number="7"><span class="co">#&gt; $treatment</span></a>
-<a class="sourceLine" id="cb456-8" data-line-number="8"><span class="co">#&gt;                     diff        lwr        upr     p adj</span></a>
-<a class="sourceLine" id="cb456-9" data-line-number="9"><span class="co">#&gt; eyes-control -1.24267857 -2.1682364 -0.3171207 0.0078656</span></a>
-<a class="sourceLine" id="cb456-10" data-line-number="10"><span class="co">#&gt; knee-control -0.02696429 -0.9525222  0.8985936 0.9969851</span></a>
-<a class="sourceLine" id="cb456-11" data-line-number="11"><span class="co">#&gt; knee-eyes     1.21571429  0.2598022  2.1716263 0.0116776</span></a></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" title="1"><span class="kw">TukeyHSD</span>(circadian.aov)</a>
+<a class="sourceLine" id="cb456-2" title="2"><span class="co">#&gt;   Tukey multiple comparisons of means</span></a>
+<a class="sourceLine" id="cb456-3" title="3"><span class="co">#&gt;     95% family-wise confidence level</span></a>
+<a class="sourceLine" id="cb456-4" title="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb456-5" title="5"><span class="co">#&gt; Fit: aov(formula = shift ~ treatment, data = circadian)</span></a>
+<a class="sourceLine" id="cb456-6" title="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb456-7" title="7"><span class="co">#&gt; $treatment</span></a>
+<a class="sourceLine" id="cb456-8" title="8"><span class="co">#&gt;                     diff        lwr        upr     p adj</span></a>
+<a class="sourceLine" id="cb456-9" title="9"><span class="co">#&gt; eyes-control -1.24267857 -2.1682364 -0.3171207 0.0078656</span></a>
+<a class="sourceLine" id="cb456-10" title="10"><span class="co">#&gt; knee-control -0.02696429 -0.9525222  0.8985936 0.9969851</span></a>
+<a class="sourceLine" id="cb456-11" title="11"><span class="co">#&gt; knee-eyes     1.21571429  0.2598022  2.1716263 0.0116776</span></a></code></pre></div>
 <p>Here again, the <code>broom::tidy</code> function comes in handy:</p>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" data-line-number="1"><span class="kw">tidy</span>(<span class="kw">TukeyHSD</span>(circadian.aov))</a>
-<a class="sourceLine" id="cb457-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
-<a class="sourceLine" id="cb457-3" data-line-number="3"><span class="co">#&gt;   term      comparison   estimate conf.low conf.high adj.p.value</span></a>
-<a class="sourceLine" id="cb457-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb457-5" data-line-number="5"><span class="co">#&gt; 1 treatment eyes-control -1.243    -2.168    -0.3171    0.007866</span></a>
-<a class="sourceLine" id="cb457-6" data-line-number="6"><span class="co">#&gt; 2 treatment knee-control -0.02696  -0.9525    0.8986    0.9970  </span></a>
-<a class="sourceLine" id="cb457-7" data-line-number="7"><span class="co">#&gt; 3 treatment knee-eyes     1.216     0.2598    2.172     0.01168</span></a></code></pre></div>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" title="1"><span class="kw">tidy</span>(<span class="kw">TukeyHSD</span>(circadian.aov))</a>
+<a class="sourceLine" id="cb457-2" title="2"><span class="co">#&gt; # A tibble: 3 x 6</span></a>
+<a class="sourceLine" id="cb457-3" title="3"><span class="co">#&gt;   term      comparison   estimate conf.low conf.high adj.p.value</span></a>
+<a class="sourceLine" id="cb457-4" title="4"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb457-5" title="5"><span class="co">#&gt; 1 treatment eyes-control -1.243    -2.168    -0.3171    0.007866</span></a>
+<a class="sourceLine" id="cb457-6" title="6"><span class="co">#&gt; 2 treatment knee-control -0.02696  -0.9525    0.8986    0.9970  </span></a>
+<a class="sourceLine" id="cb457-7" title="7"><span class="co">#&gt; 3 treatment knee-eyes     1.216     0.2598    2.172     0.01168</span></a></code></pre></div>
 <p>The Tukey HSD test by default give us 95% confidence intervals for the differences in means between each pair of groups, and an associated P-value for the null hypothesis of equal means between pairs. Interpretting the results above, we see that we fail to reject the null hypothesis of equal means for the knee and control treatment groups (i.e. we have no statistical support to conclude they are different). However, we reject the null hypothesis for equality of means between control and eye treatments and between knee and eye treatements. We have evidence that light treatments applied to the eye cause a mean negative shift in the phase of melatonin production relative to control and knee treatment groups.</p>
 </div>
 </div>
@@ -1079,46 +1079,46 @@ s_A^2 = \frac{MS_\text{groups} - MS_\text{error}}{n}
 <div id="repeatability-walking-stick-example" class="section level3 unnumbered">
 <h3>Repeatability: Walking stick example</h3>
 <p>Nosil and Crespi measured various morphological features of walking stick insects from digital photographs. For each specimen they took two independent photographs and measured femur length (in cm) on each photograph.</p>
-<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb458-1" data-line-number="1">walking.sticks &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-walking-sticks.csv&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" data-line-number="1">by.specimen &lt;-</a>
-<a class="sourceLine" id="cb459-2" data-line-number="2"><span class="st">  </span>walking.sticks <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb459-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(specimen) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb459-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">min.fl =</span> <span class="kw">min</span>(femurLength), <span class="dt">max.fl =</span> <span class="kw">max</span>(femurLength), <span class="dt">avg.fl =</span> <span class="fl">0.5</span><span class="op">*</span>(min.fl <span class="op">+</span><span class="st"> </span>max.fl)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb459-5" data-line-number="5"><span class="st">  </span><span class="kw">arrange</span>(avg.fl) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb459-6" data-line-number="6"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb459-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank.fl =</span> <span class="kw">rank</span>(avg.fl, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>))</a>
-<a class="sourceLine" id="cb459-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb459-9" data-line-number="9"><span class="kw">ggplot</span>(by.specimen, <span class="kw">aes</span>(<span class="dt">x =</span> rank.fl)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb459-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> min.fl), <span class="dt">color=</span><span class="st">&quot;firebrick&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb459-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> max.fl <span class="op">+</span><span class="st"> </span><span class="fl">0.0025</span>), <span class="dt">color=</span><span class="st">&quot;firebrick&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb459-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> min.fl, <span class="dt">ymax =</span> max.fl <span class="op">+</span><span class="st"> </span><span class="fl">0.0025</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb459-13" data-line-number="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Individual walking sticks&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Femur length (cm)&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb459-14" data-line-number="14"><span class="st">  </span><span class="kw">theme_classic</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb459-15" data-line-number="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb459-16" data-line-number="16">        <span class="dt">axis.ticks.x=</span><span class="kw">element_blank</span>())  </a></code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb458-1" title="1">walking.sticks &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-walking-sticks.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" title="1">by.specimen &lt;-</a>
+<a class="sourceLine" id="cb459-2" title="2"><span class="st">  </span>walking.sticks <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb459-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(specimen) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb459-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">min.fl =</span> <span class="kw">min</span>(femurLength), <span class="dt">max.fl =</span> <span class="kw">max</span>(femurLength), <span class="dt">avg.fl =</span> <span class="fl">0.5</span><span class="op">*</span>(min.fl <span class="op">+</span><span class="st"> </span>max.fl)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb459-5" title="5"><span class="st">  </span><span class="kw">arrange</span>(avg.fl) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb459-6" title="6"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb459-7" title="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank.fl =</span> <span class="kw">rank</span>(avg.fl, <span class="dt">ties.method =</span> <span class="st">&quot;first&quot;</span>))</a>
+<a class="sourceLine" id="cb459-8" title="8"></a>
+<a class="sourceLine" id="cb459-9" title="9"><span class="kw">ggplot</span>(by.specimen, <span class="kw">aes</span>(<span class="dt">x =</span> rank.fl)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb459-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> min.fl), <span class="dt">color=</span><span class="st">&quot;firebrick&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb459-11" title="11"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> max.fl <span class="op">+</span><span class="st"> </span><span class="fl">0.0025</span>), <span class="dt">color=</span><span class="st">&quot;firebrick&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb459-12" title="12"><span class="st">  </span><span class="kw">geom_linerange</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> min.fl, <span class="dt">ymax =</span> max.fl <span class="op">+</span><span class="st"> </span><span class="fl">0.0025</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb459-13" title="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Individual walking sticks&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Femur length (cm)&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb459-14" title="14"><span class="st">  </span><span class="kw">theme_classic</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb459-15" title="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb459-16" title="16">        <span class="dt">axis.ticks.x=</span><span class="kw">element_blank</span>())  </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-476-1.png" width="312" style="display: block; margin: auto;" /></p>
 <p>First we carry out the ANOVA in the standard way, using the specimen variable as the grouping variable:</p>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" data-line-number="1">sticks.aov &lt;-<span class="st"> </span><span class="kw">aov</span>(femurLength <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(specimen), </a>
-<a class="sourceLine" id="cb460-2" data-line-number="2">                  <span class="dt">data =</span> walking.sticks)</a>
-<a class="sourceLine" id="cb460-3" data-line-number="3">sticks.table &lt;-<span class="st"> </span><span class="kw">tidy</span>(sticks.aov)</a>
-<a class="sourceLine" id="cb460-4" data-line-number="4">sticks.table</a>
-<a class="sourceLine" id="cb460-5" data-line-number="5"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb460-6" data-line-number="6"><span class="co">#&gt;   term                   df    sumsq    meansq statistic      p.value</span></a>
-<a class="sourceLine" id="cb460-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb460-8" data-line-number="8"><span class="co">#&gt; 1 as.factor(specimen)    24 0.05913  0.002464      6.921  0.000004077</span></a>
-<a class="sourceLine" id="cb460-9" data-line-number="9"><span class="co">#&gt; 2 Residuals              25 0.008900 0.0003560    NA     NA</span></a></code></pre></div>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" title="1">sticks.aov &lt;-<span class="st"> </span><span class="kw">aov</span>(femurLength <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(specimen), </a>
+<a class="sourceLine" id="cb460-2" title="2">                  <span class="dt">data =</span> walking.sticks)</a>
+<a class="sourceLine" id="cb460-3" title="3">sticks.table &lt;-<span class="st"> </span><span class="kw">tidy</span>(sticks.aov)</a>
+<a class="sourceLine" id="cb460-4" title="4">sticks.table</a>
+<a class="sourceLine" id="cb460-5" title="5"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb460-6" title="6"><span class="co">#&gt;   term                   df    sumsq    meansq statistic      p.value</span></a>
+<a class="sourceLine" id="cb460-7" title="7"><span class="co">#&gt;   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb460-8" title="8"><span class="co">#&gt; 1 as.factor(specimen)    24 0.05913  0.002464      6.921  0.000004077</span></a>
+<a class="sourceLine" id="cb460-9" title="9"><span class="co">#&gt; 2 Residuals              25 0.008900 0.0003560    NA     NA</span></a></code></pre></div>
 <p>From the ANOVA table, use <span class="math inline">\(MS_\text{group}\)</span> and <span class="math inline">\(MS_\text{error}\)</span> to calculate <span class="math inline">\(s_A\)</span>:</p>
-<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1">repeatability.table &lt;-<span class="st"> </span><span class="kw">data_frame</span>(</a>
-<a class="sourceLine" id="cb461-2" data-line-number="2">  <span class="dt">MS.groups =</span> sticks.table<span class="op">$</span>meansq[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb461-3" data-line-number="3">  <span class="dt">MS.error =</span> sticks.table<span class="op">$</span>meansq[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb461-4" data-line-number="4">  <span class="dt">sA =</span> (MS.groups <span class="op">-</span><span class="st"> </span>MS.error)<span class="op">/</span><span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb461-5" data-line-number="5">  <span class="dt">repeatability =</span> sA<span class="op">/</span>(sA <span class="op">+</span><span class="st"> </span>MS.error))</a>
-<a class="sourceLine" id="cb461-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb461-7" data-line-number="7">repeatability.table</a>
-<a class="sourceLine" id="cb461-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb461-9" data-line-number="9"><span class="co">#&gt;   MS.groups  MS.error       sA repeatability</span></a>
-<a class="sourceLine" id="cb461-10" data-line-number="10"><span class="co">#&gt;       &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb461-11" data-line-number="11"><span class="co">#&gt; 1  0.002464 0.0003560 0.001054        0.7475</span></a></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" title="1">repeatability.table &lt;-<span class="st"> </span><span class="kw">data_frame</span>(</a>
+<a class="sourceLine" id="cb461-2" title="2">  <span class="dt">MS.groups =</span> sticks.table<span class="op">$</span>meansq[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb461-3" title="3">  <span class="dt">MS.error =</span> sticks.table<span class="op">$</span>meansq[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb461-4" title="4">  <span class="dt">sA =</span> (MS.groups <span class="op">-</span><span class="st"> </span>MS.error)<span class="op">/</span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb461-5" title="5">  <span class="dt">repeatability =</span> sA<span class="op">/</span>(sA <span class="op">+</span><span class="st"> </span>MS.error))</a>
+<a class="sourceLine" id="cb461-6" title="6"></a>
+<a class="sourceLine" id="cb461-7" title="7">repeatability.table</a>
+<a class="sourceLine" id="cb461-8" title="8"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb461-9" title="9"><span class="co">#&gt;   MS.groups  MS.error       sA repeatability</span></a>
+<a class="sourceLine" id="cb461-10" title="10"><span class="co">#&gt;       &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb461-11" title="11"><span class="co">#&gt; 1  0.002464 0.0003560 0.001054        0.7475</span></a></code></pre></div>
 <p>From the table we calculated:</p>
 <ul>
 <li><span class="math inline">\(s_A^2 =\)</span> 0.0010539</li>

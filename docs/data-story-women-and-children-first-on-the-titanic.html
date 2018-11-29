@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -637,77 +637,77 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <div id="libraries" class="section level2">
 <h2><span class="header-section-number">2.3</span> Libraries</h2>
 <p>First we’ll load some R libraries (packages) that contain useful functions that will make our analyses quicker and more efficient. We’ll discuss the functions that these libraries provide, and how to use libraries in general, in greater detail in a future lecture.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(readr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(tidyr)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(forcats)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(readr)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(tidyr)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(forcats)</a></code></pre></div>
 </div>
 <div id="read-data" class="section level2">
 <h2><span class="header-section-number">2.4</span> Read data</h2>
 <p>We start by reading in the data from the CSV file.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">titanic &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/Downloads/titanic_data.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   pclass = col_integer(),</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;   survived = col_integer(),</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   name = col_character(),</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   sex = col_character(),</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   age = col_double(),</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   sibsp = col_integer(),</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   parch = col_integer(),</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   ticket = col_character(),</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   fare = col_double(),</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;   cabin = col_character(),</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;   embarked = col_character(),</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;   boat = col_character(),</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;   body = col_integer(),</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;   home.dest = col_character()</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; )</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">titanic &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/Downloads/titanic_data.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; cols(</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt;   pclass = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt;   survived = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt;   name = col_character(),</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt;   sex = col_character(),</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt;   age = col_double(),</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt;   sibsp = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt;   parch = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt;   ticket = col_character(),</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt;   fare = col_double(),</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt;   cabin = col_character(),</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt;   embarked = col_character(),</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt;   boat = col_character(),</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt;   body = col_integer(),</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt;   home.dest = col_character()</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; )</span></a></code></pre></div>
 <p>The function <code>read_csv</code> does exactly what it advertises – reads a data set from a CSV file and returns it as an object we can compute on. In this case we assigned the variable name <code>titanic</code> to our data set. Simple enough!</p>
 </div>
 <div id="whats-in-the-data" class="section level2">
 <h2><span class="header-section-number">2.5</span> What’s in the data?</h2>
 <p>The function <code>read_csv</code> returns a table, where the columns represent the variables of interest (e.g. sex, age, etc) and the rows represent individuals or observations. Let’s take a look at the first few rows of the data set using the <code>head()</code> function (can you guess the name of the corresponding function for looking at the last few rows?):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">head</span>(titanic)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 6 x 14</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   pclass survived name  sex       age sibsp parch ticket   fare cabin</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1      1        1 Alle… fema… 29          0     0 24160  211.3  B5   </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2      1        1 Alli… male   0.9167     1     2 113781 151.6  C22 …</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3      1        0 Alli… fema…  2          1     2 113781 151.6  C22 …</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4      1        0 Alli… male  30          1     2 113781 151.6  C22 …</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 5      1        0 Alli… fema… 25          1     2 113781 151.6  C22 …</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 6      1        1 Ande… male  48          0     0 19952   26.55 E12  </span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; # ... with 4 more variables: embarked &lt;chr&gt;, boat &lt;chr&gt;, body &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; #   home.dest &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">head</span>(titanic)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; # A tibble: 6 x 14</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt;   pclass survived name  sex       age sibsp parch ticket   fare cabin</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt; 1      1        1 Alle… fema… 29          0     0 24160  211.3  B5   </span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; 2      1        1 Alli… male   0.9167     1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt; 3      1        0 Alli… fema…  2          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt; 4      1        0 Alli… male  30          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">#&gt; 5      1        0 Alli… fema… 25          1     2 113781 151.6  C22 …</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt; 6      1        1 Ande… male  48          0     0 19952   26.55 E12  </span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt; # ... with 4 more variables: embarked &lt;chr&gt;, boat &lt;chr&gt;, body &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; #   home.dest &lt;chr&gt;</span></a></code></pre></div>
 <p>If we simply wanted the dimensions of the data we could do:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">dim</span>(titanic)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 1309   14</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">dim</span>(titanic)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt; [1] 1309   14</span></a></code></pre></div>
 <p>whereas, if we wanted to get a list of the column names in the data we could do:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">names</span>(titanic)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;pclass&quot;    &quot;survived&quot;  &quot;name&quot;      &quot;sex&quot;       &quot;age&quot;      </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;  [6] &quot;sibsp&quot;     &quot;parch&quot;     &quot;ticket&quot;    &quot;fare&quot;      &quot;cabin&quot;    </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [11] &quot;embarked&quot;  &quot;boat&quot;      &quot;body&quot;      &quot;home.dest&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">names</span>(titanic)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt;  [1] &quot;pclass&quot;    &quot;survived&quot;  &quot;name&quot;      &quot;sex&quot;       &quot;age&quot;      </span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt;  [6] &quot;sibsp&quot;     &quot;parch&quot;     &quot;ticket&quot;    &quot;fare&quot;      &quot;cabin&quot;    </span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; [11] &quot;embarked&quot;  &quot;boat&quot;      &quot;body&quot;      &quot;home.dest&quot;</span></a></code></pre></div>
 <div id="simple-data-wrangling" class="section level3">
 <h3><span class="header-section-number">2.5.1</span> Simple data wrangling</h3>
 <p>Two variables of interest to us are <code>pclass</code> (“passenger class”) and <code>survived</code>. These are categorical variables encoded as numbers. Before exploring the data we’re going to create derived “factor” variables from these, which will make our analyses more convenient. I’m also going to recode the “survived” information as the classes “died” and “lived”.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">titanic &lt;-<span class="st"> </span><span class="kw">mutate</span>(titanic, </a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">                  <span class="dt">passenger.class =</span> <span class="kw">fct_recode</span>(<span class="kw">as.factor</span>(pclass),</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">                                               <span class="st">&quot;1st&quot;</span> =<span class="st"> &quot;1&quot;</span>, <span class="st">&quot;2nd&quot;</span> =<span class="st"> &quot;2&quot;</span>, <span class="st">&quot;3rd&quot;</span> =<span class="st"> &quot;3&quot;</span>),</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">                  <span class="dt">survival =</span> <span class="kw">fct_recode</span>(<span class="kw">as.factor</span>(survived), </a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">                                        <span class="st">&quot;died&quot;</span> =<span class="st"> &quot;0&quot;</span>, <span class="st">&quot;lived&quot;</span> =<span class="st"> &quot;1&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">titanic &lt;-<span class="st"> </span><span class="kw">mutate</span>(titanic, </a>
+<a class="sourceLine" id="cb6-2" title="2">                  <span class="dt">passenger.class =</span> <span class="kw">fct_recode</span>(<span class="kw">as.factor</span>(pclass),</a>
+<a class="sourceLine" id="cb6-3" title="3">                                               <span class="st">&quot;1st&quot;</span> =<span class="st"> &quot;1&quot;</span>, <span class="st">&quot;2nd&quot;</span> =<span class="st"> &quot;2&quot;</span>, <span class="st">&quot;3rd&quot;</span> =<span class="st"> &quot;3&quot;</span>),</a>
+<a class="sourceLine" id="cb6-4" title="4">                  <span class="dt">survival =</span> <span class="kw">fct_recode</span>(<span class="kw">as.factor</span>(survived), </a>
+<a class="sourceLine" id="cb6-5" title="5">                                        <span class="st">&quot;died&quot;</span> =<span class="st"> &quot;0&quot;</span>, <span class="st">&quot;lived&quot;</span> =<span class="st"> &quot;1&quot;</span>))</a></code></pre></div>
 <p>Having added to new variables to our data set, the dimensions and column names have changed:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">dim</span>(titanic)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 1309   16</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">dim</span>(titanic)</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt; [1] 1309   16</span></a></code></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">names</span>(titanic)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;pclass&quot;          &quot;survived&quot;        &quot;name&quot;           </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  [4] &quot;sex&quot;             &quot;age&quot;             &quot;sibsp&quot;          </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;  [7] &quot;parch&quot;           &quot;ticket&quot;          &quot;fare&quot;           </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [10] &quot;cabin&quot;           &quot;embarked&quot;        &quot;boat&quot;           </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; [13] &quot;body&quot;            &quot;home.dest&quot;       &quot;passenger.class&quot;</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; [16] &quot;survival&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">names</span>(titanic)</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt;  [1] &quot;pclass&quot;          &quot;survived&quot;        &quot;name&quot;           </span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt;  [4] &quot;sex&quot;             &quot;age&quot;             &quot;sibsp&quot;          </span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt;  [7] &quot;parch&quot;           &quot;ticket&quot;          &quot;fare&quot;           </span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; [10] &quot;cabin&quot;           &quot;embarked&quot;        &quot;boat&quot;           </span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; [13] &quot;body&quot;            &quot;home.dest&quot;       &quot;passenger.class&quot;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; [16] &quot;survival&quot;</span></a></code></pre></div>
 <p>Note that there are now 16 columns in our data, the original 14 plus our two new derived variables <code>passenger.class</code> and <code>survival</code>.</p>
 </div>
 </div>
@@ -715,56 +715,56 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <h2><span class="header-section-number">2.6</span> Categorizing passengers</h2>
 <p>Let’s start by exploring various aspects of the 1309 passengers in our data set.</p>
 <p>First, let’s look at the gender breakdown:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">count</span>(titanic, sex)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;   sex        n</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 1 female   466</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 2 male     843</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">count</span>(titanic, sex)</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt;   sex        n</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt; 1 female   466</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt; 2 male     843</span></a></code></pre></div>
 <p>We could also represent this data as a bar graph (though a simple table is more efficient in this case):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sex, <span class="dt">fill =</span> sex))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sex, <span class="dt">fill =</span> sex))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-10-1.png" width="576" /></p>
 <p>Both our table and bar graph tell us that there are almost twice as many men in our data set as women.</p>
 <div id="how-many-people-survived" class="section level3">
 <h3><span class="header-section-number">2.6.1</span> How many people survived?</h3>
 <p>Now let’s look at survival information:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">count</span>(titanic, survival)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;   survival     n</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; 1 died       809</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; 2 lived      500</span></a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> survival))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">count</span>(titanic, survival)</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt;   survival     n</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt; 1 died       809</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; 2 lived      500</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> survival))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-12-1.png" width="576" /></p>
 <p>We see that more that in the data we have at hand, roughly 60% (809 of 1309) of the passengers died.</p>
 </div>
 <div id="women-first" class="section level3">
 <h3><span class="header-section-number">2.6.2</span> Women first?</h3>
 <p>We can take our simple explorations a step further, by considering the counts of passengers with respect to multiple variables. Let’s look at the relationship between gender and survival:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">count</span>(titanic, sex, survival) </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;   sex    survival     n</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt;    &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 1 female died       127</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2 female lived      339</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 3 male   died       682</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 4 male   lived      161</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">count</span>(titanic, sex, survival) </a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt;   sex    survival     n</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;fct&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">#&gt; 1 female died       127</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; 2 female lived      339</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt; 3 male   died       682</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt; 4 male   lived      161</span></a></code></pre></div>
 <div id="contingency-tables" class="section level4">
 <h4><span class="header-section-number">2.6.2.1</span> Contingency tables</h4>
-<p>When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a “contingency table”. The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc). Here’s the same data on sex and survival represented as a contingency table:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">count</span>(titanic, sex, survival) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">spread</span>(survival, n)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 3</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   sex     died lived</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 1 female   127   339</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 2 male     682   161</span></a></code></pre></div>
+<p>When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a “contingency table”. The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc). Here’s the same data on sex and survival represented as a contingency table:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">count</span>(titanic, sex, survival) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span><span class="kw">spread</span>(survival, n)</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="co">#&gt; # A tibble: 2 x 3</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt;   sex     died lived</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="co">#&gt; 1 female   127   339</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; 2 male     682   161</span></a></code></pre></div>
 <p>In the code above the symbol <code>%&gt;%</code> can be read as “pipe” or “send”. The pipe operator inserts the object before the pipe as the first argument to the function after the pipe. Here we’re piping the output of the <code>count</code> function as the input into the <code>spread</code> function. We’ll see in later lectures that piping objects makes for very powerful workflows when we do more sophisticated analyses.</p>
 <p>We can also create a bar plot to represent the contingency table:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-15-1.png" width="576" /></p>
 <p>Here we’re already starting to see an interesting pattern – there were nearly twice as many men on the Titanic as women, but proportionally and in absolute numbers more women survived.</p>
 </div>
@@ -772,18 +772,18 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <div id="a-bar-plot-using-proportions-rather-than-counts" class="section level3">
 <h3><span class="header-section-number">2.6.3</span> A bar plot using proportions rather than counts</h3>
 <p>Sometimes it’s useful to look at proportions rather than absolute numbers. Here’s a figure that allows us to visually assess the different proportions of men and women passengers who survived:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival), <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival), <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-16-1.png" width="576" /></p>
 </div>
 <div id="mosaic-plots" class="section level3">
 <h3><span class="header-section-number">2.6.4</span> Mosaic plots</h3>
 <p>A slightly more sophisticated version of a bar plot is called a “mosaic plot”. A mosaic plot is similar to a proportional bar plot but the width of the bars also varies, indicating the relative numbers of observations in each class. To create a mosaic plot we need to import the <code>geom_mosaic</code> function from a library called ggmosaic.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">library</span>(ggmosaic)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_mosaic</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">product</span>(sex), <span class="dt">fill =</span> survival)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Proportion surviving&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">library</span>(ggmosaic)</a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="st">  </span><span class="kw">geom_mosaic</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">product</span>(sex), <span class="dt">fill =</span> survival)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Proportion surviving&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-17-1.png" width="576" /></p>
 <p>As you can see, the mosaic plot emphasizes both that there were more men than women on the Titanic, as well as the fact that a greater fraction of women survived. This seems like strong evidence for the first part of the phrase “Women and children first”.</p>
 </div>
@@ -791,22 +791,22 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <div id="passenger-ages" class="section level2">
 <h2><span class="header-section-number">2.7</span> Passenger ages</h2>
 <p>Now let’s create a visualiztion to get a handle on the ages of passengers on the Titanic. A histogram is a common way to visualize the distribution of a continuous variable. Creating a histogram is a simple modification of our earlier examples where we created bar plots.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age), <span class="dt">bins =</span> <span class="dv">35</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age), <span class="dt">bins =</span> <span class="dv">35</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-18-1.png" width="576" /></p>
 <p>The histogram provides a quick visual representation of the frequency of different age groups. It appears that the the most common (modal) value of age is a little over 20 years old. We can explicitly calculate the mean and median age as follows:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">mean</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">#&gt; [1] 29.88113</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">median</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; [1] 28</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">mean</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="co">#&gt; [1] 29.88113</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="kw">median</span>(titanic<span class="op">$</span>age, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="co">#&gt; [1] 28</span></a></code></pre></div>
 <p>Note that we have to explicitly tell the mean and median functions to drop any missing (NA) values. Alternately, we could have use pipes to calculate the mean and median as so:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="kw">mean</span>(age), <span class="kw">median</span>(age))</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt;   `mean(age)` `median(age)`</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt; 1       29.88            28</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="kw">mean</span>(age), <span class="kw">median</span>(age))</a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="co">#&gt;   `mean(age)` `median(age)`</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">#&gt; 1       29.88            28</span></a></code></pre></div>
 </div>
 <div id="how-does-age-relate-to-survival" class="section level2">
 <h2><span class="header-section-number">2.8</span> How does age relate to survival?</h2>
@@ -814,47 +814,47 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <div id="strip-charts" class="section level3">
 <h3><span class="header-section-number">2.8.1</span> Strip charts</h3>
 <p>We’ll start by creating “strip charts” that plot age on the y-axis, and survival on the x-axis. First we filter out individuals for which we have no age data, then we use a pipe to send the filtered data to the ggplot function:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(survival, age), <span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="st">    </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(survival, age), <span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-21-1.png" width="576" /></p>
 <p>Recall that sex was an important variable in our earlier assessment of the data. Let’s create a second strip plot that takes into account both age and sex.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(survival, age, <span class="dt">color =</span> sex), <span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(survival, age, <span class="dt">color =</span> sex), <span class="dt">width =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-22-1.png" width="576" /></p>
 </div>
 <div id="box-plots" class="section level3">
 <h3><span class="header-section-number">2.8.2</span> Box plots</h3>
 <p>Another way to look at the data is to use a summary figure called a “box plot”. First the simple boxplot, relating age and survival:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(survival, age))</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(survival, age))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-23-1.png" width="576" /></p>
 <p>A box plot depicts information about the median value (thick central line), the first and third quartiles (lower 25% value, upper 75% value) and outliers. From this simple boxplot, it doesn’t look like there is a great difference in the age distribution of passengers who lived vs died.</p>
 <p>Now we look at box plott for age-by-survival, conditioned on sex.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(survival, age, <span class="dt">fill =</span> sex)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(survival, age, <span class="dt">fill =</span> sex)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-24-1.png" width="576" /></p>
 <p>Here we start to see a more interesting pattern. When comparing male passengers, the median age of survivors appears to be a little younger than those who died. However, when comparing female passengers the opposite pattern seems to be at play.</p>
 </div>
 <div id="fitting-a-model-relating-survival-to-age-and-sex" class="section level3">
 <h3><span class="header-section-number">2.8.3</span> Fitting a model relating survival to age and sex</h3>
 <p>We can get more sophisticated by fitting a formal model to our data. Here we use a technique called logistic regression to model the probability of survival as a function of age, broken down for female and male passengers separately.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived, <span class="dt">color =</span> sex)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">alpha =</span> <span class="fl">0.35</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability of survival&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived, <span class="dt">color =</span> sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">alpha =</span> <span class="fl">0.35</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sex) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability of survival&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>The logistic regression model fit here, seems to support the trend we saw in the box plots. When breaking the data down by sex we find that there is a decreasing probability of survival as age increases for male passengers, but the opposite trend for female passengers. This is pretty interesting – “children first” seemed to hold for men but not for women.</p>
 </div>
@@ -863,37 +863,37 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <h2><span class="header-section-number">2.9</span> How does class affect survival?</h2>
 <p>A passenger’s ticket class (a proxy for socioeconomic status) is another interesting variable to consider in conjunction with sex and survival.</p>
 <p>First, let’s consider class on its own.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">count</span>(titanic, passenger.class)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co">#&gt;   passenger.class     n</span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;           &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#&gt; 1 1st               323</span></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co">#&gt; 2 2nd               277</span></a>
-<a class="sourceLine" id="cb26-7" data-line-number="7"><span class="co">#&gt; 3 3rd               709</span></a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">count</span>(titanic, passenger.class)</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="co">#&gt;   passenger.class     n</span></a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="co">#&gt;   &lt;fct&gt;           &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="co">#&gt; 1 1st               323</span></a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="co">#&gt; 2 2nd               277</span></a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="co">#&gt; 3 3rd               709</span></a></code></pre></div>
 <p>And as a bar graph:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> passenger.class))</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">x =</span> passenger.class))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-27-1.png" width="576" /></p>
 <p>Both our table and bar graph tell us that the largest number of passengers (in the available data) were travelling on third-class tickets. The numbers of first- and second-class ticketed passengers are fairly similar.</p>
 <div id="combining-sex-and-class" class="section level3">
 <h3><span class="header-section-number">2.9.1</span> Combining Sex and Class</h3>
 <p>Here is a bar plot that takes into account sex, class, and survival by representing passenger class as a “facet” variable – we create different subplots for each class grouping.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival), <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>passenger.class) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Portion Died/Lived&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Titanic Survival by Sex and Class&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">ggplot</span>(titanic) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(sex, <span class="dt">fill =</span> survival), <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>passenger.class) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Portion Died/Lived&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Titanic Survival by Sex and Class&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-28-1.png" width="576" /></p>
 </div>
 <div id="extending-the-logistic-regression-model-to-consider-class-age-sex-and-survival" class="section level3">
 <h3><span class="header-section-number">2.9.2</span> Extending the logistic regression model to consider class, age, sex, and survival</h3>
 <p>As a final example, let generate a visualization and model to jointly consider how sex, age, and class affected survival on the Titanic. Here we treat both sex and passenger class as faceting variables, fitting six different logistic regression models (all combinations of the three classes and two sexes).</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived, <span class="dt">color =</span> sex)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">alpha =</span> <span class="fl">0.35</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="st">  </span><span class="kw">facet_grid</span>(passenger.class<span class="op">~</span>sex) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability of survival&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(age)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived, <span class="dt">color =</span> sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">alpha =</span> <span class="fl">0.35</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-5" title="5"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="st">  </span><span class="kw">facet_grid</span>(passenger.class<span class="op">~</span>sex) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability of survival&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-29-1.png" width="864" /></p>
 <p>By conditioning on both sex and ticketing class, we gain even more insights into the data and our assesments of relationships between variables can change.</p>
 <p>For female passengers, ticketed class appears to have a strong influence on the relationship between age and survival. We see that almost all of the female first-class passengers survived, and the relationship between age and survival is thus flat. The second class female passengers are fairly similar, though with a slight decrease in the probability of survival among the oldest passengers. It’s not until we get to the third class passengers that we see a strong indication of the “children first” relationship playing out in terms of survival.</p>

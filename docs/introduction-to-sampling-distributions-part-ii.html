@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -627,131 +627,131 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p>Today we’re going to review a fundamental concept in statistical inference, the notion of a <em>sampling distribution</em> for a statistic of interest. A sampling distribution is the probability distribution of a given statistic for samples of a given size. Traditionally sampling distributions were derived analytically. In this class session we’ll see how to approximate sampling distributions for any a statistic using computer simulation.</p>
 <div id="libraries-5" class="section level2">
 <h2><span class="header-section-number">15.1</span> Libraries</h2>
-<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb370-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb370-3" data-line-number="3"><span class="kw">library</span>(stringr)</a></code></pre></div>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" title="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb370-2" title="2"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb370-3" title="3"><span class="kw">library</span>(stringr)</a></code></pre></div>
 </div>
 <div id="data-set-simulated-male-heights" class="section level2">
 <h2><span class="header-section-number">15.2</span> Data set: Simulated male heights</h2>
 <p>To illustrate the concept of sampling distributions, we’ll use a simulated data set to represent the underlying population we’re trying to estimate statistics for. This will allow us to compare the various statistics we calculate and their sampling distributions to their “true” values.</p>
 <p>Let’s simulate a population consisting of 25,000 individuals with a single trait of interest – height (measured in centimeters). We will simulate this data set based on information about the distribution of the heights of adult males in the US from a study carried out from 2011-2014 by the US Department of Health and Human Services<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" data-line-number="1"><span class="co"># male mean height and sd in centimeters from USDHHS report</span></a>
-<a class="sourceLine" id="cb371-2" data-line-number="2">true.mean &lt;-<span class="st"> </span><span class="fl">175.7</span></a>
-<a class="sourceLine" id="cb371-3" data-line-number="3">true.sd &lt;-<span class="st"> </span><span class="fl">15.19</span></a></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" title="1"><span class="co"># male mean height and sd in centimeters from USDHHS report</span></a>
+<a class="sourceLine" id="cb371-2" title="2">true.mean &lt;-<span class="st"> </span><span class="fl">175.7</span></a>
+<a class="sourceLine" id="cb371-3" title="3">true.sd &lt;-<span class="st"> </span><span class="fl">15.19</span></a></code></pre></div>
 <div id="properties-of-the-underlying-population" class="section level3">
 <h3><span class="header-section-number">15.2.1</span> Properties of the underlying population</h3>
 <p>Heights in human populations are approximately normally distributed, so we’ll assume that the distribution of our simulated variable is also normally distributed. Let’s take a moment to visualize the probability distribution of of a normal distribution with a mean and standard deviation as given above. Here we use the <code>dnorm()</code> function to generate the probability density for different heights.</p>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" data-line-number="1">pop.distn &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb372-2" data-line-number="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span>  <span class="kw">seq</span>(<span class="dv">100</span>, <span class="dv">250</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb372-3" data-line-number="3">             <span class="dt">density =</span> <span class="kw">dnorm</span>(height,<span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a>
-<a class="sourceLine" id="cb372-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb372-5" data-line-number="5"><span class="kw">ggplot</span>(pop.distn) <span class="op">+</span></a>
-<a class="sourceLine" id="cb372-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(height, density)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb372-7" data-line-number="7"><span class="st">  </span><span class="co"># vertical line at mean</span></a>
-<a class="sourceLine" id="cb372-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb372-9" data-line-number="9"><span class="st">  </span><span class="co"># vertical line at mean + 1SD</span></a>
-<a class="sourceLine" id="cb372-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean <span class="op">+</span><span class="st"> </span>true.sd,</a>
-<a class="sourceLine" id="cb372-11" data-line-number="11">              <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb372-12" data-line-number="12"><span class="st">  </span><span class="co"># vertical line at mean - 1SD</span></a>
-<a class="sourceLine" id="cb372-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean <span class="op">-</span><span class="st"> </span>true.sd,</a>
-<a class="sourceLine" id="cb372-14" data-line-number="14">              <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb372-15" data-line-number="15"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb372-16" data-line-number="16">       <span class="dt">title =</span> <span class="st">&quot;Distribution of Heights in the Population of Interest&quot;</span>,</a>
-<a class="sourceLine" id="cb372-17" data-line-number="17">       <span class="dt">subtitle =</span> <span class="st">&quot;Red and blue lines indicate the mean </span><span class="ch">\n</span><span class="st">and ±1 standard deviation respectively.&quot;</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" title="1">pop.distn &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb372-2" title="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span>  <span class="kw">seq</span>(<span class="dv">100</span>, <span class="dv">250</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb372-3" title="3">             <span class="dt">density =</span> <span class="kw">dnorm</span>(height,<span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a>
+<a class="sourceLine" id="cb372-4" title="4"></a>
+<a class="sourceLine" id="cb372-5" title="5"><span class="kw">ggplot</span>(pop.distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb372-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(height, density)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb372-7" title="7"><span class="st">  </span><span class="co"># vertical line at mean</span></a>
+<a class="sourceLine" id="cb372-8" title="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb372-9" title="9"><span class="st">  </span><span class="co"># vertical line at mean + 1SD</span></a>
+<a class="sourceLine" id="cb372-10" title="10"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean <span class="op">+</span><span class="st"> </span>true.sd,</a>
+<a class="sourceLine" id="cb372-11" title="11">              <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb372-12" title="12"><span class="st">  </span><span class="co"># vertical line at mean - 1SD</span></a>
+<a class="sourceLine" id="cb372-13" title="13"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean <span class="op">-</span><span class="st"> </span>true.sd,</a>
+<a class="sourceLine" id="cb372-14" title="14">              <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb372-15" title="15"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb372-16" title="16">       <span class="dt">title =</span> <span class="st">&quot;Distribution of Heights in the Population of Interest&quot;</span>,</a>
+<a class="sourceLine" id="cb372-17" title="17">       <span class="dt">subtitle =</span> <span class="st">&quot;Red and blue lines indicate the mean </span><span class="ch">\n</span><span class="st">and ±1 standard deviation respectively.&quot;</span>)  </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-370-1.png" width="576" /></p>
 </div>
 <div id="other-r-functions-related-to-the-normal-distribution" class="section level3">
 <h3><span class="header-section-number">15.2.2</span> Other R functions related to the normal distribution</h3>
 <p>As shown above <code>dnorm()</code> function calculates the probability density at given values of a variable <code>x</code>, given the specified mean and standard deviation.</p>
 <p><code>pnorm()</code> gives the cumulative density function (also known as the distribution function) for the normal distribution, as shown below:</p>
-<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" data-line-number="1">cdf &lt;-</a>
-<a class="sourceLine" id="cb373-2" data-line-number="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">seq</span>(<span class="dv">100</span>, <span class="dv">250</span>, <span class="fl">0.5</span>),</a>
-<a class="sourceLine" id="cb373-3" data-line-number="3">             <span class="dt">cum.prob =</span> <span class="kw">pnorm</span>(height, true.mean, true.sd))</a>
-<a class="sourceLine" id="cb373-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb373-5" data-line-number="5"><span class="kw">ggplot</span>(cdf) <span class="op">+</span></a>
-<a class="sourceLine" id="cb373-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(height, cum.prob)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb373-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Cumulative probability&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" title="1">cdf &lt;-</a>
+<a class="sourceLine" id="cb373-2" title="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">seq</span>(<span class="dv">100</span>, <span class="dv">250</span>, <span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb373-3" title="3">             <span class="dt">cum.prob =</span> <span class="kw">pnorm</span>(height, true.mean, true.sd))</a>
+<a class="sourceLine" id="cb373-4" title="4"></a>
+<a class="sourceLine" id="cb373-5" title="5"><span class="kw">ggplot</span>(cdf) <span class="op">+</span></a>
+<a class="sourceLine" id="cb373-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(height, cum.prob)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb373-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Cumulative probability&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-371-1.png" width="576" /></p>
 <p><code>qnorm()</code> is the quantile function for the normal distribution. The input is the probabilities of interest (single value or vector), and the mean and standard deviation of the distribution. The output is the corresponding value of the variable corresponding to the given percentiles.</p>
 <p>For example, to estimate the lower 30th percentile of heights in adult males in the US we can use <code>qnorm()</code> as follows:</p>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="kw">qnorm</span>(<span class="fl">0.3</span>, true.mean, true.sd)</a>
-<a class="sourceLine" id="cb374-2" data-line-number="2"><span class="co">#&gt; [1] 167.7344</span></a></code></pre></div>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1">perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.3</span>, true.mean, true.sd)</a>
-<a class="sourceLine" id="cb375-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb375-3" data-line-number="3">label.offset &lt;-<span class="st"> </span><span class="dv">18</span> <span class="co"># determined by trial and error to make a </span></a>
-<a class="sourceLine" id="cb375-4" data-line-number="4">                   <span class="co"># nice looking figure</span></a>
-<a class="sourceLine" id="cb375-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb375-6" data-line-number="6">heights.less.perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">100</span>, perc<span class="fl">.30</span>, <span class="dt">by=</span><span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb375-7" data-line-number="7">density.less.perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">dnorm</span>(heights.less.perc<span class="fl">.30</span>, true.mean, true.sd)</a>
-<a class="sourceLine" id="cb375-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb375-9" data-line-number="9"><span class="kw">ggplot</span>(pop.distn) <span class="op">+</span></a>
-<a class="sourceLine" id="cb375-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb375-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> perc<span class="fl">.30</span>, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb375-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">x =</span> heights.less.perc<span class="fl">.30</span>, <span class="dt">y =</span> density.less.perc<span class="fl">.30</span>),</a>
-<a class="sourceLine" id="cb375-13" data-line-number="13">            <span class="dt">fill =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">data =</span> <span class="kw">data_frame</span>(<span class="dt">x =</span> heights.less.perc<span class="fl">.30</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb375-14" data-line-number="14"><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> perc<span class="fl">.30</span> <span class="op">-</span><span class="st"> </span>label.offset, <span class="dt">y =</span> <span class="fl">0.025</span>, </a>
-<a class="sourceLine" id="cb375-15" data-line-number="15">           <span class="dt">label =</span> <span class="st">&quot;30th percentile&quot;</span>, <span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb375-16" data-line-number="16"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Probability distribution as calculated by dnorm()</span><span class="ch">\n</span><span class="st">and the 30th percentile as calculated by qnorm()</span><span class="ch">\n</span><span class="st">for a normal distribution with mean and sd as given in the text.&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" title="1"><span class="kw">qnorm</span>(<span class="fl">0.3</span>, true.mean, true.sd)</a>
+<a class="sourceLine" id="cb374-2" title="2"><span class="co">#&gt; [1] 167.7344</span></a></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" title="1">perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.3</span>, true.mean, true.sd)</a>
+<a class="sourceLine" id="cb375-2" title="2"></a>
+<a class="sourceLine" id="cb375-3" title="3">label.offset &lt;-<span class="st"> </span><span class="dv">18</span> <span class="co"># determined by trial and error to make a </span></a>
+<a class="sourceLine" id="cb375-4" title="4">                   <span class="co"># nice looking figure</span></a>
+<a class="sourceLine" id="cb375-5" title="5"></a>
+<a class="sourceLine" id="cb375-6" title="6">heights.less.perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">100</span>, perc<span class="fl">.30</span>, <span class="dt">by=</span><span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb375-7" title="7">density.less.perc<span class="fl">.30</span> &lt;-<span class="st"> </span><span class="kw">dnorm</span>(heights.less.perc<span class="fl">.30</span>, true.mean, true.sd)</a>
+<a class="sourceLine" id="cb375-8" title="8"></a>
+<a class="sourceLine" id="cb375-9" title="9"><span class="kw">ggplot</span>(pop.distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb375-10" title="10"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb375-11" title="11"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> perc<span class="fl">.30</span>, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb375-12" title="12"><span class="st">  </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">x =</span> heights.less.perc<span class="fl">.30</span>, <span class="dt">y =</span> density.less.perc<span class="fl">.30</span>),</a>
+<a class="sourceLine" id="cb375-13" title="13">            <span class="dt">fill =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">data =</span> <span class="kw">data_frame</span>(<span class="dt">x =</span> heights.less.perc<span class="fl">.30</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb375-14" title="14"><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> perc<span class="fl">.30</span> <span class="op">-</span><span class="st"> </span>label.offset, <span class="dt">y =</span> <span class="fl">0.025</span>, </a>
+<a class="sourceLine" id="cb375-15" title="15">           <span class="dt">label =</span> <span class="st">&quot;30th percentile&quot;</span>, <span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb375-16" title="16"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Probability distribution as calculated by dnorm()</span><span class="ch">\n</span><span class="st">and the 30th percentile as calculated by qnorm()</span><span class="ch">\n</span><span class="st">for a normal distribution with mean and sd as given in the text.&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-373-1.png" width="576" /></p>
 </div>
 </div>
 <div id="seeding-the-pseudo-random-number-generator" class="section level2">
 <h2><span class="header-section-number">15.3</span> Seeding the pseudo-random number generator</h2>
 <p>When carrying out simulations, we employ random number generators (e.g. to choose random samples). Most computers can not generate true random numbers – instead they use algorithms that approximate the generation of random numbers (pseudo-random number generators). One important difference between a true random number generator and a pseudo-random number generator is that we can regenerate a series of pseudo-random numbers if we know the “seed” value that initialized the algorithm. We can specifically set this seed value, so that we can guarantee that two different people evaluating this notebook get the same results, even though we’re using (pseudo)random numbers in our simulation.</p>
-<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1"><span class="co"># make our simulation repeatable by seeding RNG</span></a>
-<a class="sourceLine" id="cb376-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">20180321</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" title="1"><span class="co"># make our simulation repeatable by seeding RNG</span></a>
+<a class="sourceLine" id="cb376-2" title="2"><span class="kw">set.seed</span>(<span class="dv">20180321</span>)</a></code></pre></div>
 </div>
 <div id="random-sampling-from-the-simulated-population" class="section level2">
 <h2><span class="header-section-number">15.4</span> Random sampling from the simulated population</h2>
 <p>Let’s simulate the process of taking a single sample of 30 individuals from our population, using the <code>rnorm()</code> function which takes samples if size <code>n</code> from a normal distribution with the given mean and standard deviation:</p>
-<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb377-1" data-line-number="1">sample.a &lt;-</a>
-<a class="sourceLine" id="cb377-2" data-line-number="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">30</span>, <span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb377-1" title="1">sample.a &lt;-</a>
+<a class="sourceLine" id="cb377-2" title="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">30</span>, <span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a></code></pre></div>
 <p>Now we’ll create a histogram of the height variable in our sample. For reference we’ll also plot the probability for the true population (but remember, in the typical case you don’t know what the true population looks like)</p>
-<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" data-line-number="1">sample.a <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb378-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb378-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), </a>
-<a class="sourceLine" id="cb378-4" data-line-number="4">                 <span class="dt">fill =</span> <span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.75</span>, <span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb378-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), </a>
-<a class="sourceLine" id="cb378-6" data-line-number="6">            <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb378-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb378-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(sample.a<span class="op">$</span>height), <span class="dt">linetype =</span> <span class="st">&quot;solid&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb378-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, </a>
-<a class="sourceLine" id="cb378-10" data-line-number="10">       <span class="dt">title =</span> <span class="st">&quot;Distribution of heights in the underlying population (line)</span><span class="ch">\n</span><span class="st">and a single sample of size 30 (blue)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" title="1">sample.a <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb378-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb378-3" title="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), </a>
+<a class="sourceLine" id="cb378-4" title="4">                 <span class="dt">fill =</span> <span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.75</span>, <span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb378-5" title="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), </a>
+<a class="sourceLine" id="cb378-6" title="6">            <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb378-7" title="7"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb378-8" title="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(sample.a<span class="op">$</span>height), <span class="dt">linetype =</span> <span class="st">&quot;solid&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb378-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, </a>
+<a class="sourceLine" id="cb378-10" title="10">       <span class="dt">title =</span> <span class="st">&quot;Distribution of heights in the underlying population (line)</span><span class="ch">\n</span><span class="st">and a single sample of size 30 (blue)&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-376-1.png" width="576" /></p>
 <p>The dashed vertical line represent the true mean of the population, the solid line represents the sample mean. Comparing the two distributions we see that while our sample of 30 observations is relatively small,its location (center) and spread that are roughly similar to those of the underlying population.</p>
 <p>Let’s create a table giving the estimates of the mean and standard deviation in our sample:</p>
-<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb379-1" data-line-number="1">sample.a <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb379-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(height), </a>
-<a class="sourceLine" id="cb379-3" data-line-number="3">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(height))</a>
-<a class="sourceLine" id="cb379-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb379-5" data-line-number="5"><span class="co">#&gt;   sample.mean sample.sd</span></a>
-<a class="sourceLine" id="cb379-6" data-line-number="6"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb379-7" data-line-number="7"><span class="co">#&gt; 1       177.1     14.08</span></a></code></pre></div>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb379-1" title="1">sample.a <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb379-2" title="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(height), </a>
+<a class="sourceLine" id="cb379-3" title="3">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(height))</a>
+<a class="sourceLine" id="cb379-4" title="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb379-5" title="5"><span class="co">#&gt;   sample.mean sample.sd</span></a>
+<a class="sourceLine" id="cb379-6" title="6"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb379-7" title="7"><span class="co">#&gt; 1       177.1     14.08</span></a></code></pre></div>
 <p>Based on our sample, we estimate that the mean height of males in our population of interest is 177.0519552cm with a standard deviation of 14.0770991cm.</p>
 <div id="another-random-sample" class="section level3">
 <h3><span class="header-section-number">15.4.1</span> Another random sample</h3>
 <p>Let’s step back and think about our experiment. We took a random sample of 30 individuals from the population. The very nature of a “random sample” means we could just as well have gotten a different collection of individuals in our sample. Let’s take a second random sample of 25 individuals and see what the data looks like this time:</p>
-<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" data-line-number="1">sample.b &lt;-</a>
-<a class="sourceLine" id="cb380-2" data-line-number="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">rnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a>
-<a class="sourceLine" id="cb380-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb380-4" data-line-number="4">sample.b <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb380-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb380-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), </a>
-<a class="sourceLine" id="cb380-7" data-line-number="7">                 <span class="dt">fill =</span> <span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.75</span>, <span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb380-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), </a>
-<a class="sourceLine" id="cb380-9" data-line-number="9">            <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb380-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb380-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(sample.a<span class="op">$</span>height), <span class="dt">linetype =</span> <span class="st">&quot;solid&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb380-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, </a>
-<a class="sourceLine" id="cb380-13" data-line-number="13">       <span class="dt">title =</span> <span class="st">&quot;Distribution of heights in the underlying population (line)</span><span class="ch">\n</span><span class="st">and a single sample of size 30 (blue)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" title="1">sample.b &lt;-</a>
+<a class="sourceLine" id="cb380-2" title="2"><span class="st">  </span><span class="kw">data_frame</span>(<span class="dt">height =</span> <span class="kw">rnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> true.mean, <span class="dt">sd =</span> true.sd))</a>
+<a class="sourceLine" id="cb380-3" title="3"></a>
+<a class="sourceLine" id="cb380-4" title="4">sample.b <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb380-5" title="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb380-6" title="6"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..), </a>
+<a class="sourceLine" id="cb380-7" title="7">                 <span class="dt">fill =</span> <span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.75</span>, <span class="dt">bins=</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb380-8" title="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), </a>
+<a class="sourceLine" id="cb380-9" title="9">            <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb380-10" title="10"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb380-11" title="11"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(sample.a<span class="op">$</span>height), <span class="dt">linetype =</span> <span class="st">&quot;solid&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb380-12" title="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>, </a>
+<a class="sourceLine" id="cb380-13" title="13">       <span class="dt">title =</span> <span class="st">&quot;Distribution of heights in the underlying population (line)</span><span class="ch">\n</span><span class="st">and a single sample of size 30 (blue)&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-378-1.png" width="576" /></p>
-<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb381-1" data-line-number="1">sample.b <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb381-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(height), </a>
-<a class="sourceLine" id="cb381-3" data-line-number="3">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(height))</a>
-<a class="sourceLine" id="cb381-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb381-5" data-line-number="5"><span class="co">#&gt;   sample.mean sample.sd</span></a>
-<a class="sourceLine" id="cb381-6" data-line-number="6"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb381-7" data-line-number="7"><span class="co">#&gt; 1       174.4     16.88</span></a></code></pre></div>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb381-1" title="1">sample.b <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb381-2" title="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(height), </a>
+<a class="sourceLine" id="cb381-3" title="3">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(height))</a>
+<a class="sourceLine" id="cb381-4" title="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb381-5" title="5"><span class="co">#&gt;   sample.mean sample.sd</span></a>
+<a class="sourceLine" id="cb381-6" title="6"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb381-7" title="7"><span class="co">#&gt; 1       174.4     16.88</span></a></code></pre></div>
 <p>This time we estimated the mean height to be 174.3783114 cm and the standard deviation to be 16.883491 cm.</p>
 </div>
 <div id="simulating-the-generation-of-many-random-samples" class="section level3">
@@ -767,37 +767,37 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li>Calculate the mean and standard deviation of the random sample</li>
 <li>Return a table giving the sample size, sample mean, and sample standard deviation, represented as a data frame</li>
 </ul>
-<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb382-1" data-line-number="1">rnorm.stats &lt;-<span class="st"> </span><span class="cf">function</span>(n, mu, sigma) {</a>
-<a class="sourceLine" id="cb382-2" data-line-number="2">  the.sample &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, mu, sigma)</a>
-<a class="sourceLine" id="cb382-3" data-line-number="3">  <span class="kw">data_frame</span>(<span class="dt">sample.size =</span> n, </a>
-<a class="sourceLine" id="cb382-4" data-line-number="4">             <span class="dt">sample.mean =</span> <span class="kw">mean</span>(the.sample), </a>
-<a class="sourceLine" id="cb382-5" data-line-number="5">             <span class="dt">sample.sd =</span> <span class="kw">sd</span>(the.sample))</a>
-<a class="sourceLine" id="cb382-6" data-line-number="6">}</a></code></pre></div>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb382-1" title="1">rnorm.stats &lt;-<span class="st"> </span><span class="cf">function</span>(n, mu, sigma) {</a>
+<a class="sourceLine" id="cb382-2" title="2">  the.sample &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, mu, sigma)</a>
+<a class="sourceLine" id="cb382-3" title="3">  <span class="kw">data_frame</span>(<span class="dt">sample.size =</span> n, </a>
+<a class="sourceLine" id="cb382-4" title="4">             <span class="dt">sample.mean =</span> <span class="kw">mean</span>(the.sample), </a>
+<a class="sourceLine" id="cb382-5" title="5">             <span class="dt">sample.sd =</span> <span class="kw">sd</span>(the.sample))</a>
+<a class="sourceLine" id="cb382-6" title="6">}</a></code></pre></div>
 <p>Let’s test <code>rsample.stats()</code> for a sample of size 30, drawn from a popultion with a mean and standard deviation corresponding to our height exmaple:</p>
-<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb383-1" data-line-number="1"><span class="kw">rnorm.stats</span>(<span class="dv">30</span>, true.mean, true.sd)</a>
-<a class="sourceLine" id="cb383-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
-<a class="sourceLine" id="cb383-3" data-line-number="3"><span class="co">#&gt;   sample.size sample.mean sample.sd</span></a>
-<a class="sourceLine" id="cb383-4" data-line-number="4"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb383-5" data-line-number="5"><span class="co">#&gt; 1          30       176.4     15.08</span></a></code></pre></div>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb383-1" title="1"><span class="kw">rnorm.stats</span>(<span class="dv">30</span>, true.mean, true.sd)</a>
+<a class="sourceLine" id="cb383-2" title="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb383-3" title="3"><span class="co">#&gt;   sample.size sample.mean sample.sd</span></a>
+<a class="sourceLine" id="cb383-4" title="4"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb383-5" title="5"><span class="co">#&gt; 1          30       176.4     15.08</span></a></code></pre></div>
 </div>
 <div id="generating-statistics-for-many-random-samples" class="section level3">
 <h3><span class="header-section-number">15.4.4</span> Generating statistics for many random samples</h3>
 <p>Now we’ll see how to combine <code>rnorm.stats</code> with two additional functions to repeatedly run the <code>rsample.stats</code> function:</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" data-line-number="1">df.samples.of<span class="fl">.30</span> &lt;-</a>
-<a class="sourceLine" id="cb384-2" data-line-number="2"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">30</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb384-3" data-line-number="3"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" title="1">df.samples.of<span class="fl">.30</span> &lt;-</a>
+<a class="sourceLine" id="cb384-2" title="2"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">30</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb384-3" title="3"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
 <p>The function <code>rerun</code> is defined in the <code>purrr</code> library (automatically loaded with tidyverse). <code>purrr:rerun()</code> re-runs an expression(s) multiple times. The first argument to <code>rerun()</code> is the number of times you want to re-run, and the following arguments are the expressions to be re-run. Thus the second line of the code block above re-runs the <code>rnorm.stats</code> function 2500 times, generating sample statistics for samples of size 30 each time it’s run. <code>rerun</code> returns a list whose length is the specified number of runs.</p>
 <p>The third line includes a call the <code>dplyr::bind_rows()</code>. This simply takes the list that <code>rerun</code> returns and collapses the list into a single data frame. <code>df.samples.of.30</code> is thus a data frame in which each row gives the sample size, sample mean, and sample standard deviation for a random sample of 30 individuals drawn from our underlying population with a normally distributed variable.</p>
-<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb385-1" data-line-number="1"><span class="kw">head</span>(df.samples.of<span class="fl">.30</span>)</a>
-<a class="sourceLine" id="cb385-2" data-line-number="2"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb385-3" data-line-number="3"><span class="co">#&gt;   sample.size sample.mean sample.sd</span></a>
-<a class="sourceLine" id="cb385-4" data-line-number="4"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb385-5" data-line-number="5"><span class="co">#&gt; 1          30       170.8     15.36</span></a>
-<a class="sourceLine" id="cb385-6" data-line-number="6"><span class="co">#&gt; 2          30       174.6     14.93</span></a>
-<a class="sourceLine" id="cb385-7" data-line-number="7"><span class="co">#&gt; 3          30       175.7     16.79</span></a>
-<a class="sourceLine" id="cb385-8" data-line-number="8"><span class="co">#&gt; 4          30       176.5     13.94</span></a>
-<a class="sourceLine" id="cb385-9" data-line-number="9"><span class="co">#&gt; 5          30       175.3     13.10</span></a>
-<a class="sourceLine" id="cb385-10" data-line-number="10"><span class="co">#&gt; 6          30       176.6     15.49</span></a></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb385-1" title="1"><span class="kw">head</span>(df.samples.of<span class="fl">.30</span>)</a>
+<a class="sourceLine" id="cb385-2" title="2"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
+<a class="sourceLine" id="cb385-3" title="3"><span class="co">#&gt;   sample.size sample.mean sample.sd</span></a>
+<a class="sourceLine" id="cb385-4" title="4"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb385-5" title="5"><span class="co">#&gt; 1          30       170.8     15.36</span></a>
+<a class="sourceLine" id="cb385-6" title="6"><span class="co">#&gt; 2          30       174.6     14.93</span></a>
+<a class="sourceLine" id="cb385-7" title="7"><span class="co">#&gt; 3          30       175.7     16.79</span></a>
+<a class="sourceLine" id="cb385-8" title="8"><span class="co">#&gt; 4          30       176.5     13.94</span></a>
+<a class="sourceLine" id="cb385-9" title="9"><span class="co">#&gt; 5          30       175.3     13.10</span></a>
+<a class="sourceLine" id="cb385-10" title="10"><span class="co">#&gt; 6          30       176.6     15.49</span></a></code></pre></div>
 </div>
 </div>
 <div id="simulated-sampling-distribution-of-the-mean" class="section level2">
@@ -809,24 +809,24 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li>We combined each of those estimates of the mean and standard deviation into a data frame</li>
 </ul>
 <p>The 2500 estimates of the mean we generated represents a new distribution – what we will call a <strong>sampling distribution of the mean for samples of size 30</strong>. Let’s plot this sampling distribution:</p>
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" data-line-number="1"><span class="kw">ggplot</span>(df.samples.of<span class="fl">.30</span>, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb386-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb386-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb386-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample means&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb386-5" data-line-number="5">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for 2500 samples of size 30&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" title="1"><span class="kw">ggplot</span>(df.samples.of<span class="fl">.30</span>, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb386-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-3" title="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-4" title="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample means&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb386-5" title="5">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for 2500 samples of size 30&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-384-1.png" width="576" /></p>
 <div id="differences-between-sampling-distribution-and-samplepopulation-distributions" class="section level3">
 <h3><span class="header-section-number">15.5.1</span> Differences between sampling distribution and sample/population distributions</h3>
 <p>Note that this is <em>not</em> a sample distribution of the variable of interest (“heights”), but rather the distribution of <em>means of the variable of interest</em> (“mean heights”) you would get if you took many random samples (in one sample you’d estimate the mean height as 180cm, in another you’d estimate it as 172 cm, etc). To emphasize this point, let’s compare the simulated sampling distribution to the population distribution of the the variable:</p>
-<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb387-1" data-line-number="1"><span class="kw">ggplot</span>(df.samples.of<span class="fl">.30</span>, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb387-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb387-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">data=</span>sample.a, </a>
-<a class="sourceLine" id="cb387-4" data-line-number="4">                 <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> ..density..),</a>
-<a class="sourceLine" id="cb387-5" data-line-number="5">                 <span class="dt">bins=</span><span class="dv">11</span>, <span class="dt">fill=</span><span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb387-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb387-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb387-8" data-line-number="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;height or mean(height) in cm&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb387-9" data-line-number="9">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for 2500 samples of size 30 (red )</span><span class="ch">\n</span><span class="st">compared to the distribution of  single sample (blue)</span><span class="ch">\n</span><span class="st">and the population distribution of heights (gray line)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb387-1" title="1"><span class="kw">ggplot</span>(df.samples.of<span class="fl">.30</span>, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb387-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb387-3" title="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">data=</span>sample.a, </a>
+<a class="sourceLine" id="cb387-4" title="4">                 <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> ..density..),</a>
+<a class="sourceLine" id="cb387-5" title="5">                 <span class="dt">bins=</span><span class="dv">11</span>, <span class="dt">fill=</span><span class="st">&#39;steelblue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb387-6" title="6"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb387-7" title="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>pop.distn, <span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> density), <span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb387-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;height or mean(height) in cm&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb387-9" title="9">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for 2500 samples of size 30 (red )</span><span class="ch">\n</span><span class="st">compared to the distribution of  single sample (blue)</span><span class="ch">\n</span><span class="st">and the population distribution of heights (gray line)&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-385-1.png" width="576" /></p>
 </div>
 <div id="use-sampling-distributions-to-understand-the-behavior-of-statistics-of-interest" class="section level3">
@@ -834,70 +834,70 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p>The particular sampling distribution of the mean, as simulated above, is a probability distribution that we can use to estimate the probability that a sample mean falls within a given interval, assuming our sample is a random sample of size 30 drawn from our underlying population.</p>
 <p>From our visualization, we see that the distribution of sample mean heights is approximately centered around the true mean height. Most of the sample estiamtes of the mean height are within 5 cm of the true population mean height, but a small number of estimates of the sample mean as off by nearly 10cm.</p>
 <p>Let’s make this more precise by calculating the mean and standard deviation of the sampling distribution of means:</p>
-<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb388-1" data-line-number="1">df.samples.of<span class="fl">.30</span> <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb388-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
-<a class="sourceLine" id="cb388-3" data-line-number="3">            <span class="dt">sd.of.means =</span> <span class="kw">sd</span>(sample.mean))</a>
-<a class="sourceLine" id="cb388-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb388-5" data-line-number="5"><span class="co">#&gt;   mean.of.means sd.of.means</span></a>
-<a class="sourceLine" id="cb388-6" data-line-number="6"><span class="co">#&gt;           &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb388-7" data-line-number="7"><span class="co">#&gt; 1         175.7       2.740</span></a></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb388-1" title="1">df.samples.of<span class="fl">.30</span> <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb388-2" title="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
+<a class="sourceLine" id="cb388-3" title="3">            <span class="dt">sd.of.means =</span> <span class="kw">sd</span>(sample.mean))</a>
+<a class="sourceLine" id="cb388-4" title="4"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb388-5" title="5"><span class="co">#&gt;   mean.of.means sd.of.means</span></a>
+<a class="sourceLine" id="cb388-6" title="6"><span class="co">#&gt;           &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb388-7" title="7"><span class="co">#&gt; 1         175.7       2.740</span></a></code></pre></div>
 </div>
 <div id="sampling-distributions-for-different-sample-sizes" class="section level3">
 <h3><span class="header-section-number">15.5.3</span> Sampling distributions for different sample sizes</h3>
 <p>In the example above we simulated the sampling distribution of the mean for samples of size 30. How would the sampling distribution change if we increased the sample size? In the next code block we generate sampling distributions of the mean (and standard deviation) for samples of size 50, 100, 250, and 500.</p>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" data-line-number="1">df.samples.of<span class="fl">.50</span> &lt;-</a>
-<a class="sourceLine" id="cb389-2" data-line-number="2"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">50</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb389-3" data-line-number="3"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
-<a class="sourceLine" id="cb389-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb389-5" data-line-number="5">df.samples.of<span class="fl">.100</span> &lt;-</a>
-<a class="sourceLine" id="cb389-6" data-line-number="6"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">100</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb389-7" data-line-number="7"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
-<a class="sourceLine" id="cb389-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb389-9" data-line-number="9">df.samples.of<span class="fl">.250</span> &lt;-</a>
-<a class="sourceLine" id="cb389-10" data-line-number="10"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">250</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb389-11" data-line-number="11"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
-<a class="sourceLine" id="cb389-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb389-13" data-line-number="13">df.samples.of<span class="fl">.500</span> &lt;-</a>
-<a class="sourceLine" id="cb389-14" data-line-number="14"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">500</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb389-15" data-line-number="15"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" title="1">df.samples.of<span class="fl">.50</span> &lt;-</a>
+<a class="sourceLine" id="cb389-2" title="2"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">50</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb389-3" title="3"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
+<a class="sourceLine" id="cb389-4" title="4"></a>
+<a class="sourceLine" id="cb389-5" title="5">df.samples.of<span class="fl">.100</span> &lt;-</a>
+<a class="sourceLine" id="cb389-6" title="6"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">100</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb389-7" title="7"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
+<a class="sourceLine" id="cb389-8" title="8"></a>
+<a class="sourceLine" id="cb389-9" title="9">df.samples.of<span class="fl">.250</span> &lt;-</a>
+<a class="sourceLine" id="cb389-10" title="10"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">250</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb389-11" title="11"><span class="st">  </span><span class="kw">bind_rows</span>()</a>
+<a class="sourceLine" id="cb389-12" title="12"></a>
+<a class="sourceLine" id="cb389-13" title="13">df.samples.of<span class="fl">.500</span> &lt;-</a>
+<a class="sourceLine" id="cb389-14" title="14"><span class="st">  </span><span class="kw">rerun</span>(<span class="dv">2500</span>,  <span class="kw">rnorm.stats</span>(<span class="dv">500</span>, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb389-15" title="15"><span class="st">  </span><span class="kw">bind_rows</span>()</a></code></pre></div>
 <p>To make plotting and comparison easier we will combine each of the individual data frames, representing the different sampling distributions for samples of a given size, into a single data frame.</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1">df.combined &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb390-2" data-line-number="2"><span class="st">  </span><span class="kw">bind_rows</span>(df.samples.of<span class="fl">.30</span>,</a>
-<a class="sourceLine" id="cb390-3" data-line-number="3">            df.samples.of<span class="fl">.50</span>,</a>
-<a class="sourceLine" id="cb390-4" data-line-number="4">            df.samples.of<span class="fl">.100</span>,</a>
-<a class="sourceLine" id="cb390-5" data-line-number="5">            df.samples.of<span class="fl">.250</span>,</a>
-<a class="sourceLine" id="cb390-6" data-line-number="6">            df.samples.of<span class="fl">.500</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb390-7" data-line-number="7"><span class="st">  </span><span class="co"># create a factor version of sample size to facilitate plotting</span></a>
-<a class="sourceLine" id="cb390-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sample.sz =</span> <span class="kw">as.factor</span>(sample.size))</a></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" title="1">df.combined &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb390-2" title="2"><span class="st">  </span><span class="kw">bind_rows</span>(df.samples.of<span class="fl">.30</span>,</a>
+<a class="sourceLine" id="cb390-3" title="3">            df.samples.of<span class="fl">.50</span>,</a>
+<a class="sourceLine" id="cb390-4" title="4">            df.samples.of<span class="fl">.100</span>,</a>
+<a class="sourceLine" id="cb390-5" title="5">            df.samples.of<span class="fl">.250</span>,</a>
+<a class="sourceLine" id="cb390-6" title="6">            df.samples.of<span class="fl">.500</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb390-7" title="7"><span class="st">  </span><span class="co"># create a factor version of sample size to facilitate plotting</span></a>
+<a class="sourceLine" id="cb390-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sample.sz =</span> <span class="kw">as.factor</span>(sample.size))</a></code></pre></div>
 <p>We then plot each of the individual sampling distributions, faceting on sample size.</p>
-<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb391-1" data-line-number="1"><span class="kw">ggplot</span>(df.combined, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb391-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb391-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>)  <span class="op">+</span></a>
-<a class="sourceLine" id="cb391-4" data-line-number="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>sample.sz, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb391-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co"># change color palette</span></a>
-<a class="sourceLine" id="cb391-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample means&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb391-7" data-line-number="7">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for samples of varying size&quot;</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb391-1" title="1"><span class="kw">ggplot</span>(df.combined, <span class="kw">aes</span>(<span class="dt">x =</span> sample.mean, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb391-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb391-3" title="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.mean, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>)  <span class="op">+</span></a>
+<a class="sourceLine" id="cb391-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>sample.sz, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb391-5" title="5"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co"># change color palette</span></a>
+<a class="sourceLine" id="cb391-6" title="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample means&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb391-7" title="7">       <span class="dt">title =</span> <span class="st">&quot;Distribution of mean heights for samples of varying size&quot;</span>)  </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-389-1.png" width="1440" /></p>
 </div>
 <div id="discussion-of-trends-for-sampling-distributions-of-different-sample-sizes" class="section level3">
 <h3><span class="header-section-number">15.5.4</span> Discussion of trends for sampling distributions of different sample sizes</h3>
 <p>The key trend we see when comparing the sampling distributions of the mean for samples of different size is that as the sample size gets larger, the spread of the sampling distribution of the mean becomes narrower around the true mean. This means that <em>as sample size increases, the uncertainty associated with our estimates of the mean decreases</em>.</p>
 <p>Let’s create a table, grouped by sample size, to help quantify this pattern:</p>
-<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" data-line-number="1">sampling.distn.mean.table &lt;-</a>
-<a class="sourceLine" id="cb392-2" data-line-number="2"><span class="st">  </span>df.combined <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb392-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb392-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
-<a class="sourceLine" id="cb392-5" data-line-number="5">            <span class="dt">sd.of.means =</span> <span class="kw">sd</span>(sample.mean))</a>
-<a class="sourceLine" id="cb392-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb392-7" data-line-number="7">sampling.distn.mean.table</a>
-<a class="sourceLine" id="cb392-8" data-line-number="8"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
-<a class="sourceLine" id="cb392-9" data-line-number="9"><span class="co">#&gt;   sample.size mean.of.means sd.of.means</span></a>
-<a class="sourceLine" id="cb392-10" data-line-number="10"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb392-11" data-line-number="11"><span class="co">#&gt; 1          30         175.7      2.740 </span></a>
-<a class="sourceLine" id="cb392-12" data-line-number="12"><span class="co">#&gt; 2          50         175.7      2.173 </span></a>
-<a class="sourceLine" id="cb392-13" data-line-number="13"><span class="co">#&gt; 3         100         175.7      1.509 </span></a>
-<a class="sourceLine" id="cb392-14" data-line-number="14"><span class="co">#&gt; 4         250         175.7      0.9756</span></a>
-<a class="sourceLine" id="cb392-15" data-line-number="15"><span class="co">#&gt; 5         500         175.7      0.6656</span></a></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" title="1">sampling.distn.mean.table &lt;-</a>
+<a class="sourceLine" id="cb392-2" title="2"><span class="st">  </span>df.combined <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb392-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb392-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
+<a class="sourceLine" id="cb392-5" title="5">            <span class="dt">sd.of.means =</span> <span class="kw">sd</span>(sample.mean))</a>
+<a class="sourceLine" id="cb392-6" title="6"></a>
+<a class="sourceLine" id="cb392-7" title="7">sampling.distn.mean.table</a>
+<a class="sourceLine" id="cb392-8" title="8"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
+<a class="sourceLine" id="cb392-9" title="9"><span class="co">#&gt;   sample.size mean.of.means sd.of.means</span></a>
+<a class="sourceLine" id="cb392-10" title="10"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb392-11" title="11"><span class="co">#&gt; 1          30         175.7      2.740 </span></a>
+<a class="sourceLine" id="cb392-12" title="12"><span class="co">#&gt; 2          50         175.7      2.173 </span></a>
+<a class="sourceLine" id="cb392-13" title="13"><span class="co">#&gt; 3         100         175.7      1.509 </span></a>
+<a class="sourceLine" id="cb392-14" title="14"><span class="co">#&gt; 4         250         175.7      0.9756</span></a>
+<a class="sourceLine" id="cb392-15" title="15"><span class="co">#&gt; 5         500         175.7      0.6656</span></a></code></pre></div>
 </div>
 </div>
 <div id="standard-error-of-the-mean" class="section level2">
@@ -910,19 +910,19 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 \]</span>
 where <span class="math inline">\(\sigma\)</span> is the population standard deviation (i.e. the “true” standard deviation), and <span class="math inline">\(n\)</span> is the sample size. This result for the standard error of the mean is true regardless of the form of the underlying population distribution.</p>
 <p>Let’s compare that theoretical expectation to our simulated results:</p>
-<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb393-1" data-line-number="1">se.mean.theory &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>), </a>
-<a class="sourceLine" id="cb393-2" data-line-number="2">                         <span class="cf">function</span>(n){ true.sd<span class="op">/</span><span class="kw">sqrt</span>(n) })</a>
-<a class="sourceLine" id="cb393-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb393-4" data-line-number="4">df.se.mean.theory &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb393-5" data-line-number="5">                                <span class="dt">std.error =</span> se.mean.theory)</a>
-<a class="sourceLine" id="cb393-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb393-7" data-line-number="7"><span class="kw">ggplot</span>(sampling.distn.mean.table, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> sd.of.means)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb393-8" data-line-number="8"><span class="st">   </span><span class="co"># plot standard errors of mean based on our simulations</span></a>
-<a class="sourceLine" id="cb393-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb393-10" data-line-number="10"><span class="st">  </span><span class="co"># plot standard errors of the mean based on theory</span></a>
-<a class="sourceLine" id="cb393-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> std.error), <span class="dt">data =</span> df.se.mean.theory, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb393-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Std Error of Mean&quot;</span>,</a>
-<a class="sourceLine" id="cb393-13" data-line-number="13">       <span class="dt">title =</span> <span class="st">&quot;A comparison of theoretical (red line) and simulated (points) estimates of</span><span class="ch">\n</span><span class="st">the standard error of the mean for samples of different size&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb393-1" title="1">se.mean.theory &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb393-2" title="2">                         <span class="cf">function</span>(n){ true.sd<span class="op">/</span><span class="kw">sqrt</span>(n) })</a>
+<a class="sourceLine" id="cb393-3" title="3"></a>
+<a class="sourceLine" id="cb393-4" title="4">df.se.mean.theory &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb393-5" title="5">                                <span class="dt">std.error =</span> se.mean.theory)</a>
+<a class="sourceLine" id="cb393-6" title="6"></a>
+<a class="sourceLine" id="cb393-7" title="7"><span class="kw">ggplot</span>(sampling.distn.mean.table, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> sd.of.means)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb393-8" title="8"><span class="st">   </span><span class="co"># plot standard errors of mean based on our simulations</span></a>
+<a class="sourceLine" id="cb393-9" title="9"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb393-10" title="10"><span class="st">  </span><span class="co"># plot standard errors of the mean based on theory</span></a>
+<a class="sourceLine" id="cb393-11" title="11"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> std.error), <span class="dt">data =</span> df.se.mean.theory, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb393-12" title="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Std Error of Mean&quot;</span>,</a>
+<a class="sourceLine" id="cb393-13" title="13">       <span class="dt">title =</span> <span class="st">&quot;A comparison of theoretical (red line) and simulated (points) estimates of</span><span class="ch">\n</span><span class="st">the standard error of the mean for samples of different size&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-391-1.png" width="576" /></p>
 <p>We see that as sample sizes increase, the standard error of the mean decreases. This means that as our samples get larger, our uncertainty in our sample estimate of the mean (our best guess for the population mean) gets smaller.</p>
 </div>
@@ -930,29 +930,29 @@ where <span class="math inline">\(\sigma\)</span> is the population standard dev
 <h2><span class="header-section-number">15.7</span> Sampling Distribution of the Standard Deviation</h2>
 <p>Above we explored how the sampling distribution of the mean changes with sample size. We can similarly explore the sampling distribution of any other statistic, such as the standard deviation, or the median, or the the range, etc.</p>
 <p>Recall that when we drew random samples we calculated the standard deviation of each of those samples in addition to the mean. We can look at the location and spread of the estimates of the standard deviation:</p>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb394-1" data-line-number="1">sampling.distn.sd.table &lt;-</a>
-<a class="sourceLine" id="cb394-2" data-line-number="2"><span class="st">  </span>df.combined <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb394-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb394-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.sds =</span> <span class="kw">mean</span>(sample.sd),</a>
-<a class="sourceLine" id="cb394-5" data-line-number="5">            <span class="dt">sd.of.sds =</span> <span class="kw">sd</span>(sample.sd))</a>
-<a class="sourceLine" id="cb394-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb394-7" data-line-number="7">sampling.distn.sd.table</a>
-<a class="sourceLine" id="cb394-8" data-line-number="8"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
-<a class="sourceLine" id="cb394-9" data-line-number="9"><span class="co">#&gt;   sample.size mean.of.sds sd.of.sds</span></a>
-<a class="sourceLine" id="cb394-10" data-line-number="10"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb394-11" data-line-number="11"><span class="co">#&gt; 1          30       15.02    2.046 </span></a>
-<a class="sourceLine" id="cb394-12" data-line-number="12"><span class="co">#&gt; 2          50       15.12    1.500 </span></a>
-<a class="sourceLine" id="cb394-13" data-line-number="13"><span class="co">#&gt; 3         100       15.16    1.089 </span></a>
-<a class="sourceLine" id="cb394-14" data-line-number="14"><span class="co">#&gt; 4         250       15.17    0.6873</span></a>
-<a class="sourceLine" id="cb394-15" data-line-number="15"><span class="co">#&gt; 5         500       15.19    0.4957</span></a></code></pre></div>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb394-1" title="1">sampling.distn.sd.table &lt;-</a>
+<a class="sourceLine" id="cb394-2" title="2"><span class="st">  </span>df.combined <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb394-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb394-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.sds =</span> <span class="kw">mean</span>(sample.sd),</a>
+<a class="sourceLine" id="cb394-5" title="5">            <span class="dt">sd.of.sds =</span> <span class="kw">sd</span>(sample.sd))</a>
+<a class="sourceLine" id="cb394-6" title="6"></a>
+<a class="sourceLine" id="cb394-7" title="7">sampling.distn.sd.table</a>
+<a class="sourceLine" id="cb394-8" title="8"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
+<a class="sourceLine" id="cb394-9" title="9"><span class="co">#&gt;   sample.size mean.of.sds sd.of.sds</span></a>
+<a class="sourceLine" id="cb394-10" title="10"><span class="co">#&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb394-11" title="11"><span class="co">#&gt; 1          30       15.02    2.046 </span></a>
+<a class="sourceLine" id="cb394-12" title="12"><span class="co">#&gt; 2          50       15.12    1.500 </span></a>
+<a class="sourceLine" id="cb394-13" title="13"><span class="co">#&gt; 3         100       15.16    1.089 </span></a>
+<a class="sourceLine" id="cb394-14" title="14"><span class="co">#&gt; 4         250       15.17    0.6873</span></a>
+<a class="sourceLine" id="cb394-15" title="15"><span class="co">#&gt; 5         500       15.19    0.4957</span></a></code></pre></div>
 <p>As we did for the sampling distribution of the mean, we can visualize the sampling distribution of the standard deviation as shown below:</p>
-<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb395-1" data-line-number="1"><span class="kw">ggplot</span>(df.combined, <span class="kw">aes</span>(<span class="dt">x =</span> sample.sd, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb395-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb395-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.sd, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>)  <span class="op">+</span></a>
-<a class="sourceLine" id="cb395-4" data-line-number="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>sample.sz, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb395-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb395-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample standard deviations&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb395-7" data-line-number="7">       <span class="dt">title =</span> <span class="st">&quot;Sampling distribution of standard deviation of height for samples of varying size&quot;</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb395-1" title="1"><span class="kw">ggplot</span>(df.combined, <span class="kw">aes</span>(<span class="dt">x =</span> sample.sd, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb395-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">25</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb395-3" title="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.sd, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>)  <span class="op">+</span></a>
+<a class="sourceLine" id="cb395-4" title="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>sample.sz, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb395-5" title="5"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Set1&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb395-6" title="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample standard deviations&quot;</span>, <span class="dt">y  =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb395-7" title="7">       <span class="dt">title =</span> <span class="st">&quot;Sampling distribution of standard deviation of height for samples of varying size&quot;</span>)  </a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-393-1.png" width="1440" /></p>
 <p>The key trend we saw when examining the sampling distribution of the mean is also apparent for standard deviation – bigger samples lead to tighter sampling distributions and hence less uncertainty in the sample estimates of the standard deviation.</p>
 <div id="standard-error-of-standard-deviations" class="section level3">
@@ -963,19 +963,19 @@ where <span class="math inline">\(\sigma\)</span> is the population standard dev
 \]</span>
 where <span class="math inline">\(\sigma\)</span> is the population standard deviation, and <span class="math inline">\(n\)</span> is the sample size.</p>
 <p>As before, let’s visually compare the theoretical expectation to our simulated estimates.</p>
-<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb396-1" data-line-number="1">se.sd.theory &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">500</span>, <span class="dv">10</span>), </a>
-<a class="sourceLine" id="cb396-2" data-line-number="2">                       <span class="cf">function</span>(n){ true.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span><span class="op">*</span>(n<span class="dv">-1</span>))})</a>
-<a class="sourceLine" id="cb396-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb396-4" data-line-number="4">df.se.sd.theory &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>), </a>
-<a class="sourceLine" id="cb396-5" data-line-number="5">                              <span class="dt">std.error =</span> se.sd.theory)</a>
-<a class="sourceLine" id="cb396-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb396-7" data-line-number="7"><span class="kw">ggplot</span>(sampling.distn.sd.table, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> sd.of.sds)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb396-8" data-line-number="8"><span class="st">   </span><span class="co"># plot standard errors of mean based on our simulations</span></a>
-<a class="sourceLine" id="cb396-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb396-10" data-line-number="10"><span class="st">  </span><span class="co"># plot standard errors of the mean based on theory</span></a>
-<a class="sourceLine" id="cb396-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> std.error), <span class="dt">data =</span> df.se.sd.theory, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb396-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Std Error of Standard Deviation&quot;</span>,</a>
-<a class="sourceLine" id="cb396-13" data-line-number="13">       <span class="dt">title =</span> <span class="st">&quot;A comparison of theoretical (red line) and simulated (points) estimates of</span><span class="ch">\n</span><span class="st">the standard error of the standard deviation for samples of different size&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb396-1" title="1">se.sd.theory &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">10</span>, <span class="dv">500</span>, <span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb396-2" title="2">                       <span class="cf">function</span>(n){ true.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="dv">2</span><span class="op">*</span>(n<span class="dv">-1</span>))})</a>
+<a class="sourceLine" id="cb396-3" title="3"></a>
+<a class="sourceLine" id="cb396-4" title="4">df.se.sd.theory &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">500</span>,<span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb396-5" title="5">                              <span class="dt">std.error =</span> se.sd.theory)</a>
+<a class="sourceLine" id="cb396-6" title="6"></a>
+<a class="sourceLine" id="cb396-7" title="7"><span class="kw">ggplot</span>(sampling.distn.sd.table, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> sd.of.sds)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb396-8" title="8"><span class="st">   </span><span class="co"># plot standard errors of mean based on our simulations</span></a>
+<a class="sourceLine" id="cb396-9" title="9"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb396-10" title="10"><span class="st">  </span><span class="co"># plot standard errors of the mean based on theory</span></a>
+<a class="sourceLine" id="cb396-11" title="11"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> std.error), <span class="dt">data =</span> df.se.sd.theory, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb396-12" title="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Std Error of Standard Deviation&quot;</span>,</a>
+<a class="sourceLine" id="cb396-13" title="13">       <span class="dt">title =</span> <span class="st">&quot;A comparison of theoretical (red line) and simulated (points) estimates of</span><span class="ch">\n</span><span class="st">the standard error of the standard deviation for samples of different size&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-394-1.png" width="576" /></p>
 </div>
 </div>
@@ -983,73 +983,73 @@ where <span class="math inline">\(\sigma\)</span> is the population standard dev
 <h2><span class="header-section-number">15.8</span> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</h2>
 <p>We would hope that, regardless of sample size, the sampling distributions of both the mean and standard deviation should be centered around the true population value, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> respectively. That seemed to be the case for the modest to large sample sizes we’ve looked at so far (30 to 500 observations). Does this also hold for small samples? Let’s use simulation to explore how well this is expectation is met for small samples.</p>
 <p>As we’ve done before, we simulate the sampling distribution of the mean and standard deviation for samples of varying size.</p>
-<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb397-1" data-line-number="1"><span class="co"># sample sizes we&#39;ll conside</span></a>
-<a class="sourceLine" id="cb397-2" data-line-number="2">ssizes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">50</span>)</a>
-<a class="sourceLine" id="cb397-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb397-4" data-line-number="4"><span class="co"># number of samples to draw *for each sample size*</span></a>
-<a class="sourceLine" id="cb397-5" data-line-number="5">nsamples &lt;-<span class="st"> </span><span class="dv">2500</span></a>
-<a class="sourceLine" id="cb397-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb397-7" data-line-number="7"><span class="co"># create a data frame with empty columns</span></a>
-<a class="sourceLine" id="cb397-8" data-line-number="8">df.combined.small &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">double</span>(), </a>
-<a class="sourceLine" id="cb397-9" data-line-number="9">                          <span class="dt">sample.mean =</span> <span class="kw">double</span>(), </a>
-<a class="sourceLine" id="cb397-10" data-line-number="10">                          <span class="dt">sample.sd =</span> <span class="kw">double</span>(),</a>
-<a class="sourceLine" id="cb397-11" data-line-number="11">                          <span class="dt">estimated.SE =</span> <span class="kw">double</span>(), </a>
-<a class="sourceLine" id="cb397-12" data-line-number="12">                          <span class="dt">sample.zscore =</span> <span class="kw">double</span>())</a>
-<a class="sourceLine" id="cb397-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb397-14" data-line-number="14"><span class="cf">for</span> (i <span class="cf">in</span> ssizes) {</a>
-<a class="sourceLine" id="cb397-15" data-line-number="15">  df.samples.of.size.i &lt;-</a>
-<a class="sourceLine" id="cb397-16" data-line-number="16"><span class="st">    </span><span class="kw">rerun</span>(nsamples,  <span class="kw">rnorm.stats</span>(i, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb397-17" data-line-number="17"><span class="st">    </span><span class="kw">bind_rows</span>()  </a>
-<a class="sourceLine" id="cb397-18" data-line-number="18">  </a>
-<a class="sourceLine" id="cb397-19" data-line-number="19">  df.combined.small &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb397-20" data-line-number="20"><span class="st">    </span><span class="kw">bind_rows</span>(df.combined.small, df.samples.of.size.i)</a>
-<a class="sourceLine" id="cb397-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb397-22" data-line-number="22">}</a>
-<a class="sourceLine" id="cb397-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb397-24" data-line-number="24">df.combined.small <span class="op">%&lt;&gt;%</span></a>
-<a class="sourceLine" id="cb397-25" data-line-number="25"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sample.sz =</span> <span class="kw">as.factor</span>(sample.size))</a></code></pre></div>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb397-1" title="1"><span class="co"># sample sizes we&#39;ll conside</span></a>
+<a class="sourceLine" id="cb397-2" title="2">ssizes &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb397-3" title="3"></a>
+<a class="sourceLine" id="cb397-4" title="4"><span class="co"># number of samples to draw *for each sample size*</span></a>
+<a class="sourceLine" id="cb397-5" title="5">nsamples &lt;-<span class="st"> </span><span class="dv">2500</span></a>
+<a class="sourceLine" id="cb397-6" title="6"></a>
+<a class="sourceLine" id="cb397-7" title="7"><span class="co"># create a data frame with empty columns</span></a>
+<a class="sourceLine" id="cb397-8" title="8">df.combined.small &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">sample.size =</span> <span class="kw">double</span>(), </a>
+<a class="sourceLine" id="cb397-9" title="9">                          <span class="dt">sample.mean =</span> <span class="kw">double</span>(), </a>
+<a class="sourceLine" id="cb397-10" title="10">                          <span class="dt">sample.sd =</span> <span class="kw">double</span>(),</a>
+<a class="sourceLine" id="cb397-11" title="11">                          <span class="dt">estimated.SE =</span> <span class="kw">double</span>(), </a>
+<a class="sourceLine" id="cb397-12" title="12">                          <span class="dt">sample.zscore =</span> <span class="kw">double</span>())</a>
+<a class="sourceLine" id="cb397-13" title="13"></a>
+<a class="sourceLine" id="cb397-14" title="14"><span class="cf">for</span> (i <span class="cf">in</span> ssizes) {</a>
+<a class="sourceLine" id="cb397-15" title="15">  df.samples.of.size.i &lt;-</a>
+<a class="sourceLine" id="cb397-16" title="16"><span class="st">    </span><span class="kw">rerun</span>(nsamples,  <span class="kw">rnorm.stats</span>(i, true.mean, true.sd)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb397-17" title="17"><span class="st">    </span><span class="kw">bind_rows</span>()  </a>
+<a class="sourceLine" id="cb397-18" title="18">  </a>
+<a class="sourceLine" id="cb397-19" title="19">  df.combined.small &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb397-20" title="20"><span class="st">    </span><span class="kw">bind_rows</span>(df.combined.small, df.samples.of.size.i)</a>
+<a class="sourceLine" id="cb397-21" title="21"></a>
+<a class="sourceLine" id="cb397-22" title="22">}</a>
+<a class="sourceLine" id="cb397-23" title="23"></a>
+<a class="sourceLine" id="cb397-24" title="24">df.combined.small <span class="op">%&lt;&gt;%</span></a>
+<a class="sourceLine" id="cb397-25" title="25"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sample.sz =</span> <span class="kw">as.factor</span>(sample.size))</a></code></pre></div>
 <div id="for-small-samples-sample-standard-deviations-systematically-underestimate-the-population-standard-deviation" class="section level3">
 <h3><span class="header-section-number">15.8.1</span> For small samples, sample standard deviations systematically underestimate the population standard deviation</h3>
 <p>Let’s examine how the well centered the sampling distributions of the mean and standard deviation are around their true values, as a function of sample size.</p>
 <p>First a table summarizing this information:</p>
-<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb398-1" data-line-number="1">by.sample.size &lt;-</a>
-<a class="sourceLine" id="cb398-2" data-line-number="2"><span class="st">  </span>df.combined.small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb398-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb398-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
-<a class="sourceLine" id="cb398-5" data-line-number="5">            <span class="dt">mean.of.sds =</span> <span class="kw">mean</span>(sample.sd))</a>
-<a class="sourceLine" id="cb398-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb398-7" data-line-number="7">by.sample.size</a>
-<a class="sourceLine" id="cb398-8" data-line-number="8"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
-<a class="sourceLine" id="cb398-9" data-line-number="9"><span class="co">#&gt;   sample.size mean.of.means mean.of.sds</span></a>
-<a class="sourceLine" id="cb398-10" data-line-number="10"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb398-11" data-line-number="11"><span class="co">#&gt; 1           2         175.2       11.93</span></a>
-<a class="sourceLine" id="cb398-12" data-line-number="12"><span class="co">#&gt; 2           3         175.8       13.51</span></a>
-<a class="sourceLine" id="cb398-13" data-line-number="13"><span class="co">#&gt; 3           4         175.7       13.99</span></a>
-<a class="sourceLine" id="cb398-14" data-line-number="14"><span class="co">#&gt; 4           5         175.7       14.15</span></a>
-<a class="sourceLine" id="cb398-15" data-line-number="15"><span class="co">#&gt; 5           7         175.8       14.52</span></a>
-<a class="sourceLine" id="cb398-16" data-line-number="16"><span class="co">#&gt; 6          10         175.7       14.78</span></a>
-<a class="sourceLine" id="cb398-17" data-line-number="17"><span class="co">#&gt; 7          20         175.7       14.98</span></a>
-<a class="sourceLine" id="cb398-18" data-line-number="18"><span class="co">#&gt; 8          30         175.6       15.07</span></a>
-<a class="sourceLine" id="cb398-19" data-line-number="19"><span class="co">#&gt; 9          50         175.7       15.12</span></a></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb398-1" title="1">by.sample.size &lt;-</a>
+<a class="sourceLine" id="cb398-2" title="2"><span class="st">  </span>df.combined.small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb398-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(sample.size) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb398-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean.of.means =</span> <span class="kw">mean</span>(sample.mean),</a>
+<a class="sourceLine" id="cb398-5" title="5">            <span class="dt">mean.of.sds =</span> <span class="kw">mean</span>(sample.sd))</a>
+<a class="sourceLine" id="cb398-6" title="6"></a>
+<a class="sourceLine" id="cb398-7" title="7">by.sample.size</a>
+<a class="sourceLine" id="cb398-8" title="8"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
+<a class="sourceLine" id="cb398-9" title="9"><span class="co">#&gt;   sample.size mean.of.means mean.of.sds</span></a>
+<a class="sourceLine" id="cb398-10" title="10"><span class="co">#&gt;         &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb398-11" title="11"><span class="co">#&gt; 1           2         175.2       11.93</span></a>
+<a class="sourceLine" id="cb398-12" title="12"><span class="co">#&gt; 2           3         175.8       13.51</span></a>
+<a class="sourceLine" id="cb398-13" title="13"><span class="co">#&gt; 3           4         175.7       13.99</span></a>
+<a class="sourceLine" id="cb398-14" title="14"><span class="co">#&gt; 4           5         175.7       14.15</span></a>
+<a class="sourceLine" id="cb398-15" title="15"><span class="co">#&gt; 5           7         175.8       14.52</span></a>
+<a class="sourceLine" id="cb398-16" title="16"><span class="co">#&gt; 6          10         175.7       14.78</span></a>
+<a class="sourceLine" id="cb398-17" title="17"><span class="co">#&gt; 7          20         175.7       14.98</span></a>
+<a class="sourceLine" id="cb398-18" title="18"><span class="co">#&gt; 8          30         175.6       15.07</span></a>
+<a class="sourceLine" id="cb398-19" title="19"><span class="co">#&gt; 9          50         175.7       15.12</span></a></code></pre></div>
 <p>We see that the sampling distributions of means are well centered around the true mean for both small and medium, and there is no systematic bias one way or the other. By contrast the sampling distribution of standard deviations tends to underestimate the true standard deviation when the samples are small (less than 30 observations).</p>
 <p>We can visualize this bias as shown here:</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb399-1" data-line-number="1"><span class="kw">ggplot</span>(by.sample.size, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> mean.of.sds)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb399-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb399-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb399-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> true.sd, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb399-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean of Sampling Distn of Std Dev&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb399-1" title="1"><span class="kw">ggplot</span>(by.sample.size, <span class="kw">aes</span>(<span class="dt">x =</span> sample.size, <span class="dt">y =</span> mean.of.sds)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb399-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb399-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb399-4" title="4"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> true.sd, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">linetype=</span><span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb399-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Sample Size&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean of Sampling Distn of Std Dev&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-397-1.png" width="576" /></p>
 <p>The source of this bias is clear if we look at the sampling distribution of the standard deviation for samples of size 3, 5, and 30.</p>
-<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb400-1" data-line-number="1">filtered.df &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb400-2" data-line-number="2"><span class="st">  </span>df.combined.small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb400-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(sample.size <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">30</span>))</a>
-<a class="sourceLine" id="cb400-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb400-5" data-line-number="5"><span class="kw">ggplot</span>(filtered.df, <span class="kw">aes</span>(<span class="dt">x =</span> sample.sd, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb400-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">alpha=</span><span class="fl">0.65</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb400-7" data-line-number="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sample.size, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb400-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.sd, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb400-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Std Deviations&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb400-10" data-line-number="10">       <span class="dt">title =</span> <span class="st">&quot;Sampling distributions of the standard deviation</span><span class="ch">\n</span><span class="st">As a function of sample size&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb400-1" title="1">filtered.df &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb400-2" title="2"><span class="st">  </span>df.combined.small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb400-3" title="3"><span class="st">  </span><span class="kw">filter</span>(sample.size <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">30</span>))</a>
+<a class="sourceLine" id="cb400-4" title="4"></a>
+<a class="sourceLine" id="cb400-5" title="5"><span class="kw">ggplot</span>(filtered.df, <span class="kw">aes</span>(<span class="dt">x =</span> sample.sd, <span class="dt">y =</span> ..density.., <span class="dt">fill =</span> sample.sz)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb400-6" title="6"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">alpha=</span><span class="fl">0.65</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb400-7" title="7"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sample.size, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb400-8" title="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.sd, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb400-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Std Deviations&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb400-10" title="10">       <span class="dt">title =</span> <span class="st">&quot;Sampling distributions of the standard deviation</span><span class="ch">\n</span><span class="st">As a function of sample size&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-398-1.png" width="1152" /></p>
 <p>There’s very clear indication that the the sampling distribution of standard deviations is not centered around the true value for <span class="math inline">\(n=3\)</span> and for <span class="math inline">\(n=5\)</span>, however with samples of size 30 the sampling distribution of the standard deviation appears fairly well centered around the true value of the underlying population.</p>
 </div>
@@ -1063,7 +1063,7 @@ where <span class="math inline">\(\sigma\)</span> is the population standard dev
 <div class="footnotes">
 <hr />
 <ol start="1">
-<li id="fn1"><p>US Dept. of Health and Human Services; et al. (August 2016). “Anthropometric Reference Data for Children and Adults: United States, 2011–2014” (PDF). National Health Statistics Reports. 11. <a href="https://www.cdc.gov/nchs/data/series/sr_03/sr03_039.pdf" class="uri">https://www.cdc.gov/nchs/data/series/sr_03/sr03_039.pdf</a><a href="introduction-to-sampling-distributions-part-ii.html#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>US Dept. of Health and Human Services; et al. (August 2016). “Anthropometric Reference Data for Children and Adults: United States, 2011–2014” (PDF). National Health Statistics Reports. 11. <a href="https://www.cdc.gov/nchs/data/series/sr_03/sr03_039.pdf" class="uri">https://www.cdc.gov/nchs/data/series/sr_03/sr03_039.pdf</a><a href="introduction-to-sampling-distributions-part-ii.html#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
