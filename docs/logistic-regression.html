@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Biology 304: Biological Data Analysis</title>
+  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Biology 304: Biological Data Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Hands-on materials for Bio 304 course at Duke University." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Biology 304: Biological Data Analysis" />
+  
+  <meta name="twitter:description" content="Hands-on materials for Bio 304 course at Duke University." />
+  
+
+<meta name="author" content="Paul M. Magwene">
+
+
+<meta name="date" content="2018-12-04">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="multiple-regression.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
+<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#how-to-use-these-lecture-notes"><i class="fa fa-check"></i><b>1.1</b> How to use these lecture notes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#background"><i class="fa fa-check"></i><b>2.1</b> Background</a></li>
+<li class="chapter" data-level="2.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#dataset"><i class="fa fa-check"></i><b>2.2</b> Dataset</a></li>
+<li class="chapter" data-level="2.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#libraries"><i class="fa fa-check"></i><b>2.3</b> Libraries</a></li>
+<li class="chapter" data-level="2.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#read-data"><i class="fa fa-check"></i><b>2.4</b> Read data</a></li>
+<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#simple-data-wrangling"><i class="fa fa-check"></i><b>2.5.1</b> Simple data wrangling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-many-people-survived"><i class="fa fa-check"></i><b>2.6.1</b> How many people survived?</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#women-first"><i class="fa fa-check"></i><b>2.6.2</b> Women first?</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#a-bar-plot-using-proportions-rather-than-counts"><i class="fa fa-check"></i><b>2.6.3</b> A bar plot using proportions rather than counts</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#mosaic-plots"><i class="fa fa-check"></i><b>2.6.4</b> Mosaic plots</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#passenger-ages"><i class="fa fa-check"></i><b>2.7</b> Passenger ages</a></li>
+<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#strip-charts"><i class="fa fa-check"></i><b>2.8.1</b> Strip charts</a></li>
+<li class="chapter" data-level="2.8.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#box-plots"><i class="fa fa-check"></i><b>2.8.2</b> Box plots</a></li>
+<li class="chapter" data-level="2.8.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#fitting-a-model-relating-survival-to-age-and-sex"><i class="fa fa-check"></i><b>2.8.3</b> Fitting a model relating survival to age and sex</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a><ul>
+<li class="chapter" data-level="2.9.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#combining-sex-and-class"><i class="fa fa-check"></i><b>2.9.1</b> Combining Sex and Class</a></li>
+<li class="chapter" data-level="2.9.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#extending-the-logistic-regression-model-to-consider-class-age-sex-and-survival"><i class="fa fa-check"></i><b>2.9.2</b> Extending the logistic regression model to consider class, age, sex, and survival</a></li>
+</ul></li>
+<li class="chapter" data-level="2.10" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#conclusion"><i class="fa fa-check"></i><b>2.10</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a><ul>
+<li class="chapter" data-level="3.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-r"><i class="fa fa-check"></i><b>3.1</b> What is R?</a></li>
+<li class="chapter" data-level="3.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-rstudio"><i class="fa fa-check"></i><b>3.2</b> What is RStudio?</a></li>
+<li class="chapter" data-level="3.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#entering-commands-in-the-console"><i class="fa fa-check"></i><b>3.3</b> Entering commands in the console</a></li>
+<li class="chapter" data-level="3.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#comments"><i class="fa fa-check"></i><b>3.4</b> Comments</a></li>
+<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#common-mathematical-functions"><i class="fa fa-check"></i><b>3.5.1</b> Common mathematical functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-help-from-the-console"><i class="fa fa-check"></i><b>3.6.1</b> Getting help from the console</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#valid-variable-names"><i class="fa fa-check"></i><b>3.7.1</b> Valid variable names</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#data-types"><i class="fa fa-check"></i><b>3.8</b> Data types</a></li>
+<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-operators"><i class="fa fa-check"></i><b>3.9.1</b> Logical operators</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a><ul>
+<li class="chapter" data-level="3.10.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#joining-strings"><i class="fa fa-check"></i><b>3.10.1</b> Joining strings</a></li>
+<li class="chapter" data-level="3.10.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#splitting-strings"><i class="fa fa-check"></i><b>3.10.2</b> Splitting strings</a></li>
+<li class="chapter" data-level="3.10.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#substrings"><i class="fa fa-check"></i><b>3.10.3</b> Substrings</a></li>
+</ul></li>
+<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a><ul>
+<li class="chapter" data-level="3.11.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-console"><i class="fa fa-check"></i><b>3.11.1</b> Installing packages from the console</a></li>
+<li class="chapter" data-level="3.11.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#install-the-tidyverse-package"><i class="fa fa-check"></i><b>3.11.2</b> Install the tidyverse package</a></li>
+<li class="chapter" data-level="3.11.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-rstudio-dialog"><i class="fa fa-check"></i><b>3.11.3</b> Installing packages from the RStudio dialog</a></li>
+<li class="chapter" data-level="3.11.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#loading-packages-with-the-library-function"><i class="fa fa-check"></i><b>3.11.4</b> Loading packages with the <code>library()</code> function</a></li>
+</ul></li>
+<li class="chapter" data-level="3.12" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#reading-data-from-a-file"><i class="fa fa-check"></i><b>3.12</b> Reading data from a file</a></li>
+<li class="chapter" data-level="3.13" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#exploring-the-possums-data-set"><i class="fa fa-check"></i><b>3.13</b> Exploring the “possums” data set</a></li>
+<li class="chapter" data-level="3.14" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#simple-tables"><i class="fa fa-check"></i><b>3.14</b> Simple tables</a></li>
+<li class="chapter" data-level="3.15" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#simple-figures"><i class="fa fa-check"></i><b>3.15</b> Simple figures</a></li>
+<li class="chapter" data-level="3.16" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#bar-plots"><i class="fa fa-check"></i><b>3.16</b> Bar plots</a></li>
+<li class="chapter" data-level="3.17" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#histograms"><i class="fa fa-check"></i><b>3.17</b> Histograms</a></li>
+<li class="chapter" data-level="3.18" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#scatter-plots"><i class="fa fa-check"></i><b>3.18</b> Scatter plots</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a><ul>
+<li class="chapter" data-level="4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#r-notebooks"><i class="fa fa-check"></i><b>4.1</b> R Notebooks</a></li>
+<li class="chapter" data-level="4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#creating-an-r-notebook"><i class="fa fa-check"></i><b>4.2</b> Creating an R Notebook</a></li>
+<li class="chapter" data-level="4.3" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#the-default-r-notebook-template"><i class="fa fa-check"></i><b>4.3</b> The default R Notebook template</a></li>
+<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#non-code-blocks"><i class="fa fa-check"></i><b>4.4.1</b> Non-code blocks</a></li>
+<li class="chapter" data-level="4.4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-blocks"><i class="fa fa-check"></i><b>4.4.2</b> Code blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#running-a-code-chunk"><i class="fa fa-check"></i><b>4.5</b> Running a code chunk</a></li>
+<li class="chapter" data-level="4.6" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#running-all-code-chunks-above"><i class="fa fa-check"></i><b>4.6</b> Running all code chunks above</a></li>
+<li class="chapter" data-level="4.7" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#knitting-an-r-markdown-to-html"><i class="fa fa-check"></i><b>4.7</b> “Knitting an” R Markdown to HTML</a></li>
+<li class="chapter" data-level="4.8" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#sharing-your-reproducible-r-notebook"><i class="fa fa-check"></i><b>4.8</b> Sharing your reproducible R Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a><ul>
+<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-arithmetic"><i class="fa fa-check"></i><b>5.1.1</b> Vector Arithmetic</a></li>
+<li class="chapter" data-level="5.1.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-recycling"><i class="fa fa-check"></i><b>5.1.2</b> Vector recycling</a></li>
+<li class="chapter" data-level="5.1.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#simple-statistical-functions-for-numeric-vectors"><i class="fa fa-check"></i><b>5.1.3</b> Simple statistical functions for numeric vectors</a></li>
+<li class="chapter" data-level="5.1.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-vectors"><i class="fa fa-check"></i><b>5.1.4</b> Indexing Vectors</a></li>
+<li class="chapter" data-level="5.1.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#comparison-operators-applied-to-vectors"><i class="fa fa-check"></i><b>5.1.5</b> Comparison operators applied to vectors</a></li>
+<li class="chapter" data-level="5.1.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-indexing-and-comparison-of-vectors"><i class="fa fa-check"></i><b>5.1.6</b> Combining Indexing and Comparison of Vectors</a></li>
+<li class="chapter" data-level="5.1.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-manipulation"><i class="fa fa-check"></i><b>5.1.7</b> Vector manipulation</a></li>
+<li class="chapter" data-level="5.1.8" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors-from-regular-sequences"><i class="fa fa-check"></i><b>5.1.8</b> Vectors from regular sequences</a></li>
+<li class="chapter" data-level="5.1.9" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#additional-functions-for-working-with-vectors"><i class="fa fa-check"></i><b>5.1.9</b> Additional functions for working with vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-type-of-lists"><i class="fa fa-check"></i><b>5.2.1</b> Length and type of lists</a></li>
+<li class="chapter" data-level="5.2.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-lists"><i class="fa fa-check"></i><b>5.2.2</b> Indexing lists</a></li>
+<li class="chapter" data-level="5.2.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#naming-list-elements"><i class="fa fa-check"></i><b>5.2.3</b> Naming list elements</a></li>
+<li class="chapter" data-level="5.2.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#the-operator"><i class="fa fa-check"></i><b>5.2.4</b> The <code>$</code> operator</a></li>
+<li class="chapter" data-level="5.2.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#changing-and-adding-lists-items"><i class="fa fa-check"></i><b>5.2.5</b> Changing and adding lists items</a></li>
+<li class="chapter" data-level="5.2.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-lists"><i class="fa fa-check"></i><b>5.2.6</b> Combining lists</a></li>
+<li class="chapter" data-level="5.2.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#converting-lists-to-vectors"><i class="fa fa-check"></i><b>5.2.7</b> Converting lists to vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#creating-a-data-frame"><i class="fa fa-check"></i><b>5.3.1</b> Creating a data frame</a></li>
+<li class="chapter" data-level="5.3.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#type-and-class-for-data-frames"><i class="fa fa-check"></i><b>5.3.2</b> Type and class for data frames</a></li>
+<li class="chapter" data-level="5.3.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-dimension-for-data-frames"><i class="fa fa-check"></i><b>5.3.3</b> Length and dimension for data frames</a></li>
+<li class="chapter" data-level="5.3.4" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-and-accessing-data-frames"><i class="fa fa-check"></i><b>5.3.4</b> Indexing and accessing data frames</a></li>
+<li class="chapter" data-level="5.3.5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#logical-indexing-of-data-frames"><i class="fa fa-check"></i><b>5.3.5</b> Logical indexing of data frames</a></li>
+<li class="chapter" data-level="5.3.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#adding-columns-to-a-data-frame"><i class="fa fa-check"></i><b>5.3.6</b> Adding columns to a data frame</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a><ul>
+<li class="chapter" data-level="6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#loading-ggplot2"><i class="fa fa-check"></i><b>6.1</b> Loading ggplot2</a></li>
+<li class="chapter" data-level="6.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#example-data-set-andersons-iris-data"><i class="fa fa-check"></i><b>6.2</b> Example data set: Anderson’s Iris Data</a></li>
+<li class="chapter" data-level="6.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#template-for-single-layer-plots-in-ggplot2"><i class="fa fa-check"></i><b>6.3</b> Template for single layer plots in ggplot2</a></li>
+<li class="chapter" data-level="6.4" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#an-aside-about-function-arguments"><i class="fa fa-check"></i><b>6.4</b> An aside about function arguments</a></li>
+<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#jittering-data"><i class="fa fa-check"></i><b>6.5.1</b> Jittering data</a></li>
+<li class="chapter" data-level="6.5.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-categorical-information"><i class="fa fa-check"></i><b>6.5.2</b> Adding categorical information</a></li>
+<li class="chapter" data-level="6.5.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#rotating-plot-coordinates"><i class="fa fa-check"></i><b>6.5.3</b> Rotating plot coordinates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#variations-on-histograms-when-considering-categorical-data"><i class="fa fa-check"></i><b>6.6.1</b> Variations on histograms when considering categorical data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#faceting-to-depict-categorical-information"><i class="fa fa-check"></i><b>6.7</b> Faceting to depict categorical information</a></li>
+<li class="chapter" data-level="6.8" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#density-plots"><i class="fa fa-check"></i><b>6.8</b> Density plots</a></li>
+<li class="chapter" data-level="6.9" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-or-beanplot"><i class="fa fa-check"></i><b>6.9</b> Violin or Beanplot</a></li>
+<li class="chapter" data-level="6.10" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplots"><i class="fa fa-check"></i><b>6.10</b> Boxplots</a></li>
+<li class="chapter" data-level="6.11" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#building-complex-visualizations-with-layers"><i class="fa fa-check"></i><b>6.11</b> Building complex visualizations with layers</a></li>
+<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a><ul>
+<li class="chapter" data-level="6.12.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplot-plus-strip-plot"><i class="fa fa-check"></i><b>6.12.1</b> Boxplot plus strip plot</a></li>
+<li class="chapter" data-level="6.12.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#setting-shared-aesthetics"><i class="fa fa-check"></i><b>6.12.2</b> Setting shared aesthetics</a></li>
+</ul></li>
+<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a><ul>
+<li class="chapter" data-level="6.13.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-plot-plus-strip-plot"><i class="fa fa-check"></i><b>6.13.1</b> Violin plot plus strip plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.14" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-titles-and-tweaking-axis-labels"><i class="fa fa-check"></i><b>6.14</b> Adding titles and tweaking axis labels</a></li>
+<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a><ul>
+<li class="chapter" data-level="6.15.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#further-customization-with-ggplot2theme"><i class="fa fa-check"></i><b>6.15.1</b> Further customization with <code>ggplot2::theme</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.16" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#other-aspects-of-ggplots-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.16</b> Other aspects of ggplots can be assigned to variables</a></li>
+<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a><ul>
+<li class="chapter" data-level="6.17.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#scatter-plots-1"><i class="fa fa-check"></i><b>6.17.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="6.17.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-a-trend-line-to-a-scatter-plot"><i class="fa fa-check"></i><b>6.17.2</b> Adding a trend line to a scatter plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.18" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-density-plots"><i class="fa fa-check"></i><b>6.18</b> Bivariate density plots</a></li>
+<li class="chapter" data-level="6.19" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#combining-scatter-plots-and-density-plots-with-categorical-information"><i class="fa fa-check"></i><b>6.19</b> Combining Scatter Plots and Density Plots with Categorical Information</a></li>
+<li class="chapter" data-level="6.20" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#density-plots-with-fill"><i class="fa fa-check"></i><b>6.20</b> Density plots with fill</a></li>
+<li class="chapter" data-level="6.21" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#d-bin-and-hex-plots"><i class="fa fa-check"></i><b>6.21</b> 2D bin and hex plots</a></li>
+<li class="chapter" data-level="6.22" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#the-cowplot-package"><i class="fa fa-check"></i><b>6.22</b> The <code>cowplot</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#libraries-1"><i class="fa fa-check"></i><b>7.1</b> Libraries</a></li>
+<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#example-data-nc-births"><i class="fa fa-check"></i><b>7.2.1</b> Example data: NC Births</a></li>
+<li class="chapter" data-level="7.2.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-excel-files"><i class="fa fa-check"></i><b>7.2.2</b> Reading Excel files</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#a-note-on-tibbles"><i class="fa fa-check"></i><b>7.3</b> A note on “tibbles”</a></li>
+<li class="chapter" data-level="7.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#data-filtering-and-transformation-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Data filtering and transformation with <code>dplyr</code></a></li>
+<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>7.5.1</b> <code>select</code></a></li>
+<li class="chapter" data-level="7.5.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>7.5.2</b> <code>filter</code></a></li>
+<li class="chapter" data-level="7.5.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>7.5.3</b> <code>mutate</code></a></li>
+<li class="chapter" data-level="7.5.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#arrange"><i class="fa fa-check"></i><b>7.5.4</b> <code>arrange</code></a></li>
+<li class="chapter" data-level="7.5.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#summarize"><i class="fa fa-check"></i><b>7.5.5</b> <code>summarize</code></a></li>
+<li class="chapter" data-level="7.5.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#group_by"><i class="fa fa-check"></i><b>7.5.6</b> <code>group_by</code></a></li>
+<li class="chapter" data-level="7.5.7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-grouping-and-summarizing"><i class="fa fa-check"></i><b>7.5.7</b> Combining grouping and summarizing</a></li>
+<li class="chapter" data-level="7.5.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#scoped-variants-of-mutate-and-summarize"><i class="fa fa-check"></i><b>7.5.8</b> Scoped variants of <code>mutate</code> and <code>summarize</code></a></li>
+<li class="chapter" data-level="7.5.9" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-summarize-with-grouping-aesthetics-in-ggplot2"><i class="fa fa-check"></i><b>7.5.9</b> Combining summarize with grouping aesthetics in <code>ggplot2</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#install-and-load-magrittr"><i class="fa fa-check"></i><b>7.6.1</b> Install and load <code>magrittr</code></a></li>
+<li class="chapter" data-level="7.6.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-basic-pipe-operator"><i class="fa fa-check"></i><b>7.6.2</b> The basic pipe operator</a></li>
+<li class="chapter" data-level="7.6.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#an-example-without-pipes"><i class="fa fa-check"></i><b>7.6.3</b> An example without pipes</a></li>
+<li class="chapter" data-level="7.6.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-same-example-using-pipes"><i class="fa fa-check"></i><b>7.6.4</b> The same example using pipes</a></li>
+<li class="chapter" data-level="7.6.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#assigning-the-output-of-a-statement-involving-pipes-to-a-variable"><i class="fa fa-check"></i><b>7.6.5</b> Assigning the output of a statement involving pipes to a variable</a></li>
+<li class="chapter" data-level="7.6.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#compound-assignment-pipe-operator"><i class="fa fa-check"></i><b>7.6.6</b> Compound assignment pipe operator</a></li>
+<li class="chapter" data-level="7.6.7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-dot-operator-with-pipes"><i class="fa fa-check"></i><b>7.6.7</b> The dot operator with pipes</a></li>
+<li class="chapter" data-level="7.6.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-exposition-pipe-operator"><i class="fa fa-check"></i><b>7.6.8</b> The exposition pipe operator</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#libraries-2"><i class="fa fa-check"></i><b>8.1</b> Libraries</a></li>
+<li class="chapter" data-level="8.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#data"><i class="fa fa-check"></i><b>8.2</b> Data</a></li>
+<li class="chapter" data-level="8.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#renaming-data-frame-columms"><i class="fa fa-check"></i><b>8.3</b> Renaming data frame columms</a></li>
+<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-all-empty-columns"><i class="fa fa-check"></i><b>8.4.1</b> Finding all empty columns</a></li>
+<li class="chapter" data-level="8.4.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-columns-by-matching-names"><i class="fa fa-check"></i><b>8.4.2</b> Dropping columns by matching names</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#merging-data-frames"><i class="fa fa-check"></i><b>8.5</b> Merging data frames</a></li>
+<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a><ul>
+<li class="chapter" data-level="8.6.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#wide-to-long-conversions-using-tidyrgather"><i class="fa fa-check"></i><b>8.6.1</b> Wide to long conversions using <code>tidyr::gather</code></a></li>
+<li class="chapter" data-level="8.6.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#extracting-information-from-combined-variables-using-tidyrextract"><i class="fa fa-check"></i><b>8.6.2</b> Extracting information from combined variables using <code>tidyr::extract</code></a></li>
+<li class="chapter" data-level="8.6.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#subsetting-rows"><i class="fa fa-check"></i><b>8.6.3</b> Subsetting rows</a></li>
+<li class="chapter" data-level="8.6.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#splitting-columns"><i class="fa fa-check"></i><b>8.6.4</b> Splitting columns</a></li>
+<li class="chapter" data-level="8.6.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#combining-data-frames"><i class="fa fa-check"></i><b>8.6.5</b> Combining data frames</a></li>
+<li class="chapter" data-level="8.6.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#sorting-data-frame-rows"><i class="fa fa-check"></i><b>8.6.6</b> Sorting data frame rows</a></li>
+</ul></li>
+<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a><ul>
+<li class="chapter" data-level="8.7.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#visualizing-gene-expression-time-series"><i class="fa fa-check"></i><b>8.7.1</b> Visualizing gene expression time series</a></li>
+<li class="chapter" data-level="8.7.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-the-most-variable-genes"><i class="fa fa-check"></i><b>8.7.2</b> Finding the most variable genes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#libraries-3"><i class="fa fa-check"></i><b>9.1</b> Libraries</a></li>
+<li class="chapter" data-level="9.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#data-1"><i class="fa fa-check"></i><b>9.2</b> Data</a></li>
+<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#better-color-schemes-with-rcolorbrewer"><i class="fa fa-check"></i><b>9.3.1</b> Better color schemes with RColorBrewer</a></li>
+<li class="chapter" data-level="9.3.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#looking-for-patterns-using-sorted-data-and-heat-maps"><i class="fa fa-check"></i><b>9.3.2</b> Looking for patterns using sorted data and heat maps</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#long-to-wide-conversion-using-tidyrspread"><i class="fa fa-check"></i><b>9.4</b> Long-to-wide conversion using <code>tidyr::spread</code></a></li>
+<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#large-scale-patterns-of-correlations"><i class="fa fa-check"></i><b>9.5.1</b> Large scale patterns of correlations</a></li>
+<li class="chapter" data-level="9.5.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#adding-new-columns-and-combining-filtered-data-frames"><i class="fa fa-check"></i><b>9.5.2</b> Adding new columns and combining filtered data frames</a></li>
+<li class="chapter" data-level="9.5.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-heat-mapped-sorted-by-correlations"><i class="fa fa-check"></i><b>9.5.3</b> A heat mapped sorted by correlations</a></li>
+<li class="chapter" data-level="9.5.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-fancy-figure"><i class="fa fa-check"></i><b>9.5.4</b> A “fancy” figure</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html"><i class="fa fa-check"></i><b>10</b> Functions and control flow statements</a><ul>
+<li class="chapter" data-level="10.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-your-own-functions"><i class="fa fa-check"></i><b>10.1</b> Writing your own functions</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#function-arguments"><i class="fa fa-check"></i><b>10.1.1</b> Function arguments</a></li>
+<li class="chapter" data-level="10.1.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-functions-with-optional-arguments"><i class="fa fa-check"></i><b>10.1.2</b> Writing functions with optional arguments</a></li>
+<li class="chapter" data-level="10.1.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#putting-r-functions-in-scripts"><i class="fa fa-check"></i><b>10.1.3</b> Putting R functions in Scripts</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#control-flow-statements"><i class="fa fa-check"></i><b>10.2</b> Control flow statements</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#if-and-if-else-statements"><i class="fa fa-check"></i><b>10.2.1</b> <code>if</code> and <code>if-else</code> statements</a></li>
+<li class="chapter" data-level="10.2.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#for-loops"><i class="fa fa-check"></i><b>10.2.2</b> for loops</a></li>
+<li class="chapter" data-level="10.2.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#break-statement"><i class="fa fa-check"></i><b>10.2.3</b> <code>break</code> statement</a></li>
+<li class="chapter" data-level="10.2.4" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#repeat-loops"><i class="fa fa-check"></i><b>10.2.4</b> <code>repeat</code> loops</a></li>
+<li class="chapter" data-level="10.2.5" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#next-statement"><i class="fa fa-check"></i><b>10.2.5</b> <code>next</code> statement</a></li>
+<li class="chapter" data-level="10.2.6" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#while-statements"><i class="fa fa-check"></i><b>10.2.6</b> while statements</a></li>
+<li class="chapter" data-level="10.2.7" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#ifelse"><i class="fa fa-check"></i><b>10.2.7</b> <code>ifelse</code></a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-and-related-tools"><i class="fa fa-check"></i><b>10.3</b> <code>map</code> and related tools</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#basic-map"><i class="fa fa-check"></i><b>10.3.1</b> basic <code>map</code></a></li>
+<li class="chapter" data-level="10.3.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map_if-and-map_at"><i class="fa fa-check"></i><b>10.3.2</b> <code>map_if</code> and <code>map_at</code></a></li>
+<li class="chapter" data-level="10.3.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#mapping-in-parallel-using-map2"><i class="fa fa-check"></i><b>10.3.3</b> mapping in parallel using <code>map2</code></a></li>
+<li class="chapter" data-level="10.3.4" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-variants-that-return-vectors"><i class="fa fa-check"></i><b>10.3.4</b> <code>map</code> variants that return vectors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="frequency-distributions-and-descriptive-statistics.html"><a href="frequency-distributions-and-descriptive-statistics.html"><i class="fa fa-check"></i><b>11</b> Frequency Distributions and Descriptive Statistics</a></li>
+<li class="chapter" data-level="12" data-path="joint-frequency-distributions-and-measures-of-association.html"><a href="joint-frequency-distributions-and-measures-of-association.html"><i class="fa fa-check"></i><b>12</b> Joint Frequency Distributions and Measures of Association</a></li>
+<li class="chapter" data-level="13" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html"><i class="fa fa-check"></i><b>13</b> Introduction to Probability</a><ul>
+<li class="chapter" data-level="13.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#terms"><i class="fa fa-check"></i><b>13.1</b> Terms</a><ul>
+<li class="chapter" data-level="13.1.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-of-random-trials-outcomes-and-events"><i class="fa fa-check"></i><b>13.1.1</b> Examples of random trials, outcomes, and events</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#frequentist-definition-of-probability"><i class="fa fa-check"></i><b>13.2</b> Frequentist definition of probability</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-probability"><i class="fa fa-check"></i><b>13.2.1</b> Examples: Probability</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-distribution"><i class="fa fa-check"></i><b>13.3</b> Probability distribution</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#discrete-probability-distribution"><i class="fa fa-check"></i><b>13.3.1</b> Discrete probability distribution</a></li>
+<li class="chapter" data-level="13.3.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#continuous-probability-distribution"><i class="fa fa-check"></i><b>13.3.2</b> Continuous probability distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4</b> Mutually exclusive events</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#addition-rule-mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4.1</b> Addition rule, mutually exclusive events</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#independence"><i class="fa fa-check"></i><b>13.5</b> Independence</a><ul>
+<li class="chapter" data-level="13.5.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#multiplication-rule-independent-events"><i class="fa fa-check"></i><b>13.5.1</b> Multiplication rule, independent events</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-addition-rule"><i class="fa fa-check"></i><b>13.6</b> General addition rule</a></li>
+<li class="chapter" data-level="13.7" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#conditional-probability"><i class="fa fa-check"></i><b>13.7</b> Conditional probability</a><ul>
+<li class="chapter" data-level="13.7.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-conditional-probability"><i class="fa fa-check"></i><b>13.7.1</b> Example: Conditional probability</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-multiplication-rule"><i class="fa fa-check"></i><b>13.8</b> General multiplication rule</a><ul>
+<li class="chapter" data-level="13.8.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-general-multiplication-rule"><i class="fa fa-check"></i><b>13.8.1</b> Example: General multiplication rule</a></li>
+</ul></li>
+<li class="chapter" data-level="13.9" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-trees"><i class="fa fa-check"></i><b>13.9</b> Probability trees</a></li>
+<li class="chapter" data-level="13.10" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#law-of-total-probability"><i class="fa fa-check"></i><b>13.10</b> Law of total probability</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions, Part I</a><ul>
+<li class="chapter" data-level="14.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#libraries-4"><i class="fa fa-check"></i><b>14.1</b> Libraries</a></li>
+<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-1"><i class="fa fa-check"></i><b>14.2.1</b> Experiment 1</a></li>
+<li class="chapter" data-level="14.2.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-2"><i class="fa fa-check"></i><b>14.2.2</b> Experiment 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#binomial-distribution"><i class="fa fa-check"></i><b>14.3.1</b> Binomial distribution</a></li>
+<li class="chapter" data-level="14.3.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#sampling-from-the-binomial-distribution-in-r"><i class="fa fa-check"></i><b>14.3.2</b> Sampling from the binomial distribution in R</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#distribution-of-estimates-of-the-proportion"><i class="fa fa-check"></i><b>14.4</b> Distribution of estimates of the proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html"><i class="fa fa-check"></i><b>15</b> Introduction to Sampling Distributions, Part II</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#libraries-5"><i class="fa fa-check"></i><b>15.1</b> Libraries</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#data-set-simulated-male-heights"><i class="fa fa-check"></i><b>15.2</b> Data set: Simulated male heights</a><ul>
+<li class="chapter" data-level="15.2.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#properties-of-the-underlying-population"><i class="fa fa-check"></i><b>15.2.1</b> Properties of the underlying population</a></li>
+<li class="chapter" data-level="15.2.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#other-r-functions-related-to-the-normal-distribution"><i class="fa fa-check"></i><b>15.2.2</b> Other R functions related to the normal distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#seeding-the-pseudo-random-number-generator"><i class="fa fa-check"></i><b>15.3</b> Seeding the pseudo-random number generator</a></li>
+<li class="chapter" data-level="15.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#random-sampling-from-the-simulated-population"><i class="fa fa-check"></i><b>15.4</b> Random sampling from the simulated population</a><ul>
+<li class="chapter" data-level="15.4.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#another-random-sample"><i class="fa fa-check"></i><b>15.4.1</b> Another random sample</a></li>
+<li class="chapter" data-level="15.4.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulating-the-generation-of-many-random-samples"><i class="fa fa-check"></i><b>15.4.2</b> Simulating the generation of many random samples</a></li>
+<li class="chapter" data-level="15.4.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#a-function-to-estimate-statistics-of-interest-in-a-random-sample"><i class="fa fa-check"></i><b>15.4.3</b> A function to estimate statistics of interest in a random sample</a></li>
+<li class="chapter" data-level="15.4.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#generating-statistics-for-many-random-samples"><i class="fa fa-check"></i><b>15.4.4</b> Generating statistics for many random samples</a></li>
+</ul></li>
+<li class="chapter" data-level="15.5" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulated-sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>15.5</b> Simulated sampling distribution of the mean</a><ul>
+<li class="chapter" data-level="15.5.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#differences-between-sampling-distribution-and-samplepopulation-distributions"><i class="fa fa-check"></i><b>15.5.1</b> Differences between sampling distribution and sample/population distributions</a></li>
+<li class="chapter" data-level="15.5.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#use-sampling-distributions-to-understand-the-behavior-of-statistics-of-interest"><i class="fa fa-check"></i><b>15.5.2</b> Use sampling distributions to understand the behavior of statistics of interest</a></li>
+<li class="chapter" data-level="15.5.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distributions-for-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.3</b> Sampling distributions for different sample sizes</a></li>
+<li class="chapter" data-level="15.5.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#discussion-of-trends-for-sampling-distributions-of-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.4</b> Discussion of trends for sampling distributions of different sample sizes</a></li>
+</ul></li>
+<li class="chapter" data-level="15.6" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-the-mean"><i class="fa fa-check"></i><b>15.6</b> Standard Error of the Mean</a></li>
+<li class="chapter" data-level="15.7" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distribution-of-the-standard-deviation"><i class="fa fa-check"></i><b>15.7</b> Sampling Distribution of the Standard Deviation</a><ul>
+<li class="chapter" data-level="15.7.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-standard-deviations"><i class="fa fa-check"></i><b>15.7.1</b> Standard error of standard deviations</a></li>
+</ul></li>
+<li class="chapter" data-level="15.8" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#what-happens-to-the-sampling-distribution-of-the-mean-and-standard-deviation-when-our-sample-size-is-small"><i class="fa fa-check"></i><b>15.8</b> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</a><ul>
+<li class="chapter" data-level="15.8.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#for-small-samples-sample-standard-deviations-systematically-underestimate-the-population-standard-deviation"><i class="fa fa-check"></i><b>15.8.1</b> For small samples, sample standard deviations systematically underestimate the population standard deviation</a></li>
+<li class="chapter" data-level="15.8.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#underestimates-of-the-standard-deviation-given-small-n-lead-to-understimates-of-the-se-of-the-mean"><i class="fa fa-check"></i><b>15.8.2</b> Underestimates of the standard deviation given small <span class="math inline">\(n\)</span> lead to understimates of the SE of the mean</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html"><i class="fa fa-check"></i><b>16</b> Introduction to hypothesis testing</a><ul>
+<li class="chapter" data-level="16.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#libraries-6"><i class="fa fa-check"></i><b>16.1</b> Libraries</a></li>
+<li class="chapter" data-level="16.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i><b>16.2</b> Null and Alternative Hypotheses</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-hypotheses"><i class="fa fa-check"></i><b>16.2.1</b> Null hypotheses</a></li>
+<li class="chapter" data-level="16.2.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#alternative-hypotheses"><i class="fa fa-check"></i><b>16.2.2</b> Alternative hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#rejecting-failing-to-reject-null-hypotheses"><i class="fa fa-check"></i><b>16.3</b> Rejecting / failing to reject null hypotheses</a></li>
+<li class="chapter" data-level="16.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#outcomes-of-hypothesis-tests"><i class="fa fa-check"></i><b>16.4</b> Outcomes of hypothesis tests</a></li>
+<li class="chapter" data-level="16.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#using-p-values-to-assess-the-strength-of-evidence-against-the-null-hypothesis"><i class="fa fa-check"></i><b>16.5</b> Using p-values to assess the strength of evidence against the null hypothesis</a></li>
+<li class="chapter" data-level="16.6" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-comparing-a-sample-mean-to-an-hypothesized-normal-distribution"><i class="fa fa-check"></i><b>16.6</b> Example: Comparing a sample mean to an hypothesized normal distribution</a><ul>
+<li class="chapter" data-level="16.6.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i><b>16.6.1</b> Null and alternative hypotheses</a></li>
+<li class="chapter" data-level="16.6.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>16.6.2</b> Sampling distribution of the mean</a></li>
+<li class="chapter" data-level="16.6.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value"><i class="fa fa-check"></i><b>16.6.3</b> Calculating a p-value</a></li>
+</ul></li>
+<li class="chapter" data-level="16.7" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-handedness-of-toads"><i class="fa fa-check"></i><b>16.7</b> Example: Handedness of toads</a><ul>
+<li class="chapter" data-level="16.7.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-2"><i class="fa fa-check"></i><b>16.7.1</b> Null and alternative hypotheses</a></li>
+<li class="chapter" data-level="16.7.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#data-2"><i class="fa fa-check"></i><b>16.7.2</b> Data</a></li>
+<li class="chapter" data-level="16.7.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-for-proportions-binomial-distribution"><i class="fa fa-check"></i><b>16.7.3</b> Sampling distribution for proportions: Binomial distribution</a></li>
+<li class="chapter" data-level="16.7.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value-for-the-binomial-test"><i class="fa fa-check"></i><b>16.7.4</b> Calculating a p-value for the binomial test</a></li>
+<li class="chapter" data-level="16.7.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#the-binom.test-function"><i class="fa fa-check"></i><b>16.7.5</b> The <code>binom.test()</code> function</a></li>
+</ul></li>
+<li class="chapter" data-level="16.8" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-measuring-the-association-between-maternal-smoking-and-premature-births"><i class="fa fa-check"></i><b>16.8</b> Example: Measuring the association between maternal smoking and premature births</a><ul>
+<li class="chapter" data-level="16.8.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-3"><i class="fa fa-check"></i><b>16.8.1</b> Null and alternative hypotheses:</a></li>
+<li class="chapter" data-level="16.8.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#contingency-table-analysis-using-the-chi2-statistic"><i class="fa fa-check"></i><b>16.8.2</b> Contingency table analysis using the <span class="math inline">\(\chi^2\)</span> statistic</a></li>
+<li class="chapter" data-level="16.8.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#chi2-distribution"><i class="fa fa-check"></i><b>16.8.3</b> <span class="math inline">\(\chi^2\)</span>-distribution</a></li>
+<li class="chapter" data-level="16.8.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#carrying-out-a-hypothesis-test-using-the-chi2"><i class="fa fa-check"></i><b>16.8.4</b> Carrying out a hypothesis test using the <span class="math inline">\(\chi^2\)</span></a></li>
+<li class="chapter" data-level="16.8.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#interpretation-of-the-chi2-test"><i class="fa fa-check"></i><b>16.8.5</b> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a><ul>
+<li class="chapter" data-level="17.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#confidence-intervals"><i class="fa fa-check"></i><b>17.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="17.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#generic-formulation-for-confidence-intervals"><i class="fa fa-check"></i><b>17.2</b> Generic formulation for confidence intervals</a></li>
+<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a><ul>
+<li class="chapter" data-level="17.3.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#simulation-of-means"><i class="fa fa-check"></i><b>17.3.1</b> Simulation of means</a></li>
+<li class="chapter" data-level="17.3.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#distance-between-sample-means-and-true-means"><i class="fa fa-check"></i><b>17.3.2</b> Distance between sample means and true means</a></li>
+<li class="chapter" data-level="17.3.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#calculating-a-ci"><i class="fa fa-check"></i><b>17.3.3</b> Calculating a CI</a></li>
+</ul></li>
+<li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a><ul>
+<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a><ul>
+<li class="chapter" data-level="18.1.1" data-path="normal-distributions.html"><a href="normal-distributions.html#notation"><i class="fa fa-check"></i><b>18.1.1</b> Notation</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="normal-distributions.html"><a href="normal-distributions.html#dnorm-calculates-the-normal-pdf"><i class="fa fa-check"></i><b>18.2.1</b> <code>dnorm()</code> calculates the normal pdf</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="normal-distributions.html"><a href="normal-distributions.html#approximately-normal-distributions-are-very-common"><i class="fa fa-check"></i><b>18.3</b> Approximately normal distributions are very common</a></li>
+<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a><ul>
+<li class="chapter" data-level="18.4.1" data-path="normal-distributions.html"><a href="normal-distributions.html#example-continuous-variation-from-discrete-loci"><i class="fa fa-check"></i><b>18.4.1</b> Example: Continuous variation from discrete loci</a></li>
+</ul></li>
+<li class="chapter" data-level="18.5" data-path="normal-distributions.html"><a href="normal-distributions.html#visualizing-normal-distributions"><i class="fa fa-check"></i><b>18.5</b> Visualizing normal distributions</a></li>
+<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a><ul>
+<li class="chapter" data-level="18.6.1" data-path="normal-distributions.html"><a href="normal-distributions.html#standardized-or-z-scores"><i class="fa fa-check"></i><b>18.6.1</b> Standardized or Z-scores</a></li>
+</ul></li>
+<li class="chapter" data-level="18.7" data-path="normal-distributions.html"><a href="normal-distributions.html#standard-normal-distribution"><i class="fa fa-check"></i><b>18.7</b> Standard normal distribution</a></li>
+<li class="chapter" data-level="18.8" data-path="normal-distributions.html"><a href="normal-distributions.html#rule"><i class="fa fa-check"></i><b>18.8</b> 88-95-99.7 Rule</a></li>
+<li class="chapter" data-level="18.9" data-path="normal-distributions.html"><a href="normal-distributions.html#percentiles"><i class="fa fa-check"></i><b>18.9</b> Percentiles</a></li>
+<li class="chapter" data-level="18.10" data-path="normal-distributions.html"><a href="normal-distributions.html#cutoff-points"><i class="fa fa-check"></i><b>18.10</b> Cutoff points</a></li>
+<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a><ul>
+<li class="chapter" data-level="18.11.1" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-histograms-to-theoretical-normals"><i class="fa fa-check"></i><b>18.11.1</b> Comparing histograms to theoretical normals</a></li>
+<li class="chapter" data-level="18.11.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-probability-plot"><i class="fa fa-check"></i><b>18.11.2</b> Normal probability plot</a></li>
+<li class="chapter" data-level="18.11.3" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-the-empirical-cdf-to-the-theoretical-cdf"><i class="fa fa-check"></i><b>18.11.3</b> Comparing the empirical CDF to the theoretical CDF</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html"><i class="fa fa-check"></i><b>19</b> Comparing sample means</a><ul>
+<li class="chapter" data-level="19.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#hypothesis-test-for-the-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>19.1</b> Hypothesis test for the mean using the t-distribution</a></li>
+<li class="chapter" data-level="19.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test"><i class="fa fa-check"></i><b>19.2</b> One sample t-test</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.2.1</b> One sample t-test, test statistic</a></li>
+<li class="chapter" data-level="19.2.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-one-sample-t-tests"><i class="fa fa-check"></i><b>19.2.2</b> Assumptions of one sample t-tests</a></li>
+<li class="chapter" data-level="19.2.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-gene-expression-in-mice"><i class="fa fa-check"></i><b>19.2.3</b> Example: Gene expression in mice</a></li>
+<li class="chapter" data-level="19.2.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>19.2.4</b> Confidence intervals for the mean</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-t.test-function-in-r"><i class="fa fa-check"></i><b>19.3</b> The <code>t.test</code> function in R</a></li>
+<li class="chapter" data-level="19.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test"><i class="fa fa-check"></i><b>19.4</b> Two sample t-test</a><ul>
+<li class="chapter" data-level="19.4.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#standard-error-for-the-difference-in-means"><i class="fa fa-check"></i><b>19.4.1</b> Standard error for the difference in means</a></li>
+<li class="chapter" data-level="19.4.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.4.2</b> Two sample t-test, test statistic</a></li>
+<li class="chapter" data-level="19.4.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-two-sample-t-test"><i class="fa fa-check"></i><b>19.4.3</b> Assumptions of two sample t-test</a></li>
+<li class="chapter" data-level="19.4.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-comparing-the-effects-of-two-drugs"><i class="fa fa-check"></i><b>19.4.4</b> Example: Comparing the effects of two drugs</a></li>
+<li class="chapter" data-level="19.4.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#specifying-t.test-in-terms-of-a-formula"><i class="fa fa-check"></i><b>19.4.5</b> Specifying <code>t.test()</code> in terms of a formula</a></li>
+</ul></li>
+<li class="chapter" data-level="19.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test"><i class="fa fa-check"></i><b>19.5</b> Paired t-test</a><ul>
+<li class="chapter" data-level="19.5.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-test-statistic"><i class="fa fa-check"></i><b>19.5.1</b> Paired t-test, test statistic</a></li>
+<li class="chapter" data-level="19.5.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-paired-t-test"><i class="fa fa-check"></i><b>19.5.2</b> Assumptions of paired t-test</a></li>
+<li class="chapter" data-level="19.5.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-example"><i class="fa fa-check"></i><b>19.5.3</b> Paired t-test, example</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison"><i class="fa fa-check"></i><b>19.6</b> The fallacy of indirect comparison</a><ul>
+<li class="chapter" data-level="19.6.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#interpreting-confidence-intervals-in-light-of-two-sample-t-tests"><i class="fa fa-check"></i><b>19.6.1</b> Interpreting confidence intervals in light of two sample t-tests</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#summary-table-for-different-t-tests"><i class="fa fa-check"></i><b>19.7</b> Summary table for different t-tests</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>20</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="20.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#hypotheses-for-anova"><i class="fa fa-check"></i><b>20.1</b> Hypotheses for ANOVA</a></li>
+<li class="chapter" data-level="20.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-assumptions"><i class="fa fa-check"></i><b>20.2</b> ANOVA, assumptions</a></li>
+<li class="chapter" data-level="20.3" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-key-idea"><i class="fa fa-check"></i><b>20.3</b> ANOVA, key idea</a></li>
+<li class="chapter" data-level="20.4" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#partioning-of-sum-of-squares"><i class="fa fa-check"></i><b>20.4</b> Partioning of sum of squares</a></li>
+<li class="chapter" data-level="20.5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#mathematical-partitioning-of-sums-of-squares"><i class="fa fa-check"></i><b>20.5</b> Mathematical partitioning of sums of squares</a></li>
+<li class="chapter" data-level="20.6" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-test-statistic-and-sampling-distribution"><i class="fa fa-check"></i><b>20.6</b> ANOVA test statistic and sampling distribution</a></li>
+<li class="chapter" data-level="20.7" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-tables"><i class="fa fa-check"></i><b>20.7</b> ANOVA tables</a></li>
+<li class="chapter" data-level="20.8" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#the-aov-function"><i class="fa fa-check"></i><b>20.8</b> The <code>aov()</code> function</a></li>
+<li class="chapter" data-level="20.9" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#example-circadian-rythm-data"><i class="fa fa-check"></i><b>20.9</b> Example, circadian rythm data</a><ul>
+<li class="chapter" data-level="20.9.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-data"><i class="fa fa-check"></i><b>20.9.1</b> Visualizing the data</a></li>
+<li class="chapter" data-level="20.9.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#carrying-out-the-anova"><i class="fa fa-check"></i><b>20.9.2</b> Carrying out the ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="20.10" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-calculations-step-by-step"><i class="fa fa-check"></i><b>20.10</b> ANOVA calculations: Step-by-step</a></li>
+<li class="chapter" data-level="20.11" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-partitioning-of-sum-of-squares"><i class="fa fa-check"></i><b>20.11</b> Visualizing the partitioning of sum-of-squares</a></li>
+<li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a><ul>
+<li class="chapter" data-level="20.12.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#tukey-kramer-test"><i class="fa fa-check"></i><b>20.12.1</b> Tukey-Kramer test</a></li>
+</ul></li>
+<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a><ul>
+<li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#estimating-repeatability-using-anova"><i class="fa fa-check"></i>Estimating Repeatability using ANOVA</a></li>
+<li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability-walking-stick-example"><i class="fa fa-check"></i>Repeatability: Walking stick example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a><ul>
+<li class="chapter" data-level="21.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality"><i class="fa fa-check"></i><b>21.1</b> Graphical methods for detecting deviations from normality</a><ul>
+<li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#normal-probability-plots"><i class="fa fa-check"></i>Normal probability plots</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#formal-test-of-normality"><i class="fa fa-check"></i><b>21.2</b> Formal test of normality</a></li>
+<li class="chapter" data-level="21.3" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#when-to-ignore-violations-of-assumptions"><i class="fa fa-check"></i><b>21.3</b> When to ignore violations of assumptions</a></li>
+<li class="chapter" data-level="21.4" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#data-transformations"><i class="fa fa-check"></i><b>21.4</b> Data transformations</a><ul>
+<li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#example-log-transformation-to-deal-with-skew"><i class="fa fa-check"></i>Example: log transformation to deal with skew</a></li>
+<li class="chapter" data-level="21.4.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#confidence-intervals-and-data-transformations"><i class="fa fa-check"></i><b>21.4.1</b> Confidence intervals and data transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#nonparametric-tests"><i class="fa fa-check"></i><b>21.5</b> Nonparametric tests</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#mann-whitney-u-test-non-parametric-alternative-to-t-test"><i class="fa fa-check"></i><b>21.5.1</b> Mann-Whitney U-test: non-parametric alternative to t-test</a></li>
+<li class="chapter" data-level="21.5.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#kruskal-wallis-test-non-parametric-alternative-to-anova"><i class="fa fa-check"></i><b>21.5.2</b> Kruskal-Wallis test: non-parametric alternative to ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html"><i class="fa fa-check"></i><b>22</b> Bivariate Linear Regression</a><ul>
+<li class="chapter" data-level="22.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-terminology"><i class="fa fa-check"></i><b>22.1</b> Regression terminology</a></li>
+<li class="chapter" data-level="22.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#the-optimality-criterion-for-least-squares-regression"><i class="fa fa-check"></i><b>22.2</b> The optimality criterion for least-squares regression</a></li>
+<li class="chapter" data-level="22.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#solution-for-the-least-squares-criterion"><i class="fa fa-check"></i><b>22.3</b> Solution for the least-squares criterion</a></li>
+<li class="chapter" data-level="22.4" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#libraries-7"><i class="fa fa-check"></i><b>22.4</b> Libraries</a></li>
+<li class="chapter" data-level="22.5" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#illustrating-linear-regression-with-simulated-data"><i class="fa fa-check"></i><b>22.5</b> Illustrating linear regression with simulated data</a></li>
+<li class="chapter" data-level="22.6" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#specifying-regression-models-in-r"><i class="fa fa-check"></i><b>22.6</b> Specifying Regression Models in R</a><ul>
+<li class="chapter" data-level="22.6.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#fitted-values"><i class="fa fa-check"></i><b>22.6.1</b> Fitted values</a></li>
+<li class="chapter" data-level="22.6.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#getting-the-model-coefficients"><i class="fa fa-check"></i><b>22.6.2</b> Getting the model coefficients</a></li>
+</ul></li>
+<li class="chapter" data-level="22.7" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#residuals"><i class="fa fa-check"></i><b>22.7</b> Residuals</a></li>
+<li class="chapter" data-level="22.8" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-as-sum-of-squares-decomposition"><i class="fa fa-check"></i><b>22.8</b> Regression as sum-of-squares decomposition</a></li>
+<li class="chapter" data-level="22.9" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#variance-explained-by-a-regression-model"><i class="fa fa-check"></i><b>22.9</b> Variance “explained” by a regression model</a></li>
+<li class="chapter" data-level="22.10" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broom-a-library-for-converting-model-results-into-data-frames"><i class="fa fa-check"></i><b>22.10</b> Broom: a library for converting model results into data frames</a><ul>
+<li class="chapter" data-level="22.10.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomtidy"><i class="fa fa-check"></i><b>22.10.1</b> <code>broom::tidy</code></a></li>
+<li class="chapter" data-level="22.10.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomaugment"><i class="fa fa-check"></i><b>22.10.2</b> <code>broom::augment</code></a></li>
+<li class="chapter" data-level="22.10.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomglance"><i class="fa fa-check"></i><b>22.10.3</b> <code>broom::glance</code></a></li>
+</ul></li>
+<li class="chapter" data-level="22.11" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#example-predicting-lion-age-based-on-nose-color"><i class="fa fa-check"></i><b>22.11</b> Example: Predicting lion age based on nose color</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.1" data-path="multiple-regression.html"><a href="multiple-regression.html#libraries-to-install"><i class="fa fa-check"></i><b>23.1</b> Libraries to install</a></li>
+<li class="chapter" data-level="23.2" data-path="multiple-regression.html"><a href="multiple-regression.html#review-of-bivariate-regression"><i class="fa fa-check"></i><b>23.2</b> Review of bivariate regression</a></li>
+<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#geometrical-interpretation"><i class="fa fa-check"></i><b>23.3.1</b> Geometrical interpretation</a></li>
+<li class="chapter" data-level="23.3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#coefficient-of-determination-for-multiple-regression"><i class="fa fa-check"></i><b>23.3.2</b> Coefficient of determination for multiple regression</a></li>
+</ul></li>
+<li class="chapter" data-level="23.4" data-path="multiple-regression.html"><a href="multiple-regression.html#interpretting-multiple-regression"><i class="fa fa-check"></i><b>23.4</b> Interpretting Multiple Regression</a></li>
+<li class="chapter" data-level="23.5" data-path="multiple-regression.html"><a href="multiple-regression.html#libaries"><i class="fa fa-check"></i><b>23.5</b> Libaries</a></li>
+<li class="chapter" data-level="23.6" data-path="multiple-regression.html"><a href="multiple-regression.html#example-data-set-mtcars"><i class="fa fa-check"></i><b>23.6</b> Example data set: <code>mtcars</code></a></li>
+<li class="chapter" data-level="23.7" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-and-summarizing-the-variables-of-interest"><i class="fa fa-check"></i><b>23.7</b> Visualizing and summarizing the variables of interest</a></li>
+<li class="chapter" data-level="23.8" data-path="multiple-regression.html"><a href="multiple-regression.html#d-plots"><i class="fa fa-check"></i><b>23.8</b> 3D plots</a></li>
+<li class="chapter" data-level="23.9" data-path="multiple-regression.html"><a href="multiple-regression.html#fitting-a-multiple-regression-model-in-r"><i class="fa fa-check"></i><b>23.9</b> Fitting a multiple regression model in R</a></li>
+<li class="chapter" data-level="23.10" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-the-regression-plane"><i class="fa fa-check"></i><b>23.10</b> Visualizing the regression plane</a></li>
+<li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
+<li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a><ul>
+<li class="chapter" data-level="24.1" data-path="logistic-regression.html"><a href="logistic-regression.html#a-web-app-to-explore-the-logistic-regression-equation"><i class="fa fa-check"></i><b>24.1</b> A web app to explore the logistic regression equation</a></li>
+<li class="chapter" data-level="24.2" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-data-set"><i class="fa fa-check"></i><b>24.2</b> Titanic data set</a></li>
+<li class="chapter" data-level="24.3" data-path="logistic-regression.html"><a href="logistic-regression.html#subsetting-the-data"><i class="fa fa-check"></i><b>24.3</b> Subsetting the data</a></li>
+<li class="chapter" data-level="24.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-survival-as-a-function-of-age"><i class="fa fa-check"></i><b>24.4</b> Visualizing survival as a function of age</a></li>
+<li class="chapter" data-level="24.5" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-the-logistic-regression-model"><i class="fa fa-check"></i><b>24.5</b> Fitting the logistic regression model</a></li>
+<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a><ul>
+<li class="chapter" data-level="24.6.1" data-path="logistic-regression.html"><a href="logistic-regression.html#quick-and-easy-visualization"><i class="fa fa-check"></i><b>24.6.1</b> Quick and easy visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="24.7" data-path="logistic-regression.html"><a href="logistic-regression.html#impact-of-sex-and-passenger-class-on-the-models"><i class="fa fa-check"></i><b>24.7</b> Impact of sex and passenger class on the models</a></li>
+<li class="chapter" data-level="24.8" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-multiple-models-based-on-groupings-use-dplyrdo"><i class="fa fa-check"></i><b>24.8</b> Fitting multiple models based on groupings use <code>dplyr::do</code></a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Biology 304: Biological Data Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="logistic-regression" class="section level1">
+<h1><span class="header-section-number">Chapter 24</span> Logistic regression</h1>
+<p>Logistic regression is used when the dependent variable is discrete (often binary). The explanatory variables may be either continuous or discrete.</p>
+<p>Examples:</p>
+<ul>
+<li>Whether a gene is turned off (=0) or on (=1) as a function of levels of various proteins</li>
+<li>Whether an individual is healthy (=0) or diseased (=1) as a function of various risk factors.</li>
+<li>Whether an individual died (=0) or survived (=1) some selective event as a function of behavior, morphology, etc.</li>
+</ul>
+<p>We model the binary response variable, <span class="math inline">\(Y\)</span>, as a function of the predictor variables, <span class="math inline">\(X_1\)</span>, <span class="math inline">\(X_2\)</span>, etc as :</p>
+<p><span class="math display">\[
+P(Y = 1|X_1,\ldots,X_p) = f(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p)
+\]</span></p>
+<p>So we’re modeling the <em>probability of the state of Y as a function of a linear combination of the predictor variables</em>.</p>
+<p>For logistic regression, <span class="math inline">\(f\)</span> is the logistic function:
+<span class="math display">\[
+f(z) = \frac{e^z}{1+e^z} = \frac{1}{1 + e^{-z}}
+\]</span></p>
+<p>Therefore, the bivariate logistic regression is given by:
+<span class="math display">\[
+P(Y = 1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X)}}
+\]</span></p>
+<p>Note that <span class="math inline">\(\beta_0\)</span> here is akin to the intercept in our standard linear regression.</p>
+<div id="a-web-app-to-explore-the-logistic-regression-equation" class="section level2">
+<h2><span class="header-section-number">24.1</span> A web app to explore the logistic regression equation</h2>
+<p>To help you develop an intuition for the logistic regression equation, I’ve developed <a href="https://magwenelab.shinyapps.io/exploring_logistic_regression/">a small web app</a>, that allows you to explore how the shape of the regression curve responds to changes in the regression coefficients <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Open the app in another browser window and play with the sliders that control the coeffients <span class="math inline">\(B_0\)</span> and <span class="math inline">\(B_1\)</span>. In the assignment associated with today’s class you’ll be asked to answer some specific questions based on this app.</p>
+</div>
+<div id="titanic-data-set" class="section level2">
+<h2><span class="header-section-number">24.2</span> Titanic data set</h2>
+<p><a href="http://bit.ly/bio304-titanic-data"><code>titanic.csv</code></a> contains information about passengers on the Titanic. Variables in this data set include information such as sex, age, passenger class (1st, 2nd, 3rd), and whether or not they survived the sinking of the ship (0 = died, 1 = survived).</p>
+<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb517-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb517-2" data-line-number="2"><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb517-3" data-line-number="3"><span class="kw">library</span>(cowplot)</a>
+<a class="sourceLine" id="cb517-4" data-line-number="4"><span class="kw">library</span>(ggthemes)</a></code></pre></div>
+<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb518-1" data-line-number="1">titanic &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;http://bit.ly/bio304-titanic-data&quot;</span>)</a>
+<a class="sourceLine" id="cb518-2" data-line-number="2"><span class="kw">names</span>(titanic)</a>
+<a class="sourceLine" id="cb518-3" data-line-number="3"><span class="co">#&gt;  [1] &quot;pclass&quot;    &quot;survived&quot;  &quot;name&quot;      &quot;sex&quot;       &quot;age&quot;      </span></a>
+<a class="sourceLine" id="cb518-4" data-line-number="4"><span class="co">#&gt;  [6] &quot;sibsp&quot;     &quot;parch&quot;     &quot;ticket&quot;    &quot;fare&quot;      &quot;cabin&quot;    </span></a>
+<a class="sourceLine" id="cb518-5" data-line-number="5"><span class="co">#&gt; [11] &quot;embarked&quot;  &quot;boat&quot;      &quot;body&quot;      &quot;home.dest&quot;</span></a></code></pre></div>
+</div>
+<div id="subsetting-the-data" class="section level2">
+<h2><span class="header-section-number">24.3</span> Subsetting the data</h2>
+<p>We’ve all heard the phrase, “Women and children first”, so we might expect that the probability that a passenger survived the sinking of the Titanic is related to their sex and/or age. Let’s create separate data subsets for male and female passengers.</p>
+<div class="sourceCode" id="cb519"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb519-1" data-line-number="1">male &lt;-<span class="st"> </span><span class="kw">filter</span>(titanic, sex <span class="op">==</span><span class="st"> &quot;male&quot;</span>)</a>
+<a class="sourceLine" id="cb519-2" data-line-number="2">female &lt;-<span class="st"> </span><span class="kw">filter</span>(titanic, sex <span class="op">==</span><span class="st"> &quot;female&quot;</span>)</a></code></pre></div>
+</div>
+<div id="visualizing-survival-as-a-function-of-age" class="section level2">
+<h2><span class="header-section-number">24.4</span> Visualizing survival as a function of age</h2>
+<p>Let’s create visualizations of survival as a function of age for the male and female passengers.</p>
+<div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb520-1" data-line-number="1">fcolor =<span class="st"> &quot;lightcoral&quot;</span></a>
+<a class="sourceLine" id="cb520-2" data-line-number="2">mcolor =<span class="st"> &quot;lightsteelblue&quot;</span></a>
+<a class="sourceLine" id="cb520-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb520-4" data-line-number="4">female.plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(female, <span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb520-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="dv">0</span>, <span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">color =</span> fcolor) <span class="op">+</span></a>
+<a class="sourceLine" id="cb520-6" data-line-number="6"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Female Passengers&quot;</span>)</a>
+<a class="sourceLine" id="cb520-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb520-8" data-line-number="8">male.plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(male, <span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> survived)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb520-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="dv">0</span>, <span class="dt">height =</span> <span class="fl">0.05</span>, <span class="dt">color =</span> mcolor) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb520-10" data-line-number="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Male Passengers&quot;</span>)</a>
+<a class="sourceLine" id="cb520-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb520-12" data-line-number="12"><span class="kw">plot_grid</span>(female.plot, male.plot)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-538-1.png" width="864" /></p>
+<p>The jittered points with Y-axis value around one are passengers who survived, the point jittered around zero are those who died.</p>
+</div>
+<div id="fitting-the-logistic-regression-model" class="section level2">
+<h2><span class="header-section-number">24.5</span> Fitting the logistic regression model</h2>
+<p>The function <code>glm</code> (generalized linear model) can be used to fit the logistic regression model (as well as other models). Setting the argument <code>family = binomial</code> gives us logistic regression. Note that when fitting the model the dependent variable needs to be numeric, so if the data is provided as Boolean (logical) TRUE/FALSE values, they should be converted to integers using <code>as.numeric()</code>.</p>
+<p>First we fit the regression for the famale passengers.</p>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb521-1" data-line-number="1">fit.female &lt;-<span class="st"> </span><span class="kw">glm</span>(survived <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, female)</a>
+<a class="sourceLine" id="cb521-2" data-line-number="2"><span class="kw">tidy</span>(fit.female)</a>
+<a class="sourceLine" id="cb521-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb521-4" data-line-number="4"><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></a>
+<a class="sourceLine" id="cb521-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb521-6" data-line-number="6"><span class="co">#&gt; 1 (Intercept)  0.4934   0.2542       1.941 0.05226 </span></a>
+<a class="sourceLine" id="cb521-7" data-line-number="7"><span class="co">#&gt; 2 age          0.02252  0.008535     2.638 0.008342</span></a></code></pre></div>
+<p>The column “estimate” gives the coefficients of the model. The “intercept”&quot; estimate corresponds to <span class="math inline">\(B_0\)</span> in the logistic regression equation, the “age” estimate corresponds to the coefficient <span class="math inline">\(B_1\)</span> in the equation.</p>
+<p>Now we repeat the same step for the male passengers.</p>
+<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb522-1" data-line-number="1">fit.male &lt;-<span class="st"> </span><span class="kw">glm</span>(survived <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, male)</a>
+<a class="sourceLine" id="cb522-2" data-line-number="2"><span class="kw">tidy</span>(fit.male)</a>
+<a class="sourceLine" id="cb522-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb522-4" data-line-number="4"><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></a>
+<a class="sourceLine" id="cb522-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb522-6" data-line-number="6"><span class="co">#&gt; 1 (Intercept) -0.6608   0.2248      -2.939 0.003290</span></a>
+<a class="sourceLine" id="cb522-7" data-line-number="7"><span class="co">#&gt; 2 age         -0.02376  0.007276    -3.266 0.001092</span></a></code></pre></div>
+<p>Notice that the female coefficients are both positive, while the male coefficients are negative. We’ll visualize what this means in terms of the model below.</p>
+</div>
+<div id="visualizing-the-logistic-regression" class="section level2">
+<h2><span class="header-section-number">24.6</span> Visualizing the logistic regression</h2>
+<p>To visualize the logistic regression fit, we first use the <code>predict</code> function to generate the model predictions about probability of survival as a function of age.</p>
+<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb523-1" data-line-number="1">ages &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">75</span>, <span class="dv">1</span>) <span class="co"># predict survival for ages 0 to 75</span></a>
+<a class="sourceLine" id="cb523-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb523-3" data-line-number="3">predicted.female &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.female, </a>
+<a class="sourceLine" id="cb523-4" data-line-number="4">                            <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">age =</span> ages),</a>
+<a class="sourceLine" id="cb523-5" data-line-number="5">                            <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb523-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb523-7" data-line-number="7">predicted.male &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.male,</a>
+<a class="sourceLine" id="cb523-8" data-line-number="8">                          <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">age =</span> ages),</a>
+<a class="sourceLine" id="cb523-9" data-line-number="9">                          <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb523-10" data-line-number="10">                            </a></code></pre></div>
+<p>Having generated the predicted probabilities of survival we can then add these prediction lines to our previous plot using <code>geom_line</code>.</p>
+<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb524-1" data-line-number="1">female.logistic.plot &lt;-<span class="st"> </span>female.plot <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb524-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">age =</span> ages, <span class="dt">survived =</span> predicted.female),</a>
+<a class="sourceLine" id="cb524-3" data-line-number="3">            <span class="dt">color =</span> fcolor, <span class="dt">size =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb524-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb524-5" data-line-number="5">male.logistic.plot &lt;-<span class="st"> </span>male.plot <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb524-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">age =</span> ages, <span class="dt">survived =</span> predicted.male),</a>
+<a class="sourceLine" id="cb524-7" data-line-number="7">            <span class="dt">color =</span> mcolor, <span class="dt">size =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb524-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb524-9" data-line-number="9"><span class="kw">plot_grid</span>(female.logistic.plot, male.logistic.plot)</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-542-1.png" width="864" /></p>
+<p>We see that for the female passengers, the logistic regression predicts that the probability of survival <em>increases</em> with passenger age. In contrast, the model fit to the male passengers suggests that the probability of survival decreases with passenger age. For the male passengers, the data is consistent with “children first”; for female passengers this model doesn’t seem to hold. However, there are other factors to consider as we’ll see below.</p>
+<div id="quick-and-easy-visualization" class="section level3">
+<h3><span class="header-section-number">24.6.1</span> Quick and easy visualization</h3>
+<p>Here’s an alternative “quick and easy” way to generate the plot above using the awesome power of ggplot. The downside of this approach is we don’t generate the detailed information on the model, which is something you’d certainly want to have in any real analysis.</p>
+<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb525-1" data-line-number="1"><span class="kw">ggplot</span>(titanic, <span class="kw">aes</span>(<span class="dt">x=</span>age, <span class="dt">y=</span>survived, <span class="dt">color=</span>sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb525-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="dv">0</span>, <span class="dt">height =</span> <span class="fl">0.05</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb525-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,  <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb525-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;P(Survival)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb525-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>sex) <span class="op">+</span></a>
+<a class="sourceLine" id="cb525-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(fcolor, mcolor))</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-543-1.png" width="864" /></p>
+</div>
+</div>
+<div id="impact-of-sex-and-passenger-class-on-the-models" class="section level2">
+<h2><span class="header-section-number">24.7</span> Impact of sex and passenger class on the models</h2>
+<p>In our previous analysis we considered the relationship between survival and age, conditioned (facted) on passenger sex. In a complex data set like this one, it is often useful to condition on multiple variables simultaneously. Lets extend our visualization to look at the regression faceted on both class and sex, using <code>facet_grid</code>:</p>
+<div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb526-1" data-line-number="1"><span class="kw">ggplot</span>(titanic, <span class="kw">aes</span>(<span class="dt">x=</span>age, <span class="dt">y=</span>survived, <span class="dt">color=</span>sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb526-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="dv">0</span>, <span class="dt">height =</span> <span class="fl">0.05</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb526-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,  <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb526-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;P(Survival)&quot;</span>) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb526-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_grid</span>(pclass <span class="op">~</span><span class="st"> </span>sex) <span class="op">+</span></a>
+<a class="sourceLine" id="cb526-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(fcolor, mcolor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb526-7" data-line-number="7"><span class="st">  </span><span class="kw">theme_few</span>()</a></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-544-1.png" width="864" /></p>
+<p>Having conditioned on both sex and ticket class, our figure now reveals a much more complex relationship between age and survival. Almost all first class female passengers survived, regardless of age. For second calss female passengers, the logistic regression suggests a very modest decrease in survival with increasing age. The negative relationship between age and survival is stronger still for third class females. Male passengers on the other hand show a negative relationship between sex and survival, regardless of class, but the models suggest that there are still class specific differences in this relationship.</p>
+</div>
+<div id="fitting-multiple-models-based-on-groupings-use-dplyrdo" class="section level2">
+<h2><span class="header-section-number">24.8</span> Fitting multiple models based on groupings use <code>dplyr::do</code></h2>
+<p>In the figure above we used <code>ggplot</code> and <code>facet_grid</code> to visualize logistic regression of survival on age, conditioned on both sex and class. What if we wanted to calculate the terms of the logistic regressions for each combination of these two categorical variables? There are three passenger classes and two sexes, meaning we’d have to create six data subsets and fit the model six times if we used the same approach we used previously. Luckily, <code>dplyr</code> provides a powerful function called <code>do()</code> that allows us to carry out arbitrary computations on grouped data.</p>
+<p>There are two ways to use <code>do()</code>. The first way is to give the expressions you evaluate in <code>do()</code> a name, in which case <code>do()</code> will store the results in a column. The second way to use <code>do()</code> is for the expression to return a data frame.</p>
+<p>In this first example, the model fits are stored in the <code>fits</code> column. When using <code>do()</code> you can refer to the grouping using a period (<code>.</code>):</p>
+<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb527-1" data-line-number="1">grouped.models &lt;-</a>
+<a class="sourceLine" id="cb527-2" data-line-number="2"><span class="st">  </span>titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb527-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(sex, pclass) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb527-4" data-line-number="4"><span class="st">  </span><span class="kw">do</span>(<span class="dt">fits =</span> <span class="kw">glm</span>(.<span class="op">$</span>survived <span class="op">~</span><span class="st"> </span>.<span class="op">$</span>age, <span class="dt">family =</span> binomial))</a>
+<a class="sourceLine" id="cb527-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb527-6" data-line-number="6">grouped.models</a>
+<a class="sourceLine" id="cb527-7" data-line-number="7"><span class="co">#&gt; Source: local data frame [6 x 3]</span></a>
+<a class="sourceLine" id="cb527-8" data-line-number="8"><span class="co">#&gt; Groups: &lt;by row&gt;</span></a>
+<a class="sourceLine" id="cb527-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb527-10" data-line-number="10"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
+<a class="sourceLine" id="cb527-11" data-line-number="11"><span class="co">#&gt;   sex    pclass fits     </span></a>
+<a class="sourceLine" id="cb527-12" data-line-number="12"><span class="co">#&gt; * &lt;chr&gt;   &lt;int&gt; &lt;list&gt;   </span></a>
+<a class="sourceLine" id="cb527-13" data-line-number="13"><span class="co">#&gt; 1 female      1 &lt;S3: glm&gt;</span></a>
+<a class="sourceLine" id="cb527-14" data-line-number="14"><span class="co">#&gt; 2 female      2 &lt;S3: glm&gt;</span></a>
+<a class="sourceLine" id="cb527-15" data-line-number="15"><span class="co">#&gt; 3 female      3 &lt;S3: glm&gt;</span></a>
+<a class="sourceLine" id="cb527-16" data-line-number="16"><span class="co">#&gt; 4 male        1 &lt;S3: glm&gt;</span></a>
+<a class="sourceLine" id="cb527-17" data-line-number="17"><span class="co">#&gt; 5 male        2 &lt;S3: glm&gt;</span></a>
+<a class="sourceLine" id="cb527-18" data-line-number="18"><span class="co">#&gt; 6 male        3 &lt;S3: glm&gt;</span></a></code></pre></div>
+<p>Notice that the “fits” column doesn’t explicitly print out the details of the model. The object returned by <code>glm()</code> can’t be simply represented, so it just uses a place holder piece of text to tell us that there is data here represented a glm object.However, we can access the the columns with the fits just like any other variable:</p>
+<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb528-1" data-line-number="1"><span class="co"># get the summary of the second logistic regression (Female, 2nd Class) </span></a>
+<a class="sourceLine" id="cb528-2" data-line-number="2"><span class="kw">tidy</span>(grouped.models<span class="op">$</span>fits[[<span class="dv">2</span>]])</a>
+<a class="sourceLine" id="cb528-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb528-4" data-line-number="4"><span class="co">#&gt;   term        estimate std.error statistic   p.value</span></a>
+<a class="sourceLine" id="cb528-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb528-6" data-line-number="6"><span class="co">#&gt; 1 (Intercept)  3.491     0.9037      3.863 0.0001119</span></a>
+<a class="sourceLine" id="cb528-7" data-line-number="7"><span class="co">#&gt; 2 .$age       -0.04502   0.02548    -1.767 0.07730</span></a></code></pre></div>
+<p>Now we illustrate the second approach to using <code>do()</code>. When no name is provided, <code>do()</code> expects its expression to return a dataframe. Here we use the <code>broom::tidy()</code> function to get the key results of each fit model into a data frame:</p>
+<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb529-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb529-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(sex, pclass) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb529-3" data-line-number="3"><span class="st">  </span><span class="kw">do</span>(<span class="kw">tidy</span>(<span class="kw">glm</span>(.<span class="op">$</span>survived <span class="op">~</span><span class="st"> </span>.<span class="op">$</span>age, <span class="dt">family =</span> binomial)))</a>
+<a class="sourceLine" id="cb529-4" data-line-number="4"><span class="co">#&gt; # A tibble: 12 x 7</span></a>
+<a class="sourceLine" id="cb529-5" data-line-number="5"><span class="co">#&gt;    sex    pclass term         estimate std.error statistic     p.value</span></a>
+<a class="sourceLine" id="cb529-6" data-line-number="6"><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb529-7" data-line-number="7"><span class="co">#&gt;  1 female      1 (Intercept)  2.896      1.238      2.339  0.01932    </span></a>
+<a class="sourceLine" id="cb529-8" data-line-number="8"><span class="co">#&gt;  2 female      1 .$age        0.009599   0.03263    0.2942 0.7686     </span></a>
+<a class="sourceLine" id="cb529-9" data-line-number="9"><span class="co">#&gt;  3 female      2 (Intercept)  3.491      0.9037     3.863  0.0001119  </span></a>
+<a class="sourceLine" id="cb529-10" data-line-number="10"><span class="co">#&gt;  4 female      2 .$age       -0.04502    0.02548   -1.767  0.07730    </span></a>
+<a class="sourceLine" id="cb529-11" data-line-number="11"><span class="co">#&gt;  5 female      3 (Intercept)  0.2887     0.3412     0.8461 0.3975     </span></a>
+<a class="sourceLine" id="cb529-12" data-line-number="12"><span class="co">#&gt;  6 female      3 .$age       -0.01783    0.01361   -1.310  0.1901     </span></a>
+<a class="sourceLine" id="cb529-13" data-line-number="13"><span class="co">#&gt;  7 male        1 (Intercept)  0.8803     0.5275     1.669  0.09514    </span></a>
+<a class="sourceLine" id="cb529-14" data-line-number="14"><span class="co">#&gt;  8 male        1 .$age       -0.03743    0.01276   -2.934  0.003351   </span></a>
+<a class="sourceLine" id="cb529-15" data-line-number="15"><span class="co">#&gt;  9 male        2 (Intercept)  1.042      0.5990     1.740  0.08181    </span></a>
+<a class="sourceLine" id="cb529-16" data-line-number="16"><span class="co">#&gt; 10 male        2 .$age       -0.1122     0.02492   -4.502  0.000006724</span></a>
+<a class="sourceLine" id="cb529-17" data-line-number="17"><span class="co">#&gt; 11 male        3 (Intercept) -0.7613     0.3418    -2.228  0.02591    </span></a>
+<a class="sourceLine" id="cb529-18" data-line-number="18"><span class="co">#&gt; 12 male        3 .$age       -0.03392    0.01339   -2.534  0.01129</span></a></code></pre></div>
+<p>Using this approach we get a nice data frame showing the logistic regression coefficients, and associated statistics (standard error, P-values, etc) for the regression of survival on age, for each combination of sex and class.</p>
+
+</div>
+</div>
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multiple-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
