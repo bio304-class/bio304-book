@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-28">
+<meta name="date" content="2018-12-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -601,6 +601,18 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
 <li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
 </ul></li>
+<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a><ul>
+<li class="chapter" data-level="24.1" data-path="logistic-regression.html"><a href="logistic-regression.html#a-web-app-to-explore-the-logistic-regression-equation"><i class="fa fa-check"></i><b>24.1</b> A web app to explore the logistic regression equation</a></li>
+<li class="chapter" data-level="24.2" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-data-set"><i class="fa fa-check"></i><b>24.2</b> Titanic data set</a></li>
+<li class="chapter" data-level="24.3" data-path="logistic-regression.html"><a href="logistic-regression.html#subsetting-the-data"><i class="fa fa-check"></i><b>24.3</b> Subsetting the data</a></li>
+<li class="chapter" data-level="24.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-survival-as-a-function-of-age"><i class="fa fa-check"></i><b>24.4</b> Visualizing survival as a function of age</a></li>
+<li class="chapter" data-level="24.5" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-the-logistic-regression-model"><i class="fa fa-check"></i><b>24.5</b> Fitting the logistic regression model</a></li>
+<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a><ul>
+<li class="chapter" data-level="24.6.1" data-path="logistic-regression.html"><a href="logistic-regression.html#quick-and-easy-visualization"><i class="fa fa-check"></i><b>24.6.1</b> Quick and easy visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="24.7" data-path="logistic-regression.html"><a href="logistic-regression.html#impact-of-sex-and-passenger-class-on-the-models"><i class="fa fa-check"></i><b>24.7</b> Impact of sex and passenger class on the models</a></li>
+<li class="chapter" data-level="24.8" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-multiple-models-based-on-groupings-use-dplyrdo"><i class="fa fa-check"></i><b>24.8</b> Fitting multiple models based on groupings use <code>dplyr::do</code></a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -667,26 +679,26 @@ P = 2 \times P(t &gt; |t^\star|)
 <li><span class="math inline">\(H_A\)</span>: the mean expression of YFG1 does not equal 10</li>
 </ul>
 <p>It’s relatively easy to calculate the various quantities of interest needed to carry out a one sided t-test:</p>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" title="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb422-2" title="2"></a>
-<a class="sourceLine" id="cb422-3" title="3">mu0 =<span class="st"> </span><span class="dv">10</span>  <span class="co"># mean under H0</span></a>
-<a class="sourceLine" id="cb422-4" title="4">mice<span class="fl">.1</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1 =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb422-5" title="5"></a>
-<a class="sourceLine" id="cb422-6" title="6">YFG1.tstats &lt;-</a>
-<a class="sourceLine" id="cb422-7" title="7"><span class="st">  </span>mice<span class="fl">.1</span>sample <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb422-8" title="8"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(YFG1),</a>
-<a class="sourceLine" id="cb422-9" title="9">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(YFG1),</a>
-<a class="sourceLine" id="cb422-10" title="10">            <span class="dt">sample.se =</span> sample.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
-<a class="sourceLine" id="cb422-11" title="11">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb422-12" title="12">            <span class="dt">mu0 =</span> mu0,</a>
-<a class="sourceLine" id="cb422-13" title="13">            <span class="dt">t.star =</span> (sample.mean <span class="op">-</span><span class="st"> </span>mu0)<span class="op">/</span>sample.se,</a>
-<a class="sourceLine" id="cb422-14" title="14">            <span class="dt">P.value =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t.star), <span class="dt">df =</span> df, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb422-15" title="15"></a>
-<a class="sourceLine" id="cb422-16" title="16">YFG1.tstats</a>
-<a class="sourceLine" id="cb422-17" title="17"><span class="co">#&gt; # A tibble: 1 x 7</span></a>
-<a class="sourceLine" id="cb422-18" title="18"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value</span></a>
-<a class="sourceLine" id="cb422-19" title="19"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb422-20" title="20"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295</span></a></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb422-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb422-3" data-line-number="3">mu0 =<span class="st"> </span><span class="dv">10</span>  <span class="co"># mean under H0</span></a>
+<a class="sourceLine" id="cb422-4" data-line-number="4">mice<span class="fl">.1</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1 =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb422-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb422-6" data-line-number="6">YFG1.tstats &lt;-</a>
+<a class="sourceLine" id="cb422-7" data-line-number="7"><span class="st">  </span>mice<span class="fl">.1</span>sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb422-8" data-line-number="8"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(YFG1),</a>
+<a class="sourceLine" id="cb422-9" data-line-number="9">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(YFG1),</a>
+<a class="sourceLine" id="cb422-10" data-line-number="10">            <span class="dt">sample.se =</span> sample.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
+<a class="sourceLine" id="cb422-11" data-line-number="11">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb422-12" data-line-number="12">            <span class="dt">mu0 =</span> mu0,</a>
+<a class="sourceLine" id="cb422-13" data-line-number="13">            <span class="dt">t.star =</span> (sample.mean <span class="op">-</span><span class="st"> </span>mu0)<span class="op">/</span>sample.se,</a>
+<a class="sourceLine" id="cb422-14" data-line-number="14">            <span class="dt">P.value =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t.star), <span class="dt">df =</span> df, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb422-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb422-16" data-line-number="16">YFG1.tstats</a>
+<a class="sourceLine" id="cb422-17" data-line-number="17"><span class="co">#&gt; # A tibble: 1 x 7</span></a>
+<a class="sourceLine" id="cb422-18" data-line-number="18"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value</span></a>
+<a class="sourceLine" id="cb422-19" data-line-number="19"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb422-20" data-line-number="20"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295</span></a></code></pre></div>
 <p>Under the conventional <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis that the mean expression of YFG1 in mice treated with the drug is the same as the mean expression of YFG1 in control mice.</p>
 </div>
 <div id="confidence-intervals-for-the-mean" class="section level3">
@@ -697,32 +709,32 @@ P = 2 \times P(t &gt; |t^\star|)
 CI_\alpha = \overline{x} \pm (t_{\alpha/2,df} \times \widehat{SE}_{\overline{x}})
 \]</span></p>
 <p>Let’s modify the table of <span class="math inline">\(t\)</span>-related stats we created in the previous code block to include the lower and upper limits of the 95% confidence interval for the mean:</p>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" title="1">YFG1.tstats &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb423-2" title="2"><span class="st">  </span>YFG1.tstats <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb423-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci95.lower =</span> sample.mean <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se,</a>
-<a class="sourceLine" id="cb423-4" title="4">         <span class="dt">ci95.upper =</span> sample.mean <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se)</a>
-<a class="sourceLine" id="cb423-5" title="5"></a>
-<a class="sourceLine" id="cb423-6" title="6">YFG1.tstats</a>
-<a class="sourceLine" id="cb423-7" title="7"><span class="co">#&gt; # A tibble: 1 x 9</span></a>
-<a class="sourceLine" id="cb423-8" title="8"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value ci95.lower</span></a>
-<a class="sourceLine" id="cb423-9" title="9"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb423-10" title="10"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295      10.06</span></a>
-<a class="sourceLine" id="cb423-11" title="11"><span class="co">#&gt; # ... with 1 more variable: ci95.upper &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1">YFG1.tstats &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb423-2" data-line-number="2"><span class="st">  </span>YFG1.tstats <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb423-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci95.lower =</span> sample.mean <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se,</a>
+<a class="sourceLine" id="cb423-4" data-line-number="4">         <span class="dt">ci95.upper =</span> sample.mean <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se)</a>
+<a class="sourceLine" id="cb423-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb423-6" data-line-number="6">YFG1.tstats</a>
+<a class="sourceLine" id="cb423-7" data-line-number="7"><span class="co">#&gt; # A tibble: 1 x 9</span></a>
+<a class="sourceLine" id="cb423-8" data-line-number="8"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value ci95.lower</span></a>
+<a class="sourceLine" id="cb423-9" data-line-number="9"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb423-10" data-line-number="10"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295      10.06</span></a>
+<a class="sourceLine" id="cb423-11" data-line-number="11"><span class="co">#&gt; # ... with 1 more variable: ci95.upper &lt;dbl&gt;</span></a></code></pre></div>
 <p>If we wanted to crate a figure illustrating our 95% CI for the mean of YFG1 following drug treatment, relative to the mean under the null hypothesis we can use the <code>geom_pointrange()</code> function to draw the interval (for more info on <code>geom_pointrange()</code> and related functions see the <a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">ggplot2 documentation</a>).</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" title="1">YFG1.tstats <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb424-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb424-3" title="3"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb424-4" title="4">                      <span class="dt">y =</span> sample.mean,</a>
-<a class="sourceLine" id="cb424-5" title="5">                      <span class="dt">ymin =</span> ci95.lower, <span class="dt">ymax =</span> ci95.upper)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-6" title="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Drug X&quot;</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-7" title="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> mu0, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-8" title="8"><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>,<span class="dv">15</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean(YFG1)&quot;</span>, </a>
-<a class="sourceLine" id="cb424-10" title="10">       <span class="dt">title =</span> <span class="st">&quot;Sample mean and 95% CI for expression of YFG1 in treated mice&quot;</span>,</a>
-<a class="sourceLine" id="cb424-11" title="11">       <span class="dt">subtitle =</span> <span class="st">&quot;Red line indicates mean expression in control mice.&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-12" title="12"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-13" title="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb424-14" title="14">        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1">YFG1.tstats <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb424-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb424-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb424-4" data-line-number="4">                      <span class="dt">y =</span> sample.mean,</a>
+<a class="sourceLine" id="cb424-5" data-line-number="5">                      <span class="dt">ymin =</span> ci95.lower, <span class="dt">ymax =</span> ci95.upper)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Drug X&quot;</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> mu0, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-8" data-line-number="8"><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>,<span class="dv">15</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean(YFG1)&quot;</span>, </a>
+<a class="sourceLine" id="cb424-10" data-line-number="10">       <span class="dt">title =</span> <span class="st">&quot;Sample mean and 95% CI for expression of YFG1 in treated mice&quot;</span>,</a>
+<a class="sourceLine" id="cb424-11" data-line-number="11">       <span class="dt">subtitle =</span> <span class="st">&quot;Red line indicates mean expression in control mice.&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-12" data-line-number="12"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb424-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb424-14" data-line-number="14">        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>))</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-439-1.png" width="576" /></p>
 </div>
 </div>
@@ -730,35 +742,35 @@ CI_\alpha = \overline{x} \pm (t_{\alpha/2,df} \times \widehat{SE}_{\overline{x}}
 <h2><span class="header-section-number">19.3</span> The <code>t.test</code> function in R</h2>
 <p>The built-in <code>t.test()</code> function will take care of the all the calcuations we did by hand above.</p>
 <p>For a one sample t-test <code>t.test</code> we need to pass in the variable of interest, and the null hypothoses mean value, <code>mu</code>:</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" title="1">YFG1_t.test &lt;-<span class="st"> </span><span class="kw">t.test</span>(mice<span class="fl">.1</span>sample<span class="op">$</span>YFG1, <span class="dt">mu =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb425-2" title="2">YFG1_t.test</a>
-<a class="sourceLine" id="cb425-3" title="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb425-4" title="4"><span class="co">#&gt;  One Sample t-test</span></a>
-<a class="sourceLine" id="cb425-5" title="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb425-6" title="6"><span class="co">#&gt; data:  mice.1sample$YFG1</span></a>
-<a class="sourceLine" id="cb425-7" title="7"><span class="co">#&gt; t = 2.9268, df = 4, p-value = 0.04295</span></a>
-<a class="sourceLine" id="cb425-8" title="8"><span class="co">#&gt; alternative hypothesis: true mean is not equal to 10</span></a>
-<a class="sourceLine" id="cb425-9" title="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb425-10" title="10"><span class="co">#&gt;  10.05652 12.14348</span></a>
-<a class="sourceLine" id="cb425-11" title="11"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb425-12" title="12"><span class="co">#&gt; mean of x </span></a>
-<a class="sourceLine" id="cb425-13" title="13"><span class="co">#&gt;      11.1</span></a></code></pre></div>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">YFG1_t.test &lt;-<span class="st"> </span><span class="kw">t.test</span>(mice<span class="fl">.1</span>sample<span class="op">$</span>YFG1, <span class="dt">mu =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb425-2" data-line-number="2">YFG1_t.test</a>
+<a class="sourceLine" id="cb425-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb425-4" data-line-number="4"><span class="co">#&gt;  One Sample t-test</span></a>
+<a class="sourceLine" id="cb425-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb425-6" data-line-number="6"><span class="co">#&gt; data:  mice.1sample$YFG1</span></a>
+<a class="sourceLine" id="cb425-7" data-line-number="7"><span class="co">#&gt; t = 2.9268, df = 4, p-value = 0.04295</span></a>
+<a class="sourceLine" id="cb425-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true mean is not equal to 10</span></a>
+<a class="sourceLine" id="cb425-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb425-10" data-line-number="10"><span class="co">#&gt;  10.05652 12.14348</span></a>
+<a class="sourceLine" id="cb425-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb425-12" data-line-number="12"><span class="co">#&gt; mean of x </span></a>
+<a class="sourceLine" id="cb425-13" data-line-number="13"><span class="co">#&gt;      11.1</span></a></code></pre></div>
 <p>The <code>broom::tidye()</code> function defined in the “broom” package is a convenient way to display the output of many model tests in R. Load the broom (install it first if need be) and use <code>tidy()</code> to represent the information returned by <code>t.test()</code> as a data frame:</p>
-<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" title="1"><span class="kw">library</span>(broom)</a>
-<a class="sourceLine" id="cb426-2" title="2"></a>
-<a class="sourceLine" id="cb426-3" title="3"><span class="kw">tidy</span>(YFG1_t.test)</a>
-<a class="sourceLine" id="cb426-4" title="4"><span class="co">#&gt; # A tibble: 1 x 8</span></a>
-<a class="sourceLine" id="cb426-5" title="5"><span class="co">#&gt;   estimate statistic p.value parameter conf.low conf.high method</span></a>
-<a class="sourceLine" id="cb426-6" title="6"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; </span></a>
-<a class="sourceLine" id="cb426-7" title="7"><span class="co">#&gt; 1     11.1     2.927 0.04295         4    10.06     12.14 One S…</span></a>
-<a class="sourceLine" id="cb426-8" title="8"><span class="co">#&gt; # ... with 1 more variable: alternative &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">library</span>(broom)</a>
+<a class="sourceLine" id="cb426-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb426-3" data-line-number="3"><span class="kw">tidy</span>(YFG1_t.test)</a>
+<a class="sourceLine" id="cb426-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 8</span></a>
+<a class="sourceLine" id="cb426-5" data-line-number="5"><span class="co">#&gt;   estimate statistic p.value parameter conf.low conf.high method</span></a>
+<a class="sourceLine" id="cb426-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; </span></a>
+<a class="sourceLine" id="cb426-7" data-line-number="7"><span class="co">#&gt; 1     11.1     2.927 0.04295         4    10.06     12.14 One S…</span></a>
+<a class="sourceLine" id="cb426-8" data-line-number="8"><span class="co">#&gt; # ... with 1 more variable: alternative &lt;chr&gt;</span></a></code></pre></div>
 </div>
 <div id="two-sample-t-test" class="section level2">
 <h2><span class="header-section-number">19.4</span> Two sample t-test</h2>
 <p>We use a two sample t-test to analyze the difference between the means of the same variable measured in two different groups or treatments. It is assumed that the two groups are independent samples from two populations.</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e., <span class="math inline">\(\overline{x}_1 = \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 = 0\)</span>.</p></li>
-<li><p><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is not the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e. <span class="math inline">\(\overline{x}_1 \neq \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 \neq 0\)</span>.</p></li>
+<li><p><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is not the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e. <span class="math inline">\(\overline{x}_1 \neq \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 \neq 0\)</span>.</p></li>
 </ul>
 <div id="standard-error-for-the-difference-in-means" class="section level3">
 <h3><span class="header-section-number">19.4.1</span> Standard error for the difference in means</h3>
@@ -799,24 +811,24 @@ df = df_1 + df_2 = n_1 + n_2 - 2
 <li>Y = {8.75, 10, 11, 9.75, 10.5}</li>
 </ul>
 <p>For simplicity, we skip the “by-hand” calculations and simply use the built-in <code>t.test</code> function.</p>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb427-1" title="1">mice<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1_X =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb427-2" title="2">                           <span class="dt">YFG1_Y =</span> <span class="kw">c</span>(<span class="fl">8.75</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="fl">9.75</span>, <span class="fl">10.5</span>))</a>
-<a class="sourceLine" id="cb427-3" title="3"></a>
-<a class="sourceLine" id="cb427-4" title="4">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb427-5" title="5"><span class="st">  </span><span class="kw">t.test</span>(mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_X, mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_Y)</a>
-<a class="sourceLine" id="cb427-6" title="6"></a>
-<a class="sourceLine" id="cb427-7" title="7">ttest<span class="fl">.2</span>sample</a>
-<a class="sourceLine" id="cb427-8" title="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb427-9" title="9"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
-<a class="sourceLine" id="cb427-10" title="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb427-11" title="11"><span class="co">#&gt; data:  mice.2sample$YFG1_X and mice.2sample$YFG1_Y</span></a>
-<a class="sourceLine" id="cb427-12" title="12"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
-<a class="sourceLine" id="cb427-13" title="13"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb427-14" title="14"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb427-15" title="15"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
-<a class="sourceLine" id="cb427-16" title="16"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb427-17" title="17"><span class="co">#&gt; mean of x mean of y </span></a>
-<a class="sourceLine" id="cb427-18" title="18"><span class="co">#&gt;      11.1      10.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb427-1" data-line-number="1">mice<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1_X =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb427-2" data-line-number="2">                           <span class="dt">YFG1_Y =</span> <span class="kw">c</span>(<span class="fl">8.75</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="fl">9.75</span>, <span class="fl">10.5</span>))</a>
+<a class="sourceLine" id="cb427-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb427-4" data-line-number="4">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb427-5" data-line-number="5"><span class="st">  </span><span class="kw">t.test</span>(mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_X, mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_Y)</a>
+<a class="sourceLine" id="cb427-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb427-7" data-line-number="7">ttest<span class="fl">.2</span>sample</a>
+<a class="sourceLine" id="cb427-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb427-9" data-line-number="9"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
+<a class="sourceLine" id="cb427-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb427-11" data-line-number="11"><span class="co">#&gt; data:  mice.2sample$YFG1_X and mice.2sample$YFG1_Y</span></a>
+<a class="sourceLine" id="cb427-12" data-line-number="12"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
+<a class="sourceLine" id="cb427-13" data-line-number="13"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb427-14" data-line-number="14"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb427-15" data-line-number="15"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
+<a class="sourceLine" id="cb427-16" data-line-number="16"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb427-17" data-line-number="17"><span class="co">#&gt; mean of x mean of y </span></a>
+<a class="sourceLine" id="cb427-18" data-line-number="18"><span class="co">#&gt;      11.1      10.0</span></a></code></pre></div>
 <p>This output provides information on:</p>
 <ul>
 <li>the data vectors used in this analysis</li>
@@ -827,72 +839,72 @@ df = df_1 + df_2 = n_1 + n_2 - 2
 </ul>
 <p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we fail to reject the null hypothesis that the mean expression of <em>YFG1</em> is different in mice treated with Drug X versus those treated with Drug Y.</p>
 <p>As we saw previously, <code>broom::tidy()</code> is a good way to turn the results of the <code>t.test()</code> function into a convenient table for further computation or plotting:</p>
-<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" title="1"><span class="kw">tidy</span>(ttest<span class="fl">.2</span>sample)</a>
-<a class="sourceLine" id="cb428-2" title="2"><span class="co">#&gt; # A tibble: 1 x 10</span></a>
-<a class="sourceLine" id="cb428-3" title="3"><span class="co">#&gt;   estimate estimate1 estimate2 statistic p.value parameter conf.low</span></a>
-<a class="sourceLine" id="cb428-4" title="4"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb428-5" title="5"><span class="co">#&gt; 1    1.100      11.1        10     2.060 0.07331     7.999  -0.1311</span></a>
-<a class="sourceLine" id="cb428-6" title="6"><span class="co">#&gt; # ... with 3 more variables: conf.high &lt;dbl&gt;, method &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb428-7" title="7"><span class="co">#&gt; #   alternative &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1"><span class="kw">tidy</span>(ttest<span class="fl">.2</span>sample)</a>
+<a class="sourceLine" id="cb428-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 10</span></a>
+<a class="sourceLine" id="cb428-3" data-line-number="3"><span class="co">#&gt;   estimate estimate1 estimate2 statistic p.value parameter conf.low</span></a>
+<a class="sourceLine" id="cb428-4" data-line-number="4"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb428-5" data-line-number="5"><span class="co">#&gt; 1    1.100      11.1        10     2.060 0.07331     7.999  -0.1311</span></a>
+<a class="sourceLine" id="cb428-6" data-line-number="6"><span class="co">#&gt; # ... with 3 more variables: conf.high &lt;dbl&gt;, method &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb428-7" data-line-number="7"><span class="co">#&gt; #   alternative &lt;chr&gt;</span></a></code></pre></div>
 </div>
 <div id="specifying-t.test-in-terms-of-a-formula" class="section level3">
 <h3><span class="header-section-number">19.4.5</span> Specifying <code>t.test()</code> in terms of a formula</h3>
 <p>In the example above, our data frame included two columns for YFG1 expression values – <code>YFG1_X</code> and <code>YFG1_Y</code> – representing the expression measurements under the two drug treatments. This is not a very “tidy” way to organize our data, and is somewhat limiting when we want to create plots and do other analyses. Let’s use some of the tools we’ve seen earlier for tidying and restructuring data frames to unite these into a single column, and create a new column indicating treatment type:</p>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" title="1">mice.long &lt;-</a>
-<a class="sourceLine" id="cb429-2" title="2"><span class="st">  </span>mice<span class="fl">.2</span>sample <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb429-3" title="3"><span class="st">  </span><span class="kw">gather</span>(expt, expression) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb429-4" title="4"><span class="st">  </span><span class="kw">separate</span>(expt, <span class="kw">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;treatment&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
-<a class="sourceLine" id="cb429-5" title="5"></a>
-<a class="sourceLine" id="cb429-6" title="6"><span class="kw">head</span>(mice.long)</a>
-<a class="sourceLine" id="cb429-7" title="7"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb429-8" title="8"><span class="co">#&gt;   gene  treatment expression</span></a>
-<a class="sourceLine" id="cb429-9" title="9"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb429-10" title="10"><span class="co">#&gt; 1 YFG1  X              11.25</span></a>
-<a class="sourceLine" id="cb429-11" title="11"><span class="co">#&gt; 2 YFG1  X              10.5 </span></a>
-<a class="sourceLine" id="cb429-12" title="12"><span class="co">#&gt; 3 YFG1  X              12   </span></a>
-<a class="sourceLine" id="cb429-13" title="13"><span class="co">#&gt; 4 YFG1  X              11.75</span></a>
-<a class="sourceLine" id="cb429-14" title="14"><span class="co">#&gt; 5 YFG1  X              10   </span></a>
-<a class="sourceLine" id="cb429-15" title="15"><span class="co">#&gt; 6 YFG1  Y               8.75</span></a></code></pre></div>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1">mice.long &lt;-</a>
+<a class="sourceLine" id="cb429-2" data-line-number="2"><span class="st">  </span>mice<span class="fl">.2</span>sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb429-3" data-line-number="3"><span class="st">  </span><span class="kw">gather</span>(expt, expression) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb429-4" data-line-number="4"><span class="st">  </span><span class="kw">separate</span>(expt, <span class="kw">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;treatment&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
+<a class="sourceLine" id="cb429-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb429-6" data-line-number="6"><span class="kw">head</span>(mice.long)</a>
+<a class="sourceLine" id="cb429-7" data-line-number="7"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
+<a class="sourceLine" id="cb429-8" data-line-number="8"><span class="co">#&gt;   gene  treatment expression</span></a>
+<a class="sourceLine" id="cb429-9" data-line-number="9"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb429-10" data-line-number="10"><span class="co">#&gt; 1 YFG1  X              11.25</span></a>
+<a class="sourceLine" id="cb429-11" data-line-number="11"><span class="co">#&gt; 2 YFG1  X              10.5 </span></a>
+<a class="sourceLine" id="cb429-12" data-line-number="12"><span class="co">#&gt; 3 YFG1  X              12   </span></a>
+<a class="sourceLine" id="cb429-13" data-line-number="13"><span class="co">#&gt; 4 YFG1  X              11.75</span></a>
+<a class="sourceLine" id="cb429-14" data-line-number="14"><span class="co">#&gt; 5 YFG1  X              10   </span></a>
+<a class="sourceLine" id="cb429-15" data-line-number="15"><span class="co">#&gt; 6 YFG1  Y               8.75</span></a></code></pre></div>
 <p>Using this “long” data frame we can carry out the t.test as follows:</p>
-<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" title="1">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">t.test</span>(expression <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> mice.long)</a>
-<a class="sourceLine" id="cb430-2" title="2">ttest<span class="fl">.2</span>sample</a>
-<a class="sourceLine" id="cb430-3" title="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb430-4" title="4"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
-<a class="sourceLine" id="cb430-5" title="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb430-6" title="6"><span class="co">#&gt; data:  expression by treatment</span></a>
-<a class="sourceLine" id="cb430-7" title="7"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
-<a class="sourceLine" id="cb430-8" title="8"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb430-9" title="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb430-10" title="10"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
-<a class="sourceLine" id="cb430-11" title="11"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb430-12" title="12"><span class="co">#&gt; mean in group X mean in group Y </span></a>
-<a class="sourceLine" id="cb430-13" title="13"><span class="co">#&gt;            11.1            10.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">t.test</span>(expression <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> mice.long)</a>
+<a class="sourceLine" id="cb430-2" data-line-number="2">ttest<span class="fl">.2</span>sample</a>
+<a class="sourceLine" id="cb430-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb430-4" data-line-number="4"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
+<a class="sourceLine" id="cb430-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb430-6" data-line-number="6"><span class="co">#&gt; data:  expression by treatment</span></a>
+<a class="sourceLine" id="cb430-7" data-line-number="7"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
+<a class="sourceLine" id="cb430-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb430-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb430-10" data-line-number="10"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
+<a class="sourceLine" id="cb430-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb430-12" data-line-number="12"><span class="co">#&gt; mean in group X mean in group Y </span></a>
+<a class="sourceLine" id="cb430-13" data-line-number="13"><span class="co">#&gt;            11.1            10.0</span></a></code></pre></div>
 <p>This long version of the data is also more easily used for calculating confidence intervals of the mean for each treatment, and for plotting as illustrated bloew</p>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb431-1" title="1">ci.by.treatment &lt;-</a>
-<a class="sourceLine" id="cb431-2" title="2"><span class="st">  </span>mice.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb431-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb431-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(expression),</a>
-<a class="sourceLine" id="cb431-5" title="5">            <span class="dt">se =</span> <span class="kw">sd</span>(expression)<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
-<a class="sourceLine" id="cb431-6" title="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">pt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
-<a class="sourceLine" id="cb431-7" title="7">            <span class="dt">ci.low =</span> mean <span class="op">-</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se,</a>
-<a class="sourceLine" id="cb431-8" title="8">            <span class="dt">ci.hi =</span> mean <span class="op">+</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se)</a>
-<a class="sourceLine" id="cb431-9" title="9"></a>
-<a class="sourceLine" id="cb431-10" title="10">ci.by.treatment</a>
-<a class="sourceLine" id="cb431-11" title="11"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb431-12" title="12"><span class="co">#&gt;   treatment  mean     se  tcrit ci.low ci.hi</span></a>
-<a class="sourceLine" id="cb431-13" title="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb431-14" title="14"><span class="co">#&gt; 1 X          11.1 0.3758 0.5094 10.91  11.29</span></a>
-<a class="sourceLine" id="cb431-15" title="15"><span class="co">#&gt; 2 Y          10   0.3791 0.5094  9.807 10.19</span></a></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb431-1" data-line-number="1">ci.by.treatment &lt;-</a>
+<a class="sourceLine" id="cb431-2" data-line-number="2"><span class="st">  </span>mice.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb431-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb431-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(expression),</a>
+<a class="sourceLine" id="cb431-5" data-line-number="5">            <span class="dt">se =</span> <span class="kw">sd</span>(expression)<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
+<a class="sourceLine" id="cb431-6" data-line-number="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">pt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
+<a class="sourceLine" id="cb431-7" data-line-number="7">            <span class="dt">ci.low =</span> mean <span class="op">-</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se,</a>
+<a class="sourceLine" id="cb431-8" data-line-number="8">            <span class="dt">ci.hi =</span> mean <span class="op">+</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se)</a>
+<a class="sourceLine" id="cb431-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb431-10" data-line-number="10">ci.by.treatment</a>
+<a class="sourceLine" id="cb431-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb431-12" data-line-number="12"><span class="co">#&gt;   treatment  mean     se  tcrit ci.low ci.hi</span></a>
+<a class="sourceLine" id="cb431-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb431-14" data-line-number="14"><span class="co">#&gt; 1 X          11.1 0.3758 0.5094 10.91  11.29</span></a>
+<a class="sourceLine" id="cb431-15" data-line-number="15"><span class="co">#&gt; 2 Y          10   0.3791 0.5094  9.807 10.19</span></a></code></pre></div>
 <p>Here I combine the raw expression measurements and mean and confidence intervals into a single plot:</p>
-<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" title="1">mice.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb432-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> expression, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-3" title="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.35</span>, <span class="dt">shape=</span><span class="dv">17</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-4" title="4"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="dt">data =</span> ci.by.treatment,</a>
-<a class="sourceLine" id="cb432-5" title="5">                  <span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> mean,</a>
-<a class="sourceLine" id="cb432-6" title="6">                      <span class="dt">ymin =</span> ci.low, <span class="dt">ymax=</span> ci.hi)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb432-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Drug Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb432-8" title="8"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-9" title="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.caption =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">8</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1">mice.long <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb432-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> expression, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.35</span>, <span class="dt">shape=</span><span class="dv">17</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="dt">data =</span> ci.by.treatment,</a>
+<a class="sourceLine" id="cb432-5" data-line-number="5">                  <span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> mean,</a>
+<a class="sourceLine" id="cb432-6" data-line-number="6">                      <span class="dt">ymin =</span> ci.low, <span class="dt">ymax=</span> ci.hi)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb432-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Drug Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb432-8" data-line-number="8"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb432-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.caption =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">8</span>))</a></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-447"></span>
 <img src="bio304-book_files/figure-html/unnamed-chunk-447-1.png" alt="Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means." width="576" />
 <p class="caption">
@@ -936,22 +948,22 @@ t^\star = \frac{\overline{D}}{SE(\overline{D})}
 <li><em>YFG1</em> expression before treatment = {12, 11.75, 11.25, 10.5, 10}</li>
 <li><em>YFG1</em> expression after treatment = {11, 10, 10.50, 8.75, 9.75}</li>
 </ul>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" title="1">mice.paired &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1.before =</span> <span class="kw">c</span>(<span class="dv">12</span>, <span class="fl">11.75</span>, <span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb433-2" title="2">                          <span class="dt">YFG1.after =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">10</span>, <span class="fl">10.50</span>, <span class="fl">8.75</span>, <span class="fl">9.75</span>))</a>
-<a class="sourceLine" id="cb433-3" title="3"></a>
-<a class="sourceLine" id="cb433-4" title="4"><span class="kw">t.test</span>(mice.paired<span class="op">$</span>YFG1.before, mice.paired<span class="op">$</span>YFG1.after,</a>
-<a class="sourceLine" id="cb433-5" title="5">       <span class="dt">paired =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb433-6" title="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb433-7" title="7"><span class="co">#&gt;  Paired t-test</span></a>
-<a class="sourceLine" id="cb433-8" title="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb433-9" title="9"><span class="co">#&gt; data:  mice.paired$YFG1.before and mice.paired$YFG1.after</span></a>
-<a class="sourceLine" id="cb433-10" title="10"><span class="co">#&gt; t = 3.773, df = 4, p-value = 0.01955</span></a>
-<a class="sourceLine" id="cb433-11" title="11"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb433-12" title="12"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb433-13" title="13"><span class="co">#&gt;  0.2905341 1.9094659</span></a>
-<a class="sourceLine" id="cb433-14" title="14"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb433-15" title="15"><span class="co">#&gt; mean of the differences </span></a>
-<a class="sourceLine" id="cb433-16" title="16"><span class="co">#&gt;                     1.1</span></a></code></pre></div>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1">mice.paired &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1.before =</span> <span class="kw">c</span>(<span class="dv">12</span>, <span class="fl">11.75</span>, <span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb433-2" data-line-number="2">                          <span class="dt">YFG1.after =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">10</span>, <span class="fl">10.50</span>, <span class="fl">8.75</span>, <span class="fl">9.75</span>))</a>
+<a class="sourceLine" id="cb433-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb433-4" data-line-number="4"><span class="kw">t.test</span>(mice.paired<span class="op">$</span>YFG1.before, mice.paired<span class="op">$</span>YFG1.after,</a>
+<a class="sourceLine" id="cb433-5" data-line-number="5">       <span class="dt">paired =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb433-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb433-7" data-line-number="7"><span class="co">#&gt;  Paired t-test</span></a>
+<a class="sourceLine" id="cb433-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb433-9" data-line-number="9"><span class="co">#&gt; data:  mice.paired$YFG1.before and mice.paired$YFG1.after</span></a>
+<a class="sourceLine" id="cb433-10" data-line-number="10"><span class="co">#&gt; t = 3.773, df = 4, p-value = 0.01955</span></a>
+<a class="sourceLine" id="cb433-11" data-line-number="11"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
+<a class="sourceLine" id="cb433-12" data-line-number="12"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb433-13" data-line-number="13"><span class="co">#&gt;  0.2905341 1.9094659</span></a>
+<a class="sourceLine" id="cb433-14" data-line-number="14"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb433-15" data-line-number="15"><span class="co">#&gt; mean of the differences </span></a>
+<a class="sourceLine" id="cb433-16" data-line-number="16"><span class="co">#&gt;                     1.1</span></a></code></pre></div>
 <p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis of no difference in the average expression of <em>YFG1</em> before and after treatment with Drug Z.</p>
 </div>
 </div>

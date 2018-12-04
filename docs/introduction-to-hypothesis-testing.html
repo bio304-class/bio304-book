@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-11-28">
+<meta name="date" content="2018-12-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -601,6 +601,18 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
 <li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
 </ul></li>
+<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a><ul>
+<li class="chapter" data-level="24.1" data-path="logistic-regression.html"><a href="logistic-regression.html#a-web-app-to-explore-the-logistic-regression-equation"><i class="fa fa-check"></i><b>24.1</b> A web app to explore the logistic regression equation</a></li>
+<li class="chapter" data-level="24.2" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-data-set"><i class="fa fa-check"></i><b>24.2</b> Titanic data set</a></li>
+<li class="chapter" data-level="24.3" data-path="logistic-regression.html"><a href="logistic-regression.html#subsetting-the-data"><i class="fa fa-check"></i><b>24.3</b> Subsetting the data</a></li>
+<li class="chapter" data-level="24.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-survival-as-a-function-of-age"><i class="fa fa-check"></i><b>24.4</b> Visualizing survival as a function of age</a></li>
+<li class="chapter" data-level="24.5" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-the-logistic-regression-model"><i class="fa fa-check"></i><b>24.5</b> Fitting the logistic regression model</a></li>
+<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a><ul>
+<li class="chapter" data-level="24.6.1" data-path="logistic-regression.html"><a href="logistic-regression.html#quick-and-easy-visualization"><i class="fa fa-check"></i><b>24.6.1</b> Quick and easy visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="24.7" data-path="logistic-regression.html"><a href="logistic-regression.html#impact-of-sex-and-passenger-class-on-the-models"><i class="fa fa-check"></i><b>24.7</b> Impact of sex and passenger class on the models</a></li>
+<li class="chapter" data-level="24.8" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-multiple-models-based-on-groupings-use-dplyrdo"><i class="fa fa-check"></i><b>24.8</b> Fitting multiple models based on groupings use <code>dplyr::do</code></a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -624,9 +636,9 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p>More specifically we compare our point estimate of a statistic of interest, based on our data, to the <em>sampling distribution of that statistic</em> under a given null hypothesis.</p>
 <div id="libraries-6" class="section level2">
 <h2><span class="header-section-number">16.1</span> Libraries</h2>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb401-1" title="1"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb401-2" title="2"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb401-3" title="3"><span class="kw">library</span>(broom)</a></code></pre></div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb401-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb401-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb401-3" data-line-number="3"><span class="kw">library</span>(broom)</a></code></pre></div>
 </div>
 <div id="null-and-alternative-hypotheses" class="section level2">
 <h2><span class="header-section-number">16.2</span> Null and Alternative Hypotheses</h2>
@@ -729,33 +741,33 @@ A reminder that the standard deviation of the sampling distribution of the mean,
 <p>Since the sampling distribution of the mean is normally distributed, as described above we can use the <code>pnorm()</code> function to</p>
 <p>Let’s apply this to the comparison we made in last class, involving a comparison of the sample mean of tail length in Victoria possums to a hypothesized normal distribution based on Queensland possum. In that example, our hypothesized normal distribution had parameters <span class="math inline">\(N(37.9\ \text{cm}, 1.71\ \text{cm})\)</span>. Our Victoria possum sample size was <span class="math inline">\(n=5\)</span>, with a mean <span class="math inline">\(x = 35.9\ \text{cm}\)</span>.</p>
 <p>Our null hypothesis is framed in a manner that requires a two-tailed test, as under the alternative hypothesis the sample could be drawn from a distribution with either a higher or lower mean.</p>
-<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb402-1" title="1"><span class="co"># parameters of null</span></a>
-<a class="sourceLine" id="cb402-2" title="2">null.mu &lt;-<span class="st"> </span><span class="fl">37.9</span></a>
-<a class="sourceLine" id="cb402-3" title="3">null.sigma &lt;-<span class="st"> </span><span class="fl">1.71</span></a>
-<a class="sourceLine" id="cb402-4" title="4"></a>
-<a class="sourceLine" id="cb402-5" title="5"><span class="co"># sample statistics</span></a>
-<a class="sourceLine" id="cb402-6" title="6">observed.mean &lt;-<span class="st"> </span><span class="fl">35.9</span></a>
-<a class="sourceLine" id="cb402-7" title="7">n &lt;-<span class="st"> </span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb402-8" title="8"></a>
-<a class="sourceLine" id="cb402-9" title="9">diff.mean &lt;-<span class="st"> </span><span class="kw">abs</span>(null.mu <span class="op">-</span><span class="st"> </span>observed.mean)</a>
-<a class="sourceLine" id="cb402-10" title="10"></a>
-<a class="sourceLine" id="cb402-11" title="11"><span class="co"># standard deviation of sampling distribution under null hypotheses</span></a>
-<a class="sourceLine" id="cb402-12" title="12">null.SE.mean &lt;-<span class="st"> </span>null.sigma<span class="op">/</span><span class="kw">sqrt</span>(n)  </a>
-<a class="sourceLine" id="cb402-13" title="13"></a>
-<a class="sourceLine" id="cb402-14" title="14"><span class="co"># calculate p-value </span></a>
-<a class="sourceLine" id="cb402-15" title="15">p.value &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb402-16" title="16"><span class="st">  </span><span class="kw">pnorm</span>(null.mu <span class="op">-</span><span class="st"> </span>diff.mean, null.mu, null.SE.mean, <span class="dt">lower.tail =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb402-17" title="17"><span class="st">  </span><span class="kw">pnorm</span>(null.mu <span class="op">+</span><span class="st"> </span>diff.mean, null.mu, null.SE.mean, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb402-18" title="18"></a>
-<a class="sourceLine" id="cb402-19" title="19">p.value</a>
-<a class="sourceLine" id="cb402-20" title="20"><span class="co">#&gt; [1] 0.008915324</span></a></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb402-1" data-line-number="1"><span class="co"># parameters of null</span></a>
+<a class="sourceLine" id="cb402-2" data-line-number="2">null.mu &lt;-<span class="st"> </span><span class="fl">37.9</span></a>
+<a class="sourceLine" id="cb402-3" data-line-number="3">null.sigma &lt;-<span class="st"> </span><span class="fl">1.71</span></a>
+<a class="sourceLine" id="cb402-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb402-5" data-line-number="5"><span class="co"># sample statistics</span></a>
+<a class="sourceLine" id="cb402-6" data-line-number="6">observed.mean &lt;-<span class="st"> </span><span class="fl">35.9</span></a>
+<a class="sourceLine" id="cb402-7" data-line-number="7">n &lt;-<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb402-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb402-9" data-line-number="9">diff.mean &lt;-<span class="st"> </span><span class="kw">abs</span>(null.mu <span class="op">-</span><span class="st"> </span>observed.mean)</a>
+<a class="sourceLine" id="cb402-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb402-11" data-line-number="11"><span class="co"># standard deviation of sampling distribution under null hypotheses</span></a>
+<a class="sourceLine" id="cb402-12" data-line-number="12">null.SE.mean &lt;-<span class="st"> </span>null.sigma<span class="op">/</span><span class="kw">sqrt</span>(n)  </a>
+<a class="sourceLine" id="cb402-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb402-14" data-line-number="14"><span class="co"># calculate p-value </span></a>
+<a class="sourceLine" id="cb402-15" data-line-number="15">p.value &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb402-16" data-line-number="16"><span class="st">  </span><span class="kw">pnorm</span>(null.mu <span class="op">-</span><span class="st"> </span>diff.mean, null.mu, null.SE.mean, <span class="dt">lower.tail =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb402-17" data-line-number="17"><span class="st">  </span><span class="kw">pnorm</span>(null.mu <span class="op">+</span><span class="st"> </span>diff.mean, null.mu, null.SE.mean, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb402-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb402-19" data-line-number="19">p.value</a>
+<a class="sourceLine" id="cb402-20" data-line-number="20"><span class="co">#&gt; [1] 0.008915324</span></a></code></pre></div>
 <p>The p-value given above should be very close to the estimate you generated via simulation in the previous assignment.</p>
 </div>
 </div>
 <div id="example-handedness-of-toads" class="section level2">
 <h2><span class="header-section-number">16.7</span> Example: Handedness of toads</h2>
 <p>From Whitlock &amp; Schluter:</p>
-<p>Most humans are right handed. Do animals besides human exhibit biased handedness? Bisazza et al. (1996) tested the possiblity of biased handedness in European toads, <em>Bufo bufo</em>. They sampled 18 toads and used a behavioral assay to determine the preferred hand each individual frog used to perform a task.</p>
+<p>Most humans are right handed. Do animals besides human exhibit biased handedness? Bisazza et al. (1996) tested the possiblity of biased handedness in European toads, <em>Bufo bufo</em>. They sampled 18 toads and used a behavioral assay to determine the preferred hand each individual frog used to perform a task.</p>
 <div id="null-and-alternative-hypotheses-2" class="section level3">
 <h3><span class="header-section-number">16.7.1</span> Null and alternative hypotheses</h3>
 <ul>
@@ -772,17 +784,17 @@ A reminder that the standard deviation of the sampling distribution of the mean,
 <p>To assess how likely it would be to observe the proportion 0.778 of right-handed toads, <em>if the null hypothesis of equal probability of right- and left-handed toads was true</em>, we need to know the appropriate sampling distribution.</p>
 <p>Here we’re dealing with binary outcomes for each outcome – each frog is either right or left handed. For data with binary outcomes we can arbitrary call one outcome a “success”. If we assume that there is a fixed probability of getting a success, and each observation is independent, than the <strong>binomial distribution</strong> provides the probability distribution for the number of “successes” in a given number of trails (observations).</p>
 <p>Let’s call the outcome “right-handed” the successful outcome and let’s generate the expected counts of successes under the null hypothesis (i.e. p(right handed) = 0.5). As we saw in a previous lecture, we can use <code>dbinom()</code> function, which is the probability mass function for the binomial distribution. Given a vector of outcome of interest, the number of trails, and the probability of a success, <code>dbinom</code> calculates the probability of each outcome.</p>
-<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb403-1" title="1">possible.outcomes &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">18</span>)</a>
-<a class="sourceLine" id="cb403-2" title="2">H0.prob =<span class="st"> </span><span class="fl">0.5</span></a>
-<a class="sourceLine" id="cb403-3" title="3">prob.distn &lt;-<span class="st"> </span><span class="kw">dbinom</span>(<span class="dt">x =</span> possible.outcomes, <span class="dt">size =</span> <span class="dv">18</span>, <span class="dt">prob =</span> H0.prob)</a>
-<a class="sourceLine" id="cb403-4" title="4"></a>
-<a class="sourceLine" id="cb403-5" title="5">null.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">outcomes =</span> possible.outcomes, <span class="dt">probs =</span> prob.distn)</a>
-<a class="sourceLine" id="cb403-6" title="6"></a>
-<a class="sourceLine" id="cb403-7" title="7"><span class="kw">ggplot</span>(null.df) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb403-8" title="8"><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">x =</span> outcomes, <span class="dt">y =</span> probs), <span class="dt">width=</span><span class="fl">0.25</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb403-9" title="9"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> possible.outcomes) <span class="op">+</span></a>
-<a class="sourceLine" id="cb403-10" title="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;# of right-handed toads&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;probability&quot;</span>,</a>
-<a class="sourceLine" id="cb403-11" title="11">       <span class="dt">title =</span> <span class="st">&quot;The null distribution for the observed number of right handed toads</span><span class="ch">\n</span><span class="st">Binomial distribution, p = 0.5, n = 18&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb403-1" data-line-number="1">possible.outcomes &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb403-2" data-line-number="2">H0.prob =<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb403-3" data-line-number="3">prob.distn &lt;-<span class="st"> </span><span class="kw">dbinom</span>(<span class="dt">x =</span> possible.outcomes, <span class="dt">size =</span> <span class="dv">18</span>, <span class="dt">prob =</span> H0.prob)</a>
+<a class="sourceLine" id="cb403-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb403-5" data-line-number="5">null.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">outcomes =</span> possible.outcomes, <span class="dt">probs =</span> prob.distn)</a>
+<a class="sourceLine" id="cb403-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb403-7" data-line-number="7"><span class="kw">ggplot</span>(null.df) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb403-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(<span class="dt">x =</span> outcomes, <span class="dt">y =</span> probs), <span class="dt">width=</span><span class="fl">0.25</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb403-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> possible.outcomes) <span class="op">+</span></a>
+<a class="sourceLine" id="cb403-10" data-line-number="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;# of right-handed toads&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;probability&quot;</span>,</a>
+<a class="sourceLine" id="cb403-11" data-line-number="11">       <span class="dt">title =</span> <span class="st">&quot;The null distribution for the observed number of right handed toads</span><span class="ch">\n</span><span class="st">Binomial distribution, p = 0.5, n = 18&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-401-1.png" width="576" /></p>
 </div>
 <div id="calculating-a-p-value-for-the-binomial-test" class="section level3">
@@ -790,60 +802,60 @@ A reminder that the standard deviation of the sampling distribution of the mean,
 <p>Our alternative hypothesis was stated as “right and left handedness are not equally frequent in the population”. This reflects the fact that we did not have a strong a priori prediction about the direction of a potential bias in handedness among toads.</p>
 <p>Recall that a p-value represents the probability of observing the parameter of interest (counts in this case) <em>at least as extreme</em> as that in our data, under the null distribution. There are two ways to deviate from the null hypothesis – observing more right-handed toads than we expect OR observing fewer right-handed toads than we expect. To calculate an appropriate p-value in this case we must consider deviations in both directions. This is what we call a <strong>two-tailed test</strong> because we must consider both tails of the sampling distribution.</p>
 <p>In the present case, we need to add up the probability of observing 14 or more right-handed toads (right tail of the null distribution) and the probability of observing 4 or fewer right-handed toads (left tail of the null distribution).</p>
-<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb404-1" title="1">left.tail &lt;-<span class="st"> </span><span class="kw">filter</span>(null.df, outcomes <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>) <span class="op">%$%</span><span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span>sum</a>
-<a class="sourceLine" id="cb404-2" title="2">right.tail &lt;-<span class="st"> </span><span class="kw">filter</span>(null.df, outcomes <span class="op">&gt;=</span><span class="st"> </span><span class="dv">14</span>) <span class="op">%$%</span><span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span>sum</a>
-<a class="sourceLine" id="cb404-3" title="3"></a>
-<a class="sourceLine" id="cb404-4" title="4">p.value &lt;-<span class="st"> </span>left.tail <span class="op">+</span><span class="st"> </span>right.tail</a>
-<a class="sourceLine" id="cb404-5" title="5">p.value</a>
-<a class="sourceLine" id="cb404-6" title="6"><span class="co">#&gt; [1] 0.03088379</span></a></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb404-1" data-line-number="1">left.tail &lt;-<span class="st"> </span><span class="kw">filter</span>(null.df, outcomes <span class="op">&lt;=</span><span class="st"> </span><span class="dv">4</span>) <span class="op">%$%</span><span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span>sum</a>
+<a class="sourceLine" id="cb404-2" data-line-number="2">right.tail &lt;-<span class="st"> </span><span class="kw">filter</span>(null.df, outcomes <span class="op">&gt;=</span><span class="st"> </span><span class="dv">14</span>) <span class="op">%$%</span><span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span>sum</a>
+<a class="sourceLine" id="cb404-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb404-4" data-line-number="4">p.value &lt;-<span class="st"> </span>left.tail <span class="op">+</span><span class="st"> </span>right.tail</a>
+<a class="sourceLine" id="cb404-5" data-line-number="5">p.value</a>
+<a class="sourceLine" id="cb404-6" data-line-number="6"><span class="co">#&gt; [1] 0.03088379</span></a></code></pre></div>
 <p>Our calculated p-value is approximately 0.031. If we the conventional significance threshold of <span class="math inline">\(\alpha = 0.05\)</span>, our conclusion would be “we reject the null hypothesis of equal probability of right- and left-handed toads”.</p>
 </div>
 <div id="the-binom.test-function" class="section level3">
 <h3><span class="header-section-number">16.7.5</span> The <code>binom.test()</code> function</h3>
 <p>The previous calculations can be conveniently carried out using the R function <code>binom.test()</code>. The arguments to <code>binom.test()</code> are the number of successes (<code>x</code>), the number of trials (<code>n</code>), and the hypothesized probability of success (<code>p</code>).</p>
-<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb405-1" title="1">b.test &lt;-<span class="st"> </span><span class="kw">binom.test</span>(<span class="dv">4</span>, <span class="dv">18</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</a>
-<a class="sourceLine" id="cb405-2" title="2">b.test</a>
-<a class="sourceLine" id="cb405-3" title="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb405-4" title="4"><span class="co">#&gt;  Exact binomial test</span></a>
-<a class="sourceLine" id="cb405-5" title="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb405-6" title="6"><span class="co">#&gt; data:  4 and 18</span></a>
-<a class="sourceLine" id="cb405-7" title="7"><span class="co">#&gt; number of successes = 4, number of trials = 18, p-value = 0.03088</span></a>
-<a class="sourceLine" id="cb405-8" title="8"><span class="co">#&gt; alternative hypothesis: true probability of success is not equal to 0.5</span></a>
-<a class="sourceLine" id="cb405-9" title="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb405-10" title="10"><span class="co">#&gt;  0.06409205 0.47637277</span></a>
-<a class="sourceLine" id="cb405-11" title="11"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb405-12" title="12"><span class="co">#&gt; probability of success </span></a>
-<a class="sourceLine" id="cb405-13" title="13"><span class="co">#&gt;              0.2222222</span></a></code></pre></div>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb405-1" data-line-number="1">b.test &lt;-<span class="st"> </span><span class="kw">binom.test</span>(<span class="dv">4</span>, <span class="dv">18</span>, <span class="dt">p=</span><span class="fl">0.5</span>, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</a>
+<a class="sourceLine" id="cb405-2" data-line-number="2">b.test</a>
+<a class="sourceLine" id="cb405-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb405-4" data-line-number="4"><span class="co">#&gt;  Exact binomial test</span></a>
+<a class="sourceLine" id="cb405-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb405-6" data-line-number="6"><span class="co">#&gt; data:  4 and 18</span></a>
+<a class="sourceLine" id="cb405-7" data-line-number="7"><span class="co">#&gt; number of successes = 4, number of trials = 18, p-value = 0.03088</span></a>
+<a class="sourceLine" id="cb405-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true probability of success is not equal to 0.5</span></a>
+<a class="sourceLine" id="cb405-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
+<a class="sourceLine" id="cb405-10" data-line-number="10"><span class="co">#&gt;  0.06409205 0.47637277</span></a>
+<a class="sourceLine" id="cb405-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
+<a class="sourceLine" id="cb405-12" data-line-number="12"><span class="co">#&gt; probability of success </span></a>
+<a class="sourceLine" id="cb405-13" data-line-number="13"><span class="co">#&gt;              0.2222222</span></a></code></pre></div>
 <p>As shown above, display the results of <code>binom.test()</code> provides a simple written summary. You can retrieve specific values using named fields (see the documentation fo the full list):</p>
-<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb406-1" title="1">b.test<span class="op">$</span>p.value  <span class="co"># gives the p-value under null</span></a>
-<a class="sourceLine" id="cb406-2" title="2"><span class="co">#&gt; [1] 0.03088379</span></a>
-<a class="sourceLine" id="cb406-3" title="3">b.test<span class="op">$</span>estimate <span class="co"># gives the estimated probability from the data</span></a>
-<a class="sourceLine" id="cb406-4" title="4"><span class="co">#&gt; probability of success </span></a>
-<a class="sourceLine" id="cb406-5" title="5"><span class="co">#&gt;              0.2222222</span></a></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb406-1" data-line-number="1">b.test<span class="op">$</span>p.value  <span class="co"># gives the p-value under null</span></a>
+<a class="sourceLine" id="cb406-2" data-line-number="2"><span class="co">#&gt; [1] 0.03088379</span></a>
+<a class="sourceLine" id="cb406-3" data-line-number="3">b.test<span class="op">$</span>estimate <span class="co"># gives the estimated probability from the data</span></a>
+<a class="sourceLine" id="cb406-4" data-line-number="4"><span class="co">#&gt; probability of success </span></a>
+<a class="sourceLine" id="cb406-5" data-line-number="5"><span class="co">#&gt;              0.2222222</span></a></code></pre></div>
 </div>
 </div>
 <div id="example-measuring-the-association-between-maternal-smoking-and-premature-births" class="section level2">
 <h2><span class="header-section-number">16.8</span> Example: Measuring the association between maternal smoking and premature births</h2>
 <p>We’ve previously explored the <a href="https://raw.githubusercontent.com/Bio204-class/bio204-datasets/master/births.txt">NC Births</a> data set which includes information on mothers age, smoking status, weight gained, birth weight, premature status, etc. We’ll use this data to explore the relationship between maternal smoking and premature births:</p>
-<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb407-1" title="1">births &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/Bio204-class/bio204-datasets/master/births.txt&quot;</span>)</a>
-<a class="sourceLine" id="cb407-2" title="2"><span class="co">#&gt; Parsed with column specification:</span></a>
-<a class="sourceLine" id="cb407-3" title="3"><span class="co">#&gt; cols(</span></a>
-<a class="sourceLine" id="cb407-4" title="4"><span class="co">#&gt;   fAge = col_integer(),</span></a>
-<a class="sourceLine" id="cb407-5" title="5"><span class="co">#&gt;   mAge = col_integer(),</span></a>
-<a class="sourceLine" id="cb407-6" title="6"><span class="co">#&gt;   weeks = col_integer(),</span></a>
-<a class="sourceLine" id="cb407-7" title="7"><span class="co">#&gt;   premature = col_character(),</span></a>
-<a class="sourceLine" id="cb407-8" title="8"><span class="co">#&gt;   visits = col_integer(),</span></a>
-<a class="sourceLine" id="cb407-9" title="9"><span class="co">#&gt;   gained = col_integer(),</span></a>
-<a class="sourceLine" id="cb407-10" title="10"><span class="co">#&gt;   weight = col_double(),</span></a>
-<a class="sourceLine" id="cb407-11" title="11"><span class="co">#&gt;   sexBaby = col_character(),</span></a>
-<a class="sourceLine" id="cb407-12" title="12"><span class="co">#&gt;   smoke = col_character()</span></a>
-<a class="sourceLine" id="cb407-13" title="13"><span class="co">#&gt; )</span></a>
-<a class="sourceLine" id="cb407-14" title="14"></a>
-<a class="sourceLine" id="cb407-15" title="15"><span class="kw">xtabs</span>(<span class="op">~</span>premature <span class="op">+</span><span class="st"> </span>smoke, births)</a>
-<a class="sourceLine" id="cb407-16" title="16"><span class="co">#&gt;            smoke</span></a>
-<a class="sourceLine" id="cb407-17" title="17"><span class="co">#&gt; premature   nonsmoker smoker</span></a>
-<a class="sourceLine" id="cb407-18" title="18"><span class="co">#&gt;   full term        87     42</span></a>
-<a class="sourceLine" id="cb407-19" title="19"><span class="co">#&gt;   premie           13      8</span></a></code></pre></div>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb407-1" data-line-number="1">births &lt;-<span class="st"> </span><span class="kw">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/Bio204-class/bio204-datasets/master/births.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb407-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb407-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
+<a class="sourceLine" id="cb407-4" data-line-number="4"><span class="co">#&gt;   fAge = col_integer(),</span></a>
+<a class="sourceLine" id="cb407-5" data-line-number="5"><span class="co">#&gt;   mAge = col_integer(),</span></a>
+<a class="sourceLine" id="cb407-6" data-line-number="6"><span class="co">#&gt;   weeks = col_integer(),</span></a>
+<a class="sourceLine" id="cb407-7" data-line-number="7"><span class="co">#&gt;   premature = col_character(),</span></a>
+<a class="sourceLine" id="cb407-8" data-line-number="8"><span class="co">#&gt;   visits = col_integer(),</span></a>
+<a class="sourceLine" id="cb407-9" data-line-number="9"><span class="co">#&gt;   gained = col_integer(),</span></a>
+<a class="sourceLine" id="cb407-10" data-line-number="10"><span class="co">#&gt;   weight = col_double(),</span></a>
+<a class="sourceLine" id="cb407-11" data-line-number="11"><span class="co">#&gt;   sexBaby = col_character(),</span></a>
+<a class="sourceLine" id="cb407-12" data-line-number="12"><span class="co">#&gt;   smoke = col_character()</span></a>
+<a class="sourceLine" id="cb407-13" data-line-number="13"><span class="co">#&gt; )</span></a>
+<a class="sourceLine" id="cb407-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb407-15" data-line-number="15"><span class="kw">xtabs</span>(<span class="op">~</span>premature <span class="op">+</span><span class="st"> </span>smoke, births)</a>
+<a class="sourceLine" id="cb407-16" data-line-number="16"><span class="co">#&gt;            smoke</span></a>
+<a class="sourceLine" id="cb407-17" data-line-number="17"><span class="co">#&gt; premature   nonsmoker smoker</span></a>
+<a class="sourceLine" id="cb407-18" data-line-number="18"><span class="co">#&gt;   full term        87     42</span></a>
+<a class="sourceLine" id="cb407-19" data-line-number="19"><span class="co">#&gt;   premie           13      8</span></a></code></pre></div>
 <div id="null-and-alternative-hypotheses-3" class="section level3">
 <h3><span class="header-section-number">16.8.1</span> Null and alternative hypotheses:</h3>
 <ul>
@@ -866,42 +878,42 @@ A reminder that the standard deviation of the sampling distribution of the mean,
 <h3><span class="header-section-number">16.8.3</span> <span class="math inline">\(\chi^2\)</span>-distribution</h3>
 <p>This sampling distribution of the <span class="math inline">\(\chi^2\)</span>-statistic <em>when the rows and columns variables of a contingency table are indepdent</em> is the <span class="math inline">\(\chi^2\)</span>-distribution. The shape of the <span class="math inline">\(\chi^2\)</span>-distribution depends on a parameter called the “degrees of freedom” (abbreviated df). For contingency table analysis, the degrees of freedom is: <span class="math inline">\(df = (m - 1)(n - 1)\)</span> where <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are the number of rows and columns of the table.</p>
 <p>Here is the <span class="math inline">\(\chi^2\)</span>-distribution with df = 1:</p>
-<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb408-1" title="1">chi2.values &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">15</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)</a>
-<a class="sourceLine" id="cb408-2" title="2">chi2.density &lt;-<span class="st"> </span><span class="kw">dchisq</span>(chi2.values, <span class="dt">df =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb408-3" title="3">chi2.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">chi2 =</span> chi2.values, <span class="dt">density =</span> chi2.density)</a>
-<a class="sourceLine" id="cb408-4" title="4"></a>
-<a class="sourceLine" id="cb408-5" title="5"><span class="kw">ggplot</span>(chi2.df, <span class="kw">aes</span>(chi2, density)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb408-6" title="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb408-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Chi2 statistic&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
-<a class="sourceLine" id="cb408-8" title="8">       <span class="dt">title =</span> <span class="st">&quot;Probability Distribution for Chi2_df=1&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb408-1" data-line-number="1">chi2.values &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">15</span>, <span class="dt">by =</span> <span class="fl">0.05</span>)</a>
+<a class="sourceLine" id="cb408-2" data-line-number="2">chi2.density &lt;-<span class="st"> </span><span class="kw">dchisq</span>(chi2.values, <span class="dt">df =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb408-3" data-line-number="3">chi2.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">chi2 =</span> chi2.values, <span class="dt">density =</span> chi2.density)</a>
+<a class="sourceLine" id="cb408-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb408-5" data-line-number="5"><span class="kw">ggplot</span>(chi2.df, <span class="kw">aes</span>(chi2, density)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb408-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb408-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Chi2 statistic&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>,</a>
+<a class="sourceLine" id="cb408-8" data-line-number="8">       <span class="dt">title =</span> <span class="st">&quot;Probability Distribution for Chi2_df=1&quot;</span>)</a></code></pre></div>
 <p><img src="bio304-book_files/figure-html/unnamed-chunk-406-1.png" width="576" /></p>
 <p>For <span class="math inline">\(\chi^2\)</span> analysis of contigency tables, hypothesis tests are always one-tailed. That is, in contigency analysis were are always asking “what is the probability of observing a <span class="math inline">\(\chi^2\)</span> statistic at least this large under the null hypothesis of no association?”</p>
 </div>
 <div id="carrying-out-a-hypothesis-test-using-the-chi2" class="section level3">
 <h3><span class="header-section-number">16.8.4</span> Carrying out a hypothesis test using the <span class="math inline">\(\chi^2\)</span></h3>
 <p>Under the null distribution, the sampling distribution of the <span class="math inline">\(\chi^2\)</span> statistic is given by the <span class="math inline">\(\chi^2\)</span> distribution with df = 1. We use the built-in <code>chisq.test</code> function to calculate the <span class="math inline">\(\chi^2\)</span> value for the observed data and to calculate a corresponding p-value.</p>
-<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb409-1" title="1">chi2.births &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(births<span class="op">$</span>premature, births<span class="op">$</span>smoke, <span class="dt">correct =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb409-2" title="2">chi2.results &lt;-<span class="st"> </span><span class="kw">glance</span>(chi2.births)</a>
-<a class="sourceLine" id="cb409-3" title="3">chi2.results</a>
-<a class="sourceLine" id="cb409-4" title="4"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb409-5" title="5"><span class="co">#&gt;   statistic p.value parameter method                    </span></a>
-<a class="sourceLine" id="cb409-6" title="6"><span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;                     </span></a>
-<a class="sourceLine" id="cb409-7" title="7"><span class="co">#&gt; 1    0.2492  0.6177         1 Pearson&#39;s Chi-squared test</span></a></code></pre></div>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb409-1" data-line-number="1">chi2.births &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(births<span class="op">$</span>premature, births<span class="op">$</span>smoke, <span class="dt">correct =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb409-2" data-line-number="2">chi2.results &lt;-<span class="st"> </span><span class="kw">glance</span>(chi2.births)</a>
+<a class="sourceLine" id="cb409-3" data-line-number="3">chi2.results</a>
+<a class="sourceLine" id="cb409-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb409-5" data-line-number="5"><span class="co">#&gt;   statistic p.value parameter method                    </span></a>
+<a class="sourceLine" id="cb409-6" data-line-number="6"><span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;                     </span></a>
+<a class="sourceLine" id="cb409-7" data-line-number="7"><span class="co">#&gt; 1    0.2492  0.6177         1 Pearson&#39;s Chi-squared test</span></a></code></pre></div>
 </div>
 <div id="interpretation-of-the-chi2-test" class="section level3">
 <h3><span class="header-section-number">16.8.5</span> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</h3>
 <p>Our point estimate of the <span class="math inline">\(\chi^2\)</span> statistic for the births data is 0.2491694 and the associated p-value is 0.6176605. Given this, we say we “fail to reject the null hypothesis of no difference the rate of premature births between smoking and non-smoking mothers”.</p>
 <p>For further insight into why the <span class="math inline">\(\chi^2\)</span> statistic is small in this case, compare the observed and expected counts. As you’ll see, the values are barely differnt:</p>
-<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb410-1" title="1">chi2.births<span class="op">$</span>observed</a>
-<a class="sourceLine" id="cb410-2" title="2"><span class="co">#&gt;                 births$smoke</span></a>
-<a class="sourceLine" id="cb410-3" title="3"><span class="co">#&gt; births$premature nonsmoker smoker</span></a>
-<a class="sourceLine" id="cb410-4" title="4"><span class="co">#&gt;        full term        87     42</span></a>
-<a class="sourceLine" id="cb410-5" title="5"><span class="co">#&gt;        premie           13      8</span></a>
-<a class="sourceLine" id="cb410-6" title="6">chi2.births<span class="op">$</span>expected</a>
-<a class="sourceLine" id="cb410-7" title="7"><span class="co">#&gt;                 births$smoke</span></a>
-<a class="sourceLine" id="cb410-8" title="8"><span class="co">#&gt; births$premature nonsmoker smoker</span></a>
-<a class="sourceLine" id="cb410-9" title="9"><span class="co">#&gt;        full term        86     43</span></a>
-<a class="sourceLine" id="cb410-10" title="10"><span class="co">#&gt;        premie           14      7</span></a></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb410-1" data-line-number="1">chi2.births<span class="op">$</span>observed</a>
+<a class="sourceLine" id="cb410-2" data-line-number="2"><span class="co">#&gt;                 births$smoke</span></a>
+<a class="sourceLine" id="cb410-3" data-line-number="3"><span class="co">#&gt; births$premature nonsmoker smoker</span></a>
+<a class="sourceLine" id="cb410-4" data-line-number="4"><span class="co">#&gt;        full term        87     42</span></a>
+<a class="sourceLine" id="cb410-5" data-line-number="5"><span class="co">#&gt;        premie           13      8</span></a>
+<a class="sourceLine" id="cb410-6" data-line-number="6">chi2.births<span class="op">$</span>expected</a>
+<a class="sourceLine" id="cb410-7" data-line-number="7"><span class="co">#&gt;                 births$smoke</span></a>
+<a class="sourceLine" id="cb410-8" data-line-number="8"><span class="co">#&gt; births$premature nonsmoker smoker</span></a>
+<a class="sourceLine" id="cb410-9" data-line-number="9"><span class="co">#&gt;        full term        86     43</span></a>
+<a class="sourceLine" id="cb410-10" data-line-number="10"><span class="co">#&gt;        premie           14      7</span></a></code></pre></div>
 <p>As mentioned previously, failing to reject a null hypothesis is not the same as accepting the null hypothesis. When it comes to human health and disease and environmental exposures, the magnitude of effects is often very small and you often need thousands of samples to detect an effect. For example, a relationship between maternal smoking and premature births is well supported by multiple large studies. However, the sample we’re using in this case is rather modest (150 births) and hence not well powered to detect modest effects. We’ll discuss this further when we talk about the topic of statistical power.</p>
 
 </div>
