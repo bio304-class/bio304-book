@@ -789,7 +789,7 @@ P(Y = 1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X)}}
 <a class="sourceLine" id="cb527-16" data-line-number="16"><span class="co">#&gt; 4 male        1 &lt;S3: glm&gt;</span></a>
 <a class="sourceLine" id="cb527-17" data-line-number="17"><span class="co">#&gt; 5 male        2 &lt;S3: glm&gt;</span></a>
 <a class="sourceLine" id="cb527-18" data-line-number="18"><span class="co">#&gt; 6 male        3 &lt;S3: glm&gt;</span></a></code></pre></div>
-<p>Notice that the “fits” column doesn’t explicitly print out the details of the model. The object returned by <code>glm()</code> can’t be simply represented, so it just uses a place holder piece of text to tell us that there is data here represented a glm object.However, we can access the the columns with the fits just like any other variable:</p>
+<p>Notice that the “fits” column doesn’t explicitly print out the details of the model. The object returned by <code>glm()</code> can’t be simply represented as text string (it’s a list), so we seea place holder string that tells us that there is data here represented a glm object. However, we can access the the columns with the fits just like any other variable:</p>
 <div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb528-1" data-line-number="1"><span class="co"># get the summary of the second logistic regression (Female, 2nd Class) </span></a>
 <a class="sourceLine" id="cb528-2" data-line-number="2"><span class="kw">tidy</span>(grouped.models<span class="op">$</span>fits[[<span class="dv">2</span>]])</a>
 <a class="sourceLine" id="cb528-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 5</span></a>

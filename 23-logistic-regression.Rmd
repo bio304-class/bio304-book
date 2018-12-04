@@ -189,7 +189,7 @@ grouped.models <-
 grouped.models
 ```
 
-Notice that the "fits" column doesn't explicitly print out the details of the model.  The object returned by `glm()` can't be simply represented, so it just uses a place holder piece of text to tell us that there is data here represented a glm object.However,  we can access the the columns with the fits just like any other variable:
+Notice that the "fits" column doesn't explicitly print out the details of the model.  The object returned by `glm()` can't be simply represented as text string (it's a list), so we seea place holder string that tells us that there is data here represented a glm object.  However, we can access the the columns with the fits just like any other variable:
 
 
 ```{r}
