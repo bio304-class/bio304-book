@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-12-04">
+<meta name="date" content="2018-12-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -770,11 +770,11 @@ P(Y = 1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X)}}
 <h2><span class="header-section-number">24.8</span> Fitting multiple models based on groupings use <code>dplyr::do</code></h2>
 <p>In the figure above we used <code>ggplot</code> and <code>facet_grid</code> to visualize logistic regression of survival on age, conditioned on both sex and class. What if we wanted to calculate the terms of the logistic regressions for each combination of these two categorical variables? There are three passenger classes and two sexes, meaning we’d have to create six data subsets and fit the model six times if we used the same approach we used previously. Luckily, <code>dplyr</code> provides a powerful function called <code>do()</code> that allows us to carry out arbitrary computations on grouped data.</p>
 <p>There are two ways to use <code>do()</code>. The first way is to give the expressions you evaluate in <code>do()</code> a name, in which case <code>do()</code> will store the results in a column. The second way to use <code>do()</code> is for the expression to return a data frame.</p>
-<p>In this first example, the model fits are stored in the <code>fits</code> column. When using <code>do()</code> you can refer to the grouping using a period (<code>.</code>):</p>
+<p>In this first example, the model fits are stored in the <code>fits</code> column. When using <code>do()</code> you can refer to the groupings using a period (<code>.</code>):</p>
 <div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb527-1" data-line-number="1">grouped.models &lt;-</a>
 <a class="sourceLine" id="cb527-2" data-line-number="2"><span class="st">  </span>titanic <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb527-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(sex, pclass) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb527-4" data-line-number="4"><span class="st">  </span><span class="kw">do</span>(<span class="dt">fits =</span> <span class="kw">glm</span>(.<span class="op">$</span>survived <span class="op">~</span><span class="st"> </span>.<span class="op">$</span>age, <span class="dt">family =</span> binomial))</a>
+<a class="sourceLine" id="cb527-4" data-line-number="4"><span class="st">  </span><span class="kw">do</span>(<span class="dt">fits =</span> <span class="kw">glm</span>(survived <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> .))</a>
 <a class="sourceLine" id="cb527-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb527-6" data-line-number="6">grouped.models</a>
 <a class="sourceLine" id="cb527-7" data-line-number="7"><span class="co">#&gt; Source: local data frame [6 x 3]</span></a>
@@ -796,26 +796,26 @@ P(Y = 1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X)}}
 <a class="sourceLine" id="cb528-4" data-line-number="4"><span class="co">#&gt;   term        estimate std.error statistic   p.value</span></a>
 <a class="sourceLine" id="cb528-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb528-6" data-line-number="6"><span class="co">#&gt; 1 (Intercept)  3.491     0.9037      3.863 0.0001119</span></a>
-<a class="sourceLine" id="cb528-7" data-line-number="7"><span class="co">#&gt; 2 .$age       -0.04502   0.02548    -1.767 0.07730</span></a></code></pre></div>
+<a class="sourceLine" id="cb528-7" data-line-number="7"><span class="co">#&gt; 2 age         -0.04502   0.02548    -1.767 0.07730</span></a></code></pre></div>
 <p>Now we illustrate the second approach to using <code>do()</code>. When no name is provided, <code>do()</code> expects its expression to return a dataframe. Here we use the <code>broom::tidy()</code> function to get the key results of each fit model into a data frame:</p>
 <div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb529-1" data-line-number="1">titanic <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb529-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(sex, pclass) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb529-3" data-line-number="3"><span class="st">  </span><span class="kw">do</span>(<span class="kw">tidy</span>(<span class="kw">glm</span>(.<span class="op">$</span>survived <span class="op">~</span><span class="st"> </span>.<span class="op">$</span>age, <span class="dt">family =</span> binomial)))</a>
+<a class="sourceLine" id="cb529-3" data-line-number="3"><span class="st">  </span><span class="kw">do</span>(<span class="kw">tidy</span>(<span class="kw">glm</span>(survived <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> .)))</a>
 <a class="sourceLine" id="cb529-4" data-line-number="4"><span class="co">#&gt; # A tibble: 12 x 7</span></a>
 <a class="sourceLine" id="cb529-5" data-line-number="5"><span class="co">#&gt;    sex    pclass term         estimate std.error statistic     p.value</span></a>
 <a class="sourceLine" id="cb529-6" data-line-number="6"><span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb529-7" data-line-number="7"><span class="co">#&gt;  1 female      1 (Intercept)  2.896      1.238      2.339  0.01932    </span></a>
-<a class="sourceLine" id="cb529-8" data-line-number="8"><span class="co">#&gt;  2 female      1 .$age        0.009599   0.03263    0.2942 0.7686     </span></a>
+<a class="sourceLine" id="cb529-8" data-line-number="8"><span class="co">#&gt;  2 female      1 age          0.009599   0.03263    0.2942 0.7686     </span></a>
 <a class="sourceLine" id="cb529-9" data-line-number="9"><span class="co">#&gt;  3 female      2 (Intercept)  3.491      0.9037     3.863  0.0001119  </span></a>
-<a class="sourceLine" id="cb529-10" data-line-number="10"><span class="co">#&gt;  4 female      2 .$age       -0.04502    0.02548   -1.767  0.07730    </span></a>
+<a class="sourceLine" id="cb529-10" data-line-number="10"><span class="co">#&gt;  4 female      2 age         -0.04502    0.02548   -1.767  0.07730    </span></a>
 <a class="sourceLine" id="cb529-11" data-line-number="11"><span class="co">#&gt;  5 female      3 (Intercept)  0.2887     0.3412     0.8461 0.3975     </span></a>
-<a class="sourceLine" id="cb529-12" data-line-number="12"><span class="co">#&gt;  6 female      3 .$age       -0.01783    0.01361   -1.310  0.1901     </span></a>
+<a class="sourceLine" id="cb529-12" data-line-number="12"><span class="co">#&gt;  6 female      3 age         -0.01783    0.01361   -1.310  0.1901     </span></a>
 <a class="sourceLine" id="cb529-13" data-line-number="13"><span class="co">#&gt;  7 male        1 (Intercept)  0.8803     0.5275     1.669  0.09514    </span></a>
-<a class="sourceLine" id="cb529-14" data-line-number="14"><span class="co">#&gt;  8 male        1 .$age       -0.03743    0.01276   -2.934  0.003351   </span></a>
+<a class="sourceLine" id="cb529-14" data-line-number="14"><span class="co">#&gt;  8 male        1 age         -0.03743    0.01276   -2.934  0.003351   </span></a>
 <a class="sourceLine" id="cb529-15" data-line-number="15"><span class="co">#&gt;  9 male        2 (Intercept)  1.042      0.5990     1.740  0.08181    </span></a>
-<a class="sourceLine" id="cb529-16" data-line-number="16"><span class="co">#&gt; 10 male        2 .$age       -0.1122     0.02492   -4.502  0.000006724</span></a>
+<a class="sourceLine" id="cb529-16" data-line-number="16"><span class="co">#&gt; 10 male        2 age         -0.1122     0.02492   -4.502  0.000006724</span></a>
 <a class="sourceLine" id="cb529-17" data-line-number="17"><span class="co">#&gt; 11 male        3 (Intercept) -0.7613     0.3418    -2.228  0.02591    </span></a>
-<a class="sourceLine" id="cb529-18" data-line-number="18"><span class="co">#&gt; 12 male        3 .$age       -0.03392    0.01339   -2.534  0.01129</span></a></code></pre></div>
+<a class="sourceLine" id="cb529-18" data-line-number="18"><span class="co">#&gt; 12 male        3 age         -0.03392    0.01339   -2.534  0.01129</span></a></code></pre></div>
 <p>Using this approach we get a nice data frame showing the logistic regression coefficients, and associated statistics (standard error, P-values, etc) for the regression of survival on age, for each combination of sex and class.</p>
 
 </div>

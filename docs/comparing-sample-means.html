@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-12-04">
+<meta name="date" content="2018-12-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -647,9 +647,9 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <h3><span class="header-section-number">19.2.1</span> One sample t-test, test statistic</h3>
 <p>To carry out a one sample t-test, first calculate the test statistic:</p>
 <p><span class="math display">\[
-t^{\star} = \frac{\overline{x} - \mu_0}{SE_\overline{x}}
+t^{\star} = \frac{\overline{x} - \mu_0}{SE_{\overline{x}}}
 \]</span></p>
-<p>where <span class="math inline">\(\overline{x}\)</span> is the sample mean and <span class="math inline">\(SE_\overline{x}\)</span> is the sample standard error of the mean (<span class="math inline">\(SE_\overline{x} = s_x/\sqrt{n}\)</span>). In words, <span class="math inline">\(t^{\star}\)</span> measures the difference between the observed mean, and the null hypothesis mean, in unit of standard error.</p>
+<p>where <span class="math inline">\(\overline{x}\)</span> is the sample mean and <span class="math inline">\(SE_{\overline{x}}\)</span> is the sample standard error of the mean (<span class="math inline">\(SE_{\overline{x}} = s_x/\sqrt{n}\)</span>). In words, <span class="math inline">\(t^{\star}\)</span> measures the difference between the observed mean, and the null hypothesis mean, in unit of standard error.</p>
 <p>To calculate a P-value, we compare the test statistic to the t-distribution with the appropriate degrees of freedom to calculate the probability that you’d observe a mean value at least as extreme as <span class="math inline">\(\overline{x}\)</span> if the null hypothesis was true. For a two-tailed test this is:</p>
 <p><span class="math display">\[
 P = P(t &lt; -|t^\star|) + P(t &gt; |t^\star|)
@@ -1004,7 +1004,7 @@ Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
 <tbody>
 <tr class="odd">
 <td align="left">one-sample</td>
-<td align="center"><span class="math inline">\(\frac{\overline{x}-\mu_0}{SE_\overline{x}}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{\overline{x}-\mu_0}{SE_{\overline{x}}}\)</span></td>
 <td align="center"><span class="math inline">\(n-1\)</span></td>
 </tr>
 <tr class="even">
@@ -1014,7 +1014,7 @@ Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
 </tr>
 <tr class="odd">
 <td align="left">paired</td>
-<td align="center"><span class="math inline">\(\frac{\overline{D}-0}{SE_\overline{D}}\)</span></td>
+<td align="center"><span class="math inline">\(\frac{\overline{D}-0}{SE_{\overline{D}}}\)</span></td>
 <td align="center"><span class="math inline">\(n-1\)</span></td>
 </tr>
 </tbody>

@@ -42,13 +42,13 @@ knitr::include_graphics("./figures/fig-regression-minimization.png")
 
 With a little calculus and linear algebra one can show that the values of $b$ (slope) and $a$ (intercept) that minimize the sum of squared deviations described above are:
 
-$$
+
 \begin{align}
 b &= \frac{s_{xy}}{s^2_x} = r_{xy}\frac{s_y}{s_x}\\
 \\
 a &= \overline{Y} - b\overline{X}
 \end{align}
-$$
+
 
 where $r_{xy}$ is the correlation coefficient between $X$ and $Y$, and $s_x$ and $s_y$ are the standard deviations of $X$ and $Y$ respectively.
 

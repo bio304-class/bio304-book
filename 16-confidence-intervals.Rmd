@@ -23,7 +23,7 @@ We will define an "X% percent confidence interval for a statistic of interest", 
 
 The idea behind a 95% confidence interval is illustrated in the following figure:
 
-```{r, echo = FALSE, out.width = "200", fig.align = "center", fig.cap = "Point estimates and confidence intervals for a theoretical statistic of interest.", results="markup"}
+```{r, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Point estimates and confidence intervals for a theoretical statistic of interest.", results="markup"}
 knitr::include_graphics("./figures/fig-CIs.png")
 ```
 
@@ -50,7 +50,7 @@ So rather than estimating a single value of $\phi$ from our data, we will use ou
 
 To make the idea of a confidence interval more concrete, let's consider confidence intervals for the mean of a normally distributed variable. 
 
-Recall that if a variable $X$ is normally distributed in a population of interest, $X \sim N(\mu, \sigma)$, then the sampling distribution of the mean of $X$ is also normally distributed with mean $\mu$, and standard error ${SE}_\overline{X} = \frac{\sigma}{\sqrt{n}}$:
+Recall that if a variable $X$ is normally distributed in a population of interest, $X \sim N(\mu, \sigma)$, then the sampling distribution of the mean of $X$ is also normally distributed with mean $\mu$, and standard error ${SE}_{\overline{X}} = \frac{\sigma}{\sqrt{n}}$:
 
 \[
 \overline{X} \sim N \left( \mu, \frac{\sigma}{\sqrt{n}}\ \right)
@@ -106,7 +106,7 @@ samples.25 <-
   mutate(z.pop = (sample.mean - true.mean)/pop.SE)
 ```
 
-Since the sampling distribution of the mean of a normally distributed variable ($N(\mu,\sigma )$) is itself normally distributed ($N(\mu, SE_\overline{x})$), then the distribution of $z = \frac{\overline{x} - \mu}{SE}$ is $N(0,1)$.  This is illustrated in the figure below where we compare our simulated z-scores to the theoretical expectation:
+Since the sampling distribution of the mean of a normally distributed variable ($N(\mu,\sigma)$) is itself normally distributed ($N(\mu, SE_{\overline{X}})$), then the distribution of $z = \frac{\overline{X} - \mu}{SE}$ is $N(0,1)$.  This is illustrated in the figure below where we compare our simulated z-scores to the theoretical expectation:
 
 ```{r}
 SE <- 1
@@ -143,7 +143,7 @@ data_frame(Percentile = frac.of.interest * 100,
 If we knew the standard error of the mean for variable of interest, in order to a confidence interval we could simply look up the corresponding critical value for our percentile of interst in a table like the one above and calculate our CI as:
 
 \[
-CI_\overline{x} \pm \text{critical value} \times SE_\overline{x}
+\overline{X} \pm \text{critical value} \times SE_{\overline{X}}
 \]
 
 For example, we see that the critical value for 95% CIs is ~1.96.
@@ -151,12 +151,12 @@ For example, we see that the critical value for 95% CIs is ~1.96.
 
 ## A problem arises!
 
-If you're a critical reader you should have noticed that calculating confidence intervals using the above formula presumes we know the standard error of the mean for the variable of interest.  If we knew the standard deviation, $\sigma$, of our variable, we could calculate this as $SE_\overline{x} = \frac{\sigma}{\sqrt{n}}$ but in general we do not know $\sigma$ either.
+If you're a critical reader you should have noticed that calculating confidence intervals using the above formula presumes we know the standard error of the mean for the variable of interest.  If we knew the standard deviation, $\sigma$, of our variable, we could calculate this as $SE_{\overline{x}} = \frac{\sigma}{\sqrt{n}}$ but in general we do not know $\sigma$ either.
 
 Instead we must estimate the standard error of the mean using our sample standard deviation:
 
 \[
-\widehat{SE}_\overline{x} = \frac{s_x}{\sqrt{n}}
+\widehat{SE}_{\overline{x}} = \frac{s_x}{\sqrt{n}}
 \]
 
 This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see workbook Chapter 15).  

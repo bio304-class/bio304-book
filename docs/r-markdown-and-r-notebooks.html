@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-12-04">
+<meta name="date" content="2018-12-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -648,7 +648,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <h2><span class="header-section-number">4.2</span> Creating an R Notebook</h2>
 <p>To create an R Notebook select <code>File &gt; New File &gt; R Notebook</code> from the files menu in RStudio.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-75"></span>
-<img src="figures/fig-create-rnotebook.png" alt="Using the File menu to create a new R Notebook." width="600px" />
+<img src="figures/fig-create-rnotebook.png" alt="Using the File menu to create a new R Notebook." width="60%" />
 <p class="caption">
 Figure 4.1: Using the File menu to create a new R Notebook.
 </p>
@@ -669,9 +669,12 @@ output: html_notebook
 <div id="non-code-blocks" class="section level3">
 <h3><span class="header-section-number">4.4.1</span> Non-code blocks</h3>
 <p>The first bit of text in the default notebook template is a non-code block that tells you how to use the notebook:</p>
-<pre><code>This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+<pre><code>This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. 
+When you execute code within the notebook, the results appear
+beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. </code></pre>
+Try executing this chunk by clicking the *Run* button within the chunk 
+or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. </code></pre>
 <p>The text of non-code blocks can include lightweight markup information that can be used to format HTML or PDF output generated from the R Markdown document. Here are some examples:</p>
 <pre><code># Simple textual formatting 
 
@@ -708,16 +711,17 @@ like so:  $x^2 + y^2 = z^2$.
 <div id="code-blocks" class="section level3">
 <h3><span class="header-section-number">4.4.2</span> Code blocks</h3>
 <p>Code blocks are delimited by matching sets of three backward ticks (```). Everything within a code block is interpretted as an R command and is evaluated by the R interpretter. Here’s the first code block in the default notebook template:</p>
-<pre><code>```{r}
+<pre><code>```
+{r}
 plot(cars)
-```</code></pre>
+```</code></pre>
 </div>
 </div>
 <div id="running-a-code-chunk" class="section level2">
 <h2><span class="header-section-number">4.5</span> Running a code chunk</h2>
 <p>You can run a single code block by clicking the small green “Run” button in the upper right hand corner of the code block as shown in the image below.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-76"></span>
-<img src="figures/fig-run-code-chunk.png" alt="Click the Run button to execute a code chunk." width="600px" />
+<img src="figures/fig-run-code-chunk.png" alt="Click the Run button to execute a code chunk." width="60%" />
 <p class="caption">
 Figure 4.2: Click the Run button to execute a code chunk.
 </p>
@@ -725,7 +729,7 @@ Figure 4.2: Click the Run button to execute a code chunk.
 <p>If you click this button the commands within this code block are executed, and any generated output is shown below the code block.</p>
 <p>Try running the first code block in the default template now. After the code chunk is executed you should see a plot embedded in your R Notebook as shown below:</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-77"></span>
-<img src="figures/fig-rstudio-after-run-chunk.png" alt="An R Notebook showing an embedded plot after executing a code chunk." width="600px" />
+<img src="figures/fig-rstudio-after-run-chunk.png" alt="An R Notebook showing an embedded plot after executing a code chunk." width="60%" />
 <p class="caption">
 Figure 4.3: An R Notebook showing an embedded plot after executing a code chunk.
 </p>
@@ -735,7 +739,7 @@ Figure 4.3: An R Notebook showing an embedded plot after executing a code chunk.
 <h2><span class="header-section-number">4.6</span> Running all code chunks above</h2>
 <p>Next to the “Run” button in each code chunk is a button for “Run all chunks above” (see figure below). This is useful when the code chunk you’re working on depends on calculations in earlier code chunks, and you want to evaluated those earlier code chunks prior to running the focal code chunk.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-78"></span>
-<img src="figures/fig-code-chunk-runall.png" alt="Use the 'Run all chunks above' button to evaluate all previous code chunks." width="600px" />
+<img src="figures/fig-code-chunk-runall.png" alt="Use the 'Run all chunks above' button to evaluate all previous code chunks." width="60%" />
 <p class="caption">
 Figure 4.4: Use the ‘Run all chunks above’ button to evaluate all previous code chunks.
 </p>
@@ -745,7 +749,7 @@ Figure 4.4: Use the ‘Run all chunks above’ button to evaluate all previous c
 <h2><span class="header-section-number">4.7</span> “Knitting an” R Markdown to HTML</h2>
 <p>Save your R Notebook as <code>first_rnotebook.Rmd</code> (RStudio will automatically add the <code>.Rmd</code> extension so you don’t need to type it). You can generate an HTML version of your notebook by clicking the “Preview” menu on the Notebook taskbar and then choosing “Knit to HTML” (see image below).</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-79"></span>
-<img src="figures/fig-rstudio-knit-to-html.png" alt="Use the 'Knit to HTML' menu to generate HTML output from your R Notebook" width="600px" />
+<img src="figures/fig-rstudio-knit-to-html.png" alt="Use the 'Knit to HTML' menu to generate HTML output from your R Notebook" width="60%" />
 <p class="caption">
 Figure 4.5: Use the ‘Knit to HTML’ menu to generate HTML output from your R Notebook
 </p>

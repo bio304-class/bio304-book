@@ -178,13 +178,13 @@ In the figure above we used `ggplot` and `facet_grid` to visualize logistic regr
 
 There are two ways to use `do()`. The first way is to give the expressions you evaluate in `do()` a name, in which case `do()` will store the results in a column.  The second way to use `do()` is for the expression to return a data frame.
 
-In this first example, the model fits are stored in the `fits` column. When using `do()` you can refer to the grouping using a period (`.`):
+In this first example, the model fits are stored in the `fits` column. When using `do()` you can refer to the groupings using a period (`.`):
 
 ```{r}
 grouped.models <-
   titanic %>%
   group_by(sex, pclass) %>%
-  do(fits = glm(.$survived ~ .$age, family = binomial))
+  do(fits = glm(survived ~ age, family = binomial, data = .))
 
 grouped.models
 ```
@@ -204,7 +204,9 @@ Now we illustrate the second approach to using `do()`. When no name is provided,
 ```{r}
 titanic %>%
   group_by(sex, pclass) %>%
-  do(tidy(glm(.$survived ~ .$age, family = binomial)))
+  do(tidy(glm(survived ~ age, family = binomial, data = .)))
 ```
 
 Using this approach we get a nice data frame showing the logistic regression coefficients, and associated statistics (standard error, P-values, etc) for the regression of survival on age, for each combination of sex and class.
+
+

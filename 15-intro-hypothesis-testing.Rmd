@@ -96,7 +96,7 @@ Occasionally one wishes to ask whether a sample mean, from a sample of size $n$,
 ### Sampling distribution of the mean 
 
 For a normal distribution with parameters, $N(\mu,\sigma)$, the sampling distribution of the mean is itself normally distributed, with parameters  $N(\mu,\sigma/\sqrt{n})$.  
-A reminder that the standard deviation of the sampling distribution of the mean, $\sigma/\sqrt{n},  is usually referred to as the "standard error of the mean"
+A reminder that the standard deviation of the sampling distribution of the mean, $\sigma/\sqrt{n}$,  is usually referred to as the "standard error of the mean"
 
 ### Calculating a p-value
 

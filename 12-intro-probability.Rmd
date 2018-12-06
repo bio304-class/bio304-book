@@ -107,15 +107,11 @@ Referring back to our earlier "frequentist definition", another way of thinking 
 
 ### Discrete probability distribution
 
-*Discrete probability distribution* -- the probability of each possible value of a discrete variable. Discrete probability distributions apply to categorical variables, ordinal variables, and discerete numerical variables. The total probabilities must sum to one.
+*Discrete probability distribution* -- the probability of each possible value of a discrete variable. Discrete probability distributions apply to categorical variables, ordinal variables, and discrete numerical variables. The total probabilities must sum to one.
 
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
+```{r, echo=FALSE, fig.cap="Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.", fig.width = 6, fig.height=3, fig.align='center', warning=FALSE, message=FALSE}
 library(tidyverse)
 library(cowplot)
-```
-
-
-```{r discrete_prob_distn, echo=FALSE, fig.cap="Discrete probability distributions. A) Probability distribution for a single roll of a fair 6-sided die; B) Probability distribution for the number of white balls observed in three draws, without replacement, from an urn filled with 3 white balls and 2 black balls.", fig.width = 6, fig.height=3, fig.align='center'}
 dice.outcomes <- seq(1,6)
 dice.probs <- rep(1/6, 6)
 dice <- data.frame(outcomes = dice.outcomes, probability = dice.probs)
@@ -233,7 +229,7 @@ Consider our urns and balls example again. What is the probability that you draw
 
 Probability trees are diagrams that help calculate the probabilities of combinations of events across multiple random trials.  A probability tree for the urns and balls example follows below.  
 
-```{r, echo = FALSE, out.width = "200px", fig.align = "center", fig.cap = "Probability tree for the urns and balls example", eval = TRUE, results = "show"}
+```{r, echo = FALSE, out.width = "50%", fig.align = "center", fig.cap = "Probability tree for the urns and balls example", eval = TRUE, results = "show"}
 knitr::include_graphics("./figures/fig-urns-probability-tree.png")
 ```
 

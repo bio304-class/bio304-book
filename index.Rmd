@@ -3,6 +3,7 @@ title: "Biology 304: Biological Data Analysis"
 author: "Paul M. Magwene"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+always_allow_html: yes
 output:
   bookdown::gitbook:
     highlight: haddock
@@ -15,7 +16,7 @@ output:
         family: sans
         size: 2 
       toolbar:
-        position: fixed       
+        position: fixed    
 documentclass: book
 bibliography: [bio304-refs.bib]
 biblio-style: apalike

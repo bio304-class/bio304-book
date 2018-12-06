@@ -535,5 +535,5 @@ There's very clear indication that the the sampling distribution of standard dev
 
 ### Underestimates of the standard deviation given small $n$ lead to understimates of the SE of the mean
 
-When sample sizes are small, sample estimates of the standard deviation, $s_x$, tend to underestimate the true standard deviation, $\sigma$, then it follows that sample estimates of the standard error of the mean, $SE_\overline{x} = \frac{s_x}{\sqrt{n}}$, must tend to understimate the true standard error of the mean, $SE_\mu = \frac{\sigma}{\sqrt{n}}$.
+When sample sizes are small, sample estimates of the standard deviation, $s_x$, tend to underestimate the true standard deviation, $\sigma$, then it follows that sample estimates of the standard error of the mean, $SE_{\overline{x}} = \frac{s_x}{\sqrt{n}}$, must tend to understimate the true standard error of the mean, $SE_\mu = \frac{\sigma}{\sqrt{n}}$.
 

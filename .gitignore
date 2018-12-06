@@ -4,3 +4,7 @@
 .Ruserdata
 _bookdown_files/bio304-book_cache
 _bookdown_files/bio304-book_files
+*.aux
+*.out
+*.toc
+

@@ -25,7 +25,7 @@
 <meta name="author" content="Paul M. Magwene">
 
 
-<meta name="date" content="2018-12-04">
+<meta name="date" content="2018-12-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -648,7 +648,7 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </blockquote>
 <p>The idea behind a 95% confidence interval is illustrated in the following figure:</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-409"></span>
-<img src="figures/fig-CIs.png" alt="Point estimates and confidence intervals for a theoretical statistic of interest." width="200" />
+<img src="figures/fig-CIs.png" alt="Point estimates and confidence intervals for a theoretical statistic of interest." width="60%" />
 <p class="caption">
 Figure 17.1: Point estimates and confidence intervals for a theoretical statistic of interest.
 </p>
@@ -674,7 +674,7 @@ CI_\beta = \phi_{n} \pm (z \times {SE}_{\phi,n})
 <div id="example-confidence-intervals-for-the-mean" class="section level2">
 <h2><span class="header-section-number">17.3</span> Example: Confidence intervals for the mean</h2>
 <p>To make the idea of a confidence interval more concrete, let’s consider confidence intervals for the mean of a normally distributed variable.</p>
-<p>Recall that if a variable <span class="math inline">\(X\)</span> is normally distributed in a population of interest, <span class="math inline">\(X \sim N(\mu, \sigma)\)</span>, then the sampling distribution of the mean of <span class="math inline">\(X\)</span> is also normally distributed with mean <span class="math inline">\(\mu\)</span>, and standard error <span class="math inline">\({SE}_\overline{X} = \frac{\sigma}{\sqrt{n}}\)</span>:</p>
+<p>Recall that if a variable <span class="math inline">\(X\)</span> is normally distributed in a population of interest, <span class="math inline">\(X \sim N(\mu, \sigma)\)</span>, then the sampling distribution of the mean of <span class="math inline">\(X\)</span> is also normally distributed with mean <span class="math inline">\(\mu\)</span>, and standard error <span class="math inline">\({SE}_{\overline{X}} = \frac{\sigma}{\sqrt{n}}\)</span>:</p>
 <p><span class="math display">\[
 \overline{X} \sim N \left( \mu, \frac{\sigma}{\sqrt{n}}\ \right)
 \]</span>
@@ -711,7 +711,7 @@ In our simulation we will explore how varying the value of <span class="math inl
 <div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb414-1" data-line-number="1">samples<span class="fl">.25</span> &lt;-</a>
 <a class="sourceLine" id="cb414-2" data-line-number="2"><span class="st">  </span>samples<span class="fl">.25</span> <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb414-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">z.pop =</span> (sample.mean <span class="op">-</span><span class="st"> </span>true.mean)<span class="op">/</span>pop.SE)</a></code></pre></div>
-<p>Since the sampling distribution of the mean of a normally distributed variable (<span class="math inline">\(N(\mu,\sigma )\)</span>) is itself normally distributed (<span class="math inline">\(N(\mu, SE_\overline{x})\)</span>), then the distribution of <span class="math inline">\(z = \frac{\overline{x} - \mu}{SE}\)</span> is <span class="math inline">\(N(0,1)\)</span>. This is illustrated in the figure below where we compare our simulated z-scores to the theoretical expectation:</p>
+<p>Since the sampling distribution of the mean of a normally distributed variable (<span class="math inline">\(N(\mu,\sigma)\)</span>) is itself normally distributed (<span class="math inline">\(N(\mu, SE_{\overline{X}})\)</span>), then the distribution of <span class="math inline">\(z = \frac{\overline{X} - \mu}{SE}\)</span> is <span class="math inline">\(N(0,1)\)</span>. This is illustrated in the figure below where we compare our simulated z-scores to the theoretical expectation:</p>
 <div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb415-1" data-line-number="1">SE &lt;-<span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb415-2" data-line-number="2"><span class="kw">ggplot</span>(samples<span class="fl">.25</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb415-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> z.pop, <span class="dt">y=</span>..density..), <span class="dt">bins=</span><span class="dv">50</span>) <span class="op">+</span><span class="st"> </span></a>
@@ -747,17 +747,17 @@ In our simulation we will explore how varying the value of <span class="math inl
 <h3><span class="header-section-number">17.3.3</span> Calculating a CI</h3>
 <p>If we knew the standard error of the mean for variable of interest, in order to a confidence interval we could simply look up the corresponding critical value for our percentile of interst in a table like the one above and calculate our CI as:</p>
 <p><span class="math display">\[
-CI_\overline{x} \pm \text{critical value} \times SE_\overline{x}
+\overline{X} \pm \text{critical value} \times SE_{\overline{X}}
 \]</span></p>
 <p>For example, we see that the critical value for 95% CIs is ~1.96.</p>
 </div>
 </div>
 <div id="a-problem-arises" class="section level2">
 <h2><span class="header-section-number">17.4</span> A problem arises!</h2>
-<p>If you’re a critical reader you should have noticed that calculating confidence intervals using the above formula presumes we know the standard error of the mean for the variable of interest. If we knew the standard deviation, <span class="math inline">\(\sigma\)</span>, of our variable, we could calculate this as <span class="math inline">\(SE_\overline{x} = \frac{\sigma}{\sqrt{n}}\)</span> but in general we do not know <span class="math inline">\(\sigma\)</span> either.</p>
+<p>If you’re a critical reader you should have noticed that calculating confidence intervals using the above formula presumes we know the standard error of the mean for the variable of interest. If we knew the standard deviation, <span class="math inline">\(\sigma\)</span>, of our variable, we could calculate this as <span class="math inline">\(SE_{\overline{x}} = \frac{\sigma}{\sqrt{n}}\)</span> but in general we do not know <span class="math inline">\(\sigma\)</span> either.</p>
 <p>Instead we must estimate the standard error of the mean using our sample standard deviation:</p>
 <p><span class="math display">\[
-\widehat{SE}_\overline{x} = \frac{s_x}{\sqrt{n}}
+\widehat{SE}_{\overline{x}} = \frac{s_x}{\sqrt{n}}
 \]</span></p>
 <p>This introduces another level of uncertainty and also a complication. The complication is due to the fact that for small samples, sample estimates of the standard deviation tend to be biased (smaller) relative to the true population standard deviation (see workbook Chapter 15).</p>
 <p>In the assignment for this class session you will explore how we can deal with the fact of biased estimates of standard deviations for small samples, and how it effects our calculation of confidence intervals for the mean.</p>

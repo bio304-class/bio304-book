@@ -37,8 +37,8 @@ However, rather than using variance we use sums of square deviations around the 
 
 This decomposition is represented visually in the figure below:
 
-```{r, echo = FALSE, out.width = "700px", fig.align = "center", fig.cap = "Whitock & Schluter, Fig 15.1.2 -- Illustrating the partitioning of sum of squares into $MS_{group}$ and $MS_{error}$ components. ", eval = TRUE, results = "show"}
-knitr::include_graphics("./figures/whitlock_15.1-2.jpg")
+```{r, echo = FALSE, out.width = "90%", fig.align = "center", fig.cap = "Whitock and Schluter, Fig 15.1.2 -- Illustrating the partitioning of sum of squares into $MS_{group}$ and $MS_{error}$ components. ", eval = TRUE, results = "show"}
+knitr::include_graphics("./figures/whitlock_15.1-2.png")
 ```
 
 ## Mathematical partitioning of sums of squares

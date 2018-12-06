@@ -8,11 +8,11 @@ This introductory chapter illustrates some of the tools and concepts you'll lear
 
 On April 10, 1912 the RMS Titanic left Southhampton, England headed for New York. Aboard were 2,435 passengers and 892 crew members.  Five days later, about 20 minutes before midnight, the Titanic hit an iceberg in the frigid waters about 375 miles south of New Foundland.  Within approximately two and a half hours the ship had split apart and sunk, leaving just over 700 survivors.
 
-![The Titanic](https://upload.wikimedia.org/wikipedia/commons/archive/f/fd/20120106153908%21RMS_Titanic_3.jpg)
+![The Titanic](./figures/fig-titanic.png)
 
 ## Dataset
 
-The `titanic_data.csv` file (available on the [course git repository](https://github.com/bio304-class/bio304-fall2017/raw/master/datasets/titanic_data.csv)) containers information on 1309 passengers from aboard the Titanic (CSV stands for Comma-Separated-Values, a simple plain text format for storing spreadhsheet data).  Variables in this data set include gender, age, ticketed class, the passenger's destitation, whether they survived, etc.  We'll use this data set to explore some of the demographics of the passengers who were aboard the ship, and how their relationship to whether a passenger survived or not. For a detailed description of this data set, see [this link](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt).
+The `titanic_data.csv` file (available on the [course git repository](https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/titanic_data.csv)) containers information on 1309 passengers from aboard the Titanic (CSV stands for Comma-Separated-Values, a simple plain text format for storing spreadhsheet data).  Variables in this data set include gender, age, ticketed class, the passenger's destitation, whether they survived, etc.  We'll use this data set to explore some of the demographics of the passengers who were aboard the ship, and how their relationship to whether a passenger survived or not. For a detailed description of this data set, see [this link](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3info.txt).
 
 
 We'll use this data to explore whether the saying "Women and children first!" applied on the Titanic.

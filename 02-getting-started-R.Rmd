@@ -11,7 +11,7 @@ RStudio (http://www.rstudio.com/) is an open source integrated development envir
 
 The figure below illustrates the RStudio interface, in its default configuration.  For the exercises in this chapter you'll be primarily entering commands in the "console" window. We'll review key parts of the RStudio interface in greater detail in class.
 
-```{r, echo = FALSE, out.width = "600px", fig.align = "center", fig.cap = "RStudio window with the panes labeled", results="markup"}
+```{r, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "RStudio window with the panes labeled", results="markup"}
 knitr::include_graphics("./figures/fig-rstudio-panes-labeled.png")
 ```
 
@@ -111,7 +111,7 @@ sqrt(10)  # square root
 R comes with fairly extensive documentation and a simple help system. You can access HTML versions of the R documentation under the Help tab in Rstudio.  The HTML documentation also includes information on any packages you've installed. Take a few minutes to browse through the R HTML documentation. In addition to the HTML documentation there is also a search box where you can enter a term to search on (see red arrow in figure below).
 
 
-```{r, echo = FALSE, out.width = "600px", fig.align = "center", fig.cap = "The RStudio Help tab", results="markup"}
+```{r, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "The RStudio Help tab", results="markup"}
 knitr::include_graphics("./figures/fig-rstudio-help.png")
 ```
 
@@ -338,7 +338,7 @@ The first argument to `install.packages` gives the names of the package we want 
 
 You can also install packages using a graphical dialog provided by RStudio. To do so pick the `Packages` tab in RStudio, and then click the `Install` button.  
 
-```{r, echo = FALSE, out.width = "600px", fig.align = "center", fig.cap = "The Packages tab in RStudio", results="markup"}
+```{r, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "The Packages tab in RStudio", results="markup"}
 knitr::include_graphics("./figures/fig-rstudio-packages-tab.png")
 ```
 

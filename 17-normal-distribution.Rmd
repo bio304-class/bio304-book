@@ -73,7 +73,7 @@ The normal approximation is a good approximation to patterns of variation seen i
 
 The following figure, from your texbook, shows distributions for (a) human body temperature, (b) university undergraduate brain size, and (c) numbers of abdominal bristles on Drosophila fruit flies:
 
-```{r, echo = FALSE, out.width = "90%", fig.align = "center", fig.cap = "Examples of biological variables that are nearly normal. From Whitlock & Schluter, Chap 10", results="markup"}
+```{r, echo = FALSE, out.width = "90%", fig.align = "center", fig.cap = "Examples of biological variables that are nearly normal. From Whitlock and Schluter, Chap 10", results="markup"}
 knitr::include_graphics("./figures/fig-normals-horiz.png")
 ```
 
@@ -220,13 +220,13 @@ Z_i = \frac{x_i - \mu}{\sigma}
 
 
 - For our SAT/ACT example above:
-\[
+
 \begin{align}
 Z_\text{Malaika} &= \frac{1350 - 1060}{195} = 1.49\\
 \\
 Z_\text{Jim} &= \frac{28 - 20.9}{5.6} = 1.27\\
 \end{align}
-\]
+
 In this case, Malaika's score is 1.49 standard deviation above the mean, while Jim's is 1.27. Based on this, Malaika scored better than Jim.
 
 

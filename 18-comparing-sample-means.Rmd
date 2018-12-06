@@ -23,10 +23,10 @@ A one sample t-test is appropriate when you want to compare an observed sample m
 To carry out a one sample t-test, first calculate the test statistic:
 
 \[
-t^{\star} = \frac{\overline{x} - \mu_0}{SE_\overline{x}}
+t^{\star} = \frac{\overline{x} - \mu_0}{SE_{\overline{x}}}
 \]
 
-where $\overline{x}$ is the sample mean and $SE_\overline{x}$ is the sample standard error of the mean ($SE_\overline{x} = s_x/\sqrt{n}$).  In words, $t^{\star}$ measures the difference between the observed mean, and the null hypothesis mean, in unit of standard error. 
+where $\overline{x}$ is the sample mean and $SE_{\overline{x}}$ is the sample standard error of the mean ($SE_{\overline{x}} = s_x/\sqrt{n}$).  In words, $t^{\star}$ measures the difference between the observed mean, and the null hypothesis mean, in unit of standard error. 
 
 To calculate a P-value, we compare the test statistic to the t-distribution with the appropriate degrees of freedom to calculate the probability that you'd observe a mean value at least as extreme as $\overline{x}$ if the null hypothesis was true.  For a two-tailed test this is:
 
@@ -363,6 +363,6 @@ Here is a summary table giving the test statistic and degrees of freedom for eac
 
 |          | test statistic | df|
 |:---------|:--------------:|:---:|
-|one-sample| $\frac{\overline{x}-\mu_0}{SE_\overline{x}}$ | $n-1$ |
+|one-sample| $\frac{\overline{x}-\mu_0}{SE_{\overline{x}}}$ | $n-1$ |
 |two-sample| $\frac{\overline{x}_1-\overline{x}_2}{SE_{(\overline{x}_1-\overline{x}_2})}$ | $n_1 + n_2 - 2$ |
-|paired    | $\frac{\overline{D}-0}{SE_\overline{D}}$ | $n-1$ |
+|paired    | $\frac{\overline{D}-0}{SE_{\overline{D}}}$ | $n-1$ |
