@@ -885,16 +885,16 @@ df = df_1 + df_2 = n_1 + n_2 - 2
 <a class="sourceLine" id="cb431-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb431-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(expression),</a>
 <a class="sourceLine" id="cb431-5" data-line-number="5">            <span class="dt">se =</span> <span class="kw">sd</span>(expression)<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
-<a class="sourceLine" id="cb431-6" data-line-number="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">pt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
+<a class="sourceLine" id="cb431-6" data-line-number="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
 <a class="sourceLine" id="cb431-7" data-line-number="7">            <span class="dt">ci.low =</span> mean <span class="op">-</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se,</a>
 <a class="sourceLine" id="cb431-8" data-line-number="8">            <span class="dt">ci.hi =</span> mean <span class="op">+</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se)</a>
 <a class="sourceLine" id="cb431-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb431-10" data-line-number="10">ci.by.treatment</a>
 <a class="sourceLine" id="cb431-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb431-12" data-line-number="12"><span class="co">#&gt;   treatment  mean     se  tcrit ci.low ci.hi</span></a>
-<a class="sourceLine" id="cb431-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb431-14" data-line-number="14"><span class="co">#&gt; 1 X          11.1 0.3758 0.5094 10.91  11.29</span></a>
-<a class="sourceLine" id="cb431-15" data-line-number="15"><span class="co">#&gt; 2 Y          10   0.3791 0.5094  9.807 10.19</span></a></code></pre></div>
+<a class="sourceLine" id="cb431-12" data-line-number="12"><span class="co">#&gt;   treatment  mean     se tcrit ci.low ci.hi</span></a>
+<a class="sourceLine" id="cb431-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb431-14" data-line-number="14"><span class="co">#&gt; 1 X          11.1 0.3758 2.776 10.06  12.14</span></a>
+<a class="sourceLine" id="cb431-15" data-line-number="15"><span class="co">#&gt; 2 Y          10   0.3791 2.776  8.947 11.05</span></a></code></pre></div>
 <p>Here I combine the raw expression measurements and mean and confidence intervals into a single plot:</p>
 <div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1">mice.long <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb432-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> expression, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
@@ -1061,7 +1061,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["bio304-book.pdf"],
 "toc": {
 "collapse": "section"
 },

@@ -264,7 +264,7 @@ ci.by.treatment <-
   group_by(treatment) %>%
   summarize(mean = mean(expression),
             se = sd(expression)/sqrt(n()),
-            tcrit = abs(pt(0.025, df = n() - 1)),
+            tcrit = abs(qt(0.025, df = n() - 1)),
             ci.low = mean - tcrit * se,
             ci.hi = mean + tcrit * se)
 

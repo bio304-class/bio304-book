@@ -11327,16 +11327,16 @@ illustrated bloew
 \StringTok{  }\KeywordTok{group_by}\NormalTok{(treatment) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{mean =} \KeywordTok{mean}\NormalTok{(expression),}
             \DataTypeTok{se =} \KeywordTok{sd}\NormalTok{(expression)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{n}\NormalTok{()),}
-            \DataTypeTok{tcrit =} \KeywordTok{abs}\NormalTok{(}\KeywordTok{pt}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\DataTypeTok{df =} \KeywordTok{n}\NormalTok{() }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{)),}
+            \DataTypeTok{tcrit =} \KeywordTok{abs}\NormalTok{(}\KeywordTok{qt}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\DataTypeTok{df =} \KeywordTok{n}\NormalTok{() }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{)),}
             \DataTypeTok{ci.low =}\NormalTok{ mean }\OperatorTok{-}\StringTok{ }\NormalTok{tcrit }\OperatorTok{*}\StringTok{ }\NormalTok{se,}
             \DataTypeTok{ci.hi =}\NormalTok{ mean }\OperatorTok{+}\StringTok{ }\NormalTok{tcrit }\OperatorTok{*}\StringTok{ }\NormalTok{se)}
 
 \NormalTok{ci.by.treatment}
 \CommentTok{#> # A tibble: 2 x 6}
-\CommentTok{#>   treatment  mean     se  tcrit ci.low ci.hi}
-\CommentTok{#>   <chr>     <dbl>  <dbl>  <dbl>  <dbl> <dbl>}
-\CommentTok{#> 1 X          11.1 0.3758 0.5094 10.91  11.29}
-\CommentTok{#> 2 Y          10   0.3791 0.5094  9.807 10.19}
+\CommentTok{#>   treatment  mean     se tcrit ci.low ci.hi}
+\CommentTok{#>   <chr>     <dbl>  <dbl> <dbl>  <dbl> <dbl>}
+\CommentTok{#> 1 X          11.1 0.3758 2.776 10.06  12.14}
+\CommentTok{#> 2 Y          10   0.3791 2.776  8.947 11.05}
 \end{Highlighting}
 \end{Shaded}
 
