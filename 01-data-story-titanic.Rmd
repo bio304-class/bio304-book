@@ -280,7 +280,7 @@ In both the violin and box plots we see a hint ant an  interesting pattern.  Whe
 We can get more sophisticated by fitting a formal model to our data. Here we use a technique called logistic regression to model the probability of survival as a function of age, broken down for female and male passengers separately.
 
 
-```{r, fig.width=7, fig.height = 4}
+```{r, fig.width=7, fig.height = 4, warning=FALSE, message=FALSE}
 titanic |>
   filter(!is.na(age)) |>
   ggplot(aes(x = age, y = survived, color = sex)) + 
@@ -330,7 +330,7 @@ ggplot(titanic) +
 As a final example, let generate a visualization and model to jointly consider how sex, age, and class affected survival on the Titanic.  Here we treat both sex and passenger class as faceting variables, fitting six different logistic regression models (all combinations of the three classes and two sexes). 
 
 
-```{r, fig.width=9, fig.height = 6}
+```{r, fig.width=9, fig.height = 6, warning=FALSE, message=FALSE}
 titanic |>
   filter(!is.na(age)) |>
   ggplot(aes(x = age, y = survived, color = sex)) + 
