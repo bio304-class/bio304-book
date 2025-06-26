@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html >
-
+<html lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Biology 304: Biological Data Analysis</title>
-  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 19 Comparing sample means | Biology 304: Biological Data Analysis</title>
+  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Biology 304: Biological Data Analysis" />
+  <meta property="og:title" content="Chapter 19 Comparing sample means | Biology 304: Biological Data Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Hands-on materials for Bio 304 course at Duke University." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Biology 304: Biological Data Analysis" />
+  <meta name="twitter:title" content="Chapter 19 Comparing sample means | Biology 304: Biological Data Analysis" />
   
   <meta name="twitter:description" content="Hands-on materials for Bio 304 course at Duke University." />
   
 
-<meta name="author" content="Paul M. Magwene">
+<meta name="author" content="Paul M. Magwene" />
 
 
-<meta name="date" content="2018-12-06">
+<meta name="date" content="2025-06-25" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="normal-distributions.html">
-<link rel="next" href="analysis-of-variance.html">
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="prev" href="normal-distributions.html"/>
+<link rel="next" href="analysis-of-variance.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -47,36 +48,39 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
-<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
-<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/rglWebGL-binding-1.3.18/rglWebGL.js"></script>
+<link href="libs/rglwidgetClass-1.3.18/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-1.3.18/rglClass.min.js"></script>
+<script src="libs/CanvasMatrix4-1.3.18/CanvasMatrix.min.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -85,9 +89,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; } /* Alert */
 code span.an { color: #008000; } /* Annotation */
@@ -115,6 +119,11 @@ code span.vs { color: #008080; } /* VerbatimString */
 code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -128,59 +137,72 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#how-to-use-these-lecture-notes"><i class="fa fa-check"></i><b>1.1</b> How to use these lecture notes</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a><ul>
+<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#background"><i class="fa fa-check"></i><b>2.1</b> Background</a></li>
 <li class="chapter" data-level="2.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#dataset"><i class="fa fa-check"></i><b>2.2</b> Dataset</a></li>
 <li class="chapter" data-level="2.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#libraries"><i class="fa fa-check"></i><b>2.3</b> Libraries</a></li>
 <li class="chapter" data-level="2.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#read-data"><i class="fa fa-check"></i><b>2.4</b> Read data</a></li>
-<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a><ul>
+<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a>
+<ul>
 <li class="chapter" data-level="2.5.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#simple-data-wrangling"><i class="fa fa-check"></i><b>2.5.1</b> Simple data wrangling</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a><ul>
+<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a>
+<ul>
 <li class="chapter" data-level="2.6.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-many-people-survived"><i class="fa fa-check"></i><b>2.6.1</b> How many people survived?</a></li>
 <li class="chapter" data-level="2.6.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#women-first"><i class="fa fa-check"></i><b>2.6.2</b> Women first?</a></li>
 <li class="chapter" data-level="2.6.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#a-bar-plot-using-proportions-rather-than-counts"><i class="fa fa-check"></i><b>2.6.3</b> A bar plot using proportions rather than counts</a></li>
 <li class="chapter" data-level="2.6.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#mosaic-plots"><i class="fa fa-check"></i><b>2.6.4</b> Mosaic plots</a></li>
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#passenger-ages"><i class="fa fa-check"></i><b>2.7</b> Passenger ages</a></li>
-<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a><ul>
+<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a>
+<ul>
 <li class="chapter" data-level="2.8.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#strip-charts"><i class="fa fa-check"></i><b>2.8.1</b> Strip charts</a></li>
 <li class="chapter" data-level="2.8.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#box-plots"><i class="fa fa-check"></i><b>2.8.2</b> Box plots</a></li>
 <li class="chapter" data-level="2.8.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#fitting-a-model-relating-survival-to-age-and-sex"><i class="fa fa-check"></i><b>2.8.3</b> Fitting a model relating survival to age and sex</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a><ul>
+<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a>
+<ul>
 <li class="chapter" data-level="2.9.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#combining-sex-and-class"><i class="fa fa-check"></i><b>2.9.1</b> Combining Sex and Class</a></li>
 <li class="chapter" data-level="2.9.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#extending-the-logistic-regression-model-to-consider-class-age-sex-and-survival"><i class="fa fa-check"></i><b>2.9.2</b> Extending the logistic regression model to consider class, age, sex, and survival</a></li>
 </ul></li>
 <li class="chapter" data-level="2.10" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#conclusion"><i class="fa fa-check"></i><b>2.10</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a><ul>
+<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-r"><i class="fa fa-check"></i><b>3.1</b> What is R?</a></li>
 <li class="chapter" data-level="3.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-rstudio"><i class="fa fa-check"></i><b>3.2</b> What is RStudio?</a></li>
 <li class="chapter" data-level="3.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#entering-commands-in-the-console"><i class="fa fa-check"></i><b>3.3</b> Entering commands in the console</a></li>
 <li class="chapter" data-level="3.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#comments"><i class="fa fa-check"></i><b>3.4</b> Comments</a></li>
-<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a><ul>
+<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#common-mathematical-functions"><i class="fa fa-check"></i><b>3.5.1</b> Common mathematical functions</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a><ul>
+<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-help-from-the-console"><i class="fa fa-check"></i><b>3.6.1</b> Getting help from the console</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a><ul>
+<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#valid-variable-names"><i class="fa fa-check"></i><b>3.7.1</b> Valid variable names</a></li>
 </ul></li>
 <li class="chapter" data-level="3.8" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#data-types"><i class="fa fa-check"></i><b>3.8</b> Data types</a></li>
-<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a><ul>
+<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-operators"><i class="fa fa-check"></i><b>3.9.1</b> Logical operators</a></li>
 </ul></li>
-<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a><ul>
+<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a>
+<ul>
 <li class="chapter" data-level="3.10.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#joining-strings"><i class="fa fa-check"></i><b>3.10.1</b> Joining strings</a></li>
 <li class="chapter" data-level="3.10.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#splitting-strings"><i class="fa fa-check"></i><b>3.10.2</b> Splitting strings</a></li>
 <li class="chapter" data-level="3.10.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#substrings"><i class="fa fa-check"></i><b>3.10.3</b> Substrings</a></li>
 </ul></li>
-<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a><ul>
+<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a>
+<ul>
 <li class="chapter" data-level="3.11.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-console"><i class="fa fa-check"></i><b>3.11.1</b> Installing packages from the console</a></li>
 <li class="chapter" data-level="3.11.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#install-the-tidyverse-package"><i class="fa fa-check"></i><b>3.11.2</b> Install the tidyverse package</a></li>
 <li class="chapter" data-level="3.11.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-rstudio-dialog"><i class="fa fa-check"></i><b>3.11.3</b> Installing packages from the RStudio dialog</a></li>
@@ -194,11 +216,13 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="3.17" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#histograms"><i class="fa fa-check"></i><b>3.17</b> Histograms</a></li>
 <li class="chapter" data-level="3.18" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#scatter-plots"><i class="fa fa-check"></i><b>3.18</b> Scatter plots</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a><ul>
+<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#r-notebooks"><i class="fa fa-check"></i><b>4.1</b> R Notebooks</a></li>
 <li class="chapter" data-level="4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#creating-an-r-notebook"><i class="fa fa-check"></i><b>4.2</b> Creating an R Notebook</a></li>
 <li class="chapter" data-level="4.3" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#the-default-r-notebook-template"><i class="fa fa-check"></i><b>4.3</b> The default R Notebook template</a></li>
-<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a><ul>
+<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#non-code-blocks"><i class="fa fa-check"></i><b>4.4.1</b> Non-code blocks</a></li>
 <li class="chapter" data-level="4.4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-blocks"><i class="fa fa-check"></i><b>4.4.2</b> Code blocks</a></li>
 </ul></li>
@@ -207,8 +231,10 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="4.7" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#knitting-an-r-markdown-to-html"><i class="fa fa-check"></i><b>4.7</b> “Knitting an” R Markdown to HTML</a></li>
 <li class="chapter" data-level="4.8" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#sharing-your-reproducible-r-notebook"><i class="fa fa-check"></i><b>4.8</b> Sharing your reproducible R Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a><ul>
-<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a><ul>
+<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-arithmetic"><i class="fa fa-check"></i><b>5.1.1</b> Vector Arithmetic</a></li>
 <li class="chapter" data-level="5.1.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-recycling"><i class="fa fa-check"></i><b>5.1.2</b> Vector recycling</a></li>
 <li class="chapter" data-level="5.1.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#simple-statistical-functions-for-numeric-vectors"><i class="fa fa-check"></i><b>5.1.3</b> Simple statistical functions for numeric vectors</a></li>
@@ -219,7 +245,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.1.8" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors-from-regular-sequences"><i class="fa fa-check"></i><b>5.1.8</b> Vectors from regular sequences</a></li>
 <li class="chapter" data-level="5.1.9" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#additional-functions-for-working-with-vectors"><i class="fa fa-check"></i><b>5.1.9</b> Additional functions for working with vectors</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a><ul>
+<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-type-of-lists"><i class="fa fa-check"></i><b>5.2.1</b> Length and type of lists</a></li>
 <li class="chapter" data-level="5.2.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-lists"><i class="fa fa-check"></i><b>5.2.2</b> Indexing lists</a></li>
 <li class="chapter" data-level="5.2.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#naming-list-elements"><i class="fa fa-check"></i><b>5.2.3</b> Naming list elements</a></li>
@@ -228,7 +255,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.2.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-lists"><i class="fa fa-check"></i><b>5.2.6</b> Combining lists</a></li>
 <li class="chapter" data-level="5.2.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#converting-lists-to-vectors"><i class="fa fa-check"></i><b>5.2.7</b> Converting lists to vectors</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a><ul>
+<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#creating-a-data-frame"><i class="fa fa-check"></i><b>5.3.1</b> Creating a data frame</a></li>
 <li class="chapter" data-level="5.3.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#type-and-class-for-data-frames"><i class="fa fa-check"></i><b>5.3.2</b> Type and class for data frames</a></li>
 <li class="chapter" data-level="5.3.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-dimension-for-data-frames"><i class="fa fa-check"></i><b>5.3.3</b> Length and dimension for data frames</a></li>
@@ -237,17 +265,20 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.3.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#adding-columns-to-a-data-frame"><i class="fa fa-check"></i><b>5.3.6</b> Adding columns to a data frame</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a><ul>
+<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#loading-ggplot2"><i class="fa fa-check"></i><b>6.1</b> Loading ggplot2</a></li>
 <li class="chapter" data-level="6.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#example-data-set-andersons-iris-data"><i class="fa fa-check"></i><b>6.2</b> Example data set: Anderson’s Iris Data</a></li>
 <li class="chapter" data-level="6.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#template-for-single-layer-plots-in-ggplot2"><i class="fa fa-check"></i><b>6.3</b> Template for single layer plots in ggplot2</a></li>
 <li class="chapter" data-level="6.4" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#an-aside-about-function-arguments"><i class="fa fa-check"></i><b>6.4</b> An aside about function arguments</a></li>
-<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a><ul>
+<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#jittering-data"><i class="fa fa-check"></i><b>6.5.1</b> Jittering data</a></li>
 <li class="chapter" data-level="6.5.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-categorical-information"><i class="fa fa-check"></i><b>6.5.2</b> Adding categorical information</a></li>
 <li class="chapter" data-level="6.5.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#rotating-plot-coordinates"><i class="fa fa-check"></i><b>6.5.3</b> Rotating plot coordinates</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a><ul>
+<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a>
+<ul>
 <li class="chapter" data-level="6.6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#variations-on-histograms-when-considering-categorical-data"><i class="fa fa-check"></i><b>6.6.1</b> Variations on histograms when considering categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#faceting-to-depict-categorical-information"><i class="fa fa-check"></i><b>6.7</b> Faceting to depict categorical information</a></li>
@@ -255,19 +286,23 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="6.9" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-or-beanplot"><i class="fa fa-check"></i><b>6.9</b> Violin or Beanplot</a></li>
 <li class="chapter" data-level="6.10" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplots"><i class="fa fa-check"></i><b>6.10</b> Boxplots</a></li>
 <li class="chapter" data-level="6.11" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#building-complex-visualizations-with-layers"><i class="fa fa-check"></i><b>6.11</b> Building complex visualizations with layers</a></li>
-<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a><ul>
+<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a>
+<ul>
 <li class="chapter" data-level="6.12.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplot-plus-strip-plot"><i class="fa fa-check"></i><b>6.12.1</b> Boxplot plus strip plot</a></li>
 <li class="chapter" data-level="6.12.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#setting-shared-aesthetics"><i class="fa fa-check"></i><b>6.12.2</b> Setting shared aesthetics</a></li>
 </ul></li>
-<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a><ul>
+<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a>
+<ul>
 <li class="chapter" data-level="6.13.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-plot-plus-strip-plot"><i class="fa fa-check"></i><b>6.13.1</b> Violin plot plus strip plot</a></li>
 </ul></li>
 <li class="chapter" data-level="6.14" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-titles-and-tweaking-axis-labels"><i class="fa fa-check"></i><b>6.14</b> Adding titles and tweaking axis labels</a></li>
-<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a><ul>
+<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a>
+<ul>
 <li class="chapter" data-level="6.15.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#further-customization-with-ggplot2theme"><i class="fa fa-check"></i><b>6.15.1</b> Further customization with <code>ggplot2::theme</code></a></li>
 </ul></li>
 <li class="chapter" data-level="6.16" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#other-aspects-of-ggplots-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.16</b> Other aspects of ggplots can be assigned to variables</a></li>
-<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a><ul>
+<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a>
+<ul>
 <li class="chapter" data-level="6.17.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#scatter-plots-1"><i class="fa fa-check"></i><b>6.17.1</b> Scatter plots</a></li>
 <li class="chapter" data-level="6.17.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-a-trend-line-to-a-scatter-plot"><i class="fa fa-check"></i><b>6.17.2</b> Adding a trend line to a scatter plot</a></li>
 </ul></li>
@@ -277,15 +312,18 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="6.21" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#d-bin-and-hex-plots"><i class="fa fa-check"></i><b>6.21</b> 2D bin and hex plots</a></li>
 <li class="chapter" data-level="6.22" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#the-cowplot-package"><i class="fa fa-check"></i><b>6.22</b> The <code>cowplot</code> package</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a><ul>
+<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#libraries-1"><i class="fa fa-check"></i><b>7.1</b> Libraries</a></li>
-<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a><ul>
+<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a>
+<ul>
 <li class="chapter" data-level="7.2.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#example-data-nc-births"><i class="fa fa-check"></i><b>7.2.1</b> Example data: NC Births</a></li>
 <li class="chapter" data-level="7.2.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-excel-files"><i class="fa fa-check"></i><b>7.2.2</b> Reading Excel files</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#a-note-on-tibbles"><i class="fa fa-check"></i><b>7.3</b> A note on “tibbles”</a></li>
 <li class="chapter" data-level="7.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#data-filtering-and-transformation-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Data filtering and transformation with <code>dplyr</code></a></li>
-<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a><ul>
+<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a>
+<ul>
 <li class="chapter" data-level="7.5.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>7.5.1</b> <code>select</code></a></li>
 <li class="chapter" data-level="7.5.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>7.5.2</b> <code>filter</code></a></li>
 <li class="chapter" data-level="7.5.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>7.5.3</b> <code>mutate</code></a></li>
@@ -296,7 +334,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="7.5.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#scoped-variants-of-mutate-and-summarize"><i class="fa fa-check"></i><b>7.5.8</b> Scoped variants of <code>mutate</code> and <code>summarize</code></a></li>
 <li class="chapter" data-level="7.5.9" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-summarize-with-grouping-aesthetics-in-ggplot2"><i class="fa fa-check"></i><b>7.5.9</b> Combining summarize with grouping aesthetics in <code>ggplot2</code></a></li>
 </ul></li>
-<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a><ul>
+<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a>
+<ul>
 <li class="chapter" data-level="7.6.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#install-and-load-magrittr"><i class="fa fa-check"></i><b>7.6.1</b> Install and load <code>magrittr</code></a></li>
 <li class="chapter" data-level="7.6.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-basic-pipe-operator"><i class="fa fa-check"></i><b>7.6.2</b> The basic pipe operator</a></li>
 <li class="chapter" data-level="7.6.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#an-example-without-pipes"><i class="fa fa-check"></i><b>7.6.3</b> An example without pipes</a></li>
@@ -307,16 +346,19 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="7.6.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-exposition-pipe-operator"><i class="fa fa-check"></i><b>7.6.8</b> The exposition pipe operator</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a><ul>
+<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#libraries-2"><i class="fa fa-check"></i><b>8.1</b> Libraries</a></li>
 <li class="chapter" data-level="8.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#data"><i class="fa fa-check"></i><b>8.2</b> Data</a></li>
 <li class="chapter" data-level="8.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#renaming-data-frame-columms"><i class="fa fa-check"></i><b>8.3</b> Renaming data frame columms</a></li>
-<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a><ul>
+<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a>
+<ul>
 <li class="chapter" data-level="8.4.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-all-empty-columns"><i class="fa fa-check"></i><b>8.4.1</b> Finding all empty columns</a></li>
 <li class="chapter" data-level="8.4.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-columns-by-matching-names"><i class="fa fa-check"></i><b>8.4.2</b> Dropping columns by matching names</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#merging-data-frames"><i class="fa fa-check"></i><b>8.5</b> Merging data frames</a></li>
-<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a><ul>
+<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a>
+<ul>
 <li class="chapter" data-level="8.6.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#wide-to-long-conversions-using-tidyrgather"><i class="fa fa-check"></i><b>8.6.1</b> Wide to long conversions using <code>tidyr::gather</code></a></li>
 <li class="chapter" data-level="8.6.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#extracting-information-from-combined-variables-using-tidyrextract"><i class="fa fa-check"></i><b>8.6.2</b> Extracting information from combined variables using <code>tidyr::extract</code></a></li>
 <li class="chapter" data-level="8.6.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#subsetting-rows"><i class="fa fa-check"></i><b>8.6.3</b> Subsetting rows</a></li>
@@ -324,33 +366,40 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="8.6.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#combining-data-frames"><i class="fa fa-check"></i><b>8.6.5</b> Combining data frames</a></li>
 <li class="chapter" data-level="8.6.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#sorting-data-frame-rows"><i class="fa fa-check"></i><b>8.6.6</b> Sorting data frame rows</a></li>
 </ul></li>
-<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a><ul>
+<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a>
+<ul>
 <li class="chapter" data-level="8.7.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#visualizing-gene-expression-time-series"><i class="fa fa-check"></i><b>8.7.1</b> Visualizing gene expression time series</a></li>
 <li class="chapter" data-level="8.7.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-the-most-variable-genes"><i class="fa fa-check"></i><b>8.7.2</b> Finding the most variable genes</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a><ul>
+<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#libraries-3"><i class="fa fa-check"></i><b>9.1</b> Libraries</a></li>
 <li class="chapter" data-level="9.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#data-1"><i class="fa fa-check"></i><b>9.2</b> Data</a></li>
-<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a><ul>
+<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a>
+<ul>
 <li class="chapter" data-level="9.3.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#better-color-schemes-with-rcolorbrewer"><i class="fa fa-check"></i><b>9.3.1</b> Better color schemes with RColorBrewer</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#looking-for-patterns-using-sorted-data-and-heat-maps"><i class="fa fa-check"></i><b>9.3.2</b> Looking for patterns using sorted data and heat maps</a></li>
 </ul></li>
 <li class="chapter" data-level="9.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#long-to-wide-conversion-using-tidyrspread"><i class="fa fa-check"></i><b>9.4</b> Long-to-wide conversion using <code>tidyr::spread</code></a></li>
-<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a><ul>
+<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a>
+<ul>
 <li class="chapter" data-level="9.5.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#large-scale-patterns-of-correlations"><i class="fa fa-check"></i><b>9.5.1</b> Large scale patterns of correlations</a></li>
 <li class="chapter" data-level="9.5.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#adding-new-columns-and-combining-filtered-data-frames"><i class="fa fa-check"></i><b>9.5.2</b> Adding new columns and combining filtered data frames</a></li>
 <li class="chapter" data-level="9.5.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-heat-mapped-sorted-by-correlations"><i class="fa fa-check"></i><b>9.5.3</b> A heat mapped sorted by correlations</a></li>
 <li class="chapter" data-level="9.5.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-fancy-figure"><i class="fa fa-check"></i><b>9.5.4</b> A “fancy” figure</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html"><i class="fa fa-check"></i><b>10</b> Functions and control flow statements</a><ul>
-<li class="chapter" data-level="10.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-your-own-functions"><i class="fa fa-check"></i><b>10.1</b> Writing your own functions</a><ul>
+<li class="chapter" data-level="10" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html"><i class="fa fa-check"></i><b>10</b> Functions and control flow statements</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-your-own-functions"><i class="fa fa-check"></i><b>10.1</b> Writing your own functions</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#function-arguments"><i class="fa fa-check"></i><b>10.1.1</b> Function arguments</a></li>
 <li class="chapter" data-level="10.1.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-functions-with-optional-arguments"><i class="fa fa-check"></i><b>10.1.2</b> Writing functions with optional arguments</a></li>
 <li class="chapter" data-level="10.1.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#putting-r-functions-in-scripts"><i class="fa fa-check"></i><b>10.1.3</b> Putting R functions in Scripts</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#control-flow-statements"><i class="fa fa-check"></i><b>10.2</b> Control flow statements</a><ul>
+<li class="chapter" data-level="10.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#control-flow-statements"><i class="fa fa-check"></i><b>10.2</b> Control flow statements</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#if-and-if-else-statements"><i class="fa fa-check"></i><b>10.2.1</b> <code>if</code> and <code>if-else</code> statements</a></li>
 <li class="chapter" data-level="10.2.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#for-loops"><i class="fa fa-check"></i><b>10.2.2</b> for loops</a></li>
 <li class="chapter" data-level="10.2.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#break-statement"><i class="fa fa-check"></i><b>10.2.3</b> <code>break</code> statement</a></li>
@@ -359,7 +408,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="10.2.6" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#while-statements"><i class="fa fa-check"></i><b>10.2.6</b> while statements</a></li>
 <li class="chapter" data-level="10.2.7" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#ifelse"><i class="fa fa-check"></i><b>10.2.7</b> <code>ifelse</code></a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-and-related-tools"><i class="fa fa-check"></i><b>10.3</b> <code>map</code> and related tools</a><ul>
+<li class="chapter" data-level="10.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-and-related-tools"><i class="fa fa-check"></i><b>10.3</b> <code>map</code> and related tools</a>
+<ul>
 <li class="chapter" data-level="10.3.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#basic-map"><i class="fa fa-check"></i><b>10.3.1</b> basic <code>map</code></a></li>
 <li class="chapter" data-level="10.3.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map_if-and-map_at"><i class="fa fa-check"></i><b>10.3.2</b> <code>map_if</code> and <code>map_at</code></a></li>
 <li class="chapter" data-level="10.3.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#mapping-in-parallel-using-map2"><i class="fa fa-check"></i><b>10.3.3</b> mapping in parallel using <code>map2</code></a></li>
@@ -368,95 +418,117 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </ul></li>
 <li class="chapter" data-level="11" data-path="frequency-distributions-and-descriptive-statistics.html"><a href="frequency-distributions-and-descriptive-statistics.html"><i class="fa fa-check"></i><b>11</b> Frequency Distributions and Descriptive Statistics</a></li>
 <li class="chapter" data-level="12" data-path="joint-frequency-distributions-and-measures-of-association.html"><a href="joint-frequency-distributions-and-measures-of-association.html"><i class="fa fa-check"></i><b>12</b> Joint Frequency Distributions and Measures of Association</a></li>
-<li class="chapter" data-level="13" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html"><i class="fa fa-check"></i><b>13</b> Introduction to Probability</a><ul>
-<li class="chapter" data-level="13.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#terms"><i class="fa fa-check"></i><b>13.1</b> Terms</a><ul>
+<li class="chapter" data-level="13" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html"><i class="fa fa-check"></i><b>13</b> Introduction to Probability</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#terms"><i class="fa fa-check"></i><b>13.1</b> Terms</a>
+<ul>
 <li class="chapter" data-level="13.1.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-of-random-trials-outcomes-and-events"><i class="fa fa-check"></i><b>13.1.1</b> Examples of random trials, outcomes, and events</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#frequentist-definition-of-probability"><i class="fa fa-check"></i><b>13.2</b> Frequentist definition of probability</a><ul>
+<li class="chapter" data-level="13.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#frequentist-definition-of-probability"><i class="fa fa-check"></i><b>13.2</b> Frequentist definition of probability</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-probability"><i class="fa fa-check"></i><b>13.2.1</b> Examples: Probability</a></li>
 </ul></li>
-<li class="chapter" data-level="13.3" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-distribution"><i class="fa fa-check"></i><b>13.3</b> Probability distribution</a><ul>
+<li class="chapter" data-level="13.3" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-distribution"><i class="fa fa-check"></i><b>13.3</b> Probability distribution</a>
+<ul>
 <li class="chapter" data-level="13.3.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#discrete-probability-distribution"><i class="fa fa-check"></i><b>13.3.1</b> Discrete probability distribution</a></li>
 <li class="chapter" data-level="13.3.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#continuous-probability-distribution"><i class="fa fa-check"></i><b>13.3.2</b> Continuous probability distribution</a></li>
 </ul></li>
-<li class="chapter" data-level="13.4" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4</b> Mutually exclusive events</a><ul>
+<li class="chapter" data-level="13.4" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4</b> Mutually exclusive events</a>
+<ul>
 <li class="chapter" data-level="13.4.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#addition-rule-mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4.1</b> Addition rule, mutually exclusive events</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#independence"><i class="fa fa-check"></i><b>13.5</b> Independence</a><ul>
+<li class="chapter" data-level="13.5" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#independence"><i class="fa fa-check"></i><b>13.5</b> Independence</a>
+<ul>
 <li class="chapter" data-level="13.5.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#multiplication-rule-independent-events"><i class="fa fa-check"></i><b>13.5.1</b> Multiplication rule, independent events</a></li>
 </ul></li>
 <li class="chapter" data-level="13.6" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-addition-rule"><i class="fa fa-check"></i><b>13.6</b> General addition rule</a></li>
-<li class="chapter" data-level="13.7" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#conditional-probability"><i class="fa fa-check"></i><b>13.7</b> Conditional probability</a><ul>
+<li class="chapter" data-level="13.7" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#conditional-probability"><i class="fa fa-check"></i><b>13.7</b> Conditional probability</a>
+<ul>
 <li class="chapter" data-level="13.7.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-conditional-probability"><i class="fa fa-check"></i><b>13.7.1</b> Example: Conditional probability</a></li>
 </ul></li>
-<li class="chapter" data-level="13.8" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-multiplication-rule"><i class="fa fa-check"></i><b>13.8</b> General multiplication rule</a><ul>
+<li class="chapter" data-level="13.8" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-multiplication-rule"><i class="fa fa-check"></i><b>13.8</b> General multiplication rule</a>
+<ul>
 <li class="chapter" data-level="13.8.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-general-multiplication-rule"><i class="fa fa-check"></i><b>13.8.1</b> Example: General multiplication rule</a></li>
 </ul></li>
 <li class="chapter" data-level="13.9" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-trees"><i class="fa fa-check"></i><b>13.9</b> Probability trees</a></li>
 <li class="chapter" data-level="13.10" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#law-of-total-probability"><i class="fa fa-check"></i><b>13.10</b> Law of total probability</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions, Part I</a><ul>
+<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions, Part I</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#libraries-4"><i class="fa fa-check"></i><b>14.1</b> Libraries</a></li>
-<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a><ul>
+<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a>
+<ul>
 <li class="chapter" data-level="14.2.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-1"><i class="fa fa-check"></i><b>14.2.1</b> Experiment 1</a></li>
 <li class="chapter" data-level="14.2.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-2"><i class="fa fa-check"></i><b>14.2.2</b> Experiment 2</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a><ul>
+<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a>
+<ul>
 <li class="chapter" data-level="14.3.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#binomial-distribution"><i class="fa fa-check"></i><b>14.3.1</b> Binomial distribution</a></li>
 <li class="chapter" data-level="14.3.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#sampling-from-the-binomial-distribution-in-r"><i class="fa fa-check"></i><b>14.3.2</b> Sampling from the binomial distribution in R</a></li>
 </ul></li>
 <li class="chapter" data-level="14.4" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#distribution-of-estimates-of-the-proportion"><i class="fa fa-check"></i><b>14.4</b> Distribution of estimates of the proportion</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html"><i class="fa fa-check"></i><b>15</b> Introduction to Sampling Distributions, Part II</a><ul>
+<li class="chapter" data-level="15" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html"><i class="fa fa-check"></i><b>15</b> Introduction to Sampling Distributions, Part II</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#libraries-5"><i class="fa fa-check"></i><b>15.1</b> Libraries</a></li>
-<li class="chapter" data-level="15.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#data-set-simulated-male-heights"><i class="fa fa-check"></i><b>15.2</b> Data set: Simulated male heights</a><ul>
+<li class="chapter" data-level="15.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#data-set-simulated-male-heights"><i class="fa fa-check"></i><b>15.2</b> Data set: Simulated male heights</a>
+<ul>
 <li class="chapter" data-level="15.2.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#properties-of-the-underlying-population"><i class="fa fa-check"></i><b>15.2.1</b> Properties of the underlying population</a></li>
 <li class="chapter" data-level="15.2.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#other-r-functions-related-to-the-normal-distribution"><i class="fa fa-check"></i><b>15.2.2</b> Other R functions related to the normal distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="15.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#seeding-the-pseudo-random-number-generator"><i class="fa fa-check"></i><b>15.3</b> Seeding the pseudo-random number generator</a></li>
-<li class="chapter" data-level="15.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#random-sampling-from-the-simulated-population"><i class="fa fa-check"></i><b>15.4</b> Random sampling from the simulated population</a><ul>
+<li class="chapter" data-level="15.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#random-sampling-from-the-simulated-population"><i class="fa fa-check"></i><b>15.4</b> Random sampling from the simulated population</a>
+<ul>
 <li class="chapter" data-level="15.4.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#another-random-sample"><i class="fa fa-check"></i><b>15.4.1</b> Another random sample</a></li>
 <li class="chapter" data-level="15.4.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulating-the-generation-of-many-random-samples"><i class="fa fa-check"></i><b>15.4.2</b> Simulating the generation of many random samples</a></li>
 <li class="chapter" data-level="15.4.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#a-function-to-estimate-statistics-of-interest-in-a-random-sample"><i class="fa fa-check"></i><b>15.4.3</b> A function to estimate statistics of interest in a random sample</a></li>
 <li class="chapter" data-level="15.4.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#generating-statistics-for-many-random-samples"><i class="fa fa-check"></i><b>15.4.4</b> Generating statistics for many random samples</a></li>
 </ul></li>
-<li class="chapter" data-level="15.5" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulated-sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>15.5</b> Simulated sampling distribution of the mean</a><ul>
+<li class="chapter" data-level="15.5" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulated-sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>15.5</b> Simulated sampling distribution of the mean</a>
+<ul>
 <li class="chapter" data-level="15.5.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#differences-between-sampling-distribution-and-samplepopulation-distributions"><i class="fa fa-check"></i><b>15.5.1</b> Differences between sampling distribution and sample/population distributions</a></li>
 <li class="chapter" data-level="15.5.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#use-sampling-distributions-to-understand-the-behavior-of-statistics-of-interest"><i class="fa fa-check"></i><b>15.5.2</b> Use sampling distributions to understand the behavior of statistics of interest</a></li>
 <li class="chapter" data-level="15.5.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distributions-for-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.3</b> Sampling distributions for different sample sizes</a></li>
 <li class="chapter" data-level="15.5.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#discussion-of-trends-for-sampling-distributions-of-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.4</b> Discussion of trends for sampling distributions of different sample sizes</a></li>
 </ul></li>
 <li class="chapter" data-level="15.6" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-the-mean"><i class="fa fa-check"></i><b>15.6</b> Standard Error of the Mean</a></li>
-<li class="chapter" data-level="15.7" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distribution-of-the-standard-deviation"><i class="fa fa-check"></i><b>15.7</b> Sampling Distribution of the Standard Deviation</a><ul>
+<li class="chapter" data-level="15.7" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distribution-of-the-standard-deviation"><i class="fa fa-check"></i><b>15.7</b> Sampling Distribution of the Standard Deviation</a>
+<ul>
 <li class="chapter" data-level="15.7.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-standard-deviations"><i class="fa fa-check"></i><b>15.7.1</b> Standard error of standard deviations</a></li>
 </ul></li>
-<li class="chapter" data-level="15.8" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#what-happens-to-the-sampling-distribution-of-the-mean-and-standard-deviation-when-our-sample-size-is-small"><i class="fa fa-check"></i><b>15.8</b> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</a><ul>
+<li class="chapter" data-level="15.8" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#what-happens-to-the-sampling-distribution-of-the-mean-and-standard-deviation-when-our-sample-size-is-small"><i class="fa fa-check"></i><b>15.8</b> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</a>
+<ul>
 <li class="chapter" data-level="15.8.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#for-small-samples-sample-standard-deviations-systematically-underestimate-the-population-standard-deviation"><i class="fa fa-check"></i><b>15.8.1</b> For small samples, sample standard deviations systematically underestimate the population standard deviation</a></li>
 <li class="chapter" data-level="15.8.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#underestimates-of-the-standard-deviation-given-small-n-lead-to-understimates-of-the-se-of-the-mean"><i class="fa fa-check"></i><b>15.8.2</b> Underestimates of the standard deviation given small <span class="math inline">\(n\)</span> lead to understimates of the SE of the mean</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html"><i class="fa fa-check"></i><b>16</b> Introduction to hypothesis testing</a><ul>
+<li class="chapter" data-level="16" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html"><i class="fa fa-check"></i><b>16</b> Introduction to hypothesis testing</a>
+<ul>
 <li class="chapter" data-level="16.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#libraries-6"><i class="fa fa-check"></i><b>16.1</b> Libraries</a></li>
-<li class="chapter" data-level="16.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i><b>16.2</b> Null and Alternative Hypotheses</a><ul>
+<li class="chapter" data-level="16.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i><b>16.2</b> Null and Alternative Hypotheses</a>
+<ul>
 <li class="chapter" data-level="16.2.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-hypotheses"><i class="fa fa-check"></i><b>16.2.1</b> Null hypotheses</a></li>
 <li class="chapter" data-level="16.2.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#alternative-hypotheses"><i class="fa fa-check"></i><b>16.2.2</b> Alternative hypotheses</a></li>
 </ul></li>
 <li class="chapter" data-level="16.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#rejecting-failing-to-reject-null-hypotheses"><i class="fa fa-check"></i><b>16.3</b> Rejecting / failing to reject null hypotheses</a></li>
 <li class="chapter" data-level="16.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#outcomes-of-hypothesis-tests"><i class="fa fa-check"></i><b>16.4</b> Outcomes of hypothesis tests</a></li>
 <li class="chapter" data-level="16.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#using-p-values-to-assess-the-strength-of-evidence-against-the-null-hypothesis"><i class="fa fa-check"></i><b>16.5</b> Using p-values to assess the strength of evidence against the null hypothesis</a></li>
-<li class="chapter" data-level="16.6" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-comparing-a-sample-mean-to-an-hypothesized-normal-distribution"><i class="fa fa-check"></i><b>16.6</b> Example: Comparing a sample mean to an hypothesized normal distribution</a><ul>
+<li class="chapter" data-level="16.6" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-comparing-a-sample-mean-to-an-hypothesized-normal-distribution"><i class="fa fa-check"></i><b>16.6</b> Example: Comparing a sample mean to an hypothesized normal distribution</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i><b>16.6.1</b> Null and alternative hypotheses</a></li>
 <li class="chapter" data-level="16.6.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>16.6.2</b> Sampling distribution of the mean</a></li>
 <li class="chapter" data-level="16.6.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value"><i class="fa fa-check"></i><b>16.6.3</b> Calculating a p-value</a></li>
 </ul></li>
-<li class="chapter" data-level="16.7" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-handedness-of-toads"><i class="fa fa-check"></i><b>16.7</b> Example: Handedness of toads</a><ul>
+<li class="chapter" data-level="16.7" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-handedness-of-toads"><i class="fa fa-check"></i><b>16.7</b> Example: Handedness of toads</a>
+<ul>
 <li class="chapter" data-level="16.7.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-2"><i class="fa fa-check"></i><b>16.7.1</b> Null and alternative hypotheses</a></li>
 <li class="chapter" data-level="16.7.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#data-2"><i class="fa fa-check"></i><b>16.7.2</b> Data</a></li>
 <li class="chapter" data-level="16.7.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-for-proportions-binomial-distribution"><i class="fa fa-check"></i><b>16.7.3</b> Sampling distribution for proportions: Binomial distribution</a></li>
 <li class="chapter" data-level="16.7.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value-for-the-binomial-test"><i class="fa fa-check"></i><b>16.7.4</b> Calculating a p-value for the binomial test</a></li>
 <li class="chapter" data-level="16.7.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#the-binom.test-function"><i class="fa fa-check"></i><b>16.7.5</b> The <code>binom.test()</code> function</a></li>
 </ul></li>
-<li class="chapter" data-level="16.8" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-measuring-the-association-between-maternal-smoking-and-premature-births"><i class="fa fa-check"></i><b>16.8</b> Example: Measuring the association between maternal smoking and premature births</a><ul>
+<li class="chapter" data-level="16.8" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-measuring-the-association-between-maternal-smoking-and-premature-births"><i class="fa fa-check"></i><b>16.8</b> Example: Measuring the association between maternal smoking and premature births</a>
+<ul>
 <li class="chapter" data-level="16.8.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-3"><i class="fa fa-check"></i><b>16.8.1</b> Null and alternative hypotheses:</a></li>
 <li class="chapter" data-level="16.8.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#contingency-table-analysis-using-the-chi2-statistic"><i class="fa fa-check"></i><b>16.8.2</b> Contingency table analysis using the <span class="math inline">\(\chi^2\)</span> statistic</a></li>
 <li class="chapter" data-level="16.8.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#chi2-distribution"><i class="fa fa-check"></i><b>16.8.3</b> <span class="math inline">\(\chi^2\)</span>-distribution</a></li>
@@ -464,68 +536,82 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="16.8.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#interpretation-of-the-chi2-test"><i class="fa fa-check"></i><b>16.8.5</b> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a><ul>
+<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a>
+<ul>
 <li class="chapter" data-level="17.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#confidence-intervals"><i class="fa fa-check"></i><b>17.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="17.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#generic-formulation-for-confidence-intervals"><i class="fa fa-check"></i><b>17.2</b> Generic formulation for confidence intervals</a></li>
-<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a><ul>
+<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a>
+<ul>
 <li class="chapter" data-level="17.3.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#simulation-of-means"><i class="fa fa-check"></i><b>17.3.1</b> Simulation of means</a></li>
 <li class="chapter" data-level="17.3.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#distance-between-sample-means-and-true-means"><i class="fa fa-check"></i><b>17.3.2</b> Distance between sample means and true means</a></li>
 <li class="chapter" data-level="17.3.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#calculating-a-ci"><i class="fa fa-check"></i><b>17.3.3</b> Calculating a CI</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a><ul>
-<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a><ul>
+<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a>
+<ul>
 <li class="chapter" data-level="18.1.1" data-path="normal-distributions.html"><a href="normal-distributions.html#notation"><i class="fa fa-check"></i><b>18.1.1</b> Notation</a></li>
 </ul></li>
-<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a><ul>
+<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a>
+<ul>
 <li class="chapter" data-level="18.2.1" data-path="normal-distributions.html"><a href="normal-distributions.html#dnorm-calculates-the-normal-pdf"><i class="fa fa-check"></i><b>18.2.1</b> <code>dnorm()</code> calculates the normal pdf</a></li>
 </ul></li>
 <li class="chapter" data-level="18.3" data-path="normal-distributions.html"><a href="normal-distributions.html#approximately-normal-distributions-are-very-common"><i class="fa fa-check"></i><b>18.3</b> Approximately normal distributions are very common</a></li>
-<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a><ul>
+<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a>
+<ul>
 <li class="chapter" data-level="18.4.1" data-path="normal-distributions.html"><a href="normal-distributions.html#example-continuous-variation-from-discrete-loci"><i class="fa fa-check"></i><b>18.4.1</b> Example: Continuous variation from discrete loci</a></li>
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="normal-distributions.html"><a href="normal-distributions.html#visualizing-normal-distributions"><i class="fa fa-check"></i><b>18.5</b> Visualizing normal distributions</a></li>
-<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a><ul>
+<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a>
+<ul>
 <li class="chapter" data-level="18.6.1" data-path="normal-distributions.html"><a href="normal-distributions.html#standardized-or-z-scores"><i class="fa fa-check"></i><b>18.6.1</b> Standardized or Z-scores</a></li>
 </ul></li>
 <li class="chapter" data-level="18.7" data-path="normal-distributions.html"><a href="normal-distributions.html#standard-normal-distribution"><i class="fa fa-check"></i><b>18.7</b> Standard normal distribution</a></li>
 <li class="chapter" data-level="18.8" data-path="normal-distributions.html"><a href="normal-distributions.html#rule"><i class="fa fa-check"></i><b>18.8</b> 88-95-99.7 Rule</a></li>
 <li class="chapter" data-level="18.9" data-path="normal-distributions.html"><a href="normal-distributions.html#percentiles"><i class="fa fa-check"></i><b>18.9</b> Percentiles</a></li>
 <li class="chapter" data-level="18.10" data-path="normal-distributions.html"><a href="normal-distributions.html#cutoff-points"><i class="fa fa-check"></i><b>18.10</b> Cutoff points</a></li>
-<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a><ul>
+<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a>
+<ul>
 <li class="chapter" data-level="18.11.1" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-histograms-to-theoretical-normals"><i class="fa fa-check"></i><b>18.11.1</b> Comparing histograms to theoretical normals</a></li>
 <li class="chapter" data-level="18.11.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-probability-plot"><i class="fa fa-check"></i><b>18.11.2</b> Normal probability plot</a></li>
 <li class="chapter" data-level="18.11.3" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-the-empirical-cdf-to-the-theoretical-cdf"><i class="fa fa-check"></i><b>18.11.3</b> Comparing the empirical CDF to the theoretical CDF</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="19" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html"><i class="fa fa-check"></i><b>19</b> Comparing sample means</a><ul>
+<li class="chapter" data-level="19" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html"><i class="fa fa-check"></i><b>19</b> Comparing sample means</a>
+<ul>
 <li class="chapter" data-level="19.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#hypothesis-test-for-the-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>19.1</b> Hypothesis test for the mean using the t-distribution</a></li>
-<li class="chapter" data-level="19.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test"><i class="fa fa-check"></i><b>19.2</b> One sample t-test</a><ul>
+<li class="chapter" data-level="19.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test"><i class="fa fa-check"></i><b>19.2</b> One sample t-test</a>
+<ul>
 <li class="chapter" data-level="19.2.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.2.1</b> One sample t-test, test statistic</a></li>
 <li class="chapter" data-level="19.2.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-one-sample-t-tests"><i class="fa fa-check"></i><b>19.2.2</b> Assumptions of one sample t-tests</a></li>
 <li class="chapter" data-level="19.2.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-gene-expression-in-mice"><i class="fa fa-check"></i><b>19.2.3</b> Example: Gene expression in mice</a></li>
 <li class="chapter" data-level="19.2.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>19.2.4</b> Confidence intervals for the mean</a></li>
 </ul></li>
 <li class="chapter" data-level="19.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-t.test-function-in-r"><i class="fa fa-check"></i><b>19.3</b> The <code>t.test</code> function in R</a></li>
-<li class="chapter" data-level="19.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test"><i class="fa fa-check"></i><b>19.4</b> Two sample t-test</a><ul>
+<li class="chapter" data-level="19.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test"><i class="fa fa-check"></i><b>19.4</b> Two sample t-test</a>
+<ul>
 <li class="chapter" data-level="19.4.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#standard-error-for-the-difference-in-means"><i class="fa fa-check"></i><b>19.4.1</b> Standard error for the difference in means</a></li>
 <li class="chapter" data-level="19.4.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.4.2</b> Two sample t-test, test statistic</a></li>
 <li class="chapter" data-level="19.4.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-two-sample-t-test"><i class="fa fa-check"></i><b>19.4.3</b> Assumptions of two sample t-test</a></li>
 <li class="chapter" data-level="19.4.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-comparing-the-effects-of-two-drugs"><i class="fa fa-check"></i><b>19.4.4</b> Example: Comparing the effects of two drugs</a></li>
 <li class="chapter" data-level="19.4.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#specifying-t.test-in-terms-of-a-formula"><i class="fa fa-check"></i><b>19.4.5</b> Specifying <code>t.test()</code> in terms of a formula</a></li>
 </ul></li>
-<li class="chapter" data-level="19.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test"><i class="fa fa-check"></i><b>19.5</b> Paired t-test</a><ul>
+<li class="chapter" data-level="19.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test"><i class="fa fa-check"></i><b>19.5</b> Paired t-test</a>
+<ul>
 <li class="chapter" data-level="19.5.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-test-statistic"><i class="fa fa-check"></i><b>19.5.1</b> Paired t-test, test statistic</a></li>
 <li class="chapter" data-level="19.5.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-paired-t-test"><i class="fa fa-check"></i><b>19.5.2</b> Assumptions of paired t-test</a></li>
 <li class="chapter" data-level="19.5.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-example"><i class="fa fa-check"></i><b>19.5.3</b> Paired t-test, example</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison"><i class="fa fa-check"></i><b>19.6</b> The fallacy of indirect comparison</a><ul>
+<li class="chapter" data-level="19.6" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison"><i class="fa fa-check"></i><b>19.6</b> The fallacy of indirect comparison</a>
+<ul>
 <li class="chapter" data-level="19.6.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#interpreting-confidence-intervals-in-light-of-two-sample-t-tests"><i class="fa fa-check"></i><b>19.6.1</b> Interpreting confidence intervals in light of two sample t-tests</a></li>
 </ul></li>
 <li class="chapter" data-level="19.7" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#summary-table-for-different-t-tests"><i class="fa fa-check"></i><b>19.7</b> Summary table for different t-tests</a></li>
 </ul></li>
-<li class="chapter" data-level="20" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>20</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="20" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>20</b> Analysis of Variance</a>
+<ul>
 <li class="chapter" data-level="20.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#hypotheses-for-anova"><i class="fa fa-check"></i><b>20.1</b> Hypotheses for ANOVA</a></li>
 <li class="chapter" data-level="20.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-assumptions"><i class="fa fa-check"></i><b>20.2</b> ANOVA, assumptions</a></li>
 <li class="chapter" data-level="20.3" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-key-idea"><i class="fa fa-check"></i><b>20.3</b> ANOVA, key idea</a></li>
@@ -534,60 +620,72 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="20.6" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-test-statistic-and-sampling-distribution"><i class="fa fa-check"></i><b>20.6</b> ANOVA test statistic and sampling distribution</a></li>
 <li class="chapter" data-level="20.7" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-tables"><i class="fa fa-check"></i><b>20.7</b> ANOVA tables</a></li>
 <li class="chapter" data-level="20.8" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#the-aov-function"><i class="fa fa-check"></i><b>20.8</b> The <code>aov()</code> function</a></li>
-<li class="chapter" data-level="20.9" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#example-circadian-rythm-data"><i class="fa fa-check"></i><b>20.9</b> Example, circadian rythm data</a><ul>
+<li class="chapter" data-level="20.9" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#example-circadian-rythm-data"><i class="fa fa-check"></i><b>20.9</b> Example, circadian rythm data</a>
+<ul>
 <li class="chapter" data-level="20.9.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-data"><i class="fa fa-check"></i><b>20.9.1</b> Visualizing the data</a></li>
 <li class="chapter" data-level="20.9.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#carrying-out-the-anova"><i class="fa fa-check"></i><b>20.9.2</b> Carrying out the ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="20.10" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-calculations-step-by-step"><i class="fa fa-check"></i><b>20.10</b> ANOVA calculations: Step-by-step</a></li>
 <li class="chapter" data-level="20.11" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-partitioning-of-sum-of-squares"><i class="fa fa-check"></i><b>20.11</b> Visualizing the partitioning of sum-of-squares</a></li>
-<li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a><ul>
+<li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a>
+<ul>
 <li class="chapter" data-level="20.12.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#tukey-kramer-test"><i class="fa fa-check"></i><b>20.12.1</b> Tukey-Kramer test</a></li>
 </ul></li>
-<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a><ul>
+<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a>
+<ul>
 <li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#estimating-repeatability-using-anova"><i class="fa fa-check"></i>Estimating Repeatability using ANOVA</a></li>
 <li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability-walking-stick-example"><i class="fa fa-check"></i>Repeatability: Walking stick example</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a><ul>
-<li class="chapter" data-level="21.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality"><i class="fa fa-check"></i><b>21.1</b> Graphical methods for detecting deviations from normality</a><ul>
+<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality"><i class="fa fa-check"></i><b>21.1</b> Graphical methods for detecting deviations from normality</a>
+<ul>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#normal-probability-plots"><i class="fa fa-check"></i>Normal probability plots</a></li>
 </ul></li>
 <li class="chapter" data-level="21.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#formal-test-of-normality"><i class="fa fa-check"></i><b>21.2</b> Formal test of normality</a></li>
 <li class="chapter" data-level="21.3" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#when-to-ignore-violations-of-assumptions"><i class="fa fa-check"></i><b>21.3</b> When to ignore violations of assumptions</a></li>
-<li class="chapter" data-level="21.4" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#data-transformations"><i class="fa fa-check"></i><b>21.4</b> Data transformations</a><ul>
+<li class="chapter" data-level="21.4" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#data-transformations"><i class="fa fa-check"></i><b>21.4</b> Data transformations</a>
+<ul>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#example-log-transformation-to-deal-with-skew"><i class="fa fa-check"></i>Example: log transformation to deal with skew</a></li>
 <li class="chapter" data-level="21.4.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#confidence-intervals-and-data-transformations"><i class="fa fa-check"></i><b>21.4.1</b> Confidence intervals and data transformations</a></li>
 </ul></li>
-<li class="chapter" data-level="21.5" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#nonparametric-tests"><i class="fa fa-check"></i><b>21.5</b> Nonparametric tests</a><ul>
+<li class="chapter" data-level="21.5" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#nonparametric-tests"><i class="fa fa-check"></i><b>21.5</b> Nonparametric tests</a>
+<ul>
 <li class="chapter" data-level="21.5.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#mann-whitney-u-test-non-parametric-alternative-to-t-test"><i class="fa fa-check"></i><b>21.5.1</b> Mann-Whitney U-test: non-parametric alternative to t-test</a></li>
 <li class="chapter" data-level="21.5.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#kruskal-wallis-test-non-parametric-alternative-to-anova"><i class="fa fa-check"></i><b>21.5.2</b> Kruskal-Wallis test: non-parametric alternative to ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 </ul></li>
-<li class="chapter" data-level="22" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html"><i class="fa fa-check"></i><b>22</b> Bivariate Linear Regression</a><ul>
+<li class="chapter" data-level="22" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html"><i class="fa fa-check"></i><b>22</b> Bivariate Linear Regression</a>
+<ul>
 <li class="chapter" data-level="22.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-terminology"><i class="fa fa-check"></i><b>22.1</b> Regression terminology</a></li>
 <li class="chapter" data-level="22.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#the-optimality-criterion-for-least-squares-regression"><i class="fa fa-check"></i><b>22.2</b> The optimality criterion for least-squares regression</a></li>
 <li class="chapter" data-level="22.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#solution-for-the-least-squares-criterion"><i class="fa fa-check"></i><b>22.3</b> Solution for the least-squares criterion</a></li>
 <li class="chapter" data-level="22.4" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#libraries-7"><i class="fa fa-check"></i><b>22.4</b> Libraries</a></li>
 <li class="chapter" data-level="22.5" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#illustrating-linear-regression-with-simulated-data"><i class="fa fa-check"></i><b>22.5</b> Illustrating linear regression with simulated data</a></li>
-<li class="chapter" data-level="22.6" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#specifying-regression-models-in-r"><i class="fa fa-check"></i><b>22.6</b> Specifying Regression Models in R</a><ul>
+<li class="chapter" data-level="22.6" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#specifying-regression-models-in-r"><i class="fa fa-check"></i><b>22.6</b> Specifying Regression Models in R</a>
+<ul>
 <li class="chapter" data-level="22.6.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#fitted-values"><i class="fa fa-check"></i><b>22.6.1</b> Fitted values</a></li>
 <li class="chapter" data-level="22.6.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#getting-the-model-coefficients"><i class="fa fa-check"></i><b>22.6.2</b> Getting the model coefficients</a></li>
 </ul></li>
 <li class="chapter" data-level="22.7" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#residuals"><i class="fa fa-check"></i><b>22.7</b> Residuals</a></li>
 <li class="chapter" data-level="22.8" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-as-sum-of-squares-decomposition"><i class="fa fa-check"></i><b>22.8</b> Regression as sum-of-squares decomposition</a></li>
 <li class="chapter" data-level="22.9" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#variance-explained-by-a-regression-model"><i class="fa fa-check"></i><b>22.9</b> Variance “explained” by a regression model</a></li>
-<li class="chapter" data-level="22.10" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broom-a-library-for-converting-model-results-into-data-frames"><i class="fa fa-check"></i><b>22.10</b> Broom: a library for converting model results into data frames</a><ul>
+<li class="chapter" data-level="22.10" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broom-a-library-for-converting-model-results-into-data-frames"><i class="fa fa-check"></i><b>22.10</b> Broom: a library for converting model results into data frames</a>
+<ul>
 <li class="chapter" data-level="22.10.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomtidy"><i class="fa fa-check"></i><b>22.10.1</b> <code>broom::tidy</code></a></li>
 <li class="chapter" data-level="22.10.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomaugment"><i class="fa fa-check"></i><b>22.10.2</b> <code>broom::augment</code></a></li>
 <li class="chapter" data-level="22.10.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomglance"><i class="fa fa-check"></i><b>22.10.3</b> <code>broom::glance</code></a></li>
 </ul></li>
 <li class="chapter" data-level="22.11" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#example-predicting-lion-age-based-on-nose-color"><i class="fa fa-check"></i><b>22.11</b> Example: Predicting lion age based on nose color</a></li>
 </ul></li>
-<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a>
+<ul>
 <li class="chapter" data-level="23.1" data-path="multiple-regression.html"><a href="multiple-regression.html#libraries-to-install"><i class="fa fa-check"></i><b>23.1</b> Libraries to install</a></li>
 <li class="chapter" data-level="23.2" data-path="multiple-regression.html"><a href="multiple-regression.html#review-of-bivariate-regression"><i class="fa fa-check"></i><b>23.2</b> Review of bivariate regression</a></li>
-<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a>
+<ul>
 <li class="chapter" data-level="23.3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#geometrical-interpretation"><i class="fa fa-check"></i><b>23.3.1</b> Geometrical interpretation</a></li>
 <li class="chapter" data-level="23.3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#coefficient-of-determination-for-multiple-regression"><i class="fa fa-check"></i><b>23.3.2</b> Coefficient of determination for multiple regression</a></li>
 </ul></li>
@@ -601,13 +699,15 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
 <li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
 </ul></li>
-<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a><ul>
+<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a>
+<ul>
 <li class="chapter" data-level="24.1" data-path="logistic-regression.html"><a href="logistic-regression.html#a-web-app-to-explore-the-logistic-regression-equation"><i class="fa fa-check"></i><b>24.1</b> A web app to explore the logistic regression equation</a></li>
 <li class="chapter" data-level="24.2" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-data-set"><i class="fa fa-check"></i><b>24.2</b> Titanic data set</a></li>
 <li class="chapter" data-level="24.3" data-path="logistic-regression.html"><a href="logistic-regression.html#subsetting-the-data"><i class="fa fa-check"></i><b>24.3</b> Subsetting the data</a></li>
 <li class="chapter" data-level="24.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-survival-as-a-function-of-age"><i class="fa fa-check"></i><b>24.4</b> Visualizing survival as a function of age</a></li>
 <li class="chapter" data-level="24.5" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-the-logistic-regression-model"><i class="fa fa-check"></i><b>24.5</b> Fitting the logistic regression model</a></li>
-<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a><ul>
+<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a>
+<ul>
 <li class="chapter" data-level="24.6.1" data-path="logistic-regression.html"><a href="logistic-regression.html#quick-and-easy-visualization"><i class="fa fa-check"></i><b>24.6.1</b> Quick and easy visualization</a></li>
 </ul></li>
 <li class="chapter" data-level="24.7" data-path="logistic-regression.html"><a href="logistic-regression.html#impact-of-sex-and-passenger-class-on-the-models"><i class="fa fa-check"></i><b>24.7</b> Impact of sex and passenger class on the models</a></li>
@@ -630,21 +730,21 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="comparing-sample-means" class="section level1">
-<h1><span class="header-section-number">Chapter 19</span> Comparing sample means</h1>
-<div id="hypothesis-test-for-the-mean-using-the-t-distribution" class="section level2">
-<h2><span class="header-section-number">19.1</span> Hypothesis test for the mean using the t-distribution</h2>
+<div id="comparing-sample-means" class="section level1 hasAnchor" number="19">
+<h1><span class="header-section-number">Chapter 19</span> Comparing sample means<a href="comparing-sample-means.html#comparing-sample-means" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="hypothesis-test-for-the-mean-using-the-t-distribution" class="section level2 hasAnchor" number="19.1">
+<h2><span class="header-section-number">19.1</span> Hypothesis test for the mean using the t-distribution<a href="comparing-sample-means.html#hypothesis-test-for-the-mean-using-the-t-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We consider three different situations for hypothesis tests regarding means.</p>
 </div>
-<div id="one-sample-t-test" class="section level2">
-<h2><span class="header-section-number">19.2</span> One sample t-test</h2>
+<div id="one-sample-t-test" class="section level2 hasAnchor" number="19.2">
+<h2><span class="header-section-number">19.2</span> One sample t-test<a href="comparing-sample-means.html#one-sample-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A one sample t-test is appropriate when you want to compare an observed sample mean to some a priori hypothesis about what the mean should be.</p>
 <ul>
 <li><span class="math inline">\(H_0\)</span>: The mean of variable <span class="math inline">\(X\)</span> equals <span class="math inline">\(\mu_0\)</span> (some a priori value for the mean)</li>
 <li><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> does not equal <span class="math inline">\(\mu_0\)</span></li>
 </ul>
-<div id="one-sample-t-test-test-statistic" class="section level3">
-<h3><span class="header-section-number">19.2.1</span> One sample t-test, test statistic</h3>
+<div id="one-sample-t-test-test-statistic" class="section level3 hasAnchor" number="19.2.1">
+<h3><span class="header-section-number">19.2.1</span> One sample t-test, test statistic<a href="comparing-sample-means.html#one-sample-t-test-test-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To carry out a one sample t-test, first calculate the test statistic:</p>
 <p><span class="math display">\[
 t^{\star} = \frac{\overline{x} - \mu_0}{SE_{\overline{x}}}
@@ -659,15 +759,15 @@ P = P(t &lt; -|t^\star|) + P(t &gt; |t^\star|)
 P = 2 \times P(t &gt; |t^\star|)
 \]</span></p>
 </div>
-<div id="assumptions-of-one-sample-t-tests" class="section level3">
-<h3><span class="header-section-number">19.2.2</span> Assumptions of one sample t-tests</h3>
+<div id="assumptions-of-one-sample-t-tests" class="section level3 hasAnchor" number="19.2.2">
+<h3><span class="header-section-number">19.2.2</span> Assumptions of one sample t-tests<a href="comparing-sample-means.html#assumptions-of-one-sample-t-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Data are randomly sampled from the population</li>
 <li>The variable of interest is approximately normally distributed</li>
 </ul>
 </div>
-<div id="example-gene-expression-in-mice" class="section level3">
-<h3><span class="header-section-number">19.2.3</span> Example: Gene expression in mice</h3>
+<div id="example-gene-expression-in-mice" class="section level3 hasAnchor" number="19.2.3">
+<h3><span class="header-section-number">19.2.3</span> Example: Gene expression in mice<a href="comparing-sample-means.html#example-gene-expression-in-mice" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You are an investigator studying the effects of various drugs on the expression of key genes that regulate apoptosis. The gene YFG1 is one such gene of interest. It has been previously established, using very sample sizes, that average expression level of the gene YFG1 in untreated (control) mice is 10 units.</p>
 <p>You treat a sample of mice with Drug X, and measure the expression of the gene YFG1 following treatment. For a sample of five mice you observe the following expression values:</p>
 <ul>
@@ -679,101 +779,100 @@ P = 2 \times P(t &gt; |t^\star|)
 <li><span class="math inline">\(H_A\)</span>: the mean expression of YFG1 does not equal 10</li>
 </ul>
 <p>It’s relatively easy to calculate the various quantities of interest needed to carry out a one sided t-test:</p>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb422-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb422-3" data-line-number="3">mu0 =<span class="st"> </span><span class="dv">10</span>  <span class="co"># mean under H0</span></a>
-<a class="sourceLine" id="cb422-4" data-line-number="4">mice<span class="fl">.1</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1 =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb422-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb422-6" data-line-number="6">YFG1.tstats &lt;-</a>
-<a class="sourceLine" id="cb422-7" data-line-number="7"><span class="st">  </span>mice<span class="fl">.1</span>sample <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb422-8" data-line-number="8"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">sample.mean =</span> <span class="kw">mean</span>(YFG1),</a>
-<a class="sourceLine" id="cb422-9" data-line-number="9">            <span class="dt">sample.sd =</span> <span class="kw">sd</span>(YFG1),</a>
-<a class="sourceLine" id="cb422-10" data-line-number="10">            <span class="dt">sample.se =</span> sample.sd<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
-<a class="sourceLine" id="cb422-11" data-line-number="11">            <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb422-12" data-line-number="12">            <span class="dt">mu0 =</span> mu0,</a>
-<a class="sourceLine" id="cb422-13" data-line-number="13">            <span class="dt">t.star =</span> (sample.mean <span class="op">-</span><span class="st"> </span>mu0)<span class="op">/</span>sample.se,</a>
-<a class="sourceLine" id="cb422-14" data-line-number="14">            <span class="dt">P.value =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(t.star), <span class="dt">df =</span> df, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb422-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb422-16" data-line-number="16">YFG1.tstats</a>
-<a class="sourceLine" id="cb422-17" data-line-number="17"><span class="co">#&gt; # A tibble: 1 x 7</span></a>
-<a class="sourceLine" id="cb422-18" data-line-number="18"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value</span></a>
-<a class="sourceLine" id="cb422-19" data-line-number="19"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb422-20" data-line-number="20"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295</span></a></code></pre></div>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="comparing-sample-means.html#cb423-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb423-2"><a href="comparing-sample-means.html#cb423-2" tabindex="-1"></a></span>
+<span id="cb423-3"><a href="comparing-sample-means.html#cb423-3" tabindex="-1"></a>mu0 <span class="ot">=</span> <span class="dv">10</span>  <span class="co"># mean under H0</span></span>
+<span id="cb423-4"><a href="comparing-sample-means.html#cb423-4" tabindex="-1"></a>mice<span class="fl">.1</span>sample <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">YFG1 =</span> <span class="fu">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>))</span>
+<span id="cb423-5"><a href="comparing-sample-means.html#cb423-5" tabindex="-1"></a></span>
+<span id="cb423-6"><a href="comparing-sample-means.html#cb423-6" tabindex="-1"></a>YFG1.tstats <span class="ot">&lt;-</span></span>
+<span id="cb423-7"><a href="comparing-sample-means.html#cb423-7" tabindex="-1"></a>  mice<span class="fl">.1</span>sample <span class="sc">%&gt;%</span></span>
+<span id="cb423-8"><a href="comparing-sample-means.html#cb423-8" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">sample.mean =</span> <span class="fu">mean</span>(YFG1),</span>
+<span id="cb423-9"><a href="comparing-sample-means.html#cb423-9" tabindex="-1"></a>            <span class="at">sample.sd =</span> <span class="fu">sd</span>(YFG1),</span>
+<span id="cb423-10"><a href="comparing-sample-means.html#cb423-10" tabindex="-1"></a>            <span class="at">sample.se =</span> sample.sd<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">n</span>()),</span>
+<span id="cb423-11"><a href="comparing-sample-means.html#cb423-11" tabindex="-1"></a>            <span class="at">df =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb423-12"><a href="comparing-sample-means.html#cb423-12" tabindex="-1"></a>            <span class="at">mu0 =</span> mu0,</span>
+<span id="cb423-13"><a href="comparing-sample-means.html#cb423-13" tabindex="-1"></a>            <span class="at">t.star =</span> (sample.mean <span class="sc">-</span> mu0)<span class="sc">/</span>sample.se,</span>
+<span id="cb423-14"><a href="comparing-sample-means.html#cb423-14" tabindex="-1"></a>            <span class="at">P.value =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="fu">abs</span>(t.star), <span class="at">df =</span> df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb423-15"><a href="comparing-sample-means.html#cb423-15" tabindex="-1"></a></span>
+<span id="cb423-16"><a href="comparing-sample-means.html#cb423-16" tabindex="-1"></a>YFG1.tstats</span>
+<span id="cb423-17"><a href="comparing-sample-means.html#cb423-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 7</span></span>
+<span id="cb423-18"><a href="comparing-sample-means.html#cb423-18" tabindex="-1"></a><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value</span></span>
+<span id="cb423-19"><a href="comparing-sample-means.html#cb423-19" tabindex="-1"></a><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb423-20"><a href="comparing-sample-means.html#cb423-20" tabindex="-1"></a><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295</span></span></code></pre></div>
 <p>Under the conventional <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis that the mean expression of YFG1 in mice treated with the drug is the same as the mean expression of YFG1 in control mice.</p>
 </div>
-<div id="confidence-intervals-for-the-mean" class="section level3">
-<h3><span class="header-section-number">19.2.4</span> Confidence intervals for the mean</h3>
+<div id="confidence-intervals-for-the-mean" class="section level3 hasAnchor" number="19.2.4">
+<h3><span class="header-section-number">19.2.4</span> Confidence intervals for the mean<a href="comparing-sample-means.html#confidence-intervals-for-the-mean" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The hypothesis test using a one-side t-test we carried out above is approximately equivalent to asking if the null mean, <span class="math inline">\(\mu_0\)</span>, falls within the 95% confidence intervals estimated for the sample mean.</p>
 <p>Recall that the <span class="math inline">\(100(1-\alpha)\)</span>% confidence interval for the mean can be calculated as</p>
 <p><span class="math display">\[
 CI_\alpha = \overline{x} \pm (t_{\alpha/2,df} \times \widehat{SE}_{\overline{x}})
 \]</span></p>
 <p>Let’s modify the table of <span class="math inline">\(t\)</span>-related stats we created in the previous code block to include the lower and upper limits of the 95% confidence interval for the mean:</p>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1">YFG1.tstats &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb423-2" data-line-number="2"><span class="st">  </span>YFG1.tstats <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb423-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci95.lower =</span> sample.mean <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se,</a>
-<a class="sourceLine" id="cb423-4" data-line-number="4">         <span class="dt">ci95.upper =</span> sample.mean <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> df)) <span class="op">*</span><span class="st"> </span>sample.se)</a>
-<a class="sourceLine" id="cb423-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb423-6" data-line-number="6">YFG1.tstats</a>
-<a class="sourceLine" id="cb423-7" data-line-number="7"><span class="co">#&gt; # A tibble: 1 x 9</span></a>
-<a class="sourceLine" id="cb423-8" data-line-number="8"><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value ci95.lower</span></a>
-<a class="sourceLine" id="cb423-9" data-line-number="9"><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb423-10" data-line-number="10"><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295      10.06</span></a>
-<a class="sourceLine" id="cb423-11" data-line-number="11"><span class="co">#&gt; # ... with 1 more variable: ci95.upper &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="comparing-sample-means.html#cb424-1" tabindex="-1"></a>YFG1.tstats <span class="ot">&lt;-</span> </span>
+<span id="cb424-2"><a href="comparing-sample-means.html#cb424-2" tabindex="-1"></a>  YFG1.tstats <span class="sc">%&gt;%</span></span>
+<span id="cb424-3"><a href="comparing-sample-means.html#cb424-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ci95.lower =</span> sample.mean <span class="sc">-</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> df)) <span class="sc">*</span> sample.se,</span>
+<span id="cb424-4"><a href="comparing-sample-means.html#cb424-4" tabindex="-1"></a>         <span class="at">ci95.upper =</span> sample.mean <span class="sc">+</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> df)) <span class="sc">*</span> sample.se)</span>
+<span id="cb424-5"><a href="comparing-sample-means.html#cb424-5" tabindex="-1"></a></span>
+<span id="cb424-6"><a href="comparing-sample-means.html#cb424-6" tabindex="-1"></a>YFG1.tstats</span>
+<span id="cb424-7"><a href="comparing-sample-means.html#cb424-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 9</span></span>
+<span id="cb424-8"><a href="comparing-sample-means.html#cb424-8" tabindex="-1"></a><span class="co">#&gt;   sample.mean sample.sd sample.se    df   mu0 t.star P.value ci95.lower</span></span>
+<span id="cb424-9"><a href="comparing-sample-means.html#cb424-9" tabindex="-1"></a><span class="co">#&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb424-10"><a href="comparing-sample-means.html#cb424-10" tabindex="-1"></a><span class="co">#&gt; 1        11.1    0.8404    0.3758     4    10  2.927 0.04295      10.06</span></span>
+<span id="cb424-11"><a href="comparing-sample-means.html#cb424-11" tabindex="-1"></a><span class="co">#&gt; # ℹ 1 more variable: ci95.upper &lt;dbl&gt;</span></span></code></pre></div>
 <p>If we wanted to crate a figure illustrating our 95% CI for the mean of YFG1 following drug treatment, relative to the mean under the null hypothesis we can use the <code>geom_pointrange()</code> function to draw the interval (for more info on <code>geom_pointrange()</code> and related functions see the <a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">ggplot2 documentation</a>).</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1">YFG1.tstats <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb424-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb424-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb424-4" data-line-number="4">                      <span class="dt">y =</span> sample.mean,</a>
-<a class="sourceLine" id="cb424-5" data-line-number="5">                      <span class="dt">ymin =</span> ci95.lower, <span class="dt">ymax =</span> ci95.upper)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Drug X&quot;</span>)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> mu0, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-8" data-line-number="8"><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>,<span class="dv">15</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Mean(YFG1)&quot;</span>, </a>
-<a class="sourceLine" id="cb424-10" data-line-number="10">       <span class="dt">title =</span> <span class="st">&quot;Sample mean and 95% CI for expression of YFG1 in treated mice&quot;</span>,</a>
-<a class="sourceLine" id="cb424-11" data-line-number="11">       <span class="dt">subtitle =</span> <span class="st">&quot;Red line indicates mean expression in control mice.&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-12" data-line-number="12"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb424-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb424-14" data-line-number="14">        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>))</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-439-1.png" width="576" /></p>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="comparing-sample-means.html#cb425-1" tabindex="-1"></a>YFG1.tstats <span class="sc">%&gt;%</span></span>
+<span id="cb425-2"><a href="comparing-sample-means.html#cb425-2" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb425-3"><a href="comparing-sample-means.html#cb425-3" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span>, </span>
+<span id="cb425-4"><a href="comparing-sample-means.html#cb425-4" tabindex="-1"></a>                      <span class="at">y =</span> sample.mean,</span>
+<span id="cb425-5"><a href="comparing-sample-means.html#cb425-5" tabindex="-1"></a>                      <span class="at">ymin =</span> ci95.lower, <span class="at">ymax =</span> ci95.upper)) <span class="sc">+</span> </span>
+<span id="cb425-6"><a href="comparing-sample-means.html#cb425-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">1</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;Drug X&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb425-7"><a href="comparing-sample-means.html#cb425-7" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> mu0, <span class="at">color=</span><span class="st">&#39;red&#39;</span>, <span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb425-8"><a href="comparing-sample-means.html#cb425-8" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">15</span>) <span class="sc">+</span> </span>
+<span id="cb425-9"><a href="comparing-sample-means.html#cb425-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Mean(YFG1)&quot;</span>, </span>
+<span id="cb425-10"><a href="comparing-sample-means.html#cb425-10" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Sample mean and 95% CI for expression of YFG1 in treated mice&quot;</span>,</span>
+<span id="cb425-11"><a href="comparing-sample-means.html#cb425-11" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Red line indicates mean expression in control mice.&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb425-12"><a href="comparing-sample-means.html#cb425-12" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<span id="cb425-13"><a href="comparing-sample-means.html#cb425-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb425-14"><a href="comparing-sample-means.html#cb425-14" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-440-1.png" width="576" /></p>
 </div>
 </div>
-<div id="the-t.test-function-in-r" class="section level2">
-<h2><span class="header-section-number">19.3</span> The <code>t.test</code> function in R</h2>
+<div id="the-t.test-function-in-r" class="section level2 hasAnchor" number="19.3">
+<h2><span class="header-section-number">19.3</span> The <code>t.test</code> function in R<a href="comparing-sample-means.html#the-t.test-function-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The built-in <code>t.test()</code> function will take care of the all the calcuations we did by hand above.</p>
 <p>For a one sample t-test <code>t.test</code> we need to pass in the variable of interest, and the null hypothoses mean value, <code>mu</code>:</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">YFG1_t.test &lt;-<span class="st"> </span><span class="kw">t.test</span>(mice<span class="fl">.1</span>sample<span class="op">$</span>YFG1, <span class="dt">mu =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb425-2" data-line-number="2">YFG1_t.test</a>
-<a class="sourceLine" id="cb425-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb425-4" data-line-number="4"><span class="co">#&gt;  One Sample t-test</span></a>
-<a class="sourceLine" id="cb425-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb425-6" data-line-number="6"><span class="co">#&gt; data:  mice.1sample$YFG1</span></a>
-<a class="sourceLine" id="cb425-7" data-line-number="7"><span class="co">#&gt; t = 2.9268, df = 4, p-value = 0.04295</span></a>
-<a class="sourceLine" id="cb425-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true mean is not equal to 10</span></a>
-<a class="sourceLine" id="cb425-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb425-10" data-line-number="10"><span class="co">#&gt;  10.05652 12.14348</span></a>
-<a class="sourceLine" id="cb425-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb425-12" data-line-number="12"><span class="co">#&gt; mean of x </span></a>
-<a class="sourceLine" id="cb425-13" data-line-number="13"><span class="co">#&gt;      11.1</span></a></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="comparing-sample-means.html#cb426-1" tabindex="-1"></a>YFG1_t.test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(mice<span class="fl">.1</span>sample<span class="sc">$</span>YFG1, <span class="at">mu =</span> <span class="dv">10</span>)</span>
+<span id="cb426-2"><a href="comparing-sample-means.html#cb426-2" tabindex="-1"></a>YFG1_t.test</span>
+<span id="cb426-3"><a href="comparing-sample-means.html#cb426-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb426-4"><a href="comparing-sample-means.html#cb426-4" tabindex="-1"></a><span class="co">#&gt;  One Sample t-test</span></span>
+<span id="cb426-5"><a href="comparing-sample-means.html#cb426-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb426-6"><a href="comparing-sample-means.html#cb426-6" tabindex="-1"></a><span class="co">#&gt; data:  mice.1sample$YFG1</span></span>
+<span id="cb426-7"><a href="comparing-sample-means.html#cb426-7" tabindex="-1"></a><span class="co">#&gt; t = 2.9268, df = 4, p-value = 0.04295</span></span>
+<span id="cb426-8"><a href="comparing-sample-means.html#cb426-8" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean is not equal to 10</span></span>
+<span id="cb426-9"><a href="comparing-sample-means.html#cb426-9" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb426-10"><a href="comparing-sample-means.html#cb426-10" tabindex="-1"></a><span class="co">#&gt;  10.05652 12.14348</span></span>
+<span id="cb426-11"><a href="comparing-sample-means.html#cb426-11" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb426-12"><a href="comparing-sample-means.html#cb426-12" tabindex="-1"></a><span class="co">#&gt; mean of x </span></span>
+<span id="cb426-13"><a href="comparing-sample-means.html#cb426-13" tabindex="-1"></a><span class="co">#&gt;      11.1</span></span></code></pre></div>
 <p>The <code>broom::tidye()</code> function defined in the “broom” package is a convenient way to display the output of many model tests in R. Load the broom (install it first if need be) and use <code>tidy()</code> to represent the information returned by <code>t.test()</code> as a data frame:</p>
-<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">library</span>(broom)</a>
-<a class="sourceLine" id="cb426-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb426-3" data-line-number="3"><span class="kw">tidy</span>(YFG1_t.test)</a>
-<a class="sourceLine" id="cb426-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 8</span></a>
-<a class="sourceLine" id="cb426-5" data-line-number="5"><span class="co">#&gt;   estimate statistic p.value parameter conf.low conf.high method</span></a>
-<a class="sourceLine" id="cb426-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; </span></a>
-<a class="sourceLine" id="cb426-7" data-line-number="7"><span class="co">#&gt; 1     11.1     2.927 0.04295         4    10.06     12.14 One S…</span></a>
-<a class="sourceLine" id="cb426-8" data-line-number="8"><span class="co">#&gt; # ... with 1 more variable: alternative &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="comparing-sample-means.html#cb427-1" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb427-2"><a href="comparing-sample-means.html#cb427-2" tabindex="-1"></a></span>
+<span id="cb427-3"><a href="comparing-sample-means.html#cb427-3" tabindex="-1"></a><span class="fu">tidy</span>(YFG1_t.test)</span>
+<span id="cb427-4"><a href="comparing-sample-means.html#cb427-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 8</span></span>
+<span id="cb427-5"><a href="comparing-sample-means.html#cb427-5" tabindex="-1"></a><span class="co">#&gt;   estimate statistic p.value parameter conf.low conf.high method     alternative</span></span>
+<span id="cb427-6"><a href="comparing-sample-means.html#cb427-6" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      </span></span>
+<span id="cb427-7"><a href="comparing-sample-means.html#cb427-7" tabindex="-1"></a><span class="co">#&gt; 1     11.1     2.927 0.04295         4    10.06     12.14 One Sampl… two.sided</span></span></code></pre></div>
 </div>
-<div id="two-sample-t-test" class="section level2">
-<h2><span class="header-section-number">19.4</span> Two sample t-test</h2>
+<div id="two-sample-t-test" class="section level2 hasAnchor" number="19.4">
+<h2><span class="header-section-number">19.4</span> Two sample t-test<a href="comparing-sample-means.html#two-sample-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We use a two sample t-test to analyze the difference between the means of the same variable measured in two different groups or treatments. It is assumed that the two groups are independent samples from two populations.</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e., <span class="math inline">\(\overline{x}_1 = \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 = 0\)</span>.</p></li>
-<li><p><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is not the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e. <span class="math inline">\(\overline{x}_1 \neq \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 \neq 0\)</span>.</p></li>
+<li><p><span class="math inline">\(H_A\)</span>: The mean of variable <span class="math inline">\(X\)</span> in group 1 is not the same as the mean of <span class="math inline">\(X\)</span> in group 2, i.e. <span class="math inline">\(\overline{x}_1 \neq \overline{x}_2\)</span>. This is equivalent to <span class="math inline">\(\overline{x}_1 - \overline{x}_2 \neq 0\)</span>.</p></li>
 </ul>
-<div id="standard-error-for-the-difference-in-means" class="section level3">
-<h3><span class="header-section-number">19.4.1</span> Standard error for the difference in means</h3>
+<div id="standard-error-for-the-difference-in-means" class="section level3 hasAnchor" number="19.4.1">
+<h3><span class="header-section-number">19.4.1</span> Standard error for the difference in means<a href="comparing-sample-means.html#standard-error-for-the-difference-in-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In a two-sample t-test, we have to account for the uncertainty associated with the means of both groups, which we express in terms of the standard error of the difference in the means between the groups:</p>
 <p><span class="math display">\[
 SE_{\overline{x}_1 - \overline{x}_2}  =  \sqrt{s^2_p\left(\frac{1}{n_1} + \frac{1}{n_2} \right)}
@@ -784,8 +883,8 @@ s^2_p = \frac{df_1 s_1^2 + df_2 s_2^2}{df_1 + df_2}
 \]</span></p>
 <p><span class="math inline">\(s^2_p\)</span> is called the “pooled sample variance” and is a weighted average of the sample variances, <span class="math inline">\(s_1^2\)</span> and <span class="math inline">\(s_2^2\)</span>, of the two groups.</p>
 </div>
-<div id="two-sample-t-test-test-statistic" class="section level3">
-<h3><span class="header-section-number">19.4.2</span> Two sample t-test, test statistic</h3>
+<div id="two-sample-t-test-test-statistic" class="section level3 hasAnchor" number="19.4.2">
+<h3><span class="header-section-number">19.4.2</span> Two sample t-test, test statistic<a href="comparing-sample-means.html#two-sample-t-test-test-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Given the standard error for the difference in means between groups as defined above, we define our test statistic for a two sample t-test as:</p>
 <p><span class="math display">\[
 t^\star = \frac{(\overline{x}_1 - \overline{x}_2)}{SE_{\overline{x}_1 - \overline{x}_2}}
@@ -795,40 +894,40 @@ t^\star = \frac{(\overline{x}_1 - \overline{x}_2)}{SE_{\overline{x}_1 - \overlin
 df = df_1 + df_2 = n_1 + n_2 - 2
 \]</span></p>
 </div>
-<div id="assumptions-of-two-sample-t-test" class="section level3">
-<h3><span class="header-section-number">19.4.3</span> Assumptions of two sample t-test</h3>
+<div id="assumptions-of-two-sample-t-test" class="section level3 hasAnchor" number="19.4.3">
+<h3><span class="header-section-number">19.4.3</span> Assumptions of two sample t-test<a href="comparing-sample-means.html#assumptions-of-two-sample-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Data are randomly sampled from the population</li>
 <li>Paired differences are normally distributed</li>
 <li>Standard deviation is the same in both populations</li>
 </ul>
 </div>
-<div id="example-comparing-the-effects-of-two-drugs" class="section level3">
-<h3><span class="header-section-number">19.4.4</span> Example: Comparing the effects of two drugs</h3>
+<div id="example-comparing-the-effects-of-two-drugs" class="section level3 hasAnchor" number="19.4.4">
+<h3><span class="header-section-number">19.4.4</span> Example: Comparing the effects of two drugs<a href="comparing-sample-means.html#example-comparing-the-effects-of-two-drugs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You treat samples of mice with two drugs, X and Y. We want to know if the two drugs have the same average effect on expression of the gene <em>YFG1</em>. The measurements of <em>YFG1</em> in samples treated with X and Y are as follows:</p>
 <ul>
 <li>X = {11.25, 10.5, 12, 11.75, 10}</li>
 <li>Y = {8.75, 10, 11, 9.75, 10.5}</li>
 </ul>
 <p>For simplicity, we skip the “by-hand” calculations and simply use the built-in <code>t.test</code> function.</p>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb427-1" data-line-number="1">mice<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1_X =</span> <span class="kw">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb427-2" data-line-number="2">                           <span class="dt">YFG1_Y =</span> <span class="kw">c</span>(<span class="fl">8.75</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="fl">9.75</span>, <span class="fl">10.5</span>))</a>
-<a class="sourceLine" id="cb427-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb427-4" data-line-number="4">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb427-5" data-line-number="5"><span class="st">  </span><span class="kw">t.test</span>(mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_X, mice<span class="fl">.2</span>sample<span class="op">$</span>YFG1_Y)</a>
-<a class="sourceLine" id="cb427-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb427-7" data-line-number="7">ttest<span class="fl">.2</span>sample</a>
-<a class="sourceLine" id="cb427-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb427-9" data-line-number="9"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
-<a class="sourceLine" id="cb427-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb427-11" data-line-number="11"><span class="co">#&gt; data:  mice.2sample$YFG1_X and mice.2sample$YFG1_Y</span></a>
-<a class="sourceLine" id="cb427-12" data-line-number="12"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
-<a class="sourceLine" id="cb427-13" data-line-number="13"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb427-14" data-line-number="14"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb427-15" data-line-number="15"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
-<a class="sourceLine" id="cb427-16" data-line-number="16"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb427-17" data-line-number="17"><span class="co">#&gt; mean of x mean of y </span></a>
-<a class="sourceLine" id="cb427-18" data-line-number="18"><span class="co">#&gt;      11.1      10.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="comparing-sample-means.html#cb428-1" tabindex="-1"></a>mice<span class="fl">.2</span>sample <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">YFG1_X =</span> <span class="fu">c</span>(<span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">12</span>, <span class="fl">11.75</span>, <span class="dv">10</span>),</span>
+<span id="cb428-2"><a href="comparing-sample-means.html#cb428-2" tabindex="-1"></a>                           <span class="at">YFG1_Y =</span> <span class="fu">c</span>(<span class="fl">8.75</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="fl">9.75</span>, <span class="fl">10.5</span>))</span>
+<span id="cb428-3"><a href="comparing-sample-means.html#cb428-3" tabindex="-1"></a></span>
+<span id="cb428-4"><a href="comparing-sample-means.html#cb428-4" tabindex="-1"></a>ttest<span class="fl">.2</span>sample <span class="ot">&lt;-</span> </span>
+<span id="cb428-5"><a href="comparing-sample-means.html#cb428-5" tabindex="-1"></a>  <span class="fu">t.test</span>(mice<span class="fl">.2</span>sample<span class="sc">$</span>YFG1_X, mice<span class="fl">.2</span>sample<span class="sc">$</span>YFG1_Y)</span>
+<span id="cb428-6"><a href="comparing-sample-means.html#cb428-6" tabindex="-1"></a></span>
+<span id="cb428-7"><a href="comparing-sample-means.html#cb428-7" tabindex="-1"></a>ttest<span class="fl">.2</span>sample</span>
+<span id="cb428-8"><a href="comparing-sample-means.html#cb428-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb428-9"><a href="comparing-sample-means.html#cb428-9" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb428-10"><a href="comparing-sample-means.html#cb428-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb428-11"><a href="comparing-sample-means.html#cb428-11" tabindex="-1"></a><span class="co">#&gt; data:  mice.2sample$YFG1_X and mice.2sample$YFG1_Y</span></span>
+<span id="cb428-12"><a href="comparing-sample-means.html#cb428-12" tabindex="-1"></a><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></span>
+<span id="cb428-13"><a href="comparing-sample-means.html#cb428-13" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb428-14"><a href="comparing-sample-means.html#cb428-14" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb428-15"><a href="comparing-sample-means.html#cb428-15" tabindex="-1"></a><span class="co">#&gt;  -0.1310858  2.3310858</span></span>
+<span id="cb428-16"><a href="comparing-sample-means.html#cb428-16" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb428-17"><a href="comparing-sample-means.html#cb428-17" tabindex="-1"></a><span class="co">#&gt; mean of x mean of y </span></span>
+<span id="cb428-18"><a href="comparing-sample-means.html#cb428-18" tabindex="-1"></a><span class="co">#&gt;      11.1      10.0</span></span></code></pre></div>
 <p>This output provides information on:</p>
 <ul>
 <li>the data vectors used in this analysis</li>
@@ -839,89 +938,88 @@ df = df_1 + df_2 = n_1 + n_2 - 2
 </ul>
 <p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we fail to reject the null hypothesis that the mean expression of <em>YFG1</em> is different in mice treated with Drug X versus those treated with Drug Y.</p>
 <p>As we saw previously, <code>broom::tidy()</code> is a good way to turn the results of the <code>t.test()</code> function into a convenient table for further computation or plotting:</p>
-<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1"><span class="kw">tidy</span>(ttest<span class="fl">.2</span>sample)</a>
-<a class="sourceLine" id="cb428-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 10</span></a>
-<a class="sourceLine" id="cb428-3" data-line-number="3"><span class="co">#&gt;   estimate estimate1 estimate2 statistic p.value parameter conf.low</span></a>
-<a class="sourceLine" id="cb428-4" data-line-number="4"><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb428-5" data-line-number="5"><span class="co">#&gt; 1    1.100      11.1        10     2.060 0.07331     7.999  -0.1311</span></a>
-<a class="sourceLine" id="cb428-6" data-line-number="6"><span class="co">#&gt; # ... with 3 more variables: conf.high &lt;dbl&gt;, method &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb428-7" data-line-number="7"><span class="co">#&gt; #   alternative &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="comparing-sample-means.html#cb429-1" tabindex="-1"></a><span class="fu">tidy</span>(ttest<span class="fl">.2</span>sample)</span>
+<span id="cb429-2"><a href="comparing-sample-means.html#cb429-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 10</span></span>
+<span id="cb429-3"><a href="comparing-sample-means.html#cb429-3" tabindex="-1"></a><span class="co">#&gt;   estimate estimate1 estimate2 statistic p.value parameter conf.low conf.high</span></span>
+<span id="cb429-4"><a href="comparing-sample-means.html#cb429-4" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb429-5"><a href="comparing-sample-means.html#cb429-5" tabindex="-1"></a><span class="co">#&gt; 1      1.1      11.1        10     2.060 0.07331     7.999  -0.1311     2.331</span></span>
+<span id="cb429-6"><a href="comparing-sample-means.html#cb429-6" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: method &lt;chr&gt;, alternative &lt;chr&gt;</span></span></code></pre></div>
 </div>
-<div id="specifying-t.test-in-terms-of-a-formula" class="section level3">
-<h3><span class="header-section-number">19.4.5</span> Specifying <code>t.test()</code> in terms of a formula</h3>
+<div id="specifying-t.test-in-terms-of-a-formula" class="section level3 hasAnchor" number="19.4.5">
+<h3><span class="header-section-number">19.4.5</span> Specifying <code>t.test()</code> in terms of a formula<a href="comparing-sample-means.html#specifying-t.test-in-terms-of-a-formula" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In the example above, our data frame included two columns for YFG1 expression values – <code>YFG1_X</code> and <code>YFG1_Y</code> – representing the expression measurements under the two drug treatments. This is not a very “tidy” way to organize our data, and is somewhat limiting when we want to create plots and do other analyses. Let’s use some of the tools we’ve seen earlier for tidying and restructuring data frames to unite these into a single column, and create a new column indicating treatment type:</p>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1">mice.long &lt;-</a>
-<a class="sourceLine" id="cb429-2" data-line-number="2"><span class="st">  </span>mice<span class="fl">.2</span>sample <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb429-3" data-line-number="3"><span class="st">  </span><span class="kw">gather</span>(expt, expression) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb429-4" data-line-number="4"><span class="st">  </span><span class="kw">separate</span>(expt, <span class="kw">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;treatment&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</a>
-<a class="sourceLine" id="cb429-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb429-6" data-line-number="6"><span class="kw">head</span>(mice.long)</a>
-<a class="sourceLine" id="cb429-7" data-line-number="7"><span class="co">#&gt; # A tibble: 6 x 3</span></a>
-<a class="sourceLine" id="cb429-8" data-line-number="8"><span class="co">#&gt;   gene  treatment expression</span></a>
-<a class="sourceLine" id="cb429-9" data-line-number="9"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb429-10" data-line-number="10"><span class="co">#&gt; 1 YFG1  X              11.25</span></a>
-<a class="sourceLine" id="cb429-11" data-line-number="11"><span class="co">#&gt; 2 YFG1  X              10.5 </span></a>
-<a class="sourceLine" id="cb429-12" data-line-number="12"><span class="co">#&gt; 3 YFG1  X              12   </span></a>
-<a class="sourceLine" id="cb429-13" data-line-number="13"><span class="co">#&gt; 4 YFG1  X              11.75</span></a>
-<a class="sourceLine" id="cb429-14" data-line-number="14"><span class="co">#&gt; 5 YFG1  X              10   </span></a>
-<a class="sourceLine" id="cb429-15" data-line-number="15"><span class="co">#&gt; 6 YFG1  Y               8.75</span></a></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="comparing-sample-means.html#cb430-1" tabindex="-1"></a>mice.long <span class="ot">&lt;-</span></span>
+<span id="cb430-2"><a href="comparing-sample-means.html#cb430-2" tabindex="-1"></a>  mice<span class="fl">.2</span>sample <span class="sc">%&gt;%</span></span>
+<span id="cb430-3"><a href="comparing-sample-means.html#cb430-3" tabindex="-1"></a>  <span class="fu">gather</span>(expt, expression) <span class="sc">%&gt;%</span></span>
+<span id="cb430-4"><a href="comparing-sample-means.html#cb430-4" tabindex="-1"></a>  <span class="fu">separate</span>(expt, <span class="fu">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;treatment&quot;</span>), <span class="at">sep=</span><span class="st">&quot;_&quot;</span>)</span>
+<span id="cb430-5"><a href="comparing-sample-means.html#cb430-5" tabindex="-1"></a></span>
+<span id="cb430-6"><a href="comparing-sample-means.html#cb430-6" tabindex="-1"></a><span class="fu">head</span>(mice.long)</span>
+<span id="cb430-7"><a href="comparing-sample-means.html#cb430-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span id="cb430-8"><a href="comparing-sample-means.html#cb430-8" tabindex="-1"></a><span class="co">#&gt;   gene  treatment expression</span></span>
+<span id="cb430-9"><a href="comparing-sample-means.html#cb430-9" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb430-10"><a href="comparing-sample-means.html#cb430-10" tabindex="-1"></a><span class="co">#&gt; 1 YFG1  X              11.25</span></span>
+<span id="cb430-11"><a href="comparing-sample-means.html#cb430-11" tabindex="-1"></a><span class="co">#&gt; 2 YFG1  X              10.5 </span></span>
+<span id="cb430-12"><a href="comparing-sample-means.html#cb430-12" tabindex="-1"></a><span class="co">#&gt; 3 YFG1  X              12   </span></span>
+<span id="cb430-13"><a href="comparing-sample-means.html#cb430-13" tabindex="-1"></a><span class="co">#&gt; 4 YFG1  X              11.75</span></span>
+<span id="cb430-14"><a href="comparing-sample-means.html#cb430-14" tabindex="-1"></a><span class="co">#&gt; 5 YFG1  X              10   </span></span>
+<span id="cb430-15"><a href="comparing-sample-means.html#cb430-15" tabindex="-1"></a><span class="co">#&gt; 6 YFG1  Y               8.75</span></span></code></pre></div>
 <p>Using this “long” data frame we can carry out the t.test as follows:</p>
-<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1">ttest<span class="fl">.2</span>sample &lt;-<span class="st"> </span><span class="kw">t.test</span>(expression <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> mice.long)</a>
-<a class="sourceLine" id="cb430-2" data-line-number="2">ttest<span class="fl">.2</span>sample</a>
-<a class="sourceLine" id="cb430-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb430-4" data-line-number="4"><span class="co">#&gt;  Welch Two Sample t-test</span></a>
-<a class="sourceLine" id="cb430-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb430-6" data-line-number="6"><span class="co">#&gt; data:  expression by treatment</span></a>
-<a class="sourceLine" id="cb430-7" data-line-number="7"><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></a>
-<a class="sourceLine" id="cb430-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb430-9" data-line-number="9"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb430-10" data-line-number="10"><span class="co">#&gt;  -0.1310858  2.3310858</span></a>
-<a class="sourceLine" id="cb430-11" data-line-number="11"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb430-12" data-line-number="12"><span class="co">#&gt; mean in group X mean in group Y </span></a>
-<a class="sourceLine" id="cb430-13" data-line-number="13"><span class="co">#&gt;            11.1            10.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="comparing-sample-means.html#cb431-1" tabindex="-1"></a>ttest<span class="fl">.2</span>sample <span class="ot">&lt;-</span> <span class="fu">t.test</span>(expression <span class="sc">~</span> treatment, <span class="at">data =</span> mice.long)</span>
+<span id="cb431-2"><a href="comparing-sample-means.html#cb431-2" tabindex="-1"></a>ttest<span class="fl">.2</span>sample</span>
+<span id="cb431-3"><a href="comparing-sample-means.html#cb431-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb431-4"><a href="comparing-sample-means.html#cb431-4" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb431-5"><a href="comparing-sample-means.html#cb431-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb431-6"><a href="comparing-sample-means.html#cb431-6" tabindex="-1"></a><span class="co">#&gt; data:  expression by treatment</span></span>
+<span id="cb431-7"><a href="comparing-sample-means.html#cb431-7" tabindex="-1"></a><span class="co">#&gt; t = 2.0605, df = 7.9994, p-value = 0.07331</span></span>
+<span id="cb431-8"><a href="comparing-sample-means.html#cb431-8" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group X and group Y is not equal to 0</span></span>
+<span id="cb431-9"><a href="comparing-sample-means.html#cb431-9" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb431-10"><a href="comparing-sample-means.html#cb431-10" tabindex="-1"></a><span class="co">#&gt;  -0.1310858  2.3310858</span></span>
+<span id="cb431-11"><a href="comparing-sample-means.html#cb431-11" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb431-12"><a href="comparing-sample-means.html#cb431-12" tabindex="-1"></a><span class="co">#&gt; mean in group X mean in group Y </span></span>
+<span id="cb431-13"><a href="comparing-sample-means.html#cb431-13" tabindex="-1"></a><span class="co">#&gt;            11.1            10.0</span></span></code></pre></div>
 <p>This long version of the data is also more easily used for calculating confidence intervals of the mean for each treatment, and for plotting as illustrated bloew</p>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb431-1" data-line-number="1">ci.by.treatment &lt;-</a>
-<a class="sourceLine" id="cb431-2" data-line-number="2"><span class="st">  </span>mice.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb431-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(treatment) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb431-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(expression),</a>
-<a class="sourceLine" id="cb431-5" data-line-number="5">            <span class="dt">se =</span> <span class="kw">sd</span>(expression)<span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">n</span>()),</a>
-<a class="sourceLine" id="cb431-6" data-line-number="6">            <span class="dt">tcrit =</span> <span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> <span class="kw">n</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)),</a>
-<a class="sourceLine" id="cb431-7" data-line-number="7">            <span class="dt">ci.low =</span> mean <span class="op">-</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se,</a>
-<a class="sourceLine" id="cb431-8" data-line-number="8">            <span class="dt">ci.hi =</span> mean <span class="op">+</span><span class="st"> </span>tcrit <span class="op">*</span><span class="st"> </span>se)</a>
-<a class="sourceLine" id="cb431-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb431-10" data-line-number="10">ci.by.treatment</a>
-<a class="sourceLine" id="cb431-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb431-12" data-line-number="12"><span class="co">#&gt;   treatment  mean     se tcrit ci.low ci.hi</span></a>
-<a class="sourceLine" id="cb431-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb431-14" data-line-number="14"><span class="co">#&gt; 1 X          11.1 0.3758 2.776 10.06  12.14</span></a>
-<a class="sourceLine" id="cb431-15" data-line-number="15"><span class="co">#&gt; 2 Y          10   0.3791 2.776  8.947 11.05</span></a></code></pre></div>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="comparing-sample-means.html#cb432-1" tabindex="-1"></a>ci.by.treatment <span class="ot">&lt;-</span></span>
+<span id="cb432-2"><a href="comparing-sample-means.html#cb432-2" tabindex="-1"></a>  mice.long <span class="sc">%&gt;%</span></span>
+<span id="cb432-3"><a href="comparing-sample-means.html#cb432-3" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">%&gt;%</span></span>
+<span id="cb432-4"><a href="comparing-sample-means.html#cb432-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(expression),</span>
+<span id="cb432-5"><a href="comparing-sample-means.html#cb432-5" tabindex="-1"></a>            <span class="at">se =</span> <span class="fu">sd</span>(expression)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">n</span>()),</span>
+<span id="cb432-6"><a href="comparing-sample-means.html#cb432-6" tabindex="-1"></a>            <span class="at">tcrit =</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="dv">1</span>)),</span>
+<span id="cb432-7"><a href="comparing-sample-means.html#cb432-7" tabindex="-1"></a>            <span class="at">ci.low =</span> mean <span class="sc">-</span> tcrit <span class="sc">*</span> se,</span>
+<span id="cb432-8"><a href="comparing-sample-means.html#cb432-8" tabindex="-1"></a>            <span class="at">ci.hi =</span> mean <span class="sc">+</span> tcrit <span class="sc">*</span> se)</span>
+<span id="cb432-9"><a href="comparing-sample-means.html#cb432-9" tabindex="-1"></a></span>
+<span id="cb432-10"><a href="comparing-sample-means.html#cb432-10" tabindex="-1"></a>ci.by.treatment</span>
+<span id="cb432-11"><a href="comparing-sample-means.html#cb432-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb432-12"><a href="comparing-sample-means.html#cb432-12" tabindex="-1"></a><span class="co">#&gt;   treatment  mean     se tcrit ci.low ci.hi</span></span>
+<span id="cb432-13"><a href="comparing-sample-means.html#cb432-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb432-14"><a href="comparing-sample-means.html#cb432-14" tabindex="-1"></a><span class="co">#&gt; 1 X          11.1 0.3758 2.776 10.06  12.14</span></span>
+<span id="cb432-15"><a href="comparing-sample-means.html#cb432-15" tabindex="-1"></a><span class="co">#&gt; 2 Y          10   0.3791 2.776  8.947 11.05</span></span></code></pre></div>
 <p>Here I combine the raw expression measurements and mean and confidence intervals into a single plot:</p>
-<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1">mice.long <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb432-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> expression, <span class="dt">color=</span>treatment)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.35</span>, <span class="dt">shape=</span><span class="dv">17</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="dt">data =</span> ci.by.treatment,</a>
-<a class="sourceLine" id="cb432-5" data-line-number="5">                  <span class="kw">aes</span>(<span class="dt">x =</span> treatment, <span class="dt">y =</span> mean,</a>
-<a class="sourceLine" id="cb432-6" data-line-number="6">                      <span class="dt">ymin =</span> ci.low, <span class="dt">ymax=</span> ci.hi)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb432-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Drug Treatment&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Expression&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb432-8" data-line-number="8"><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb432-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.caption =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">8</span>))</a></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-447"></span>
-<img src="bio304-book_files/figure-html/unnamed-chunk-447-1.png" alt="Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means." width="576" />
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="comparing-sample-means.html#cb433-1" tabindex="-1"></a>mice.long <span class="sc">%&gt;%</span></span>
+<span id="cb433-2"><a href="comparing-sample-means.html#cb433-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> treatment, <span class="at">y =</span> expression, <span class="at">color=</span>treatment)) <span class="sc">+</span> </span>
+<span id="cb433-3"><a href="comparing-sample-means.html#cb433-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.35</span>, <span class="at">shape=</span><span class="dv">17</span>) <span class="sc">+</span> </span>
+<span id="cb433-4"><a href="comparing-sample-means.html#cb433-4" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="at">data =</span> ci.by.treatment,</span>
+<span id="cb433-5"><a href="comparing-sample-means.html#cb433-5" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">x =</span> treatment, <span class="at">y =</span> mean,</span>
+<span id="cb433-6"><a href="comparing-sample-means.html#cb433-6" tabindex="-1"></a>                      <span class="at">ymin =</span> ci.low, <span class="at">ymax=</span> ci.hi)) <span class="sc">+</span></span>
+<span id="cb433-7"><a href="comparing-sample-means.html#cb433-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Drug Treatment&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Expression&quot;</span>) <span class="sc">+</span></span>
+<span id="cb433-8"><a href="comparing-sample-means.html#cb433-8" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<span id="cb433-9"><a href="comparing-sample-means.html#cb433-9" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-448"></span>
+<img src="bio304-book_files/figure-html/unnamed-chunk-448-1.png" alt="Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means." width="576" />
 <p class="caption">
 Figure 19.1: Expression of YFG1 for different drug treatments. Triangles are individual measurements. Circles and lines indicate group means and 95% CIs of means.
 </p>
 </div>
 </div>
 </div>
-<div id="paired-t-test" class="section level2">
-<h2><span class="header-section-number">19.5</span> Paired t-test</h2>
+<div id="paired-t-test" class="section level2 hasAnchor" number="19.5">
+<h2><span class="header-section-number">19.5</span> Paired t-test<a href="comparing-sample-means.html#paired-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In a paired t-test there are two groups/treatments, but the samples in the two groups are paired or matched. This typically arises in “before-after” studies where the same individual/object is measured at different time points, before and after application of a treatment. The repeated measurement of the same individual/object means that we can’t treat the two sets of observations as independent. Null and alternative hypotheses are thus typically framed in terms of a mean difference between time points/conditions</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: The mean difference of variable <span class="math inline">\(X\)</span> in the paired measurements is zero, i.e., <span class="math inline">\(\overline{D} = 0\)</span> where <span class="math inline">\(D = X_\text{after} - X_\text{before}\)</span></p></li>
 <li><p><span class="math inline">\(H_A\)</span>: The mean difference of variable <span class="math inline">\(X\)</span> in the paired measurements is not zero, i.e., <span class="math inline">\(\overline{D} \neq 0\)</span></p></li>
 </ul>
-<div id="paired-t-test-test-statistic" class="section level3">
-<h3><span class="header-section-number">19.5.1</span> Paired t-test, test statistic</h3>
+<div id="paired-t-test-test-statistic" class="section level3 hasAnchor" number="19.5.1">
+<h3><span class="header-section-number">19.5.1</span> Paired t-test, test statistic<a href="comparing-sample-means.html#paired-t-test-test-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Let the variable of interest for individual <span class="math inline">\(i\)</span> in the paired conditions be designated <span class="math inline">\(x_{i,\text{before}}\)</span> and <span class="math inline">\(x_{i, \text{after}}\)</span></li>
 <li>Let <span class="math inline">\(D_i = x_{i, \text{after}} - x_{i, \text{before}}\)</span> be the paired difference for individual <span class="math inline">\(i\)</span></li>
@@ -934,50 +1032,50 @@ t^\star = \frac{\overline{D}}{SE(\overline{D})}
 \]</span></p>
 <p>Under the null hypothesis, this statistic follows a t-distribution with <span class="math inline">\(n-1\)</span> degrees of freedom.</p>
 </div>
-<div id="assumptions-of-paired-t-test" class="section level3">
-<h3><span class="header-section-number">19.5.2</span> Assumptions of paired t-test</h3>
+<div id="assumptions-of-paired-t-test" class="section level3 hasAnchor" number="19.5.2">
+<h3><span class="header-section-number">19.5.2</span> Assumptions of paired t-test<a href="comparing-sample-means.html#assumptions-of-paired-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Data are randomly sampled from the population</li>
 <li>Paired differences are normally distributed</li>
 </ul>
 </div>
-<div id="paired-t-test-example" class="section level3">
-<h3><span class="header-section-number">19.5.3</span> Paired t-test, example</h3>
+<div id="paired-t-test-example" class="section level3 hasAnchor" number="19.5.3">
+<h3><span class="header-section-number">19.5.3</span> Paired t-test, example<a href="comparing-sample-means.html#paired-t-test-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You measure the expression of gene <em>YFG1</em> in five mice. You then treat those five mice with drug Z and measure gene expression again.</p>
 <ul>
 <li><em>YFG1</em> expression before treatment = {12, 11.75, 11.25, 10.5, 10}</li>
 <li><em>YFG1</em> expression after treatment = {11, 10, 10.50, 8.75, 9.75}</li>
 </ul>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1">mice.paired &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">YFG1.before =</span> <span class="kw">c</span>(<span class="dv">12</span>, <span class="fl">11.75</span>, <span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb433-2" data-line-number="2">                          <span class="dt">YFG1.after =</span> <span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">10</span>, <span class="fl">10.50</span>, <span class="fl">8.75</span>, <span class="fl">9.75</span>))</a>
-<a class="sourceLine" id="cb433-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb433-4" data-line-number="4"><span class="kw">t.test</span>(mice.paired<span class="op">$</span>YFG1.before, mice.paired<span class="op">$</span>YFG1.after,</a>
-<a class="sourceLine" id="cb433-5" data-line-number="5">       <span class="dt">paired =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb433-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb433-7" data-line-number="7"><span class="co">#&gt;  Paired t-test</span></a>
-<a class="sourceLine" id="cb433-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb433-9" data-line-number="9"><span class="co">#&gt; data:  mice.paired$YFG1.before and mice.paired$YFG1.after</span></a>
-<a class="sourceLine" id="cb433-10" data-line-number="10"><span class="co">#&gt; t = 3.773, df = 4, p-value = 0.01955</span></a>
-<a class="sourceLine" id="cb433-11" data-line-number="11"><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></a>
-<a class="sourceLine" id="cb433-12" data-line-number="12"><span class="co">#&gt; 95 percent confidence interval:</span></a>
-<a class="sourceLine" id="cb433-13" data-line-number="13"><span class="co">#&gt;  0.2905341 1.9094659</span></a>
-<a class="sourceLine" id="cb433-14" data-line-number="14"><span class="co">#&gt; sample estimates:</span></a>
-<a class="sourceLine" id="cb433-15" data-line-number="15"><span class="co">#&gt; mean of the differences </span></a>
-<a class="sourceLine" id="cb433-16" data-line-number="16"><span class="co">#&gt;                     1.1</span></a></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="comparing-sample-means.html#cb434-1" tabindex="-1"></a>mice.paired <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">YFG1.before =</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="fl">11.75</span>, <span class="fl">11.25</span>, <span class="fl">10.5</span>, <span class="dv">10</span>),</span>
+<span id="cb434-2"><a href="comparing-sample-means.html#cb434-2" tabindex="-1"></a>                          <span class="at">YFG1.after =</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">10</span>, <span class="fl">10.50</span>, <span class="fl">8.75</span>, <span class="fl">9.75</span>))</span>
+<span id="cb434-3"><a href="comparing-sample-means.html#cb434-3" tabindex="-1"></a></span>
+<span id="cb434-4"><a href="comparing-sample-means.html#cb434-4" tabindex="-1"></a><span class="fu">t.test</span>(mice.paired<span class="sc">$</span>YFG1.before, mice.paired<span class="sc">$</span>YFG1.after,</span>
+<span id="cb434-5"><a href="comparing-sample-means.html#cb434-5" tabindex="-1"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb434-6"><a href="comparing-sample-means.html#cb434-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb434-7"><a href="comparing-sample-means.html#cb434-7" tabindex="-1"></a><span class="co">#&gt;  Paired t-test</span></span>
+<span id="cb434-8"><a href="comparing-sample-means.html#cb434-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb434-9"><a href="comparing-sample-means.html#cb434-9" tabindex="-1"></a><span class="co">#&gt; data:  mice.paired$YFG1.before and mice.paired$YFG1.after</span></span>
+<span id="cb434-10"><a href="comparing-sample-means.html#cb434-10" tabindex="-1"></a><span class="co">#&gt; t = 3.773, df = 4, p-value = 0.01955</span></span>
+<span id="cb434-11"><a href="comparing-sample-means.html#cb434-11" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
+<span id="cb434-12"><a href="comparing-sample-means.html#cb434-12" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb434-13"><a href="comparing-sample-means.html#cb434-13" tabindex="-1"></a><span class="co">#&gt;  0.2905341 1.9094659</span></span>
+<span id="cb434-14"><a href="comparing-sample-means.html#cb434-14" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb434-15"><a href="comparing-sample-means.html#cb434-15" tabindex="-1"></a><span class="co">#&gt; mean difference </span></span>
+<span id="cb434-16"><a href="comparing-sample-means.html#cb434-16" tabindex="-1"></a><span class="co">#&gt;             1.1</span></span></code></pre></div>
 <p>Using a type I error cutoff of <span class="math inline">\(\alpha = 0.05\)</span>, we reject the null hypothesis of no difference in the average expression of <em>YFG1</em> before and after treatment with Drug Z.</p>
 </div>
 </div>
-<div id="the-fallacy-of-indirect-comparison" class="section level2">
-<h2><span class="header-section-number">19.6</span> The fallacy of indirect comparison</h2>
+<div id="the-fallacy-of-indirect-comparison" class="section level2 hasAnchor" number="19.6">
+<h2><span class="header-section-number">19.6</span> The fallacy of indirect comparison<a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>WS 12.5 considers an example where baby photos were compared to photos of their mother, father, and several unrelated pictures. Volunteers were asked to identify the mother and father of each baby, and the accuracy of their choices was compared between mothers and fathers. In Fig. 12.5-1 (below), the horizontal line shows the null hypotheses expected for random guessing, while means and 95% CIs are shown for mothers and fathers. The success rate for picking fathers was significantly better than random expectation, while the CI for mothers overlapped the null expected value. Given these CIs, the authors of the study concluded that babies resemble their fathers more than their mothers.</p>
 <p><img src="figures/whitlock_12.5-1.png" width="75%" /></p>
 <p>This is an example of the fallacy of indirect comparison: <font color='blue'>“Comparisons between two groups should always be made directly, not indirectly by comparing both to the same null hypothesis”</font> WS 12.5.</p>
 <hr />
-<div id="interpreting-confidence-intervals-in-light-of-two-sample-t-tests" class="section level3">
-<h3><span class="header-section-number">19.6.1</span> Interpreting confidence intervals in light of two sample t-tests</h3>
+<div id="interpreting-confidence-intervals-in-light-of-two-sample-t-tests" class="section level3 hasAnchor" number="19.6.1">
+<h3><span class="header-section-number">19.6.1</span> Interpreting confidence intervals in light of two sample t-tests<a href="comparing-sample-means.html#interpreting-confidence-intervals-in-light-of-two-sample-t-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Figure 12.6-1 from WS (below) considers the relationship between overlap of confidence intervals and significant difference between groups (<span class="math inline">\(H_0\)</span>: group means do not differ). Shown are group means and their 95% confidence intervals in three cases. (a) When 95% CIs do not overlap, then group means will be significantly different. (b) When the confidence interval of one group overlaps the mean value for the other group, then the groups are not significantly different. Finally, (c) when the confidence intervals overlap each other, but they do not overlap the mean of the other group, then the result of the hypothesis test is unclear.</p>
 <p>In each case, figures with confidence intervals are helpful, but it is the P-value from our test of <span class="math inline">\(H_0\)</span> that provides clear indication for our statistical conclusions.</p>
-<div class="figure"><span id="fig:unnamed-chunk-450"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-451"></span>
 <img src="figures/whitlock_12.6-1.png" alt="Figure from Whitlock and Schluter, Chapter 12." width="90%" />
 <p class="caption">
 Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
@@ -985,8 +1083,8 @@ Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
 </div>
 </div>
 </div>
-<div id="summary-table-for-different-t-tests" class="section level2">
-<h2><span class="header-section-number">19.7</span> Summary table for different t-tests</h2>
+<div id="summary-table-for-different-t-tests" class="section level2 hasAnchor" number="19.7">
+<h2><span class="header-section-number">19.7</span> Summary table for different t-tests<a href="comparing-sample-means.html#summary-table-for-different-t-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here is a summary table giving the test statistic and degrees of freedom for each of the different types of t-tests described above. Notice that they all boil down to a difference of two means, expressed in units of standard error. The associated P-value associated with each test is thus a measure of how surprising that scaled difference in means is under the null model.</p>
 <table style="width:100%;">
 <colgroup>
@@ -1032,42 +1130,55 @@ Figure 19.2: Figure from Whitlock and Schluter, Chapter 12.
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"google": false,
-"linkedin": false,
-"weibo": false,
-"instapper": false,
-"vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"download": ["bio304-book.pdf"],
-"toc": {
-"collapse": "section"
-},
-"toolbar": {
-"position": "fixed"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bio304-book.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  },
+  "toolbar": {
+    "position": "fixed"
+  }
 });
 });
 </script>
@@ -1078,9 +1189,10 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

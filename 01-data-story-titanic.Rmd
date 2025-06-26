@@ -23,11 +23,13 @@ We'll use this data to explore whether the saying "Women and children first!" ap
 First we'll load some R libraries (packages) that contain useful functions that will make our analyses quicker and more efficient. We'll discuss the functions that these libraries provide, and how to use libraries in general, in greater detail in a future lecture.
 
 ```{r, message = FALSE}
-library(ggplot2)
-library(readr)
-library(dplyr)
-library(tidyr)
-library(forcats)
+# this is a comment -- comments start with a # symbol
+# R ignores anything in comments
+
+# tidyverse is a "meta-library" -- a library that loads other libraries
+# we'll use the tidyverse libraries frequently in this book
+
+library(tidyverse) 
 ```
 
 
@@ -36,7 +38,10 @@ library(forcats)
 We start by reading in the data from the CSV file.
 
 ```{r}
-titanic <- read_csv("~/Downloads/titanic_data.csv")
+# this assumes the file titanic_data.csv is in a directory called "data"
+# which is located in the same directory as your Quarto / Rmarkdown document
+
+titanic <- read_csv("data/titanic_data.csv")
 ```
 
 The function `read_csv` does exactly what it advertises -- reads a data set from a CSV file and returns it as an object we can compute on.  In this case we assigned the variable name `titanic` to our data set. Simple enough!
@@ -65,7 +70,7 @@ names(titanic)
 
 ### Simple data wrangling
 
-Two variables of interest to us are `pclass` ("passenger class") and `survived`.  These are categorical variables encoded as numbers. Before exploring the data we're going to create derived "factor" variables from these, which will make our analyses more convenient.  I'm also going to recode the "survived" information as the classes "died" and "lived".  
+Two variables of interest to us are `pclass` ("passenger class") and `survived`.  These are categorical variables encoded as numbers. Before exploring the data we're going to create derived "factor" variables from these, which will make our analyses more convenient.  I'm also going to recode the "survived" variable into as the classes "died" and "lived".  
 
 ```{r}
 titanic <- mutate(titanic, 
@@ -87,7 +92,7 @@ and
 names(titanic)
 ```
 
-Note that there are now 16 columns in our data, the original 14 plus  our two new derived variables `passenger.class` and `survival`.
+Note that there are now 16 columns in our data, the original 14 plus our two new derived variables `passenger.class` and `survival`.
 
 
 ## Categorizing passengers
@@ -138,11 +143,11 @@ count(titanic, sex, survival)
 When looking at counts of multiple variables simultaneously, a more traditional representation than the one above is a "contingency table".  The cells in a contingency table give the counts of individuals with respect to combinations of variables (e.g. # of women who survived, # of women who died, etc).  Here's the same data on sex and survival represented as a contingency table:
 
 ```{r}
-count(titanic, sex, survival) %>%
+count(titanic, sex, survival) |>
   spread(survival, n)
 ```
 
-In the code above the symbol `%>%` can be read as "pipe" or "send". The pipe operator inserts the object before the pipe as the first argument to the function after the pipe. Here we're piping the output of the `count` function as the input into the `spread` function. We'll see in later lectures that piping objects makes for very powerful workflows when we do more sophisticated analyses.
+In the code above the symbol `|>` is known as the "pipe operator". The pipe operator inserts the object before the pipe as the first argument to the function after the pipe. Here we're piping the output of the `count` function as the input into the `spread` function. We'll see in later lectures that piping objects makes for very powerful workflows when we do more sophisticated analyses.
 
 We can also create a bar plot to represent the contingency table:
 
@@ -167,8 +172,8 @@ ggplot(titanic) +
 
 A slightly more sophisticated version of a bar plot is called a "mosaic plot".  A mosaic plot is similar to a proportional bar plot but the width of the bars also varies, indicating the relative numbers of observations in each class.  To create a mosaic plot we need to import the `geom_mosaic` function from a library called ggmosaic.
 
-```{r, message=FALSE}
-library(ggmosaic)
+```{r, message=FALSE, warning=FALSE}
+library(ggmosaic) 
 
 ggplot(titanic) + 
   geom_mosaic(aes(x = product(sex), fill = survival)) + 
@@ -198,8 +203,8 @@ median(titanic$age, na.rm = TRUE)
 Note that we have to explicitly tell the mean and median functions to drop any missing (NA) values.  Alternately, we could have use pipes to calculate the mean and median as so:
 
 ```{r}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>   # remove passengers with no age information
   summarize(mean(age), median(age))
 ```
 
@@ -212,31 +217,48 @@ Now we turn to the question of how age relates to the probability of survival.  
 We'll start by creating "strip charts" that plot age on the y-axis, and survival on the x-axis. First we filter out individuals for which we have no age data, then we use a pipe to send the filtered data to the ggplot function:
 
 ```{r}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot() + 
-    geom_jitter(aes(survival, age), width = 0.1, alpha = 0.5) 
+    geom_jitter(aes(survival, age), 
+                width = 0.1, alpha = 0.5) 
 ```
 
 Recall that sex was an important variable in our earlier assessment of the data. Let's create a second strip plot that takes into account both age and sex.
 
 ```{r}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot() + 
-  geom_jitter(aes(survival, age, color = sex), width = 0.1, alpha = 0.5) +
-  facet_wrap(~sex)
+    geom_jitter(aes(survival, age, color = sex),
+                width = 0.1, alpha = 0.25) +
+    facet_wrap(~sex)
 ```
+### Violin plot
+
+A strip plot like the one above let's us see the "raw" data, but summary visualizations are useful, especially with large data sets. A useful visualization that is related to a histogram is a "violin plot". Here
+
+```{r}
+titanic |>
+  filter(!is.na(age)) |>
+  # if we put the "aesthetics" (aes) in the call to ggplot()
+  # then geom_violin() and geom_jitter() will both inherit this information
+  ggplot(aes(survival, age, color = sex)) + 
+    geom_violin() +
+    geom_jitter(width = 0.1, alpha = 0.25) +
+    facet_wrap(~sex)
+```
+
 
 ### Box plots
 
-Another way to look at the data is to use a summary figure called a "box plot". First the simple boxplot, relating age and survival:
+Another useful summary plois is the  "box plot". First the simple boxplot, relating age and survival:
 
 ```{r}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot() + 
-  geom_boxplot(aes(survival, age))
+    geom_boxplot(aes(survival, age))
 ```
 
 A box plot depicts information about the median value (thick central line), the first and third quartiles (lower 25% value, upper 75% value) and outliers.  From this simple boxplot, it doesn't look like there is a great difference in the age distribution of passengers who lived vs died.
@@ -244,14 +266,14 @@ A box plot depicts information about the median value (thick central line), the 
 Now we look at box plott for age-by-survival, conditioned on sex.
 
 ```{r}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot() + 
-  geom_boxplot(aes(survival, age, fill = sex)) +
-  facet_wrap(~sex)
+    geom_boxplot(aes(survival, age, fill = sex)) +
+    facet_wrap(~sex)
 ```
 
-Here we start to see a more interesting pattern.  When comparing male passengers, the median age of survivors appears to be a little younger than those who died. However, when comparing female passengers the opposite pattern seems to be at play.
+In both the violin and box plots we see a hint ant an  interesting pattern.  When comparing male passengers, the median age of survivors appears to be a little younger than those who died. However, when comparing female passengers the opposite pattern seems to be at play. HOwever, this effect is modest in both directions.
 
 ### Fitting a model relating survival to age and sex
 
@@ -259,13 +281,13 @@ We can get more sophisticated by fitting a formal model to our data. Here we use
 
 
 ```{r, fig.width=7, fig.height = 4}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot(aes(x = age, y = survived, color = sex)) + 
-  geom_jitter(height = 0.05, alpha = 0.35) + 
-  geom_smooth(method="glm", method.args = list(family="binomial"))  + 
-  facet_wrap(~sex) + 
-  labs(x = "Age", y = "Probability of survival")
+    geom_jitter(height = 0.05, alpha = 0.35) + 
+    geom_smooth(method="glm", method.args = list(family="binomial"))  + 
+    facet_wrap(~sex) + 
+    labs(x = "Age", y = "Probability of survival")
 ```
 
 The logistic regression model fit here, seems to support the trend we saw in the box plots.  When breaking the data down by sex we find that there is a decreasing probability of survival as age increases for male passengers, but the opposite trend for female passengers.  This is pretty interesting -- "children first" seemed to hold for men but not for women.  
@@ -309,16 +331,17 @@ As a final example, let generate a visualization and model to jointly consider h
 
 
 ```{r, fig.width=9, fig.height = 6}
-titanic %>%
-  filter(!is.na(age)) %>%
+titanic |>
+  filter(!is.na(age)) |>
   ggplot(aes(x = age, y = survived, color = sex)) + 
-  geom_jitter(height = 0.05, alpha = 0.35) + 
-  geom_smooth(method="glm", method.args = list(family="binomial"))  + 
-  facet_grid(passenger.class~sex) + 
-  labs(x = "Age", y = "Probability of survival")
+    geom_jitter(height = 0.05, alpha = 0.35) + 
+    geom_smooth(method="glm", method.args = list(family="binomial"))  + 
+    facet_grid(passenger.class~sex) + 
+    labs(x = "Age", y = "Probability of survival")
 ```
 
-By conditioning on both sex and ticketing class, we gain even more insights into the data and our assesments of relationships between variables can change.  
+By conditioning on both sex and ticketing class, we gain even more insights into the data and our assess
+|ments of relationships between variables can change.  
 
 For female passengers, ticketed class appears to have a strong influence on the relationship between age and survival.  We see that almost all of the female first-class passengers survived, and the relationship between age and survival is thus flat.  The second class female passengers are fairly similar, though with a slight decrease in the probability of survival among the oldest passengers.  It's not until we get to the third class passengers that we see a strong indication of the "children first" relationship playing out in terms of survival.
 

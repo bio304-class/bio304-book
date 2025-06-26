@@ -208,7 +208,7 @@ To perform the Mann-Whitney U text, we use function `wilcox.test` ([details here
 
 ```{r}
 wilcox.test(timeToMating ~ feedingStatus, 
-            alternative = "two.sided", paired = FALSE, data = crickets)
+            alternative = "two.sided", data = crickets)
 ```
 
 The test statistic $W$ is the equivalent to the $U$ test statistic of the Mann Whitney U-test.  In this case, our observed value of $U$ ($W$) is quite probable ($p$ = 0.4) under the null hypothesis of no difference in the distributions between the two groups, therefore we fail to reject the null hypothesis.

@@ -279,7 +279,7 @@ std.norm.plot +
 
 - In R, for a normal distribution the fraction of observations below a given point (the probability that a random observation drawn from the distribution is less than the given value) can be calculatedusing the `pnorm(q, mu, sigma)` function:
 
-    ```{r}
+```{r}
 # Malaika's z-score was 1.49. What percentile was she in?
 pnorm(1.49) 
 ```

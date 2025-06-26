@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html >
-
+<html lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Biology 304: Biological Data Analysis</title>
-  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 21 Violations of Assumptions | Biology 304: Biological Data Analysis</title>
+  <meta name="description" content="Hands-on materials for Bio 304 course at Duke University." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Biology 304: Biological Data Analysis" />
+  <meta property="og:title" content="Chapter 21 Violations of Assumptions | Biology 304: Biological Data Analysis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Hands-on materials for Bio 304 course at Duke University." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Biology 304: Biological Data Analysis" />
+  <meta name="twitter:title" content="Chapter 21 Violations of Assumptions | Biology 304: Biological Data Analysis" />
   
   <meta name="twitter:description" content="Hands-on materials for Bio 304 course at Duke University." />
   
 
-<meta name="author" content="Paul M. Magwene">
+<meta name="author" content="Paul M. Magwene" />
 
 
-<meta name="date" content="2018-12-06">
+<meta name="date" content="2025-06-25" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="analysis-of-variance.html">
-<link rel="next" href="bivariate-linear-regression.html">
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="prev" href="analysis-of-variance.html"/>
+<link rel="next" href="bivariate-linear-regression.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -47,36 +48,39 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
-<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
-<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/rglWebGL-binding-1.3.18/rglWebGL.js"></script>
+<link href="libs/rglwidgetClass-1.3.18/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-1.3.18/rglClass.min.js"></script>
+<script src="libs/CanvasMatrix4-1.3.18/CanvasMatrix.min.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -85,9 +89,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; } /* Alert */
 code span.an { color: #008000; } /* Annotation */
@@ -115,6 +119,11 @@ code span.vs { color: #008080; } /* VerbatimString */
 code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -128,59 +137,72 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#how-to-use-these-lecture-notes"><i class="fa fa-check"></i><b>1.1</b> How to use these lecture notes</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a><ul>
+<li class="chapter" data-level="2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html"><i class="fa fa-check"></i><b>2</b> Data story: Women and children first on the Titanic?</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#background"><i class="fa fa-check"></i><b>2.1</b> Background</a></li>
 <li class="chapter" data-level="2.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#dataset"><i class="fa fa-check"></i><b>2.2</b> Dataset</a></li>
 <li class="chapter" data-level="2.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#libraries"><i class="fa fa-check"></i><b>2.3</b> Libraries</a></li>
 <li class="chapter" data-level="2.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#read-data"><i class="fa fa-check"></i><b>2.4</b> Read data</a></li>
-<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a><ul>
+<li class="chapter" data-level="2.5" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#whats-in-the-data"><i class="fa fa-check"></i><b>2.5</b> What’s in the data?</a>
+<ul>
 <li class="chapter" data-level="2.5.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#simple-data-wrangling"><i class="fa fa-check"></i><b>2.5.1</b> Simple data wrangling</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a><ul>
+<li class="chapter" data-level="2.6" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#categorizing-passengers"><i class="fa fa-check"></i><b>2.6</b> Categorizing passengers</a>
+<ul>
 <li class="chapter" data-level="2.6.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-many-people-survived"><i class="fa fa-check"></i><b>2.6.1</b> How many people survived?</a></li>
 <li class="chapter" data-level="2.6.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#women-first"><i class="fa fa-check"></i><b>2.6.2</b> Women first?</a></li>
 <li class="chapter" data-level="2.6.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#a-bar-plot-using-proportions-rather-than-counts"><i class="fa fa-check"></i><b>2.6.3</b> A bar plot using proportions rather than counts</a></li>
 <li class="chapter" data-level="2.6.4" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#mosaic-plots"><i class="fa fa-check"></i><b>2.6.4</b> Mosaic plots</a></li>
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#passenger-ages"><i class="fa fa-check"></i><b>2.7</b> Passenger ages</a></li>
-<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a><ul>
+<li class="chapter" data-level="2.8" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-age-relate-to-survival"><i class="fa fa-check"></i><b>2.8</b> How does age relate to survival?</a>
+<ul>
 <li class="chapter" data-level="2.8.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#strip-charts"><i class="fa fa-check"></i><b>2.8.1</b> Strip charts</a></li>
 <li class="chapter" data-level="2.8.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#box-plots"><i class="fa fa-check"></i><b>2.8.2</b> Box plots</a></li>
 <li class="chapter" data-level="2.8.3" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#fitting-a-model-relating-survival-to-age-and-sex"><i class="fa fa-check"></i><b>2.8.3</b> Fitting a model relating survival to age and sex</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a><ul>
+<li class="chapter" data-level="2.9" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#how-does-class-affect-survival"><i class="fa fa-check"></i><b>2.9</b> How does class affect survival?</a>
+<ul>
 <li class="chapter" data-level="2.9.1" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#combining-sex-and-class"><i class="fa fa-check"></i><b>2.9.1</b> Combining Sex and Class</a></li>
 <li class="chapter" data-level="2.9.2" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#extending-the-logistic-regression-model-to-consider-class-age-sex-and-survival"><i class="fa fa-check"></i><b>2.9.2</b> Extending the logistic regression model to consider class, age, sex, and survival</a></li>
 </ul></li>
 <li class="chapter" data-level="2.10" data-path="data-story-women-and-children-first-on-the-titanic.html"><a href="data-story-women-and-children-first-on-the-titanic.html#conclusion"><i class="fa fa-check"></i><b>2.10</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a><ul>
+<li class="chapter" data-level="3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html"><i class="fa fa-check"></i><b>3</b> Getting Started with R</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-r"><i class="fa fa-check"></i><b>3.1</b> What is R?</a></li>
 <li class="chapter" data-level="3.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#what-is-rstudio"><i class="fa fa-check"></i><b>3.2</b> What is RStudio?</a></li>
 <li class="chapter" data-level="3.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#entering-commands-in-the-console"><i class="fa fa-check"></i><b>3.3</b> Entering commands in the console</a></li>
 <li class="chapter" data-level="3.4" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#comments"><i class="fa fa-check"></i><b>3.4</b> Comments</a></li>
-<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a><ul>
+<li class="chapter" data-level="3.5" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#using-r-as-a-calculator"><i class="fa fa-check"></i><b>3.5</b> Using R as a Calculator</a>
+<ul>
 <li class="chapter" data-level="3.5.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#common-mathematical-functions"><i class="fa fa-check"></i><b>3.5.1</b> Common mathematical functions</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a><ul>
+<li class="chapter" data-level="3.6" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#the-r-help-system"><i class="fa fa-check"></i><b>3.6</b> The R Help System</a>
+<ul>
 <li class="chapter" data-level="3.6.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#getting-help-from-the-console"><i class="fa fa-check"></i><b>3.6.1</b> Getting help from the console</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a><ul>
+<li class="chapter" data-level="3.7" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#variable-assignment-in-r"><i class="fa fa-check"></i><b>3.7</b> Variable assignment in R</a>
+<ul>
 <li class="chapter" data-level="3.7.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#valid-variable-names"><i class="fa fa-check"></i><b>3.7.1</b> Valid variable names</a></li>
 </ul></li>
 <li class="chapter" data-level="3.8" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#data-types"><i class="fa fa-check"></i><b>3.8</b> Data types</a></li>
-<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a><ul>
+<li class="chapter" data-level="3.9" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-values"><i class="fa fa-check"></i><b>3.9</b> Logical values</a>
+<ul>
 <li class="chapter" data-level="3.9.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#logical-operators"><i class="fa fa-check"></i><b>3.9.1</b> Logical operators</a></li>
 </ul></li>
-<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a><ul>
+<li class="chapter" data-level="3.10" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#character-strings"><i class="fa fa-check"></i><b>3.10</b> Character strings</a>
+<ul>
 <li class="chapter" data-level="3.10.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#joining-strings"><i class="fa fa-check"></i><b>3.10.1</b> Joining strings</a></li>
 <li class="chapter" data-level="3.10.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#splitting-strings"><i class="fa fa-check"></i><b>3.10.2</b> Splitting strings</a></li>
 <li class="chapter" data-level="3.10.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#substrings"><i class="fa fa-check"></i><b>3.10.3</b> Substrings</a></li>
 </ul></li>
-<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a><ul>
+<li class="chapter" data-level="3.11" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#packages"><i class="fa fa-check"></i><b>3.11</b> Packages</a>
+<ul>
 <li class="chapter" data-level="3.11.1" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-console"><i class="fa fa-check"></i><b>3.11.1</b> Installing packages from the console</a></li>
 <li class="chapter" data-level="3.11.2" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#install-the-tidyverse-package"><i class="fa fa-check"></i><b>3.11.2</b> Install the tidyverse package</a></li>
 <li class="chapter" data-level="3.11.3" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#installing-packages-from-the-rstudio-dialog"><i class="fa fa-check"></i><b>3.11.3</b> Installing packages from the RStudio dialog</a></li>
@@ -194,11 +216,13 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="3.17" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#histograms"><i class="fa fa-check"></i><b>3.17</b> Histograms</a></li>
 <li class="chapter" data-level="3.18" data-path="getting-started-with-r.html"><a href="getting-started-with-r.html#scatter-plots"><i class="fa fa-check"></i><b>3.18</b> Scatter plots</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a><ul>
+<li class="chapter" data-level="4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html"><i class="fa fa-check"></i><b>4</b> R Markdown and R Notebooks</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#r-notebooks"><i class="fa fa-check"></i><b>4.1</b> R Notebooks</a></li>
 <li class="chapter" data-level="4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#creating-an-r-notebook"><i class="fa fa-check"></i><b>4.2</b> Creating an R Notebook</a></li>
 <li class="chapter" data-level="4.3" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#the-default-r-notebook-template"><i class="fa fa-check"></i><b>4.3</b> The default R Notebook template</a></li>
-<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a><ul>
+<li class="chapter" data-level="4.4" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-and-non-code-blocks"><i class="fa fa-check"></i><b>4.4</b> Code and Non-code blocks</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#non-code-blocks"><i class="fa fa-check"></i><b>4.4.1</b> Non-code blocks</a></li>
 <li class="chapter" data-level="4.4.2" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#code-blocks"><i class="fa fa-check"></i><b>4.4.2</b> Code blocks</a></li>
 </ul></li>
@@ -207,8 +231,10 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="4.7" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#knitting-an-r-markdown-to-html"><i class="fa fa-check"></i><b>4.7</b> “Knitting an” R Markdown to HTML</a></li>
 <li class="chapter" data-level="4.8" data-path="r-markdown-and-r-notebooks.html"><a href="r-markdown-and-r-notebooks.html#sharing-your-reproducible-r-notebook"><i class="fa fa-check"></i><b>4.8</b> Sharing your reproducible R Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a><ul>
-<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a><ul>
+<li class="chapter" data-level="5" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html"><i class="fa fa-check"></i><b>5</b> More R Basics: Data structures</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors"><i class="fa fa-check"></i><b>5.1</b> Vectors</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-arithmetic"><i class="fa fa-check"></i><b>5.1.1</b> Vector Arithmetic</a></li>
 <li class="chapter" data-level="5.1.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vector-recycling"><i class="fa fa-check"></i><b>5.1.2</b> Vector recycling</a></li>
 <li class="chapter" data-level="5.1.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#simple-statistical-functions-for-numeric-vectors"><i class="fa fa-check"></i><b>5.1.3</b> Simple statistical functions for numeric vectors</a></li>
@@ -219,7 +245,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.1.8" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#vectors-from-regular-sequences"><i class="fa fa-check"></i><b>5.1.8</b> Vectors from regular sequences</a></li>
 <li class="chapter" data-level="5.1.9" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#additional-functions-for-working-with-vectors"><i class="fa fa-check"></i><b>5.1.9</b> Additional functions for working with vectors</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a><ul>
+<li class="chapter" data-level="5.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#lists"><i class="fa fa-check"></i><b>5.2</b> Lists</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-type-of-lists"><i class="fa fa-check"></i><b>5.2.1</b> Length and type of lists</a></li>
 <li class="chapter" data-level="5.2.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#indexing-lists"><i class="fa fa-check"></i><b>5.2.2</b> Indexing lists</a></li>
 <li class="chapter" data-level="5.2.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#naming-list-elements"><i class="fa fa-check"></i><b>5.2.3</b> Naming list elements</a></li>
@@ -228,7 +255,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.2.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#combining-lists"><i class="fa fa-check"></i><b>5.2.6</b> Combining lists</a></li>
 <li class="chapter" data-level="5.2.7" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#converting-lists-to-vectors"><i class="fa fa-check"></i><b>5.2.7</b> Converting lists to vectors</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a><ul>
+<li class="chapter" data-level="5.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#data-frames"><i class="fa fa-check"></i><b>5.3</b> Data frames</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#creating-a-data-frame"><i class="fa fa-check"></i><b>5.3.1</b> Creating a data frame</a></li>
 <li class="chapter" data-level="5.3.2" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#type-and-class-for-data-frames"><i class="fa fa-check"></i><b>5.3.2</b> Type and class for data frames</a></li>
 <li class="chapter" data-level="5.3.3" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#length-and-dimension-for-data-frames"><i class="fa fa-check"></i><b>5.3.3</b> Length and dimension for data frames</a></li>
@@ -237,17 +265,20 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="5.3.6" data-path="more-r-basics-data-structures.html"><a href="more-r-basics-data-structures.html#adding-columns-to-a-data-frame"><i class="fa fa-check"></i><b>5.3.6</b> Adding columns to a data frame</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a><ul>
+<li class="chapter" data-level="6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html"><i class="fa fa-check"></i><b>6</b> Introduction to ggplot2</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#loading-ggplot2"><i class="fa fa-check"></i><b>6.1</b> Loading ggplot2</a></li>
 <li class="chapter" data-level="6.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#example-data-set-andersons-iris-data"><i class="fa fa-check"></i><b>6.2</b> Example data set: Anderson’s Iris Data</a></li>
 <li class="chapter" data-level="6.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#template-for-single-layer-plots-in-ggplot2"><i class="fa fa-check"></i><b>6.3</b> Template for single layer plots in ggplot2</a></li>
 <li class="chapter" data-level="6.4" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#an-aside-about-function-arguments"><i class="fa fa-check"></i><b>6.4</b> An aside about function arguments</a></li>
-<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a><ul>
+<li class="chapter" data-level="6.5" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#strip-plots"><i class="fa fa-check"></i><b>6.5</b> Strip plots</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#jittering-data"><i class="fa fa-check"></i><b>6.5.1</b> Jittering data</a></li>
 <li class="chapter" data-level="6.5.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-categorical-information"><i class="fa fa-check"></i><b>6.5.2</b> Adding categorical information</a></li>
 <li class="chapter" data-level="6.5.3" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#rotating-plot-coordinates"><i class="fa fa-check"></i><b>6.5.3</b> Rotating plot coordinates</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a><ul>
+<li class="chapter" data-level="6.6" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#histograms-1"><i class="fa fa-check"></i><b>6.6</b> Histograms</a>
+<ul>
 <li class="chapter" data-level="6.6.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#variations-on-histograms-when-considering-categorical-data"><i class="fa fa-check"></i><b>6.6.1</b> Variations on histograms when considering categorical data</a></li>
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#faceting-to-depict-categorical-information"><i class="fa fa-check"></i><b>6.7</b> Faceting to depict categorical information</a></li>
@@ -255,19 +286,23 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="6.9" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-or-beanplot"><i class="fa fa-check"></i><b>6.9</b> Violin or Beanplot</a></li>
 <li class="chapter" data-level="6.10" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplots"><i class="fa fa-check"></i><b>6.10</b> Boxplots</a></li>
 <li class="chapter" data-level="6.11" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#building-complex-visualizations-with-layers"><i class="fa fa-check"></i><b>6.11</b> Building complex visualizations with layers</a></li>
-<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a><ul>
+<li class="chapter" data-level="6.12" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#useful-combination-plots"><i class="fa fa-check"></i><b>6.12</b> Useful combination plots</a>
+<ul>
 <li class="chapter" data-level="6.12.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#boxplot-plus-strip-plot"><i class="fa fa-check"></i><b>6.12.1</b> Boxplot plus strip plot</a></li>
 <li class="chapter" data-level="6.12.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#setting-shared-aesthetics"><i class="fa fa-check"></i><b>6.12.2</b> Setting shared aesthetics</a></li>
 </ul></li>
-<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a><ul>
+<li class="chapter" data-level="6.13" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot-layers-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.13</b> ggplot layers can be assigned to variables</a>
+<ul>
 <li class="chapter" data-level="6.13.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#violin-plot-plus-strip-plot"><i class="fa fa-check"></i><b>6.13.1</b> Violin plot plus strip plot</a></li>
 </ul></li>
 <li class="chapter" data-level="6.14" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-titles-and-tweaking-axis-labels"><i class="fa fa-check"></i><b>6.14</b> Adding titles and tweaking axis labels</a></li>
-<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a><ul>
+<li class="chapter" data-level="6.15" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#ggplot2-themes"><i class="fa fa-check"></i><b>6.15</b> ggplot2 themes</a>
+<ul>
 <li class="chapter" data-level="6.15.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#further-customization-with-ggplot2theme"><i class="fa fa-check"></i><b>6.15.1</b> Further customization with <code>ggplot2::theme</code></a></li>
 </ul></li>
 <li class="chapter" data-level="6.16" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#other-aspects-of-ggplots-can-be-assigned-to-variables"><i class="fa fa-check"></i><b>6.16</b> Other aspects of ggplots can be assigned to variables</a></li>
-<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a><ul>
+<li class="chapter" data-level="6.17" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#bivariate-plots"><i class="fa fa-check"></i><b>6.17</b> Bivariate plots</a>
+<ul>
 <li class="chapter" data-level="6.17.1" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#scatter-plots-1"><i class="fa fa-check"></i><b>6.17.1</b> Scatter plots</a></li>
 <li class="chapter" data-level="6.17.2" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#adding-a-trend-line-to-a-scatter-plot"><i class="fa fa-check"></i><b>6.17.2</b> Adding a trend line to a scatter plot</a></li>
 </ul></li>
@@ -277,15 +312,18 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="6.21" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#d-bin-and-hex-plots"><i class="fa fa-check"></i><b>6.21</b> 2D bin and hex plots</a></li>
 <li class="chapter" data-level="6.22" data-path="introduction-to-ggplot2.html"><a href="introduction-to-ggplot2.html#the-cowplot-package"><i class="fa fa-check"></i><b>6.22</b> The <code>cowplot</code> package</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a><ul>
+<li class="chapter" data-level="7" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html"><i class="fa fa-check"></i><b>7</b> Introduction to the <code>dplyr</code> package</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#libraries-1"><i class="fa fa-check"></i><b>7.1</b> Libraries</a></li>
-<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a><ul>
+<li class="chapter" data-level="7.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-data-with-the-readr-package"><i class="fa fa-check"></i><b>7.2</b> Reading data with the <code>readr</code> package</a>
+<ul>
 <li class="chapter" data-level="7.2.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#example-data-nc-births"><i class="fa fa-check"></i><b>7.2.1</b> Example data: NC Births</a></li>
 <li class="chapter" data-level="7.2.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#reading-excel-files"><i class="fa fa-check"></i><b>7.2.2</b> Reading Excel files</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#a-note-on-tibbles"><i class="fa fa-check"></i><b>7.3</b> A note on “tibbles”</a></li>
 <li class="chapter" data-level="7.4" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#data-filtering-and-transformation-with-dplyr"><i class="fa fa-check"></i><b>7.4</b> Data filtering and transformation with <code>dplyr</code></a></li>
-<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a><ul>
+<li class="chapter" data-level="7.5" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#dplyrs-verbs"><i class="fa fa-check"></i><b>7.5</b> dplyr’s “verbs”</a>
+<ul>
 <li class="chapter" data-level="7.5.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#select"><i class="fa fa-check"></i><b>7.5.1</b> <code>select</code></a></li>
 <li class="chapter" data-level="7.5.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#filter"><i class="fa fa-check"></i><b>7.5.2</b> <code>filter</code></a></li>
 <li class="chapter" data-level="7.5.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#mutate"><i class="fa fa-check"></i><b>7.5.3</b> <code>mutate</code></a></li>
@@ -296,7 +334,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="7.5.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#scoped-variants-of-mutate-and-summarize"><i class="fa fa-check"></i><b>7.5.8</b> Scoped variants of <code>mutate</code> and <code>summarize</code></a></li>
 <li class="chapter" data-level="7.5.9" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#combining-summarize-with-grouping-aesthetics-in-ggplot2"><i class="fa fa-check"></i><b>7.5.9</b> Combining summarize with grouping aesthetics in <code>ggplot2</code></a></li>
 </ul></li>
-<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a><ul>
+<li class="chapter" data-level="7.6" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#pipes"><i class="fa fa-check"></i><b>7.6</b> Pipes</a>
+<ul>
 <li class="chapter" data-level="7.6.1" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#install-and-load-magrittr"><i class="fa fa-check"></i><b>7.6.1</b> Install and load <code>magrittr</code></a></li>
 <li class="chapter" data-level="7.6.2" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-basic-pipe-operator"><i class="fa fa-check"></i><b>7.6.2</b> The basic pipe operator</a></li>
 <li class="chapter" data-level="7.6.3" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#an-example-without-pipes"><i class="fa fa-check"></i><b>7.6.3</b> An example without pipes</a></li>
@@ -307,16 +346,19 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="7.6.8" data-path="introduction-to-the-dplyr-package.html"><a href="introduction-to-the-dplyr-package.html#the-exposition-pipe-operator"><i class="fa fa-check"></i><b>7.6.8</b> The exposition pipe operator</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a><ul>
+<li class="chapter" data-level="8" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html"><i class="fa fa-check"></i><b>8</b> Data wrangling, Part I</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#libraries-2"><i class="fa fa-check"></i><b>8.1</b> Libraries</a></li>
 <li class="chapter" data-level="8.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#data"><i class="fa fa-check"></i><b>8.2</b> Data</a></li>
 <li class="chapter" data-level="8.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#renaming-data-frame-columms"><i class="fa fa-check"></i><b>8.3</b> Renaming data frame columms</a></li>
-<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a><ul>
+<li class="chapter" data-level="8.4" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-unneeded-columns"><i class="fa fa-check"></i><b>8.4</b> Dropping unneeded columns</a>
+<ul>
 <li class="chapter" data-level="8.4.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-all-empty-columns"><i class="fa fa-check"></i><b>8.4.1</b> Finding all empty columns</a></li>
 <li class="chapter" data-level="8.4.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#dropping-columns-by-matching-names"><i class="fa fa-check"></i><b>8.4.2</b> Dropping columns by matching names</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#merging-data-frames"><i class="fa fa-check"></i><b>8.5</b> Merging data frames</a></li>
-<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a><ul>
+<li class="chapter" data-level="8.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#reshaping-data-with-tidyr"><i class="fa fa-check"></i><b>8.6</b> Reshaping data with tidyr</a>
+<ul>
 <li class="chapter" data-level="8.6.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#wide-to-long-conversions-using-tidyrgather"><i class="fa fa-check"></i><b>8.6.1</b> Wide to long conversions using <code>tidyr::gather</code></a></li>
 <li class="chapter" data-level="8.6.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#extracting-information-from-combined-variables-using-tidyrextract"><i class="fa fa-check"></i><b>8.6.2</b> Extracting information from combined variables using <code>tidyr::extract</code></a></li>
 <li class="chapter" data-level="8.6.3" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#subsetting-rows"><i class="fa fa-check"></i><b>8.6.3</b> Subsetting rows</a></li>
@@ -324,33 +366,40 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="8.6.5" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#combining-data-frames"><i class="fa fa-check"></i><b>8.6.5</b> Combining data frames</a></li>
 <li class="chapter" data-level="8.6.6" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#sorting-data-frame-rows"><i class="fa fa-check"></i><b>8.6.6</b> Sorting data frame rows</a></li>
 </ul></li>
-<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a><ul>
+<li class="chapter" data-level="8.7" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#using-your-tidy-data"><i class="fa fa-check"></i><b>8.7</b> Using your tidy data</a>
+<ul>
 <li class="chapter" data-level="8.7.1" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#visualizing-gene-expression-time-series"><i class="fa fa-check"></i><b>8.7.1</b> Visualizing gene expression time series</a></li>
 <li class="chapter" data-level="8.7.2" data-path="data-wrangling-part-i.html"><a href="data-wrangling-part-i.html#finding-the-most-variable-genes"><i class="fa fa-check"></i><b>8.7.2</b> Finding the most variable genes</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a><ul>
+<li class="chapter" data-level="9" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html"><i class="fa fa-check"></i><b>9</b> Data wrangling, Part II</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#libraries-3"><i class="fa fa-check"></i><b>9.1</b> Libraries</a></li>
 <li class="chapter" data-level="9.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#data-1"><i class="fa fa-check"></i><b>9.2</b> Data</a></li>
-<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a><ul>
+<li class="chapter" data-level="9.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#heat-maps"><i class="fa fa-check"></i><b>9.3</b> Heat maps</a>
+<ul>
 <li class="chapter" data-level="9.3.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#better-color-schemes-with-rcolorbrewer"><i class="fa fa-check"></i><b>9.3.1</b> Better color schemes with RColorBrewer</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#looking-for-patterns-using-sorted-data-and-heat-maps"><i class="fa fa-check"></i><b>9.3.2</b> Looking for patterns using sorted data and heat maps</a></li>
 </ul></li>
 <li class="chapter" data-level="9.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#long-to-wide-conversion-using-tidyrspread"><i class="fa fa-check"></i><b>9.4</b> Long-to-wide conversion using <code>tidyr::spread</code></a></li>
-<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a><ul>
+<li class="chapter" data-level="9.5" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#exploring-bivariate-relationships-using-wide-data"><i class="fa fa-check"></i><b>9.5</b> Exploring bivariate relationships using “wide” data</a>
+<ul>
 <li class="chapter" data-level="9.5.1" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#large-scale-patterns-of-correlations"><i class="fa fa-check"></i><b>9.5.1</b> Large scale patterns of correlations</a></li>
 <li class="chapter" data-level="9.5.2" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#adding-new-columns-and-combining-filtered-data-frames"><i class="fa fa-check"></i><b>9.5.2</b> Adding new columns and combining filtered data frames</a></li>
 <li class="chapter" data-level="9.5.3" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-heat-mapped-sorted-by-correlations"><i class="fa fa-check"></i><b>9.5.3</b> A heat mapped sorted by correlations</a></li>
 <li class="chapter" data-level="9.5.4" data-path="data-wrangling-part-ii.html"><a href="data-wrangling-part-ii.html#a-fancy-figure"><i class="fa fa-check"></i><b>9.5.4</b> A “fancy” figure</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html"><i class="fa fa-check"></i><b>10</b> Functions and control flow statements</a><ul>
-<li class="chapter" data-level="10.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-your-own-functions"><i class="fa fa-check"></i><b>10.1</b> Writing your own functions</a><ul>
+<li class="chapter" data-level="10" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html"><i class="fa fa-check"></i><b>10</b> Functions and control flow statements</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-your-own-functions"><i class="fa fa-check"></i><b>10.1</b> Writing your own functions</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#function-arguments"><i class="fa fa-check"></i><b>10.1.1</b> Function arguments</a></li>
 <li class="chapter" data-level="10.1.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#writing-functions-with-optional-arguments"><i class="fa fa-check"></i><b>10.1.2</b> Writing functions with optional arguments</a></li>
 <li class="chapter" data-level="10.1.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#putting-r-functions-in-scripts"><i class="fa fa-check"></i><b>10.1.3</b> Putting R functions in Scripts</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#control-flow-statements"><i class="fa fa-check"></i><b>10.2</b> Control flow statements</a><ul>
+<li class="chapter" data-level="10.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#control-flow-statements"><i class="fa fa-check"></i><b>10.2</b> Control flow statements</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#if-and-if-else-statements"><i class="fa fa-check"></i><b>10.2.1</b> <code>if</code> and <code>if-else</code> statements</a></li>
 <li class="chapter" data-level="10.2.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#for-loops"><i class="fa fa-check"></i><b>10.2.2</b> for loops</a></li>
 <li class="chapter" data-level="10.2.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#break-statement"><i class="fa fa-check"></i><b>10.2.3</b> <code>break</code> statement</a></li>
@@ -359,7 +408,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="10.2.6" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#while-statements"><i class="fa fa-check"></i><b>10.2.6</b> while statements</a></li>
 <li class="chapter" data-level="10.2.7" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#ifelse"><i class="fa fa-check"></i><b>10.2.7</b> <code>ifelse</code></a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-and-related-tools"><i class="fa fa-check"></i><b>10.3</b> <code>map</code> and related tools</a><ul>
+<li class="chapter" data-level="10.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map-and-related-tools"><i class="fa fa-check"></i><b>10.3</b> <code>map</code> and related tools</a>
+<ul>
 <li class="chapter" data-level="10.3.1" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#basic-map"><i class="fa fa-check"></i><b>10.3.1</b> basic <code>map</code></a></li>
 <li class="chapter" data-level="10.3.2" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#map_if-and-map_at"><i class="fa fa-check"></i><b>10.3.2</b> <code>map_if</code> and <code>map_at</code></a></li>
 <li class="chapter" data-level="10.3.3" data-path="functions-and-control-flow-statements.html"><a href="functions-and-control-flow-statements.html#mapping-in-parallel-using-map2"><i class="fa fa-check"></i><b>10.3.3</b> mapping in parallel using <code>map2</code></a></li>
@@ -368,95 +418,117 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </ul></li>
 <li class="chapter" data-level="11" data-path="frequency-distributions-and-descriptive-statistics.html"><a href="frequency-distributions-and-descriptive-statistics.html"><i class="fa fa-check"></i><b>11</b> Frequency Distributions and Descriptive Statistics</a></li>
 <li class="chapter" data-level="12" data-path="joint-frequency-distributions-and-measures-of-association.html"><a href="joint-frequency-distributions-and-measures-of-association.html"><i class="fa fa-check"></i><b>12</b> Joint Frequency Distributions and Measures of Association</a></li>
-<li class="chapter" data-level="13" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html"><i class="fa fa-check"></i><b>13</b> Introduction to Probability</a><ul>
-<li class="chapter" data-level="13.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#terms"><i class="fa fa-check"></i><b>13.1</b> Terms</a><ul>
+<li class="chapter" data-level="13" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html"><i class="fa fa-check"></i><b>13</b> Introduction to Probability</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#terms"><i class="fa fa-check"></i><b>13.1</b> Terms</a>
+<ul>
 <li class="chapter" data-level="13.1.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-of-random-trials-outcomes-and-events"><i class="fa fa-check"></i><b>13.1.1</b> Examples of random trials, outcomes, and events</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#frequentist-definition-of-probability"><i class="fa fa-check"></i><b>13.2</b> Frequentist definition of probability</a><ul>
+<li class="chapter" data-level="13.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#frequentist-definition-of-probability"><i class="fa fa-check"></i><b>13.2</b> Frequentist definition of probability</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#examples-probability"><i class="fa fa-check"></i><b>13.2.1</b> Examples: Probability</a></li>
 </ul></li>
-<li class="chapter" data-level="13.3" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-distribution"><i class="fa fa-check"></i><b>13.3</b> Probability distribution</a><ul>
+<li class="chapter" data-level="13.3" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-distribution"><i class="fa fa-check"></i><b>13.3</b> Probability distribution</a>
+<ul>
 <li class="chapter" data-level="13.3.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#discrete-probability-distribution"><i class="fa fa-check"></i><b>13.3.1</b> Discrete probability distribution</a></li>
 <li class="chapter" data-level="13.3.2" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#continuous-probability-distribution"><i class="fa fa-check"></i><b>13.3.2</b> Continuous probability distribution</a></li>
 </ul></li>
-<li class="chapter" data-level="13.4" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4</b> Mutually exclusive events</a><ul>
+<li class="chapter" data-level="13.4" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4</b> Mutually exclusive events</a>
+<ul>
 <li class="chapter" data-level="13.4.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#addition-rule-mutually-exclusive-events"><i class="fa fa-check"></i><b>13.4.1</b> Addition rule, mutually exclusive events</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#independence"><i class="fa fa-check"></i><b>13.5</b> Independence</a><ul>
+<li class="chapter" data-level="13.5" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#independence"><i class="fa fa-check"></i><b>13.5</b> Independence</a>
+<ul>
 <li class="chapter" data-level="13.5.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#multiplication-rule-independent-events"><i class="fa fa-check"></i><b>13.5.1</b> Multiplication rule, independent events</a></li>
 </ul></li>
 <li class="chapter" data-level="13.6" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-addition-rule"><i class="fa fa-check"></i><b>13.6</b> General addition rule</a></li>
-<li class="chapter" data-level="13.7" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#conditional-probability"><i class="fa fa-check"></i><b>13.7</b> Conditional probability</a><ul>
+<li class="chapter" data-level="13.7" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#conditional-probability"><i class="fa fa-check"></i><b>13.7</b> Conditional probability</a>
+<ul>
 <li class="chapter" data-level="13.7.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-conditional-probability"><i class="fa fa-check"></i><b>13.7.1</b> Example: Conditional probability</a></li>
 </ul></li>
-<li class="chapter" data-level="13.8" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-multiplication-rule"><i class="fa fa-check"></i><b>13.8</b> General multiplication rule</a><ul>
+<li class="chapter" data-level="13.8" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#general-multiplication-rule"><i class="fa fa-check"></i><b>13.8</b> General multiplication rule</a>
+<ul>
 <li class="chapter" data-level="13.8.1" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#example-general-multiplication-rule"><i class="fa fa-check"></i><b>13.8.1</b> Example: General multiplication rule</a></li>
 </ul></li>
 <li class="chapter" data-level="13.9" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#probability-trees"><i class="fa fa-check"></i><b>13.9</b> Probability trees</a></li>
 <li class="chapter" data-level="13.10" data-path="introduction-to-probability.html"><a href="introduction-to-probability.html#law-of-total-probability"><i class="fa fa-check"></i><b>13.10</b> Law of total probability</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions, Part I</a><ul>
+<li class="chapter" data-level="14" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html"><i class="fa fa-check"></i><b>14</b> Introduction to Sampling Distributions, Part I</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#libraries-4"><i class="fa fa-check"></i><b>14.1</b> Libraries</a></li>
-<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a><ul>
+<li class="chapter" data-level="14.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#in-class-experiments"><i class="fa fa-check"></i><b>14.2</b> In class experiments</a>
+<ul>
 <li class="chapter" data-level="14.2.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-1"><i class="fa fa-check"></i><b>14.2.1</b> Experiment 1</a></li>
 <li class="chapter" data-level="14.2.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#experiment-2"><i class="fa fa-check"></i><b>14.2.2</b> Experiment 2</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a><ul>
+<li class="chapter" data-level="14.3" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#simulating-sampling-in-r"><i class="fa fa-check"></i><b>14.3</b> Simulating sampling in R</a>
+<ul>
 <li class="chapter" data-level="14.3.1" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#binomial-distribution"><i class="fa fa-check"></i><b>14.3.1</b> Binomial distribution</a></li>
 <li class="chapter" data-level="14.3.2" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#sampling-from-the-binomial-distribution-in-r"><i class="fa fa-check"></i><b>14.3.2</b> Sampling from the binomial distribution in R</a></li>
 </ul></li>
 <li class="chapter" data-level="14.4" data-path="introduction-to-sampling-distributions-part-i.html"><a href="introduction-to-sampling-distributions-part-i.html#distribution-of-estimates-of-the-proportion"><i class="fa fa-check"></i><b>14.4</b> Distribution of estimates of the proportion</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html"><i class="fa fa-check"></i><b>15</b> Introduction to Sampling Distributions, Part II</a><ul>
+<li class="chapter" data-level="15" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html"><i class="fa fa-check"></i><b>15</b> Introduction to Sampling Distributions, Part II</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#libraries-5"><i class="fa fa-check"></i><b>15.1</b> Libraries</a></li>
-<li class="chapter" data-level="15.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#data-set-simulated-male-heights"><i class="fa fa-check"></i><b>15.2</b> Data set: Simulated male heights</a><ul>
+<li class="chapter" data-level="15.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#data-set-simulated-male-heights"><i class="fa fa-check"></i><b>15.2</b> Data set: Simulated male heights</a>
+<ul>
 <li class="chapter" data-level="15.2.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#properties-of-the-underlying-population"><i class="fa fa-check"></i><b>15.2.1</b> Properties of the underlying population</a></li>
 <li class="chapter" data-level="15.2.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#other-r-functions-related-to-the-normal-distribution"><i class="fa fa-check"></i><b>15.2.2</b> Other R functions related to the normal distribution</a></li>
 </ul></li>
 <li class="chapter" data-level="15.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#seeding-the-pseudo-random-number-generator"><i class="fa fa-check"></i><b>15.3</b> Seeding the pseudo-random number generator</a></li>
-<li class="chapter" data-level="15.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#random-sampling-from-the-simulated-population"><i class="fa fa-check"></i><b>15.4</b> Random sampling from the simulated population</a><ul>
+<li class="chapter" data-level="15.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#random-sampling-from-the-simulated-population"><i class="fa fa-check"></i><b>15.4</b> Random sampling from the simulated population</a>
+<ul>
 <li class="chapter" data-level="15.4.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#another-random-sample"><i class="fa fa-check"></i><b>15.4.1</b> Another random sample</a></li>
 <li class="chapter" data-level="15.4.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulating-the-generation-of-many-random-samples"><i class="fa fa-check"></i><b>15.4.2</b> Simulating the generation of many random samples</a></li>
 <li class="chapter" data-level="15.4.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#a-function-to-estimate-statistics-of-interest-in-a-random-sample"><i class="fa fa-check"></i><b>15.4.3</b> A function to estimate statistics of interest in a random sample</a></li>
 <li class="chapter" data-level="15.4.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#generating-statistics-for-many-random-samples"><i class="fa fa-check"></i><b>15.4.4</b> Generating statistics for many random samples</a></li>
 </ul></li>
-<li class="chapter" data-level="15.5" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulated-sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>15.5</b> Simulated sampling distribution of the mean</a><ul>
+<li class="chapter" data-level="15.5" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#simulated-sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>15.5</b> Simulated sampling distribution of the mean</a>
+<ul>
 <li class="chapter" data-level="15.5.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#differences-between-sampling-distribution-and-samplepopulation-distributions"><i class="fa fa-check"></i><b>15.5.1</b> Differences between sampling distribution and sample/population distributions</a></li>
 <li class="chapter" data-level="15.5.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#use-sampling-distributions-to-understand-the-behavior-of-statistics-of-interest"><i class="fa fa-check"></i><b>15.5.2</b> Use sampling distributions to understand the behavior of statistics of interest</a></li>
 <li class="chapter" data-level="15.5.3" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distributions-for-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.3</b> Sampling distributions for different sample sizes</a></li>
 <li class="chapter" data-level="15.5.4" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#discussion-of-trends-for-sampling-distributions-of-different-sample-sizes"><i class="fa fa-check"></i><b>15.5.4</b> Discussion of trends for sampling distributions of different sample sizes</a></li>
 </ul></li>
 <li class="chapter" data-level="15.6" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-the-mean"><i class="fa fa-check"></i><b>15.6</b> Standard Error of the Mean</a></li>
-<li class="chapter" data-level="15.7" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distribution-of-the-standard-deviation"><i class="fa fa-check"></i><b>15.7</b> Sampling Distribution of the Standard Deviation</a><ul>
+<li class="chapter" data-level="15.7" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#sampling-distribution-of-the-standard-deviation"><i class="fa fa-check"></i><b>15.7</b> Sampling Distribution of the Standard Deviation</a>
+<ul>
 <li class="chapter" data-level="15.7.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#standard-error-of-standard-deviations"><i class="fa fa-check"></i><b>15.7.1</b> Standard error of standard deviations</a></li>
 </ul></li>
-<li class="chapter" data-level="15.8" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#what-happens-to-the-sampling-distribution-of-the-mean-and-standard-deviation-when-our-sample-size-is-small"><i class="fa fa-check"></i><b>15.8</b> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</a><ul>
+<li class="chapter" data-level="15.8" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#what-happens-to-the-sampling-distribution-of-the-mean-and-standard-deviation-when-our-sample-size-is-small"><i class="fa fa-check"></i><b>15.8</b> What happens to the sampling distribution of the mean and standard deviation when our sample size is small?</a>
+<ul>
 <li class="chapter" data-level="15.8.1" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#for-small-samples-sample-standard-deviations-systematically-underestimate-the-population-standard-deviation"><i class="fa fa-check"></i><b>15.8.1</b> For small samples, sample standard deviations systematically underestimate the population standard deviation</a></li>
 <li class="chapter" data-level="15.8.2" data-path="introduction-to-sampling-distributions-part-ii.html"><a href="introduction-to-sampling-distributions-part-ii.html#underestimates-of-the-standard-deviation-given-small-n-lead-to-understimates-of-the-se-of-the-mean"><i class="fa fa-check"></i><b>15.8.2</b> Underestimates of the standard deviation given small <span class="math inline">\(n\)</span> lead to understimates of the SE of the mean</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html"><i class="fa fa-check"></i><b>16</b> Introduction to hypothesis testing</a><ul>
+<li class="chapter" data-level="16" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html"><i class="fa fa-check"></i><b>16</b> Introduction to hypothesis testing</a>
+<ul>
 <li class="chapter" data-level="16.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#libraries-6"><i class="fa fa-check"></i><b>16.1</b> Libraries</a></li>
-<li class="chapter" data-level="16.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i><b>16.2</b> Null and Alternative Hypotheses</a><ul>
+<li class="chapter" data-level="16.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i><b>16.2</b> Null and Alternative Hypotheses</a>
+<ul>
 <li class="chapter" data-level="16.2.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-hypotheses"><i class="fa fa-check"></i><b>16.2.1</b> Null hypotheses</a></li>
 <li class="chapter" data-level="16.2.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#alternative-hypotheses"><i class="fa fa-check"></i><b>16.2.2</b> Alternative hypotheses</a></li>
 </ul></li>
 <li class="chapter" data-level="16.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#rejecting-failing-to-reject-null-hypotheses"><i class="fa fa-check"></i><b>16.3</b> Rejecting / failing to reject null hypotheses</a></li>
 <li class="chapter" data-level="16.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#outcomes-of-hypothesis-tests"><i class="fa fa-check"></i><b>16.4</b> Outcomes of hypothesis tests</a></li>
 <li class="chapter" data-level="16.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#using-p-values-to-assess-the-strength-of-evidence-against-the-null-hypothesis"><i class="fa fa-check"></i><b>16.5</b> Using p-values to assess the strength of evidence against the null hypothesis</a></li>
-<li class="chapter" data-level="16.6" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-comparing-a-sample-mean-to-an-hypothesized-normal-distribution"><i class="fa fa-check"></i><b>16.6</b> Example: Comparing a sample mean to an hypothesized normal distribution</a><ul>
+<li class="chapter" data-level="16.6" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-comparing-a-sample-mean-to-an-hypothesized-normal-distribution"><i class="fa fa-check"></i><b>16.6</b> Example: Comparing a sample mean to an hypothesized normal distribution</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i><b>16.6.1</b> Null and alternative hypotheses</a></li>
 <li class="chapter" data-level="16.6.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-of-the-mean"><i class="fa fa-check"></i><b>16.6.2</b> Sampling distribution of the mean</a></li>
 <li class="chapter" data-level="16.6.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value"><i class="fa fa-check"></i><b>16.6.3</b> Calculating a p-value</a></li>
 </ul></li>
-<li class="chapter" data-level="16.7" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-handedness-of-toads"><i class="fa fa-check"></i><b>16.7</b> Example: Handedness of toads</a><ul>
+<li class="chapter" data-level="16.7" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-handedness-of-toads"><i class="fa fa-check"></i><b>16.7</b> Example: Handedness of toads</a>
+<ul>
 <li class="chapter" data-level="16.7.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-2"><i class="fa fa-check"></i><b>16.7.1</b> Null and alternative hypotheses</a></li>
 <li class="chapter" data-level="16.7.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#data-2"><i class="fa fa-check"></i><b>16.7.2</b> Data</a></li>
 <li class="chapter" data-level="16.7.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#sampling-distribution-for-proportions-binomial-distribution"><i class="fa fa-check"></i><b>16.7.3</b> Sampling distribution for proportions: Binomial distribution</a></li>
 <li class="chapter" data-level="16.7.4" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#calculating-a-p-value-for-the-binomial-test"><i class="fa fa-check"></i><b>16.7.4</b> Calculating a p-value for the binomial test</a></li>
 <li class="chapter" data-level="16.7.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#the-binom.test-function"><i class="fa fa-check"></i><b>16.7.5</b> The <code>binom.test()</code> function</a></li>
 </ul></li>
-<li class="chapter" data-level="16.8" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-measuring-the-association-between-maternal-smoking-and-premature-births"><i class="fa fa-check"></i><b>16.8</b> Example: Measuring the association between maternal smoking and premature births</a><ul>
+<li class="chapter" data-level="16.8" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#example-measuring-the-association-between-maternal-smoking-and-premature-births"><i class="fa fa-check"></i><b>16.8</b> Example: Measuring the association between maternal smoking and premature births</a>
+<ul>
 <li class="chapter" data-level="16.8.1" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#null-and-alternative-hypotheses-3"><i class="fa fa-check"></i><b>16.8.1</b> Null and alternative hypotheses:</a></li>
 <li class="chapter" data-level="16.8.2" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#contingency-table-analysis-using-the-chi2-statistic"><i class="fa fa-check"></i><b>16.8.2</b> Contingency table analysis using the <span class="math inline">\(\chi^2\)</span> statistic</a></li>
 <li class="chapter" data-level="16.8.3" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#chi2-distribution"><i class="fa fa-check"></i><b>16.8.3</b> <span class="math inline">\(\chi^2\)</span>-distribution</a></li>
@@ -464,68 +536,82 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="16.8.5" data-path="introduction-to-hypothesis-testing.html"><a href="introduction-to-hypothesis-testing.html#interpretation-of-the-chi2-test"><i class="fa fa-check"></i><b>16.8.5</b> Interpretation of the <span class="math inline">\(\chi^2\)</span>-test</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a><ul>
+<li class="chapter" data-level="17" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html"><i class="fa fa-check"></i><b>17</b> Introduction to confidence intervals</a>
+<ul>
 <li class="chapter" data-level="17.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#confidence-intervals"><i class="fa fa-check"></i><b>17.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="17.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#generic-formulation-for-confidence-intervals"><i class="fa fa-check"></i><b>17.2</b> Generic formulation for confidence intervals</a></li>
-<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a><ul>
+<li class="chapter" data-level="17.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#example-confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>17.3</b> Example: Confidence intervals for the mean</a>
+<ul>
 <li class="chapter" data-level="17.3.1" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#simulation-of-means"><i class="fa fa-check"></i><b>17.3.1</b> Simulation of means</a></li>
 <li class="chapter" data-level="17.3.2" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#distance-between-sample-means-and-true-means"><i class="fa fa-check"></i><b>17.3.2</b> Distance between sample means and true means</a></li>
 <li class="chapter" data-level="17.3.3" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#calculating-a-ci"><i class="fa fa-check"></i><b>17.3.3</b> Calculating a CI</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="introduction-to-confidence-intervals.html"><a href="introduction-to-confidence-intervals.html#a-problem-arises"><i class="fa fa-check"></i><b>17.4</b> A problem arises!</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a><ul>
-<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a><ul>
+<li class="chapter" data-level="18" data-path="normal-distributions.html"><a href="normal-distributions.html"><i class="fa fa-check"></i><b>18</b> Normal distributions</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="normal-distributions.html"><a href="normal-distributions.html#basics-about-normal-distributions"><i class="fa fa-check"></i><b>18.1</b> Basics about normal distributions</a>
+<ul>
 <li class="chapter" data-level="18.1.1" data-path="normal-distributions.html"><a href="normal-distributions.html#notation"><i class="fa fa-check"></i><b>18.1.1</b> Notation</a></li>
 </ul></li>
-<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a><ul>
+<li class="chapter" data-level="18.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-distribution-probability-density-function"><i class="fa fa-check"></i><b>18.2</b> Normal distribution, probability density function</a>
+<ul>
 <li class="chapter" data-level="18.2.1" data-path="normal-distributions.html"><a href="normal-distributions.html#dnorm-calculates-the-normal-pdf"><i class="fa fa-check"></i><b>18.2.1</b> <code>dnorm()</code> calculates the normal pdf</a></li>
 </ul></li>
 <li class="chapter" data-level="18.3" data-path="normal-distributions.html"><a href="normal-distributions.html#approximately-normal-distributions-are-very-common"><i class="fa fa-check"></i><b>18.3</b> Approximately normal distributions are very common</a></li>
-<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a><ul>
+<li class="chapter" data-level="18.4" data-path="normal-distributions.html"><a href="normal-distributions.html#central-limit-theorem"><i class="fa fa-check"></i><b>18.4</b> Central limit theorem</a>
+<ul>
 <li class="chapter" data-level="18.4.1" data-path="normal-distributions.html"><a href="normal-distributions.html#example-continuous-variation-from-discrete-loci"><i class="fa fa-check"></i><b>18.4.1</b> Example: Continuous variation from discrete loci</a></li>
 </ul></li>
 <li class="chapter" data-level="18.5" data-path="normal-distributions.html"><a href="normal-distributions.html#visualizing-normal-distributions"><i class="fa fa-check"></i><b>18.5</b> Visualizing normal distributions</a></li>
-<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a><ul>
+<li class="chapter" data-level="18.6" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-values-from-different-normal-distributions"><i class="fa fa-check"></i><b>18.6</b> Comparing values from different normal distributions</a>
+<ul>
 <li class="chapter" data-level="18.6.1" data-path="normal-distributions.html"><a href="normal-distributions.html#standardized-or-z-scores"><i class="fa fa-check"></i><b>18.6.1</b> Standardized or Z-scores</a></li>
 </ul></li>
 <li class="chapter" data-level="18.7" data-path="normal-distributions.html"><a href="normal-distributions.html#standard-normal-distribution"><i class="fa fa-check"></i><b>18.7</b> Standard normal distribution</a></li>
 <li class="chapter" data-level="18.8" data-path="normal-distributions.html"><a href="normal-distributions.html#rule"><i class="fa fa-check"></i><b>18.8</b> 88-95-99.7 Rule</a></li>
 <li class="chapter" data-level="18.9" data-path="normal-distributions.html"><a href="normal-distributions.html#percentiles"><i class="fa fa-check"></i><b>18.9</b> Percentiles</a></li>
 <li class="chapter" data-level="18.10" data-path="normal-distributions.html"><a href="normal-distributions.html#cutoff-points"><i class="fa fa-check"></i><b>18.10</b> Cutoff points</a></li>
-<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a><ul>
+<li class="chapter" data-level="18.11" data-path="normal-distributions.html"><a href="normal-distributions.html#assessing-normality"><i class="fa fa-check"></i><b>18.11</b> Assessing normality</a>
+<ul>
 <li class="chapter" data-level="18.11.1" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-histograms-to-theoretical-normals"><i class="fa fa-check"></i><b>18.11.1</b> Comparing histograms to theoretical normals</a></li>
 <li class="chapter" data-level="18.11.2" data-path="normal-distributions.html"><a href="normal-distributions.html#normal-probability-plot"><i class="fa fa-check"></i><b>18.11.2</b> Normal probability plot</a></li>
 <li class="chapter" data-level="18.11.3" data-path="normal-distributions.html"><a href="normal-distributions.html#comparing-the-empirical-cdf-to-the-theoretical-cdf"><i class="fa fa-check"></i><b>18.11.3</b> Comparing the empirical CDF to the theoretical CDF</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="19" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html"><i class="fa fa-check"></i><b>19</b> Comparing sample means</a><ul>
+<li class="chapter" data-level="19" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html"><i class="fa fa-check"></i><b>19</b> Comparing sample means</a>
+<ul>
 <li class="chapter" data-level="19.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#hypothesis-test-for-the-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>19.1</b> Hypothesis test for the mean using the t-distribution</a></li>
-<li class="chapter" data-level="19.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test"><i class="fa fa-check"></i><b>19.2</b> One sample t-test</a><ul>
+<li class="chapter" data-level="19.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test"><i class="fa fa-check"></i><b>19.2</b> One sample t-test</a>
+<ul>
 <li class="chapter" data-level="19.2.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#one-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.2.1</b> One sample t-test, test statistic</a></li>
 <li class="chapter" data-level="19.2.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-one-sample-t-tests"><i class="fa fa-check"></i><b>19.2.2</b> Assumptions of one sample t-tests</a></li>
 <li class="chapter" data-level="19.2.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-gene-expression-in-mice"><i class="fa fa-check"></i><b>19.2.3</b> Example: Gene expression in mice</a></li>
 <li class="chapter" data-level="19.2.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>19.2.4</b> Confidence intervals for the mean</a></li>
 </ul></li>
 <li class="chapter" data-level="19.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-t.test-function-in-r"><i class="fa fa-check"></i><b>19.3</b> The <code>t.test</code> function in R</a></li>
-<li class="chapter" data-level="19.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test"><i class="fa fa-check"></i><b>19.4</b> Two sample t-test</a><ul>
+<li class="chapter" data-level="19.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test"><i class="fa fa-check"></i><b>19.4</b> Two sample t-test</a>
+<ul>
 <li class="chapter" data-level="19.4.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#standard-error-for-the-difference-in-means"><i class="fa fa-check"></i><b>19.4.1</b> Standard error for the difference in means</a></li>
 <li class="chapter" data-level="19.4.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#two-sample-t-test-test-statistic"><i class="fa fa-check"></i><b>19.4.2</b> Two sample t-test, test statistic</a></li>
 <li class="chapter" data-level="19.4.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-two-sample-t-test"><i class="fa fa-check"></i><b>19.4.3</b> Assumptions of two sample t-test</a></li>
 <li class="chapter" data-level="19.4.4" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#example-comparing-the-effects-of-two-drugs"><i class="fa fa-check"></i><b>19.4.4</b> Example: Comparing the effects of two drugs</a></li>
 <li class="chapter" data-level="19.4.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#specifying-t.test-in-terms-of-a-formula"><i class="fa fa-check"></i><b>19.4.5</b> Specifying <code>t.test()</code> in terms of a formula</a></li>
 </ul></li>
-<li class="chapter" data-level="19.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test"><i class="fa fa-check"></i><b>19.5</b> Paired t-test</a><ul>
+<li class="chapter" data-level="19.5" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test"><i class="fa fa-check"></i><b>19.5</b> Paired t-test</a>
+<ul>
 <li class="chapter" data-level="19.5.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-test-statistic"><i class="fa fa-check"></i><b>19.5.1</b> Paired t-test, test statistic</a></li>
 <li class="chapter" data-level="19.5.2" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#assumptions-of-paired-t-test"><i class="fa fa-check"></i><b>19.5.2</b> Assumptions of paired t-test</a></li>
 <li class="chapter" data-level="19.5.3" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#paired-t-test-example"><i class="fa fa-check"></i><b>19.5.3</b> Paired t-test, example</a></li>
 </ul></li>
-<li class="chapter" data-level="19.6" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison"><i class="fa fa-check"></i><b>19.6</b> The fallacy of indirect comparison</a><ul>
+<li class="chapter" data-level="19.6" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#the-fallacy-of-indirect-comparison"><i class="fa fa-check"></i><b>19.6</b> The fallacy of indirect comparison</a>
+<ul>
 <li class="chapter" data-level="19.6.1" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#interpreting-confidence-intervals-in-light-of-two-sample-t-tests"><i class="fa fa-check"></i><b>19.6.1</b> Interpreting confidence intervals in light of two sample t-tests</a></li>
 </ul></li>
 <li class="chapter" data-level="19.7" data-path="comparing-sample-means.html"><a href="comparing-sample-means.html#summary-table-for-different-t-tests"><i class="fa fa-check"></i><b>19.7</b> Summary table for different t-tests</a></li>
 </ul></li>
-<li class="chapter" data-level="20" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>20</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="20" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>20</b> Analysis of Variance</a>
+<ul>
 <li class="chapter" data-level="20.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#hypotheses-for-anova"><i class="fa fa-check"></i><b>20.1</b> Hypotheses for ANOVA</a></li>
 <li class="chapter" data-level="20.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-assumptions"><i class="fa fa-check"></i><b>20.2</b> ANOVA, assumptions</a></li>
 <li class="chapter" data-level="20.3" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-key-idea"><i class="fa fa-check"></i><b>20.3</b> ANOVA, key idea</a></li>
@@ -534,60 +620,72 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="20.6" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-test-statistic-and-sampling-distribution"><i class="fa fa-check"></i><b>20.6</b> ANOVA test statistic and sampling distribution</a></li>
 <li class="chapter" data-level="20.7" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-tables"><i class="fa fa-check"></i><b>20.7</b> ANOVA tables</a></li>
 <li class="chapter" data-level="20.8" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#the-aov-function"><i class="fa fa-check"></i><b>20.8</b> The <code>aov()</code> function</a></li>
-<li class="chapter" data-level="20.9" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#example-circadian-rythm-data"><i class="fa fa-check"></i><b>20.9</b> Example, circadian rythm data</a><ul>
+<li class="chapter" data-level="20.9" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#example-circadian-rythm-data"><i class="fa fa-check"></i><b>20.9</b> Example, circadian rythm data</a>
+<ul>
 <li class="chapter" data-level="20.9.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-data"><i class="fa fa-check"></i><b>20.9.1</b> Visualizing the data</a></li>
 <li class="chapter" data-level="20.9.2" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#carrying-out-the-anova"><i class="fa fa-check"></i><b>20.9.2</b> Carrying out the ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="20.10" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#anova-calculations-step-by-step"><i class="fa fa-check"></i><b>20.10</b> ANOVA calculations: Step-by-step</a></li>
 <li class="chapter" data-level="20.11" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#visualizing-the-partitioning-of-sum-of-squares"><i class="fa fa-check"></i><b>20.11</b> Visualizing the partitioning of sum-of-squares</a></li>
-<li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a><ul>
+<li class="chapter" data-level="20.12" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#which-pairs-of-group-means-are-different"><i class="fa fa-check"></i><b>20.12</b> Which pairs of group means are different?</a>
+<ul>
 <li class="chapter" data-level="20.12.1" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#tukey-kramer-test"><i class="fa fa-check"></i><b>20.12.1</b> Tukey-Kramer test</a></li>
 </ul></li>
-<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a><ul>
+<li class="chapter" data-level="20.13" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability"><i class="fa fa-check"></i><b>20.13</b> Repeatability</a>
+<ul>
 <li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#estimating-repeatability-using-anova"><i class="fa fa-check"></i>Estimating Repeatability using ANOVA</a></li>
 <li class="chapter" data-level="" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html#repeatability-walking-stick-example"><i class="fa fa-check"></i>Repeatability: Walking stick example</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a><ul>
-<li class="chapter" data-level="21.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality"><i class="fa fa-check"></i><b>21.1</b> Graphical methods for detecting deviations from normality</a><ul>
+<li class="chapter" data-level="21" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html"><i class="fa fa-check"></i><b>21</b> Violations of Assumptions</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality"><i class="fa fa-check"></i><b>21.1</b> Graphical methods for detecting deviations from normality</a>
+<ul>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#normal-probability-plots"><i class="fa fa-check"></i>Normal probability plots</a></li>
 </ul></li>
 <li class="chapter" data-level="21.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#formal-test-of-normality"><i class="fa fa-check"></i><b>21.2</b> Formal test of normality</a></li>
 <li class="chapter" data-level="21.3" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#when-to-ignore-violations-of-assumptions"><i class="fa fa-check"></i><b>21.3</b> When to ignore violations of assumptions</a></li>
-<li class="chapter" data-level="21.4" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#data-transformations"><i class="fa fa-check"></i><b>21.4</b> Data transformations</a><ul>
+<li class="chapter" data-level="21.4" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#data-transformations"><i class="fa fa-check"></i><b>21.4</b> Data transformations</a>
+<ul>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#example-log-transformation-to-deal-with-skew"><i class="fa fa-check"></i>Example: log transformation to deal with skew</a></li>
 <li class="chapter" data-level="21.4.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#confidence-intervals-and-data-transformations"><i class="fa fa-check"></i><b>21.4.1</b> Confidence intervals and data transformations</a></li>
 </ul></li>
-<li class="chapter" data-level="21.5" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#nonparametric-tests"><i class="fa fa-check"></i><b>21.5</b> Nonparametric tests</a><ul>
+<li class="chapter" data-level="21.5" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#nonparametric-tests"><i class="fa fa-check"></i><b>21.5</b> Nonparametric tests</a>
+<ul>
 <li class="chapter" data-level="21.5.1" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#mann-whitney-u-test-non-parametric-alternative-to-t-test"><i class="fa fa-check"></i><b>21.5.1</b> Mann-Whitney U-test: non-parametric alternative to t-test</a></li>
 <li class="chapter" data-level="21.5.2" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#kruskal-wallis-test-non-parametric-alternative-to-anova"><i class="fa fa-check"></i><b>21.5.2</b> Kruskal-Wallis test: non-parametric alternative to ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="violations-of-assumptions.html"><a href="violations-of-assumptions.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 </ul></li>
-<li class="chapter" data-level="22" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html"><i class="fa fa-check"></i><b>22</b> Bivariate Linear Regression</a><ul>
+<li class="chapter" data-level="22" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html"><i class="fa fa-check"></i><b>22</b> Bivariate Linear Regression</a>
+<ul>
 <li class="chapter" data-level="22.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-terminology"><i class="fa fa-check"></i><b>22.1</b> Regression terminology</a></li>
 <li class="chapter" data-level="22.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#the-optimality-criterion-for-least-squares-regression"><i class="fa fa-check"></i><b>22.2</b> The optimality criterion for least-squares regression</a></li>
 <li class="chapter" data-level="22.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#solution-for-the-least-squares-criterion"><i class="fa fa-check"></i><b>22.3</b> Solution for the least-squares criterion</a></li>
 <li class="chapter" data-level="22.4" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#libraries-7"><i class="fa fa-check"></i><b>22.4</b> Libraries</a></li>
 <li class="chapter" data-level="22.5" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#illustrating-linear-regression-with-simulated-data"><i class="fa fa-check"></i><b>22.5</b> Illustrating linear regression with simulated data</a></li>
-<li class="chapter" data-level="22.6" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#specifying-regression-models-in-r"><i class="fa fa-check"></i><b>22.6</b> Specifying Regression Models in R</a><ul>
+<li class="chapter" data-level="22.6" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#specifying-regression-models-in-r"><i class="fa fa-check"></i><b>22.6</b> Specifying Regression Models in R</a>
+<ul>
 <li class="chapter" data-level="22.6.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#fitted-values"><i class="fa fa-check"></i><b>22.6.1</b> Fitted values</a></li>
 <li class="chapter" data-level="22.6.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#getting-the-model-coefficients"><i class="fa fa-check"></i><b>22.6.2</b> Getting the model coefficients</a></li>
 </ul></li>
 <li class="chapter" data-level="22.7" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#residuals"><i class="fa fa-check"></i><b>22.7</b> Residuals</a></li>
 <li class="chapter" data-level="22.8" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#regression-as-sum-of-squares-decomposition"><i class="fa fa-check"></i><b>22.8</b> Regression as sum-of-squares decomposition</a></li>
 <li class="chapter" data-level="22.9" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#variance-explained-by-a-regression-model"><i class="fa fa-check"></i><b>22.9</b> Variance “explained” by a regression model</a></li>
-<li class="chapter" data-level="22.10" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broom-a-library-for-converting-model-results-into-data-frames"><i class="fa fa-check"></i><b>22.10</b> Broom: a library for converting model results into data frames</a><ul>
+<li class="chapter" data-level="22.10" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broom-a-library-for-converting-model-results-into-data-frames"><i class="fa fa-check"></i><b>22.10</b> Broom: a library for converting model results into data frames</a>
+<ul>
 <li class="chapter" data-level="22.10.1" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomtidy"><i class="fa fa-check"></i><b>22.10.1</b> <code>broom::tidy</code></a></li>
 <li class="chapter" data-level="22.10.2" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomaugment"><i class="fa fa-check"></i><b>22.10.2</b> <code>broom::augment</code></a></li>
 <li class="chapter" data-level="22.10.3" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#broomglance"><i class="fa fa-check"></i><b>22.10.3</b> <code>broom::glance</code></a></li>
 </ul></li>
 <li class="chapter" data-level="22.11" data-path="bivariate-linear-regression.html"><a href="bivariate-linear-regression.html#example-predicting-lion-age-based-on-nose-color"><i class="fa fa-check"></i><b>22.11</b> Example: Predicting lion age based on nose color</a></li>
 </ul></li>
-<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>23</b> Multiple regression</a>
+<ul>
 <li class="chapter" data-level="23.1" data-path="multiple-regression.html"><a href="multiple-regression.html#libraries-to-install"><i class="fa fa-check"></i><b>23.1</b> Libraries to install</a></li>
 <li class="chapter" data-level="23.2" data-path="multiple-regression.html"><a href="multiple-regression.html#review-of-bivariate-regression"><i class="fa fa-check"></i><b>23.2</b> Review of bivariate regression</a></li>
-<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a><ul>
+<li class="chapter" data-level="23.3" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-1"><i class="fa fa-check"></i><b>23.3</b> Multiple regression</a>
+<ul>
 <li class="chapter" data-level="23.3.1" data-path="multiple-regression.html"><a href="multiple-regression.html#geometrical-interpretation"><i class="fa fa-check"></i><b>23.3.1</b> Geometrical interpretation</a></li>
 <li class="chapter" data-level="23.3.2" data-path="multiple-regression.html"><a href="multiple-regression.html#coefficient-of-determination-for-multiple-regression"><i class="fa fa-check"></i><b>23.3.2</b> Coefficient of determination for multiple regression</a></li>
 </ul></li>
@@ -601,13 +699,15 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li class="chapter" data-level="23.11" data-path="multiple-regression.html"><a href="multiple-regression.html#interactive-3d-visualizations-using-opengl"><i class="fa fa-check"></i><b>23.11</b> Interactive 3D Visualizations Using OpenGL</a></li>
 <li class="chapter" data-level="23.12" data-path="multiple-regression.html"><a href="multiple-regression.html#examining-the-residuals"><i class="fa fa-check"></i><b>23.12</b> Examining the residuals</a></li>
 </ul></li>
-<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a><ul>
+<li class="chapter" data-level="24" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>24</b> Logistic regression</a>
+<ul>
 <li class="chapter" data-level="24.1" data-path="logistic-regression.html"><a href="logistic-regression.html#a-web-app-to-explore-the-logistic-regression-equation"><i class="fa fa-check"></i><b>24.1</b> A web app to explore the logistic regression equation</a></li>
 <li class="chapter" data-level="24.2" data-path="logistic-regression.html"><a href="logistic-regression.html#titanic-data-set"><i class="fa fa-check"></i><b>24.2</b> Titanic data set</a></li>
 <li class="chapter" data-level="24.3" data-path="logistic-regression.html"><a href="logistic-regression.html#subsetting-the-data"><i class="fa fa-check"></i><b>24.3</b> Subsetting the data</a></li>
 <li class="chapter" data-level="24.4" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-survival-as-a-function-of-age"><i class="fa fa-check"></i><b>24.4</b> Visualizing survival as a function of age</a></li>
 <li class="chapter" data-level="24.5" data-path="logistic-regression.html"><a href="logistic-regression.html#fitting-the-logistic-regression-model"><i class="fa fa-check"></i><b>24.5</b> Fitting the logistic regression model</a></li>
-<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a><ul>
+<li class="chapter" data-level="24.6" data-path="logistic-regression.html"><a href="logistic-regression.html#visualizing-the-logistic-regression"><i class="fa fa-check"></i><b>24.6</b> Visualizing the logistic regression</a>
+<ul>
 <li class="chapter" data-level="24.6.1" data-path="logistic-regression.html"><a href="logistic-regression.html#quick-and-easy-visualization"><i class="fa fa-check"></i><b>24.6.1</b> Quick and easy visualization</a></li>
 </ul></li>
 <li class="chapter" data-level="24.7" data-path="logistic-regression.html"><a href="logistic-regression.html#impact-of-sex-and-passenger-class-on-the-models"><i class="fa fa-check"></i><b>24.7</b> Impact of sex and passenger class on the models</a></li>
@@ -630,8 +730,8 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="violations-of-assumptions" class="section level1">
-<h1><span class="header-section-number">Chapter 21</span> Violations of Assumptions</h1>
+<div id="violations-of-assumptions" class="section level1 hasAnchor" number="21">
+<h1><span class="header-section-number">Chapter 21</span> Violations of Assumptions<a href="violations-of-assumptions.html#violations-of-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Both t-tests and ANOVA make assumptions about the variable of interest. Namely, both assume:</p>
 <ul>
 <li>The variable of interest approximately normally distributed</li>
@@ -645,62 +745,62 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <li>Permutation tests</li>
 </ul>
 <p><strong>Libraries</strong></p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb462-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb462-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb462-3" data-line-number="3"><span class="kw">library</span>(cowplot)</a>
-<a class="sourceLine" id="cb462-4" data-line-number="4"><span class="kw">library</span>(broom)</a></code></pre></div>
-<div id="graphical-methods-for-detecting-deviations-from-normality" class="section level2">
-<h2><span class="header-section-number">21.1</span> Graphical methods for detecting deviations from normality</h2>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="violations-of-assumptions.html#cb463-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb463-2"><a href="violations-of-assumptions.html#cb463-2" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb463-3"><a href="violations-of-assumptions.html#cb463-3" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb463-4"><a href="violations-of-assumptions.html#cb463-4" tabindex="-1"></a><span class="fu">library</span>(broom)</span></code></pre></div>
+<div id="graphical-methods-for-detecting-deviations-from-normality" class="section level2 hasAnchor" number="21.1">
+<h2><span class="header-section-number">21.1</span> Graphical methods for detecting deviations from normality<a href="violations-of-assumptions.html#graphical-methods-for-detecting-deviations-from-normality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As we have seen, histogram and density plot can highlight distributions that deviate from normality.</p>
 <p>Look for:
 * distinctly non-symmetric spread – long tails, data up against a lower or upper limit
 * multiple modes
 * Varying bin widths (histograms) and the degree of smoothing (density plots) can both be useful.</p>
-<div id="example-data-marine-reserves" class="section level4 unnumbered">
-<h4>Example data: Marine reserves</h4>
+<div id="example-data-marine-reserves" class="section level4 unnumbered hasAnchor">
+<h4>Example data: Marine reserves<a href="violations-of-assumptions.html#example-data-marine-reserves" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Example 13.1 in your text book describes a study aimed at understanding whether marine reserves are effective at preserving marine life. The data provided are “biomass ratios” between reserves and similar unprotected sites nearby. A ratio of one means the reserve and the nearby unprotected site had equal biomass; values greater than one indicate greater biomass in the rserve while values less than one indicate greater biomass in the unprotected site.</p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb463-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb463-3" data-line-number="3"><span class="kw">library</span>(cowplot)</a>
-<a class="sourceLine" id="cb463-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb463-5" data-line-number="5">marine.reserves &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-marine-reserves.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb463-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb463-7" data-line-number="7"><span class="kw">ggplot</span>(marine.reserves, <span class="kw">aes</span>(<span class="dt">x =</span> biomassRatio, <span class="dt">y =</span> ..density..)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb463-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">8</span>, <span class="dt">color=</span><span class="st">&#39;gray&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb463-9" data-line-number="9"><span class="st">  </span><span class="kw">stat_density</span>(<span class="dt">geom=</span><span class="st">&quot;line&quot;</span>,</a>
-<a class="sourceLine" id="cb463-10" data-line-number="10">               <span class="dt">adjust =</span> <span class="fl">1.25</span>,   <span class="co"># adjust is in multiples of smoothing bandwidth</span></a>
-<a class="sourceLine" id="cb463-11" data-line-number="11">               <span class="dt">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb463-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Biomass ratio&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability density&quot;</span>)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-480-1.png" width="576" /></p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="violations-of-assumptions.html#cb464-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb464-2"><a href="violations-of-assumptions.html#cb464-2" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb464-3"><a href="violations-of-assumptions.html#cb464-3" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb464-4"><a href="violations-of-assumptions.html#cb464-4" tabindex="-1"></a></span>
+<span id="cb464-5"><a href="violations-of-assumptions.html#cb464-5" tabindex="-1"></a>marine.reserves <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-marine-reserves.csv&quot;</span>)</span>
+<span id="cb464-6"><a href="violations-of-assumptions.html#cb464-6" tabindex="-1"></a></span>
+<span id="cb464-7"><a href="violations-of-assumptions.html#cb464-7" tabindex="-1"></a><span class="fu">ggplot</span>(marine.reserves, <span class="fu">aes</span>(<span class="at">x =</span> biomassRatio, <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb464-8"><a href="violations-of-assumptions.html#cb464-8" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">8</span>, <span class="at">color=</span><span class="st">&#39;gray&#39;</span>, <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb464-9"><a href="violations-of-assumptions.html#cb464-9" tabindex="-1"></a>  <span class="fu">stat_density</span>(<span class="at">geom=</span><span class="st">&quot;line&quot;</span>,</span>
+<span id="cb464-10"><a href="violations-of-assumptions.html#cb464-10" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">1.25</span>,   <span class="co"># adjust is in multiples of smoothing bandwidth</span></span>
+<span id="cb464-11"><a href="violations-of-assumptions.html#cb464-11" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb464-12"><a href="violations-of-assumptions.html#cb464-12" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Biomass ratio&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Probability density&quot;</span>)</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-481-1.png" width="576" /></p>
 <p>Both the histogram and the density plot suggest the biomass ratio distribution is strongly right skewed.</p>
 </div>
-<div id="normal-probability-plots" class="section level3 unnumbered">
-<h3>Normal probability plots</h3>
+<div id="normal-probability-plots" class="section level3 unnumbered hasAnchor">
+<h3>Normal probability plots<a href="violations-of-assumptions.html#normal-probability-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Normal probability plots are another visualization tools we saw previously for judging deviations from normality. If the observed data are approximately normally distributed, the scatter of points should fall roughly along a straight line with slope equal to the standard deviation of the data and intercept equal to the mean of the data.</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1"><span class="kw">ggplot</span>(marine.reserves, <span class="kw">aes</span>(<span class="dt">sample =</span> biomassRatio)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb464-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_qq</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb464-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_qq_line</span>(<span class="dt">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-481-1.png" width="576" /></p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="violations-of-assumptions.html#cb465-1" tabindex="-1"></a><span class="fu">ggplot</span>(marine.reserves, <span class="fu">aes</span>(<span class="at">sample =</span> biomassRatio)) <span class="sc">+</span> </span>
+<span id="cb465-2"><a href="violations-of-assumptions.html#cb465-2" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span> </span>
+<span id="cb465-3"><a href="violations-of-assumptions.html#cb465-3" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>(<span class="at">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-482-1.png" width="576" /></p>
 </div>
 </div>
-<div id="formal-test-of-normality" class="section level2">
-<h2><span class="header-section-number">21.2</span> Formal test of normality</h2>
+<div id="formal-test-of-normality" class="section level2 hasAnchor" number="21.2">
+<h2><span class="header-section-number">21.2</span> Formal test of normality<a href="violations-of-assumptions.html#formal-test-of-normality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are number of formal tests of normality, with the “Shapiro-Wilk” test being among the most common. The Shapiro-Wilk test is essentially a formalization of the procedure we do by eye when judging a QQ-plot.</p>
 <p>The null hypothesis for the Shapiro-Wilk test is that the data are drawn from a normal distribution. The test statistic for the Shapiro-Wilks tests is called <span class="math inline">\(W\)</span>, and it measures the ratio of sumed deviations from the mean for a theoretical normal relative to the observed data. Small values of W are evidence of departure from normality. As in all other cases we’ve examined, the observed <span class="math inline">\(W\)</span> is compared to the expected sampling distribution of <span class="math inline">\(W\)</span> under the null hypothesis to estimate a P-value. Small P-values reject the null hypothesis of normality.</p>
-<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb465-1" data-line-number="1"><span class="kw">shapiro.test</span>(marine.reserves<span class="op">$</span>biomassRatio)</a>
-<a class="sourceLine" id="cb465-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb465-3" data-line-number="3"><span class="co">#&gt;  Shapiro-Wilk normality test</span></a>
-<a class="sourceLine" id="cb465-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb465-5" data-line-number="5"><span class="co">#&gt; data:  marine.reserves$biomassRatio</span></a>
-<a class="sourceLine" id="cb465-6" data-line-number="6"><span class="co">#&gt; W = 0.81751, p-value = 8.851e-05</span></a></code></pre></div>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="violations-of-assumptions.html#cb466-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(marine.reserves<span class="sc">$</span>biomassRatio)</span>
+<span id="cb466-2"><a href="violations-of-assumptions.html#cb466-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb466-3"><a href="violations-of-assumptions.html#cb466-3" tabindex="-1"></a><span class="co">#&gt;  Shapiro-Wilk normality test</span></span>
+<span id="cb466-4"><a href="violations-of-assumptions.html#cb466-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb466-5"><a href="violations-of-assumptions.html#cb466-5" tabindex="-1"></a><span class="co">#&gt; data:  marine.reserves$biomassRatio</span></span>
+<span id="cb466-6"><a href="violations-of-assumptions.html#cb466-6" tabindex="-1"></a><span class="co">#&gt; W = 0.81751, p-value = 8.851e-05</span></span></code></pre></div>
 </div>
-<div id="when-to-ignore-violations-of-assumptions" class="section level2">
-<h2><span class="header-section-number">21.3</span> When to ignore violations of assumptions</h2>
+<div id="when-to-ignore-violations-of-assumptions" class="section level2 hasAnchor" number="21.3">
+<h2><span class="header-section-number">21.3</span> When to ignore violations of assumptions<a href="violations-of-assumptions.html#when-to-ignore-violations-of-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Estimation and testing of means tends to be robust to violation of assumptions of normality and homogeneity of variance. This robustness is a consequence of the Central Limit Theorem.</p>
 <p>However, if “two groups are being compared and both differ from normality in different ways, then even subtle deviations from normality can cause errors in the analysis (even with fairly large sample sizes)” (W&amp;S Ch 13).</p>
 </div>
-<div id="data-transformations" class="section level2">
-<h2><span class="header-section-number">21.4</span> Data transformations</h2>
+<div id="data-transformations" class="section level2 hasAnchor" number="21.4">
+<h2><span class="header-section-number">21.4</span> Data transformations<a href="violations-of-assumptions.html#data-transformations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A common approach to dealing with non-normal variables is to apply a mathematical function that transforms the data to more nearly normal distribution. Analyses and inferences are then done on the transformed data.</p>
 <p><strong>Log transformation</strong>: This widely-used transformation can only be applied to positive numbers, since <code>log(x)</code> is undefined when <code>x</code> is negative or zero. However, addition of a small positive constant can be used to ensure that all data are positive. For example, if a vector <code>x</code> includes negative numbers, then <code>x + abs(min(x)) + 1</code> results in positive numbers that can be log transformed.</p>
 <p><strong>Arcsine square root transformation</strong>: <span class="math inline">\(p&#39; = arcsin[\sqrt{p}]\)</span> is often used when the data are proportions. If the original data are percentages, first divide by 100 to convert to proportions.</p>
@@ -708,142 +808,148 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
 <p><strong>Square transformation</strong>: <span class="math inline">\(Y&#39; = Y^2\)</span>. This may be helpful when the data are skewed left. .</p>
 <p><strong>Antilog transformation</strong>: <span class="math inline">\(Y&#39; = e^Y\)</span> may be helpful if the square transformation does not resolve the problem. Only usable when all data points have the same sign. If all data points are less than zero, take the absolute value before applying the antilog transformation.</p>
 <p><strong>Reciprocal transformation</strong>: <span class="math inline">\(Y&#39; = {\frac{1}{Y}}\)</span> When data are right skewed, this transformation may be helpful. If all data points are less than zero, take the absolute value before applying the reciprocal transformation.</p>
-<div id="example-log-transformation-to-deal-with-skew" class="section level3 unnumbered">
-<h3>Example: log transformation to deal with skew</h3>
+<div id="example-log-transformation-to-deal-with-skew" class="section level3 unnumbered hasAnchor">
+<h3>Example: log transformation to deal with skew<a href="violations-of-assumptions.html#example-log-transformation-to-deal-with-skew" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The biomass ratio variable in the marine reserves data is strongly right skewed. Let’s see how well a log transformation does in terms of normalizing this data:</p>
-<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1">ln.biomass.hist &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb466-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(marine.reserves, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">log</span>(biomassRatio), <span class="dt">y =</span> ..density..)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb466-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">8</span>, <span class="dt">color=</span><span class="st">&#39;gray&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb466-4" data-line-number="4"><span class="st">  </span><span class="kw">stat_density</span>(<span class="dt">geom=</span><span class="st">&quot;line&quot;</span>,</a>
-<a class="sourceLine" id="cb466-5" data-line-number="5">               <span class="dt">adjust =</span> <span class="fl">1.25</span>,   <span class="co"># adjust is in multiples of smoothing bandwidth</span></a>
-<a class="sourceLine" id="cb466-6" data-line-number="6">               <span class="dt">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb466-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;ln[Biomass ratio]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Probability density&quot;</span>)</a>
-<a class="sourceLine" id="cb466-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb466-9" data-line-number="9">ln.biomass.qq &lt;-</a>
-<a class="sourceLine" id="cb466-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(marine.reserves, <span class="kw">aes</span>(<span class="dt">sample =</span> <span class="kw">log</span>(biomassRatio))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb466-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_qq</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb466-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_qq_line</span>(<span class="dt">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb466-13" data-line-number="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;ln[Biomass ratio]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>)</a>
-<a class="sourceLine" id="cb466-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb466-15" data-line-number="15"><span class="kw">plot_grid</span>(ln.biomass.hist, ln.biomass.qq)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-483-1.png" width="864" /></p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="violations-of-assumptions.html#cb467-1" tabindex="-1"></a>ln.biomass.hist <span class="ot">&lt;-</span> </span>
+<span id="cb467-2"><a href="violations-of-assumptions.html#cb467-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(marine.reserves, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(biomassRatio), <span class="at">y =</span> ..density..)) <span class="sc">+</span> </span>
+<span id="cb467-3"><a href="violations-of-assumptions.html#cb467-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">8</span>, <span class="at">color=</span><span class="st">&#39;gray&#39;</span>, <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb467-4"><a href="violations-of-assumptions.html#cb467-4" tabindex="-1"></a>  <span class="fu">stat_density</span>(<span class="at">geom=</span><span class="st">&quot;line&quot;</span>,</span>
+<span id="cb467-5"><a href="violations-of-assumptions.html#cb467-5" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">1.25</span>,   <span class="co"># adjust is in multiples of smoothing bandwidth</span></span>
+<span id="cb467-6"><a href="violations-of-assumptions.html#cb467-6" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb467-7"><a href="violations-of-assumptions.html#cb467-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;ln[Biomass ratio]&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Probability density&quot;</span>)</span>
+<span id="cb467-8"><a href="violations-of-assumptions.html#cb467-8" tabindex="-1"></a></span>
+<span id="cb467-9"><a href="violations-of-assumptions.html#cb467-9" tabindex="-1"></a>ln.biomass.qq <span class="ot">&lt;-</span></span>
+<span id="cb467-10"><a href="violations-of-assumptions.html#cb467-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(marine.reserves, <span class="fu">aes</span>(<span class="at">sample =</span> <span class="fu">log</span>(biomassRatio))) <span class="sc">+</span> </span>
+<span id="cb467-11"><a href="violations-of-assumptions.html#cb467-11" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span> </span>
+<span id="cb467-12"><a href="violations-of-assumptions.html#cb467-12" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>(<span class="at">color =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb467-13"><a href="violations-of-assumptions.html#cb467-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;ln[Biomass ratio]&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>)</span>
+<span id="cb467-14"><a href="violations-of-assumptions.html#cb467-14" tabindex="-1"></a></span>
+<span id="cb467-15"><a href="violations-of-assumptions.html#cb467-15" tabindex="-1"></a><span class="fu">plot_grid</span>(ln.biomass.hist, ln.biomass.qq)</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-484-1.png" width="864" /></p>
 <p>The log-transformed biomass ratio data is still a bit right skewed though not nearly as much as before. Applying the Shapiro-Wilk test to this transformed data, we fail to reject the null hypothesis of normality at <span class="math inline">\(\alpha = 0.05\)</span>.</p>
-<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb467-1" data-line-number="1"><span class="kw">shapiro.test</span>(<span class="kw">log</span>(marine.reserves<span class="op">$</span>biomassRatio))</a>
-<a class="sourceLine" id="cb467-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb467-3" data-line-number="3"><span class="co">#&gt;  Shapiro-Wilk normality test</span></a>
-<a class="sourceLine" id="cb467-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb467-5" data-line-number="5"><span class="co">#&gt; data:  log(marine.reserves$biomassRatio)</span></a>
-<a class="sourceLine" id="cb467-6" data-line-number="6"><span class="co">#&gt; W = 0.93795, p-value = 0.06551</span></a></code></pre></div>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="violations-of-assumptions.html#cb468-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">log</span>(marine.reserves<span class="sc">$</span>biomassRatio))</span>
+<span id="cb468-2"><a href="violations-of-assumptions.html#cb468-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb468-3"><a href="violations-of-assumptions.html#cb468-3" tabindex="-1"></a><span class="co">#&gt;  Shapiro-Wilk normality test</span></span>
+<span id="cb468-4"><a href="violations-of-assumptions.html#cb468-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb468-5"><a href="violations-of-assumptions.html#cb468-5" tabindex="-1"></a><span class="co">#&gt; data:  log(marine.reserves$biomassRatio)</span></span>
+<span id="cb468-6"><a href="violations-of-assumptions.html#cb468-6" tabindex="-1"></a><span class="co">#&gt; W = 0.93795, p-value = 0.06551</span></span></code></pre></div>
 </div>
-<div id="confidence-intervals-and-data-transformations" class="section level3">
-<h3><span class="header-section-number">21.4.1</span> Confidence intervals and data transformations</h3>
+<div id="confidence-intervals-and-data-transformations" class="section level3 hasAnchor" number="21.4.1">
+<h3><span class="header-section-number">21.4.1</span> Confidence intervals and data transformations<a href="violations-of-assumptions.html#confidence-intervals-and-data-transformations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Sometimes we need to transform our data before analysis, and then we want to know the confidence intervals on the original scale. In such cases, we back-transform the upper and lower CIs to the original scale of measurement.</p>
 <p>Let’s calculate 95% CIs for the log-transformed biomass ratio data:</p>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb468-1" data-line-number="1">log.biomass.CI &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb468-2" data-line-number="2"><span class="st">  </span>marine.reserves <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb468-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">log.biomassRatio =</span> <span class="kw">log</span>(biomassRatio)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb468-4" data-line-number="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(log.biomassRatio),</a>
-<a class="sourceLine" id="cb468-5" data-line-number="5">            <span class="dt">sd =</span> <span class="kw">sd</span>(log.biomassRatio),</a>
-<a class="sourceLine" id="cb468-6" data-line-number="6">            <span class="dt">n =</span> <span class="kw">n</span>(),</a>
-<a class="sourceLine" id="cb468-7" data-line-number="7">            <span class="dt">SE =</span> sd<span class="op">/</span><span class="kw">sqrt</span>(n),</a>
-<a class="sourceLine" id="cb468-8" data-line-number="8">            <span class="dt">CI.low.log =</span> mean <span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> n<span class="dv">-1</span>)) <span class="op">*</span><span class="st"> </span>SE,</a>
-<a class="sourceLine" id="cb468-9" data-line-number="9">            <span class="dt">CI.high.log =</span> mean <span class="op">+</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>(<span class="fl">0.025</span>, <span class="dt">df =</span> n<span class="dv">-1</span>)) <span class="op">*</span><span class="st"> </span>SE) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb468-10" data-line-number="10"><span class="st">  </span><span class="kw">select</span>(CI.low.log, CI.high.log)</a>
-<a class="sourceLine" id="cb468-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb468-12" data-line-number="12">log.biomass.CI </a>
-<a class="sourceLine" id="cb468-13" data-line-number="13"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb468-14" data-line-number="14"><span class="co">#&gt;   CI.low.log CI.high.log</span></a>
-<a class="sourceLine" id="cb468-15" data-line-number="15"><span class="co">#&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb468-16" data-line-number="16"><span class="co">#&gt; 1     0.3470      0.6112</span></a></code></pre></div>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="violations-of-assumptions.html#cb469-1" tabindex="-1"></a>log.biomass.CI <span class="ot">&lt;-</span> </span>
+<span id="cb469-2"><a href="violations-of-assumptions.html#cb469-2" tabindex="-1"></a>  marine.reserves <span class="sc">%&gt;%</span></span>
+<span id="cb469-3"><a href="violations-of-assumptions.html#cb469-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log.biomassRatio =</span> <span class="fu">log</span>(biomassRatio)) <span class="sc">%&gt;%</span></span>
+<span id="cb469-4"><a href="violations-of-assumptions.html#cb469-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(log.biomassRatio),</span>
+<span id="cb469-5"><a href="violations-of-assumptions.html#cb469-5" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(log.biomassRatio),</span>
+<span id="cb469-6"><a href="violations-of-assumptions.html#cb469-6" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb469-7"><a href="violations-of-assumptions.html#cb469-7" tabindex="-1"></a>            <span class="at">SE =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n),</span>
+<span id="cb469-8"><a href="violations-of-assumptions.html#cb469-8" tabindex="-1"></a>            <span class="at">CI.low.log =</span> mean <span class="sc">-</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> n<span class="dv">-1</span>)) <span class="sc">*</span> SE,</span>
+<span id="cb469-9"><a href="violations-of-assumptions.html#cb469-9" tabindex="-1"></a>            <span class="at">CI.high.log =</span> mean <span class="sc">+</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> n<span class="dv">-1</span>)) <span class="sc">*</span> SE) <span class="sc">%&gt;%</span></span>
+<span id="cb469-10"><a href="violations-of-assumptions.html#cb469-10" tabindex="-1"></a>  <span class="fu">select</span>(CI.low.log, CI.high.log)</span>
+<span id="cb469-11"><a href="violations-of-assumptions.html#cb469-11" tabindex="-1"></a></span>
+<span id="cb469-12"><a href="violations-of-assumptions.html#cb469-12" tabindex="-1"></a>log.biomass.CI </span>
+<span id="cb469-13"><a href="violations-of-assumptions.html#cb469-13" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span id="cb469-14"><a href="violations-of-assumptions.html#cb469-14" tabindex="-1"></a><span class="co">#&gt;   CI.low.log CI.high.log</span></span>
+<span id="cb469-15"><a href="violations-of-assumptions.html#cb469-15" tabindex="-1"></a><span class="co">#&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb469-16"><a href="violations-of-assumptions.html#cb469-16" tabindex="-1"></a><span class="co">#&gt; 1     0.3470      0.6112</span></span></code></pre></div>
 <p>This analysis finds the 95% CI around the mean of the log transformed data ranges is 0.347018, 0.6112365.</p>
 <p>To understand the biological implications of this analysis, we back-transform the log data results to the original scale, computing the <em>antilog</em> by using function <code>exp</code>. After this, the back-transformed CI is now on the scale of <span class="math inline">\(e^{\log X} = X\)</span>.</p>
 <p>Letting <span class="math inline">\(\mu&#39;\)</span> = <code>mean(log.X)</code>, we have <span class="math inline">\(0.347 &lt; \mu&#39; &lt; 0.611\)</span> on the log scale.</p>
 <p>On the original scale:</p>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" data-line-number="1">log.biomass.CI <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb469-2" data-line-number="2"><span class="st">  </span><span class="co"># back-transform CI to original scale</span></a>
-<a class="sourceLine" id="cb469-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">CI.low.original  =</span> <span class="kw">exp</span>(CI.low.log),</a>
-<a class="sourceLine" id="cb469-4" data-line-number="4">         <span class="dt">CI.high.original =</span> <span class="kw">exp</span>(CI.high.log))</a>
-<a class="sourceLine" id="cb469-5" data-line-number="5"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb469-6" data-line-number="6"><span class="co">#&gt;   CI.low.log CI.high.log CI.low.original CI.high.original</span></a>
-<a class="sourceLine" id="cb469-7" data-line-number="7"><span class="co">#&gt;        &lt;dbl&gt;       &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb469-8" data-line-number="8"><span class="co">#&gt; 1     0.3470      0.6112           1.415            1.843</span></a></code></pre></div>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="violations-of-assumptions.html#cb470-1" tabindex="-1"></a>log.biomass.CI <span class="sc">%&gt;%</span></span>
+<span id="cb470-2"><a href="violations-of-assumptions.html#cb470-2" tabindex="-1"></a>  <span class="co"># back-transform CI to original scale</span></span>
+<span id="cb470-3"><a href="violations-of-assumptions.html#cb470-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">CI.low.original  =</span> <span class="fu">exp</span>(CI.low.log),</span>
+<span id="cb470-4"><a href="violations-of-assumptions.html#cb470-4" tabindex="-1"></a>         <span class="at">CI.high.original =</span> <span class="fu">exp</span>(CI.high.log))</span>
+<span id="cb470-5"><a href="violations-of-assumptions.html#cb470-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span id="cb470-6"><a href="violations-of-assumptions.html#cb470-6" tabindex="-1"></a><span class="co">#&gt;   CI.low.log CI.high.log CI.low.original CI.high.original</span></span>
+<span id="cb470-7"><a href="violations-of-assumptions.html#cb470-7" tabindex="-1"></a><span class="co">#&gt;        &lt;dbl&gt;       &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb470-8"><a href="violations-of-assumptions.html#cb470-8" tabindex="-1"></a><span class="co">#&gt; 1     0.3470      0.6112           1.415            1.843</span></span></code></pre></div>
 <p>Hence, 1.41 &lt; geometric mean &lt; 1.84.</p>
 <p>The <em>geometric mean</em> equals <span class="math inline">\(\sqrt[n]{x_1 x_2 \cdots x_n}\)</span>, computed by multiplying all these <em>n</em> numbers together, then taking the <span class="math inline">\(n^{th}\)</span> root.</p>
 <p>Biologically, “this 95% confidence interval indicates that marine reserves have 1.41 to 1.84 times more biomass on average than the control sites do” (W&amp;S 13.3)</p>
 </div>
 </div>
-<div id="nonparametric-tests" class="section level2">
-<h2><span class="header-section-number">21.5</span> Nonparametric tests</h2>
+<div id="nonparametric-tests" class="section level2 hasAnchor" number="21.5">
+<h2><span class="header-section-number">21.5</span> Nonparametric tests<a href="violations-of-assumptions.html#nonparametric-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Non-parametric tests are ones that make no (or fewer) assumptions about the particular distributions from which the data of interest are drawn. Nonparametric tests are helpful for non-normal data distributions, especially with outliers. Typically, these tests use the ranks of the data points rather than the actual values of the data. Because they are not using all available data, nonparametric tests have lower statistical power than parametric tests. Nonparametric approaches still assume that the data are a random sample from the population.</p>
 <p>We present here two common non-parametric alternatives to t-tests and ANOVA.</p>
-<div id="mann-whitney-u-test-non-parametric-alternative-to-t-test" class="section level3">
-<h3><span class="header-section-number">21.5.1</span> Mann-Whitney U-test: non-parametric alternative to t-test</h3>
+<div id="mann-whitney-u-test-non-parametric-alternative-to-t-test" class="section level3 hasAnchor" number="21.5.1">
+<h3><span class="header-section-number">21.5.1</span> Mann-Whitney U-test: non-parametric alternative to t-test<a href="violations-of-assumptions.html#mann-whitney-u-test-non-parametric-alternative-to-t-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When the normality assumption is not met, and none of the the standard mathematical transformations are suitable (or desirable), the <strong>Mann-Whitney U-test</strong> can be used in place of a two-sample <span class="math inline">\(t\)</span>-test to compare the <em>distribution</em> of two groups. The Mann-Whitney U-test compares the data distribution of two groups, without requiring the normality assumptions of the two-sample t-test. The null hypothesis of this test is that the within-group data <em>distributions</em> are the same. Therefore, it is possible to reject the null hypothesis because the distributions differ, <em>even if the means are the same</em>. The Mann-Whitney U-test is sensitive to unequal variances or different patterns of skew. Therefore, this test should be used to compare distributions, not to compare means.</p>
 <p>Confusingly, the Mann-Whitney U-test is also called the Mann–Whitney–Wilcoxon test. Do not confuse this with another test called the Wilcoxon signed-rank test.</p>
 <p>Your textbook details the calculations involved, here we simply demonstrate the appropriate R function.</p>
-<div id="example-data-sexual-cannibalism-in-crickets" class="section level4 unnumbered">
-<h4>Example data: Sexual cannibalism in crickets</h4>
-<p>Example 13.5 in your textbook demonstrates the Mann-Whitney U-test with an application to a study of sexual cannabilism in sage crickets. During mating, male sage crickets offer their fleshy hind wings to females to eat. Johnson et al. (1999) studied whether female sage crickets are more likely to mate if they are hungry. They measured the time to mating (in hours) for female crickets that had be starved or fed. The null and alternative hypotheses for this comparison are:</p>
+<div id="example-data-sexual-cannibalism-in-crickets" class="section level4 unnumbered hasAnchor">
+<h4>Example data: Sexual cannibalism in crickets<a href="violations-of-assumptions.html#example-data-sexual-cannibalism-in-crickets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Example 13.5 in your textbook demonstrates the Mann-Whitney U-test with an application to a study of sexual cannabilism in sage crickets. During mating, male sage crickets offer their fleshy hind wings to females to eat. Johnson et al. (1999) studied whether female sage crickets are more likely to mate if they are hungry. They measured the time to mating (in hours) for female crickets that had be starved or fed. The null and alternative hypotheses for this comparison are:</p>
 <ul>
 <li><span class="math inline">\(H_0\)</span>: The distribution of time to mating is the same for starved and fed female crickets</li>
 <li><span class="math inline">\(H_A\)</span>: The distribution of time to mating differs between starved and fed female crickets</li>
 </ul>
 <p>Here’s what the data look like:</p>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1">crickets &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-cricket-cannibalism.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb470-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
-<a class="sourceLine" id="cb470-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
-<a class="sourceLine" id="cb470-4" data-line-number="4"><span class="co">#&gt;   feedingStatus = col_character(),</span></a>
-<a class="sourceLine" id="cb470-5" data-line-number="5"><span class="co">#&gt;   timeToMating = col_double()</span></a>
-<a class="sourceLine" id="cb470-6" data-line-number="6"><span class="co">#&gt; )</span></a>
-<a class="sourceLine" id="cb470-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb470-8" data-line-number="8"><span class="kw">ggplot</span>(crickets, <span class="kw">aes</span>(<span class="dt">x =</span> timeToMating)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb470-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="dv">20</span>, <span class="dt">alpha =</span> <span class="fl">0.75</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">color=</span><span class="st">&#39;black&#39;</span>, <span class="dt">center=</span><span class="dv">10</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb470-10" data-line-number="10"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>feedingStatus, <span class="dt">nrow=</span><span class="dv">1</span>)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-487-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="violations-of-assumptions.html#cb471-1" tabindex="-1"></a>crickets <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-cricket-cannibalism.csv&quot;</span>)</span>
+<span id="cb471-2"><a href="violations-of-assumptions.html#cb471-2" tabindex="-1"></a><span class="co">#&gt; Rows: 24 Columns: 2</span></span>
+<span id="cb471-3"><a href="violations-of-assumptions.html#cb471-3" tabindex="-1"></a><span class="co">#&gt; ── Column specification ───────────────────────────────</span></span>
+<span id="cb471-4"><a href="violations-of-assumptions.html#cb471-4" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb471-5"><a href="violations-of-assumptions.html#cb471-5" tabindex="-1"></a><span class="co">#&gt; chr (1): feedingStatus</span></span>
+<span id="cb471-6"><a href="violations-of-assumptions.html#cb471-6" tabindex="-1"></a><span class="co">#&gt; dbl (1): timeToMating</span></span>
+<span id="cb471-7"><a href="violations-of-assumptions.html#cb471-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb471-8"><a href="violations-of-assumptions.html#cb471-8" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb471-9"><a href="violations-of-assumptions.html#cb471-9" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span id="cb471-10"><a href="violations-of-assumptions.html#cb471-10" tabindex="-1"></a></span>
+<span id="cb471-11"><a href="violations-of-assumptions.html#cb471-11" tabindex="-1"></a><span class="fu">ggplot</span>(crickets, <span class="fu">aes</span>(<span class="at">x =</span> timeToMating)) <span class="sc">+</span></span>
+<span id="cb471-12"><a href="violations-of-assumptions.html#cb471-12" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">20</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">color=</span><span class="st">&#39;black&#39;</span>, <span class="at">center=</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb471-13"><a href="violations-of-assumptions.html#cb471-13" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> feedingStatus, <span class="at">nrow=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-488-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>As is apparent from the histograms, these data are decidedly non-normal. None of the standard mathematical transforms appear to work well in normalizing these data either.</p>
 <p>To perform the Mann-Whitney U text, we use function <code>wilcox.test</code> (<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html">details here</a>). This can take a data frame as input:</p>
-<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb471-1" data-line-number="1"><span class="kw">wilcox.test</span>(timeToMating <span class="op">~</span><span class="st"> </span>feedingStatus, </a>
-<a class="sourceLine" id="cb471-2" data-line-number="2">            <span class="dt">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="dt">paired =</span> <span class="ot">FALSE</span>, <span class="dt">data =</span> crickets)</a>
-<a class="sourceLine" id="cb471-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb471-4" data-line-number="4"><span class="co">#&gt;  Wilcoxon rank sum test</span></a>
-<a class="sourceLine" id="cb471-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb471-6" data-line-number="6"><span class="co">#&gt; data:  timeToMating by feedingStatus</span></a>
-<a class="sourceLine" id="cb471-7" data-line-number="7"><span class="co">#&gt; W = 88, p-value = 0.3607</span></a>
-<a class="sourceLine" id="cb471-8" data-line-number="8"><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></a></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="violations-of-assumptions.html#cb472-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(timeToMating <span class="sc">~</span> feedingStatus, </span>
+<span id="cb472-2"><a href="violations-of-assumptions.html#cb472-2" tabindex="-1"></a>            <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="at">data =</span> crickets)</span>
+<span id="cb472-3"><a href="violations-of-assumptions.html#cb472-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb472-4"><a href="violations-of-assumptions.html#cb472-4" tabindex="-1"></a><span class="co">#&gt;  Wilcoxon rank sum exact test</span></span>
+<span id="cb472-5"><a href="violations-of-assumptions.html#cb472-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb472-6"><a href="violations-of-assumptions.html#cb472-6" tabindex="-1"></a><span class="co">#&gt; data:  timeToMating by feedingStatus</span></span>
+<span id="cb472-7"><a href="violations-of-assumptions.html#cb472-7" tabindex="-1"></a><span class="co">#&gt; W = 88, p-value = 0.3607</span></span>
+<span id="cb472-8"><a href="violations-of-assumptions.html#cb472-8" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code></pre></div>
 <p>The test statistic <span class="math inline">\(W\)</span> is the equivalent to the <span class="math inline">\(U\)</span> test statistic of the Mann Whitney U-test. In this case, our observed value of <span class="math inline">\(U\)</span> (<span class="math inline">\(W\)</span>) is quite probable (<span class="math inline">\(p\)</span> = 0.4) under the null hypothesis of no difference in the distributions between the two groups, therefore we fail to reject the null hypothesis.</p>
 </div>
 </div>
-<div id="kruskal-wallis-test-non-parametric-alternative-to-anova" class="section level3">
-<h3><span class="header-section-number">21.5.2</span> Kruskal-Wallis test: non-parametric alternative to ANOVA</h3>
+<div id="kruskal-wallis-test-non-parametric-alternative-to-anova" class="section level3 hasAnchor" number="21.5.2">
+<h3><span class="header-section-number">21.5.2</span> Kruskal-Wallis test: non-parametric alternative to ANOVA<a href="violations-of-assumptions.html#kruskal-wallis-test-non-parametric-alternative-to-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When there are more than two groups to compare, the non-parametric alternative to ANOVA is the Kruskal-Wallis Test. Like the Mann-Whitney U-test, the Kruskal-Wallis test is based on ranks rather than observed values. While the Kruskal-Wallis test does not assume the data are normally distributed, it still assumes the distributions of the variable of interest have similar shapes across the groups. The test statistic for the Kruskal-Wallis test is designated <span class="math inline">\(H\)</span>.</p>
-<div id="example-data-daphnia-resistance-to-cyanobacteria" class="section level4 unnumbered">
-<h4>Example data: Daphnia resistance to cyanobacteria</h4>
+<div id="example-data-daphnia-resistance-to-cyanobacteria" class="section level4 unnumbered hasAnchor">
+<h4>Example data: Daphnia resistance to cyanobacteria<a href="violations-of-assumptions.html#example-data-daphnia-resistance-to-cyanobacteria" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>This is from Assignment Problem 13.17 in Whitlock &amp; Schluter.</p>
-<p>Daphnia is a freshwater planktonic crustacean. Hairson et al. (1999) were interested in local adaptation of Daphnia populations in Lake Constance (bordering Germany, Austria, and Switzerland). Cyanobacteria, is a toxic food type that has increased in density in Lake Constance since the 1960s in response to increased nutrients. The investigators collected Daphnia eggs from sediments laid down during years of low, medium, and high cyanobacteria density and measured resistance to cyanobacteria in each group. Visual inspection of these data suggest they violate the normality assumptions of standard ANOVA.</p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1">daphnia &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-daphnia-resistance.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb472-2" data-line-number="2"><span class="co">#&gt; Parsed with column specification:</span></a>
-<a class="sourceLine" id="cb472-3" data-line-number="3"><span class="co">#&gt; cols(</span></a>
-<a class="sourceLine" id="cb472-4" data-line-number="4"><span class="co">#&gt;   cyandensity = col_character(),</span></a>
-<a class="sourceLine" id="cb472-5" data-line-number="5"><span class="co">#&gt;   resistance = col_double()</span></a>
-<a class="sourceLine" id="cb472-6" data-line-number="6"><span class="co">#&gt; )</span></a>
-<a class="sourceLine" id="cb472-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb472-8" data-line-number="8"><span class="kw">ggplot</span>(daphnia, <span class="kw">aes</span>(<span class="dt">x =</span> resistance)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb472-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">8</span>, <span class="dt">alpha =</span> <span class="fl">0.75</span>, <span class="dt">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="dt">color=</span><span class="st">&#39;black&#39;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb472-10" data-line-number="10"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>cyandensity)</a></code></pre></div>
-<p><img src="bio304-book_files/figure-html/unnamed-chunk-489-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>Daphnia is a freshwater planktonic crustacean. Hairson et al. (1999) were interested in local adaptation of Daphnia populations in Lake Constance (bordering Germany, Austria, and Switzerland). Cyanobacteria, is a toxic food type that has increased in density in Lake Constance since the 1960s in response to increased nutrients. The investigators collected Daphnia eggs from sediments laid down during years of low, medium, and high cyanobacteria density and measured resistance to cyanobacteria in each group. Visual inspection of these data suggest they violate the normality assumptions of standard ANOVA.</p>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="violations-of-assumptions.html#cb473-1" tabindex="-1"></a>daphnia <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://github.com/bio304-class/bio304-course-notes/raw/master/datasets/ABD-daphnia-resistance.csv&quot;</span>)</span>
+<span id="cb473-2"><a href="violations-of-assumptions.html#cb473-2" tabindex="-1"></a><span class="co">#&gt; Rows: 32 Columns: 2</span></span>
+<span id="cb473-3"><a href="violations-of-assumptions.html#cb473-3" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────</span></span>
+<span id="cb473-4"><a href="violations-of-assumptions.html#cb473-4" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb473-5"><a href="violations-of-assumptions.html#cb473-5" tabindex="-1"></a><span class="co">#&gt; chr (1): cyandensity</span></span>
+<span id="cb473-6"><a href="violations-of-assumptions.html#cb473-6" tabindex="-1"></a><span class="co">#&gt; dbl (1): resistance</span></span>
+<span id="cb473-7"><a href="violations-of-assumptions.html#cb473-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb473-8"><a href="violations-of-assumptions.html#cb473-8" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb473-9"><a href="violations-of-assumptions.html#cb473-9" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span id="cb473-10"><a href="violations-of-assumptions.html#cb473-10" tabindex="-1"></a></span>
+<span id="cb473-11"><a href="violations-of-assumptions.html#cb473-11" tabindex="-1"></a><span class="fu">ggplot</span>(daphnia, <span class="fu">aes</span>(<span class="at">x =</span> resistance)) <span class="sc">+</span> </span>
+<span id="cb473-12"><a href="violations-of-assumptions.html#cb473-12" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">8</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>, <span class="at">fill =</span> <span class="st">&#39;firebrick&#39;</span>, <span class="at">color=</span><span class="st">&#39;black&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb473-13"><a href="violations-of-assumptions.html#cb473-13" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> cyandensity)</span></code></pre></div>
+<p><img src="bio304-book_files/figure-html/unnamed-chunk-490-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>To carry out the Kruskal-Wallis test, and summarize the output in a data frame using <code>broom::tidy</code> we do:</p>
-<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb473-1" data-line-number="1">kw.results &lt;-<span class="st"> </span><span class="kw">kruskal.test</span>(resistance <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(cyandensity), daphnia)</a>
-<a class="sourceLine" id="cb473-2" data-line-number="2"><span class="kw">tidy</span>(kw.results)</a>
-<a class="sourceLine" id="cb473-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb473-4" data-line-number="4"><span class="co">#&gt;   statistic p.value parameter method                      </span></a>
-<a class="sourceLine" id="cb473-5" data-line-number="5"><span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;                       </span></a>
-<a class="sourceLine" id="cb473-6" data-line-number="6"><span class="co">#&gt; 1     8.200 0.01658         2 Kruskal-Wallis rank sum test</span></a></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="violations-of-assumptions.html#cb474-1" tabindex="-1"></a>kw.results <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(resistance <span class="sc">~</span> <span class="fu">as.factor</span>(cyandensity), daphnia)</span>
+<span id="cb474-2"><a href="violations-of-assumptions.html#cb474-2" tabindex="-1"></a><span class="fu">tidy</span>(kw.results)</span>
+<span id="cb474-3"><a href="violations-of-assumptions.html#cb474-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 4</span></span>
+<span id="cb474-4"><a href="violations-of-assumptions.html#cb474-4" tabindex="-1"></a><span class="co">#&gt;   statistic p.value parameter method                      </span></span>
+<span id="cb474-5"><a href="violations-of-assumptions.html#cb474-5" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt;                       </span></span>
+<span id="cb474-6"><a href="violations-of-assumptions.html#cb474-6" tabindex="-1"></a><span class="co">#&gt; 1     8.200 0.01658         2 Kruskal-Wallis rank sum test</span></span></code></pre></div>
 <p>Based on a the estimated P-value, we have evidence upon which to reject the null hypothesis of equal means at a Type I error rate of <span class="math inline">\(\alpha = 0.5\)</span>. However some caution is warranted as the shape of the distributions appear to be somewhat different among the groups.</p>
 </div>
 </div>
 </div>
-<div id="acknowledgements" class="section level2 unnumbered">
-<h2>Acknowledgements</h2>
+<div id="acknowledgements" class="section level2 unnumbered hasAnchor">
+<h2>Acknowledgements<a href="violations-of-assumptions.html#acknowledgements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Figures and examples from W&amp;S Chap 13; lecture notes from T. Mitchell-Olds.</p>
 
 </div>
@@ -858,42 +964,55 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"google": false,
-"linkedin": false,
-"weibo": false,
-"instapper": false,
-"vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"download": ["bio304-book.pdf"],
-"toc": {
-"collapse": "section"
-},
-"toolbar": {
-"position": "fixed"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bio304-book.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  },
+  "toolbar": {
+    "position": "fixed"
+  }
 });
 });
 </script>
@@ -904,9 +1023,10 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

@@ -2,9 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-_bookdown_files/bio304-book_cache
-_bookdown_files/bio304-book_files
+bio304-book_cache/
+bio304-book_files/ 
 *.aux
 *.out
 *.toc
 
+_bookdown_files/.DS_Store

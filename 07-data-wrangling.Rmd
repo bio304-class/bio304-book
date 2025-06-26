@@ -38,7 +38,7 @@ Let's load it into R, using the `read_tsv()` function, using the appropriate fil
 
 ```{r}
 # the filepath may differ on your computer
-spellman <- read_tsv("~/Downloads/spellman-combined.txt")
+spellman <- read_tsv("data/spellman-combined.txt")
 ```
 
 The initial dimenions of the data frame are:
@@ -60,14 +60,14 @@ The six types of cell cycle synchronization experiments included in this data se
 
 ## Renaming data frame columms 
 
-Notice that when we imported the data we got a warning message: `Missing column names filled in: 'X1' [1]`.  In a data frame, every column must have a name. The first column of our data set did not have a name in the header, so `read_tsv` automatically gave it the name `X1`.  
+Notice that when we imported the data we got a warning message: `Missing column names filled in: 'X1' [1]`.  In a data frame, every column must have a name. The first column of our data set did not have a name in the header, so `read_tsv` automatically gave it the name `...1`.  
 
 Our first task is to give the first column a more meaningful name.  This column gives "systematic gene names" -- a standardized naming scheme for genes in the yeast genome.  We'll use `dplyr::rename` to rename `X1` to `gene`.  Note that `rename` can take multiple arguments if you need to rename multiple columns simultaneously.
 
 ```{r}
 spellman.clean <- 
   spellman %>%
-  rename(gene = X1)
+  rename(gene = `...1`)
 ```
 
 Note the use of the compound assingment operator -- `%<>%` -- from the `magrittr` package, which we introduced in our last class session.
