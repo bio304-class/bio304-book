@@ -9,3 +9,4 @@ bio304-book_files/
 *.toc
 
 _bookdown_files/.DS_Store
+docs/.DS_Store
